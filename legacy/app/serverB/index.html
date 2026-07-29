@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Server B – Shadow Control</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07161e;
+      --panel: rgba(9, 25, 34, 0.92);
+      --panel-2: rgba(255,255,255,0.07);
+      --accent: #4fd1c5;
+      --accent-2: #f59e0b;
+      --text: #f8fafc;
+      --muted: #a5b4fc;
+      --border: rgba(255,255,255,0.14);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, #020617, #0f172a 60%, #111827);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .shell { max-width: 1200px; margin: 0 auto; display: grid; gap: 16px; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.3);
+      padding: 18px;
+    }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+    select, button { padding: 10px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); font: inherit; }
+    button { cursor: pointer; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: rgba(79,209,197,0.15); color: var(--accent); border: 1px solid rgba(79,209,197,0.25); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+    .module { padding: 14px; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); cursor: move; }
+    .module h3 { margin: 0 0 8px; color: var(--accent-2); }
+    .module p { margin: 0; color: #dbeafe; line-height: 1.5; }
+    .movable { user-select: none; }
+    .panel { display: grid; gap: 10px; }
+    .list { margin: 0; padding-left: 18px; color: #dbeafe; }
+    .muted { color: var(--muted); }
+    .hidden { display: none; }
+    .status-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 11px; border-radius: 999px; background: rgba(245,158,11,0.16); color: #fde68a; border: 1px solid rgba(245,158,11,0.25); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <main class="shell" id="appShell">
+    <section class="card">
+      <div class="toolbar">
+        <div>
+          <div class="badge">Server B Shadow View</div>
+          <h1 style="margin:8px 0 4px">Lokale Shadow-Ansicht</h1>
+          <p class="muted">Diese Oberfläche basiert auf den lokalen Daten aus dem Projektordner und ist direkt im Browser sichtbar.</p>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <label class="muted" for="roleSelect">Rolle</label>
+          <select id="roleSelect">
+            <option value="owner">Owner</option>
+            <option value="editor">Editor</option>
+            <option value="viewer">Viewer</option>
+          </select>
+          <button id="refreshBtn" type="button">Daten neu laden</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="grid" id="moduleGrid"></div>
+    </section>
+
+    <section class="card">
+      <div class="grid">
+        <article class="panel">
+          <h2>Bereiche je Rolle</h2>
+          <div id="roleAreas"></div>
+        </article>
+        <article class="panel">
+          <h2>Security Layer</h2>
+          <ul class="list" id="securityList"></ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const state = { role: 'owner' };
+    const moduleGrid = document.getElementById('moduleGrid');
+    const roleAreas = document.getElementById('roleAreas');
+    const roleSelect = document.getElementById('roleSelect');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const securityList = document.getElementById('securityList');
+    const appShell = document.getElementById('appShell');
+
+    const fallbackData = {
+      modules: [
+        { title: 'Shadow Runtime', body: 'Fallback-Daten aktiv. Das lokale File-Setup nutzt diese Standardeinträge.', role: 'owner' },
+        { title: 'Rollenansicht', body: 'Rollenbasierte Sichtbarkeit ist aktiviert.', role: 'editor' },
+        { title: 'Sicherheitslage', body: 'Sandbox und Token-Prüfung sind vorbereitend aktiviert.', role: 'viewer' }
+      ],
+      areas: {
+        owner: ['Unternehmenssteuerung', 'Investor Dashboards'],
+        editor: ['Inhalt & Redaktion', 'Bereitstellung von Daten'],
+        viewer: ['Lesen & Prüfen']
+      },
+      security: {
+        referrerCheck: true,
+        tokenCheck: true,
+        sandbox: true,
+        source: 'lokal-fallback'
+      }
+    };
+
+    function render(data) {
+      const selectedRole = roleSelect.value || state.role || 'viewer';
+      state.role = selectedRole;
+      localStorage.setItem('serverb-role', selectedRole);
+      appShell.classList.remove('hidden');
+      moduleGrid.innerHTML = '';
+      const visibleModules = data.modules.filter((module) => {
+        const levels = { owner: 3, editor: 2, viewer: 1 };
+        return levels[module.role] <= levels[state.role];
+      });
+
+      visibleModules.forEach((module) => {
+        const card = document.createElement('article');
+        card.className = 'module movable';
+        card.innerHTML = `<h3>${module.title}</h3><p>${module.body}</p>`;
+        moduleGrid.appendChild(card);
+      });
+
+      roleAreas.innerHTML = '';
+      const areaList = document.createElement('ul');
+      areaList.className = 'list';
+      (data.areas[state.role] || []).forEach((item) => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        areaList.appendChild(li);
+      });
+      roleAreas.appendChild(areaList);
+
+      securityList.innerHTML = '';
+      const securityItems = [
+        { label: 'Referrer-Check', value: data.security?.referrerCheck ? 'aktiv' : 'deaktiv' },
+        { label: 'Token-Check', value: data.security?.tokenCheck ? 'aktiv' : 'deaktiv' },
+        { label: 'iframe-Sandbox', value: data.security?.sandbox ? 'aktiv' : 'deaktiv' },
+        { label: 'Source', value: data.security?.source || 'lokal' }
+      ];
+      securityItems.forEach((item) => {
+        const li = document.createElement('li');
+        li.textContent = `${item.label}: ${item.value}`;
+        securityList.appendChild(li);
+      });
+
+      document.querySelectorAll('.module').forEach((node) => {
+        node.addEventListener('mousedown', startDrag);
+      });
+    }
+
+    function startDrag(event) {
+      const node = event.currentTarget;
+      const shiftX = event.clientX - node.getBoundingClientRect().left;
+      const shiftY = event.clientY - node.getBoundingClientRect().top;
+      node.style.position = 'fixed';
+      node.style.zIndex = '999';
+      node.style.left = `${event.clientX - shiftX}px`;
+      node.style.top = `${event.clientY - shiftY}px`;
+      node.style.width = `${node.offsetWidth}px`;
+      document.body.appendChild(node);
+
+      function moveAt(pageX, pageY) {
+        node.style.left = `${pageX - shiftX}px`;
+        node.style.top = `${pageY - shiftY}px`;
+      }
+
+      function onMouseMove(event) {
+        moveAt(event.clientX, event.clientY);
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', function onMouseUp() {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        node.style.position = '';
+        node.style.left = '';
+        node.style.top = '';
+        node.style.width = '';
+        moduleGrid.appendChild(node);
+      }, { once: true });
+    }
+
+    async function loadData() {
+      const urls = [
+        './data.json',
+        '/app/serverB/data.json',
+        'http://127.0.0.1:3000/app/serverB/data.json',
+        'http://127.0.0.1:3000/legacy/app/serverB/data.json'
+      ];
+
+      for (const url of urls) {
+        try {
+          const response = await fetch(url, { cache: 'no-store' });
+          if (!response.ok) {
+            continue;
+          }
+          const data = await response.json();
+          window.__serverBData = data;
+          return data;
+        } catch (error) {
+          // keep trying the next source
+        }
+      }
+
+      window.__serverBData = fallbackData;
+      return fallbackData;
+    }
+
+    roleSelect.addEventListener('change', async () => {
+      const data = window.__serverBData || await loadData();
+      render(data);
+    });
+    refreshBtn.addEventListener('click', async () => {
+      const data = await loadData();
+      render(data);
+    });
+
+    window.addEventListener('load', async () => {
+      const data = await loadData();
+      const savedRole = localStorage.getItem('serverb-role');
+      if (savedRole) {
+        roleSelect.value = savedRole;
+      }
+      render(data);
+    });
+  </script>
+</body>
+</html>

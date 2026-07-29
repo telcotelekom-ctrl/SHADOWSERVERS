@@ -1,0 +1,49 @@
+[
+  {
+    "id": "calc-demo",
+    "name": "Shadow Demo",
+    "payload": {
+      "local": {
+        "N": 10000,
+        "f": 5000,
+        "p": 0.1,
+        "I_avg": 10000,
+        "m": 0.2,
+        "u": 0.8,
+        "K_fix": 50000,
+        "N_employees": 10
+      }
+    },
+    "createdAt": "2026-07-28T01:02:20.787Z"
+  },
+  {
+    "id": "calc-1785318909548",
+    "name": "Check",
+    "payload": {
+      "name": "Check",
+      "production": {
+        "mass_capital_factor": 1.1,
+        "productivity_rate": 1.5,
+        "product_time_hours": 40,
+        "time_cost_rate": 120,
+        "production_cost_base": 4000
+      },
+      "local": {
+        "f": 100,
+        "I_avg": 1000,
+        "u": 0.8,
+        "m": 0.2,
+        "N": 1000,
+        "p": 0.1,
+        "K_fix": 5000,
+        "N_employees": 5
+      },
+      "global": {
+        "alpha_0": 1.2,
+        "BPP_global": 2000,
+        "F_free_rate": 0.3
+      }
+    },
+    "createdAt": "2026-07-29T09:55:09.549Z"
+  }
+]

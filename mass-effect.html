@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Finanziers01 – MassEffect Konzept-Rechner (fiktiv)</title>
+<style>
+  :root {
+    --bg: #07111d;
+    --panel: rgba(7, 17, 29, 0.9);
+    --panel-2: rgba(255, 255, 255, 0.08);
+    --text: #f5f7ff;
+    --muted: #9fb0c9;
+    --accent: #4f8cff;
+    --accent-2: #f4c542;
+    --accent-3: #3edb93;
+    --danger: #ff6b6b;
+    --border: rgba(255,255,255,0.16);
+    --shadow: 0 20px 50px rgba(0,0,0,0.24);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #07111d 0%, #11233d 48%, #0b1626 100%);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .page { max-width: 1200px; margin: 0 auto; padding: 24px 18px 64px; }
+  .top-nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .nav-link, .btn { text-decoration: none; color: var(--text); padding: 10px 14px; border-radius: 999px; background: var(--panel-2); border: 1px solid var(--border); font-weight: 700; cursor: pointer; font: inherit; }
+  .nav-link:hover, .btn:hover { background: rgba(79, 140, 255, 0.24); }
+  .btn.primary { background: rgba(79,140,255,0.35); border-color: var(--accent); }
+  .btn.small { padding: 6px 10px; font-size: 0.85rem; }
+  .hero { border: 1px solid var(--border); border-radius: 24px; padding: 26px; background: linear-gradient(135deg, rgba(79,140,255,0.18), rgba(244,197,66,0.12)); box-shadow: var(--shadow); margin-bottom: 22px; }
+  .kicker { display: inline-block; padding: 8px 12px; border-radius: 999px; background: rgba(244,197,66,0.2); color: var(--accent-2); font-weight: 700; margin-bottom: 10px; }
+  h1 { margin-top: 0; font-size: 1.7rem; }
+  h2 { font-size: 1.15rem; margin: 0 0 10px; }
+  p { color: var(--muted); margin-top: 0; }
+  .warning-box { border: 2px solid var(--danger); background: rgba(255,107,107,0.12); border-radius: 16px; padding: 16px 18px; margin-top: 16px; }
+  .warning-box strong { color: var(--danger); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 22px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px; padding: 18px; box-shadow: var(--shadow); }
+  label { display: block; font-size: 0.85rem; color: var(--muted); margin: 10px 0 4px; }
+  input, textarea { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: var(--text); font: inherit; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .status { font-size: 0.9rem; margin-top: 10px; color: var(--accent-3); min-height: 1.2em; }
+  .status.error { color: var(--danger); }
+  .list { display: flex; flex-direction: column; gap: 10px; max-height: 420px; overflow-y: auto; margin-top: 10px; }
+  .item { border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,0.04); }
+  .item .meta { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+  .item .disclaimer { font-size: 0.75rem; color: var(--danger); margin-top: 6px; font-style: italic; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; background: rgba(255,255,255,0.1); margin-left: 6px; }
+  .hidden { display: none; }
+  .note { font-size: 0.8rem; color: var(--muted); }
+  .result-box { margin-top: 12px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<main class="page">
+  <nav class="top-nav" aria-label="Sektionen">
+    <a class="nav-link" href="./index.html">← Portal</a>
+    <a class="nav-link" href="./ceoc.html">CEOC</a>
+    <a class="nav-link" href="./formel-registry.html">Formel-Registry</a>
+    <a class="nav-link" href="./physik-rechner.html">Physik-Rechner</a>
+  </nav>
+
+  <section class="hero">
+    <div class="kicker">🧮 MASSEFFECT · FIKTIVES KONZEPT-MODUL</div>
+    <h1>MassEffect Konzept-Rechner — M<sub>eff</sub> = Z(t) · U · T · L · R · E · 51240963</h1>
+    <p>Ein Story-/Planungs-Rechner für einen erfundenen Parameter „MassEffect“, der z.&nbsp;B. in fiktiven
+      Prozessdiagrammen (EGR-Konzeptstudie) als „wie tragend ist dieser Schritt“ verwendet werden kann.</p>
+    <div class="warning-box">
+      <strong>Wichtig:</strong> Diese Formel hat <strong>keine reale physikalische Grundlage</strong>. Sie
+      multipliziert frei erfundene, dimensionslose „Faktoren“ mit einer willkürlichen Konstante (51240963).
+      Das Ergebnis berechnet <strong>keine echte Masse, Energie oder Reaktorkapazität</strong> und darf nicht
+      als technischer Nachweis, Sicherheitsberechnung oder reale Ingenieursgröße verwendet werden. Es ist ein
+      reines Zahlenspiel für Konzeptstudien, Weltenbau und Story-Planung.
+    </div>
+    <div id="authBox" style="margin-top:16px;">
+      <div id="loggedOutView">
+        <div class="grid" style="margin-top: 12px;">
+          <div class="card">
+            <h2>Anmelden</h2>
+            <label>E-Mail</label><input id="loginEmail" type="email" />
+            <label>Passwort</label><input id="loginPassword" type="password" />
+            <div class="actions"><button class="btn primary" id="btnLogin">Anmelden</button></div>
+          </div>
+          <div class="card">
+            <h2>Neues Konto</h2>
+            <label>Name</label><input id="regName" type="text" />
+            <label>E-Mail</label><input id="regEmail" type="email" />
+            <label>Passwort (min. 8 Zeichen)</label><input id="regPassword" type="password" />
+            <div class="actions"><button class="btn primary" id="btnRegister">Registrieren</button></div>
+          </div>
+        </div>
+        <div class="status" id="authStatus"></div>
+      </div>
+      <div id="loggedInView" class="hidden">
+        <div class="actions" style="align-items:center;">
+          <span class="badge" id="whoAmI"></span>
+          <button class="btn" id="btnLogout">Abmelden</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <div class="card">
+      <h2>M<sub>eff</sub>-Rechner (allgemein)</h2>
+      <label>Z(t) — Zeit-Faktor</label><input id="zValue" type="number" step="any" value="1" />
+      <label>U — Universum-Faktor</label><input id="universe" type="number" step="any" value="1" />
+      <label>T — Zeit-Faktor (Kontext)</label><input id="timeFactor" type="number" step="any" value="1" />
+      <label>L — Licht-Faktor</label><input id="lightFactor" type="number" step="any" value="1" />
+      <label>R — Raum-Faktor</label><input id="spaceFactor" type="number" step="any" value="1" />
+      <label>E — Energie</label><input id="energy" type="number" step="any" value="1" />
+      <label>Quell-Modul (optional)</label><input id="sourceModule" type="text" placeholder="z. B. EGR, UEN, StartupSystems" />
+      <div class="actions"><button class="btn primary" id="btnCalculate">Berechnen</button></div>
+      <div class="status" id="calculateStatus"></div>
+      <div class="result-box hidden" id="calculateResult"></div>
+    </div>
+
+    <div class="card">
+      <h2>EGR-Prozessschritt-Rechner (fiktiv)</h2>
+      <label>Schritt-Name</label><input id="stepName" type="text" placeholder="z. B. Intake, Disassemble, Restructure, Output" />
+      <label>Z(t) — Zeit-Faktor</label><input id="stepZValue" type="number" step="any" value="1" />
+      <label>U — Universum-Kontext (optional, Standard 1)</label><input id="stepUniverse" type="number" step="any" value="1" />
+      <label>T — Zeit-Schritt</label><input id="stepTime" type="number" step="any" value="1" />
+      <label>L — Feld/Licht</label><input id="stepLight" type="number" step="any" value="1" />
+      <label>R — Kammer/Raum</label><input id="stepSpace" type="number" step="any" value="1" />
+      <label>E — Energie-Schritt</label><input id="stepEnergy" type="number" step="any" value="1" />
+      <div class="actions"><button class="btn primary" id="btnCalculateStep">Schritt berechnen</button></div>
+      <div class="status" id="stepStatus"></div>
+      <div class="result-box hidden" id="stepResult"></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Meine M<sub>eff</sub>-Kontexte</h2>
+      <div class="actions"><button class="btn small" id="btnLoadMineContexts">Aktualisieren</button></div>
+      <div class="list" id="mineContextsList"></div>
+      <div class="status" id="mineContextsStatus"></div>
+    </div>
+    <div class="card">
+      <h2>Meine EGR-Schritte</h2>
+      <div class="actions"><button class="btn small" id="btnLoadMineSteps">Aktualisieren</button></div>
+      <div class="list" id="mineStepsList"></div>
+      <div class="status" id="mineStepsStatus"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Kontext per ID nachschlagen</h2>
+    <label>Kontext-ID</label><input id="lookupContextId" type="text" placeholder="mec-…" />
+    <div class="actions"><button class="btn small" id="btnLookupContext">Nachschlagen</button></div>
+    <div class="status" id="lookupStatus"></div>
+    <div class="result-box hidden" id="lookupResult"></div>
+  </div>
+</main>
+
+<script>
+let authToken = sessionStorage.getItem('uenToken') || null;
+let currentUser = JSON.parse(sessionStorage.getItem('uenUser') || 'null');
+
+function authHeaders() {
+  return authToken ? { 'Authorization': `Bearer ${authToken}` } : {};
+}
+
+function setStatus(id, message, isError) {
+  const el = document.getElementById(id);
+  el.textContent = message || '';
+  el.classList.toggle('error', Boolean(isError));
+}
+
+function updateAuthView() {
+  const loggedOut = document.getElementById('loggedOutView');
+  const loggedIn = document.getElementById('loggedInView');
+  if (authToken && currentUser) {
+    loggedOut.classList.add('hidden');
+    loggedIn.classList.remove('hidden');
+    document.getElementById('whoAmI').textContent = `Angemeldet als ${currentUser.name} (${currentUser.id})`;
+  } else {
+    loggedOut.classList.remove('hidden');
+    loggedIn.classList.add('hidden');
+  }
+}
+
+async function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  try {
+    const res = await fetch('/server/auth/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('authStatus', data.error || 'Anmeldung fehlgeschlagen.', true); return; }
+    authToken = data.token; currentUser = data.user;
+    sessionStorage.setItem('uenToken', authToken);
+    sessionStorage.setItem('uenUser', JSON.stringify(currentUser));
+    setStatus('authStatus', '');
+    updateAuthView();
+    loadMineContexts();
+    loadMineSteps();
+  } catch (error) { setStatus('authStatus', 'Netzwerkfehler.', true); }
+}
+
+async function register() {
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  try {
+    const res = await fetch('/server/auth/register', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('authStatus', data.error || 'Registrierung fehlgeschlagen.', true); return; }
+    authToken = data.token; currentUser = data.user;
+    sessionStorage.setItem('uenToken', authToken);
+    sessionStorage.setItem('uenUser', JSON.stringify(currentUser));
+    setStatus('authStatus', '');
+    updateAuthView();
+    loadMineContexts();
+    loadMineSteps();
+  } catch (error) { setStatus('authStatus', 'Netzwerkfehler.', true); }
+}
+
+async function logout() {
+  try { await fetch('/server/auth/logout', { method: 'POST', headers: authHeaders() }); } catch (error) { /* ignore */ }
+  authToken = null; currentUser = null;
+  sessionStorage.removeItem('uenToken'); sessionStorage.removeItem('uenUser');
+  updateAuthView();
+}
+
+function renderContextItem(ctx) {
+  return `<div class="item">
+    <strong>${ctx.sourceModule || 'Unbekannt'}</strong> <span class="badge">M_eff=${ctx.massEffective.toExponential(3)}</span>
+    <div class="meta">normiert: ${ctx.normalized.toFixed(4)} · Z=${ctx.zValue} U=${ctx.universe} T=${ctx.timeFactor} L=${ctx.lightFactor} R=${ctx.spaceFactor} E=${ctx.energy}</div>
+    <div class="meta">ID: ${ctx.id} · ${new Date(ctx.createdAt).toLocaleString('de-DE')}</div>
+    <div class="disclaimer">${ctx.disclaimer}</div>
+  </div>`;
+}
+
+function renderStepItem(step) {
+  return `<div class="item">
+    <strong>${step.stepName}</strong> <span class="badge">M_eff,step=${step.massEffectiveStep.toExponential(3)}</span>
+    <div class="meta">normiert: ${step.normalized.toFixed(4)} · Z=${step.zValue} U=${step.universeContext} T=${step.timeStep} L=${step.fieldLight} R=${step.chamberSpace} E=${step.energyStep}</div>
+    <div class="meta">ID: ${step.id} · ${new Date(step.timestamp).toLocaleString('de-DE')}</div>
+    <div class="disclaimer">${step.disclaimer}</div>
+  </div>`;
+}
+
+async function calculate() {
+  if (!authToken) { setStatus('calculateStatus', 'Bitte zuerst anmelden.', true); return; }
+  const payload = {
+    zValue: Number(document.getElementById('zValue').value),
+    universe: Number(document.getElementById('universe').value),
+    timeFactor: Number(document.getElementById('timeFactor').value),
+    lightFactor: Number(document.getElementById('lightFactor').value),
+    spaceFactor: Number(document.getElementById('spaceFactor').value),
+    energy: Number(document.getElementById('energy').value),
+    sourceModule: document.getElementById('sourceModule').value.trim()
+  };
+  try {
+    const res = await fetch('/server/api/mass-effect/calculate', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('calculateStatus', data.error || 'Fehler.', true); return; }
+    setStatus('calculateStatus', 'Berechnet.');
+    const box = document.getElementById('calculateResult');
+    box.classList.remove('hidden');
+    box.innerHTML = renderContextItem(data.context);
+    loadMineContexts();
+  } catch (error) { setStatus('calculateStatus', 'Netzwerkfehler.', true); }
+}
+
+async function calculateStep() {
+  if (!authToken) { setStatus('stepStatus', 'Bitte zuerst anmelden.', true); return; }
+  const payload = {
+    stepName: document.getElementById('stepName').value.trim(),
+    zValue: Number(document.getElementById('stepZValue').value),
+    universeContext: Number(document.getElementById('stepUniverse').value),
+    timeStep: Number(document.getElementById('stepTime').value),
+    fieldLight: Number(document.getElementById('stepLight').value),
+    chamberSpace: Number(document.getElementById('stepSpace').value),
+    energyStep: Number(document.getElementById('stepEnergy').value)
+  };
+  try {
+    const res = await fetch('/server/api/mass-effect/egr-step', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('stepStatus', data.error || 'Fehler.', true); return; }
+    setStatus('stepStatus', 'Berechnet.');
+    const box = document.getElementById('stepResult');
+    box.classList.remove('hidden');
+    box.innerHTML = renderStepItem(data.step);
+    loadMineSteps();
+  } catch (error) { setStatus('stepStatus', 'Netzwerkfehler.', true); }
+}
+
+async function loadMineContexts() {
+  if (!authToken) { document.getElementById('mineContextsList').innerHTML = ''; return; }
+  try {
+    const res = await fetch('/server/api/mass-effect/context/mine', { headers: authHeaders() });
+    const data = await res.json();
+    if (!data.success) { setStatus('mineContextsStatus', data.error || 'Fehler beim Laden.', true); return; }
+    document.getElementById('mineContextsList').innerHTML = data.items.map(renderContextItem).join('') || '<p class="note">Noch keine Berechnungen vorhanden.</p>';
+    setStatus('mineContextsStatus', '');
+  } catch (error) { setStatus('mineContextsStatus', 'Netzwerkfehler.', true); }
+}
+
+async function loadMineSteps() {
+  if (!authToken) { document.getElementById('mineStepsList').innerHTML = ''; return; }
+  try {
+    const res = await fetch('/server/api/mass-effect/egr-step/mine', { headers: authHeaders() });
+    const data = await res.json();
+    if (!data.success) { setStatus('mineStepsStatus', data.error || 'Fehler beim Laden.', true); return; }
+    document.getElementById('mineStepsList').innerHTML = data.items.map(renderStepItem).join('') || '<p class="note">Noch keine EGR-Schritte berechnet.</p>';
+    setStatus('mineStepsStatus', '');
+  } catch (error) { setStatus('mineStepsStatus', 'Netzwerkfehler.', true); }
+}
+
+async function lookupContext() {
+  const id = document.getElementById('lookupContextId').value.trim();
+  if (!id) { setStatus('lookupStatus', 'Bitte eine Kontext-ID eingeben.', true); return; }
+  try {
+    const res = await fetch(`/server/api/mass-effect/context/${encodeURIComponent(id)}`);
+    const data = await res.json();
+    if (!data.success) { setStatus('lookupStatus', data.error || 'Nicht gefunden.', true); return; }
+    setStatus('lookupStatus', '');
+    const box = document.getElementById('lookupResult');
+    box.classList.remove('hidden');
+    box.innerHTML = renderContextItem(data.context);
+  } catch (error) { setStatus('lookupStatus', 'Netzwerkfehler.', true); }
+}
+
+document.getElementById('btnLogin').addEventListener('click', login);
+document.getElementById('btnRegister').addEventListener('click', register);
+document.getElementById('btnLogout').addEventListener('click', logout);
+document.getElementById('btnCalculate').addEventListener('click', calculate);
+document.getElementById('btnCalculateStep').addEventListener('click', calculateStep);
+document.getElementById('btnLoadMineContexts').addEventListener('click', loadMineContexts);
+document.getElementById('btnLoadMineSteps').addEventListener('click', loadMineSteps);
+document.getElementById('btnLookupContext').addEventListener('click', lookupContext);
+
+updateAuthView();
+if (authToken) { loadMineContexts(); loadMineSteps(); }
+</script>
+</body>
+</html>

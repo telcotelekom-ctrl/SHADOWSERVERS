@@ -1,0 +1,15 @@
+[
+  {
+    "id": "edu-1785319817348",
+    "name": "Test Student",
+    "email": "student@example.com",
+    "level": "weiterbildung",
+    "fields": [
+      "Künstliche Intelligenz",
+      "Webentwicklung"
+    ],
+    "message": "I want to learn more about the platform.",
+    "createdAt": "2026-07-29T10:10:17.348Z",
+    "status": "submitted"
+  }
+]

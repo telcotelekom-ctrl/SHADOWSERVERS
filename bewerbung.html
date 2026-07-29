@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Universal Bewerbungssuite</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --panel: rgba(255, 255, 255, 0.06);
+            --panel-strong: rgba(255, 255, 255, 0.1);
+            --text: #f8fafc;
+            --muted: #cbd5e1;
+            --accent: #ffd166;
+            --accent-2: #06b6d4;
+            --success: #34d399;
+            --border: rgba(255,255,255,0.16);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #111827 100%);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .page-shell {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .top-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .nav-link, .btn, .pill {
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--text);
+            background: var(--panel);
+            transition: 0.2s ease;
+        }
+
+        .nav-link, .btn {
+            padding: 10px 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .btn:hover {
+            background: var(--panel-strong);
+            transform: translateY(-1px);
+        }
+
+        .hero-card, .panel {
+            background: var(--panel);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.24);
+        }
+
+        .hero-card { margin-bottom: 20px; }
+        .hero-card h1 { color: var(--accent); font-size: 2rem; margin-bottom: 8px; }
+        .hero-card p { color: var(--muted); }
+
+        .chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .pill {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .builder-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .panel h2, .panel h3 { color: var(--accent); margin-bottom: 10px; }
+        .form-grid { display: grid; gap: 12px; }
+        .form-group { display: grid; gap: 6px; }
+        label { font-weight: 600; color: #e2e8f0; }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 11px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.08);
+            color: var(--text);
+            font: inherit;
+        }
+
+        textarea { min-height: 110px; resize: vertical; }
+        .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+        .btn-primary { background: var(--accent); color: #111827; }
+        .btn-secondary { background: rgba(255,255,255,0.08); }
+
+        .preview-card {
+            background: linear-gradient(135deg, rgba(6,182,212,0.2), rgba(255,209,102,0.16));
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .preview-card strong { color: var(--accent); }
+
+        .media-list { display: grid; gap: 10px; }
+        .media-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 14px;
+            padding: 14px;
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+        .media-card .meta { color: var(--muted); font-size: 0.92rem; margin-top: 4px; }
+        .media-card img,
+        .media-card video,
+        .media-card audio,
+        .media-card iframe,
+        .media-card canvas {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 8px;
+            display: block;
+        }
+        .media-card video, .media-card audio { background: #000; }
+        .media-card iframe { min-height: 220px; border: 0; }
+        .media-card code,
+        .media-card pre {
+            font-family: Consolas, Monaco, monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .media-card pre {
+            background: rgba(0,0,0,0.28);
+            border-radius: 10px;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            margin-top: 8px;
+        }
+        .media-card a { color: var(--accent-2); text-decoration: none; }
+
+        .export-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+        pre {
+            white-space: pre-wrap;
+            background: rgba(0,0,0,0.25);
+            border-radius: 12px;
+            padding: 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #d1fae5;
+            font-size: 0.92rem;
+            overflow-x: auto;
+        }
+        ul { padding-left: 18px; color: var(--muted); display: grid; gap: 6px; }
+        .hint { color: var(--muted); font-size: 0.9rem; margin-top: 6px; }
+
+        @media (max-width: 900px) {
+            .builder-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <nav class="top-nav" aria-label="Navigation">
+            <a class="nav-link" href="./index.html">← zurück zum Portal</a>
+            <a class="nav-link" href="./app/index.html">Business Suite</a>
+            <a class="nav-link" href="./handbuch.html">Handbuch</a>
+            <a class="nav-link" href="./bedienung.html">Bedienung</a>
+        </nav>
+
+        <header class="hero-card">
+            <h1>🎯 Universal Bewerbungssuite</h1>
+            <p>Ein digitales Bewerbungs- und Präsentationsmodul für Text, Audio, Video, Bilder, Code, 3D, Daten und digitale Produkte.</p>
+            <div class="chip-row">
+                <span class="pill">Text</span>
+                <span class="pill">Audio</span>
+                <span class="pill">Video</span>
+                <span class="pill">Bild</span>
+                <span class="pill">Code</span>
+                <span class="pill">3D</span>
+                <span class="pill">Daten</span>
+                <span class="pill">Produkt</span>
+            </div>
+        </header>
+
+        <section class="builder-grid">
+            <div class="panel">
+                <h2>🧩 Bewerbungs-Builder</h2>
+                <form id="applicationForm" class="form-grid">
+                    <div class="form-group">
+                        <label for="applicantName">Name / Organisation</label>
+                        <input id="applicantName" value="Raymond Demitrio Tel" />
+                    </div>
+                    <div class="form-group">
+                        <label for="applicantRole">Rolle / Position</label>
+                        <input id="applicantRole" value="Digital Creator & Systems Builder" />
+                    </div>
+                    <div class="form-group">
+                        <label for="applicantFocus">Fokus / Ziel</label>
+                        <input id="applicantFocus" value="Portfolio, Bewerbung und digitale Präsenz" />
+                    </div>
+                    <div class="form-group">
+                        <label for="mediaType">Medienform</label>
+                        <select id="mediaType">
+                            <option>Text</option>
+                            <option>Audio</option>
+                            <option>Video</option>
+                            <option>Bild</option>
+                            <option>Code</option>
+                            <option>3D</option>
+                            <option>Daten</option>
+                            <option>Produkt</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mediaLink">Link / Datei</label>
+                        <input id="mediaLink" value="https://digitalnotar.in" />
+                    </div>
+                    <div class="form-group">
+                        <label for="mediaDescription">Beschreibung</label>
+                        <textarea id="mediaDescription">Digitale Darstellung mit Projektkontext, Medienbeleg und sichtbarer Zusammenarbeit.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="mediaFile">Datei hinzufügen</label>
+                        <input id="mediaFile" type="file" multiple />
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-primary" type="submit">Profil vorbereiten</button>
+                        <button class="btn btn-secondary" type="button" id="addMediaBtn">Medienkarte hinzufügen</button>
+                        <button class="btn btn-secondary" type="button" id="clearBtn">Zurücksetzen</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="panel">
+                <h2>🖼️ Live-Vorschau</h2>
+                <div class="preview-card">
+                    <p><strong id="previewRole">Digital Creator & Systems Builder</strong></p>
+                    <h3 id="previewName">Raymond Demitrio Tel</h3>
+                    <p id="previewFocus">Portfolio, Bewerbung und digitale Präsenz</p>
+                    <p id="previewSummary" class="meta"></p>
+                </div>
+                <div id="mediaList" class="media-list"></div>
+            </div>
+        </section>
+
+        <section class="panel" style="margin-bottom: 20px;">
+            <h2>📦 Medienkarten</h2>
+            <div id="mediaCards" class="media-list"></div>
+        </section>
+
+        <section class="panel" style="margin-bottom: 20px;">
+            <h2>⬇️ Export</h2>
+            <div class="export-actions">
+                <button class="btn btn-primary" data-export="html">HTML</button>
+                <button class="btn btn-secondary" data-export="markdown">Markdown</button>
+                <button class="btn btn-secondary" data-export="json">JSON</button>
+                <button class="btn btn-secondary" data-export="pdf">PDF-Preview</button>
+            </div>
+            <pre id="exportPreview"></pre>
+        </section>
+
+        <section class="panel">
+            <h2>📘 Produktbeschreibung</h2>
+            <ul>
+                <li>Ermöglicht strukturierte Profile für Bewerber, Kreative, Entwickler und Gründer.</li>
+                <li>Bindet Medienformen zu einem integrierten Dokument zusammen.</li>
+                <li>Unterstützt offene Mitwirkung, digitale Sichtbarkeit und professionellen Export.</li>
+            </ul>
+        </section>
+    </div>
+
+    <script>
+        const form = document.getElementById('applicationForm');
+        const previewRole = document.getElementById('previewRole');
+        const previewName = document.getElementById('previewName');
+        const previewFocus = document.getElementById('previewFocus');
+        const previewSummary = document.getElementById('previewSummary');
+        const mediaList = document.getElementById('mediaList');
+        const mediaCards = document.getElementById('mediaCards');
+        const exportPreview = document.getElementById('exportPreview');
+        const addMediaBtn = document.getElementById('addMediaBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const mediaFileInput = document.getElementById('mediaFile');
+
+        const STORAGE_KEY = 'bewerbung-suite-state-v1';
+        const MAX_STORED_FILE_SIZE = 2 * 1024 * 1024;
+
+        const defaultState = {
+            applicantName: 'Raymond Demitrio Tel',
+            applicantRole: 'Digital Creator & Systems Builder',
+            applicantFocus: 'Portfolio, Bewerbung und digitale Präsenz',
+            mediaType: 'Text',
+            mediaLink: 'https://digitalnotar.in',
+            mediaDescription: 'Digitale Darstellung mit Projektkontext, Medienbeleg und sichtbarer Zusammenarbeit.',
+            items: [
+                { type: 'Text', label: 'Profiltext', description: 'Professionelle Kurzbeschreibung', link: 'https://digitalnotar.in' },
+                { type: 'Video', label: 'Vorstellungsvideo', description: 'Projekt- oder Bewerbungsclip', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ' }
+            ]
+        };
+
+        let state = loadState();
+
+        function loadState() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (!stored) return { ...defaultState, items: [...defaultState.items] };
+                const parsed = JSON.parse(stored);
+                return {
+                    ...defaultState,
+                    ...parsed,
+                    items: Array.isArray(parsed.items) ? parsed.items : [...defaultState.items]
+                };
+            } catch (error) {
+                console.warn('Unable to restore saved state', error);
+                return { ...defaultState, items: [...defaultState.items] };
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        function applyStateToForm() {
+            document.getElementById('applicantName').value = state.applicantName;
+            document.getElementById('applicantRole').value = state.applicantRole;
+            document.getElementById('applicantFocus').value = state.applicantFocus;
+            document.getElementById('mediaType').value = state.mediaType;
+            document.getElementById('mediaLink').value = state.mediaLink;
+            document.getElementById('mediaDescription').value = state.mediaDescription;
+        }
+
+        function collectData() {
+            return {
+                applicantName: document.getElementById('applicantName').value || 'Unbekannt',
+                applicantRole: document.getElementById('applicantRole').value || 'Rolle',
+                applicantFocus: document.getElementById('applicantFocus').value || 'Ziel',
+                mediaType: document.getElementById('mediaType').value || 'Text',
+                mediaLink: document.getElementById('mediaLink').value || '—',
+                mediaDescription: document.getElementById('mediaDescription').value || 'Keine Beschreibung',
+                items: Array.isArray(state.items) ? state.items : []
+            };
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function isYouTubeLink(link) {
+            return typeof link === 'string' && (/youtube\.com|youtu\.be/.test(link));
+        }
+
+        function isVimeoLink(link) {
+            return typeof link === 'string' && /vimeo\.com/.test(link);
+        }
+
+        function normalizeEmbedUrl(link) {
+            if (!link) return '';
+            if (isYouTubeLink(link)) {
+                const videoId = link.match(/(?:v=|\/)([A-Za-z0-9_-]{11})/)?.[1];
+                return videoId ? `https://www.youtube.com/embed/${videoId}` : link;
+            }
+            if (isVimeoLink(link)) {
+                const videoId = link.match(/vimeo\.com\/(\d+)/)?.[1];
+                return videoId ? `https://player.vimeo.com/video/${videoId}` : link;
+            }
+            return link;
+        }
+
+        function getMediaSource(item) {
+            return item.dataUrl || item.link || '';
+        }
+
+        function renderMediaMarkup(item) {
+            const type = (item.type || 'Text').toLowerCase();
+            const label = escapeHtml(item.label || item.fileName || item.type || 'Medienkarte');
+            const description = escapeHtml(item.description || 'Beschreibung folgt');
+            const source = escapeHtml(getMediaSource(item));
+            const link = item.link ? escapeHtml(item.link) : '';
+
+            if (type === 'image') {
+                return `<div class="media-card"><strong>${label}</strong><div class="meta">${description}</div><img src="${source || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'200\' viewBox=\'0 0 400 200\'%3E%3Crect width=\'400\' height=\'200\' fill=\'%231f2937\'/%3E%3Ctext x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23f8fafc\' font-size=\'24\'>Bild%3C/text%3E%3C/svg%3E'}" alt="${label}" /></div>`;
+            }
+
+            if (type === 'audio') {
+                return `<div class="media-card"><strong>${label}</strong><div class="meta">${description}</div>${source ? `<audio controls src="${source}"></audio>` : '<div class="meta">Kein Audio-Quellwert vorhanden.</div>'}</div>`;
+            }
+
+            if (type === 'video') {
+                const embedUrl = normalizeEmbedUrl(link || source);
+                if (embedUrl && (isYouTubeLink(link || source) || isVimeoLink(link || source))) {
+                    return `<div class="media-card"><strong>${label}</strong><div class="meta">${description}</div><iframe src="${embedUrl}" allowfullscreen></iframe></div>`;
+                }
+                return `<div class="media-card"><strong>${label}</strong><div class="meta">${description}</div>${source ? `<video controls src="${source}"></video>` : '<div class="meta">Kein Video-Quellwert vorhanden.</div>'}</div>`;
+            }
+
+            if (type === 'code') {
+                return `<div class="media-card"><strong>${label}</strong><div class="meta">${description}</div><pre><code>${escapeHtml(item.description || item.link || '')}</code></pre></div>`;
+            }
+
+            if (type === '3d') {
+                return `<div class="media-card"><strong>${label}</strong><div class="meta">${description}</div><canvas data-3d="${escapeHtml(link || source)}"></canvas><div class="hint">3D-Viewer initialisiert, sofern eine OBJ-Datei oder ein passender Link verfügbar ist.</div></div>`;
+            }
+
+            if (type === 'data') {
+                return `<div class="media-card"><strong>${label}</strong><div class="meta">${description}</div><pre>${escapeHtml(item.description || item.link || 'Keine Daten')}</pre></div>`;
+            }
+
+            if (type === 'product') {
+                return `<div class="media-card"><strong>${label}</strong><div class="meta">${description}</div>${link ? `<a href="${escapeHtml(link)}" target="_blank" rel="noreferrer">Zum Produkt</a>` : ''}</div>`;
+            }
+
+            return `<div class="media-card"><strong>${label}</strong><div class="meta">${description}</div>${source ? `<p><a href="${source}" target="_blank" rel="noreferrer">Link öffnen</a></p>` : ''}</div>`;
+        }
+
+        function renderPreview() {
+            const data = collectData();
+            previewRole.textContent = data.applicantRole;
+            previewName.textContent = data.applicantName;
+            previewFocus.textContent = data.applicantFocus;
+            previewSummary.textContent = `${data.mediaType} • ${data.mediaDescription}`;
+
+            const quickItems = [
+                { type: data.mediaType, label: data.applicantFocus, description: data.mediaDescription, link: data.mediaLink }
+            ];
+            renderCards(mediaList, quickItems);
+            renderCards(mediaCards, state.items);
+            init3DCanvases();
+        }
+
+        function renderCards(container, items) {
+            container.innerHTML = '';
+            if (!items.length) {
+                container.innerHTML = '<div class="media-card">Noch keine Medien eingetragen.</div>';
+                return;
+            }
+            const list = document.createElement('div');
+            list.className = 'media-list';
+            items.forEach((item) => {
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = renderMediaMarkup(item);
+                list.appendChild(wrapper.firstElementChild);
+            });
+            container.appendChild(list);
+        }
+
+        function buildHtmlExport(data) {
+            const items = (data.items || []).map((item) => renderMediaMarkup(item)).join('');
+            return `<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><title>${escapeHtml(data.applicantName)}</title><style>body{font-family:Segoe UI,sans-serif;padding:24px;line-height:1.6}img,video,audio,iframe,canvas{max-width:100%;border-radius:10px;margin-top:10px}a{color:#1d4ed8}</style></head><body><h1>${escapeHtml(data.applicantName)}</h1><h2>${escapeHtml(data.applicantRole)}</h2><p><strong>Ziel:</strong> ${escapeHtml(data.applicantFocus)}</p><p>${escapeHtml(data.mediaDescription)}</p><h3>Medien</h3>${items}</body></html>`;
+        }
+
+        function buildMarkdownExport(data) {
+            const blocks = (data.items || []).map((item) => {
+                const title = `## ${item.type || 'Medien'}`;
+                const description = item.description ? `\n${item.description}` : '';
+                const link = item.link ? `\nLink: ${item.link}` : '';
+                return `${title}${description}${link}`;
+            }).join('\n\n');
+            return `# ${data.applicantName}\n\n## ${data.applicantRole}\n\n**Ziel:** ${data.applicantFocus}\n\n**Beschreibung:** ${data.mediaDescription}\n\n${blocks}`;
+        }
+
+        function buildJsonExport(data) {
+            return JSON.stringify(data, null, 2);
+        }
+
+        function buildExportContent(format) {
+            const data = collectData();
+            switch (format) {
+                case 'html':
+                    return buildHtmlExport(data);
+                case 'markdown':
+                    return buildMarkdownExport(data);
+                case 'json':
+                    return buildJsonExport(data);
+                case 'pdf':
+                    return `PDF-Preview für ${data.applicantName}`;
+                default:
+                    return '';
+            }
+        }
+
+        function downloadFile(filename, content, type) {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        function saveProfileState() {
+            state.applicantName = document.getElementById('applicantName').value || defaultState.applicantName;
+            state.applicantRole = document.getElementById('applicantRole').value || defaultState.applicantRole;
+            state.applicantFocus = document.getElementById('applicantFocus').value || defaultState.applicantFocus;
+            state.mediaType = document.getElementById('mediaType').value || defaultState.mediaType;
+            state.mediaLink = document.getElementById('mediaLink').value || defaultState.mediaLink;
+            state.mediaDescription = document.getElementById('mediaDescription').value || defaultState.mediaDescription;
+            saveState();
+        }
+
+        function handleExport(format) {
+            const content = buildExportContent(format);
+            if (format === 'pdf') {
+                const win = window.open('', '_blank');
+                if (win) {
+                    win.document.write(`<html><body style="font-family:Segoe UI,sans-serif;padding:24px;">${content.replace(/\n/g, '<br>')}</body></html>`);
+                    win.document.close();
+                    setTimeout(() => win.print(), 250);
+                }
+                return;
+            }
+
+            const fileName = `bewerbung.${format === 'html' ? 'html' : format === 'markdown' ? 'md' : 'json'}`;
+            const mimeType = format === 'json' ? 'application/json' : 'text/plain';
+            downloadFile(fileName, content, mimeType);
+            exportPreview.textContent = `${fileName} wurde erzeugt.`;
+        }
+
+        async function addCurrentMediaItem() {
+            const type = document.getElementById('mediaType').value;
+            const link = document.getElementById('mediaLink').value.trim();
+            const description = document.getElementById('mediaDescription').value || 'Beschreibung';
+            const files = Array.from(mediaFileInput.files || []);
+
+            if (files.length) {
+                const uploads = [];
+                for (const file of files) {
+                    const reader = new FileReader();
+                    const dataUrl = await new Promise((resolve, reject) => {
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = () => reject(reader.error);
+                        if (file.size <= MAX_STORED_FILE_SIZE) {
+                            reader.readAsDataURL(file);
+                        } else {
+                            resolve(null);
+                        }
+                    });
+                    uploads.push({
+                        type,
+                        label: file.name,
+                        description: `${file.type || 'Datei'} • ${Math.round(file.size / 1024)} KB${description ? ` • ${description}` : ''}`,
+                        link: link || file.name,
+                        dataUrl,
+                        fileName: file.name
+                    });
+                }
+                state.items.push(...uploads);
+                saveState();
+                renderPreview();
+                exportPreview.textContent = `${uploads.length} Datei(en) hinzugefügt und gespeichert.`;
+                mediaFileInput.value = '';
+                return;
+            }
+
+            state.items.push({
+                type,
+                label: link || 'Neue Medienkarte',
+                description,
+                link,
+                dataUrl: null,
+                fileName: null
+            });
+            saveState();
+            renderPreview();
+            exportPreview.textContent = 'Medienkarte hinzugefügt.';
+        }
+
+        function init3DCanvases() {
+            if (!window.THREE || !window.THREE.OBJLoader) {
+                document.querySelectorAll('canvas[data-3d]').forEach((canvas) => {
+                    const ctx = canvas.getContext('2d');
+                    if (!ctx) return;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#111827';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.strokeStyle = '#ffd166';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(40, 40);
+                    ctx.lineTo(260, 80);
+                    ctx.lineTo(140, 240);
+                    ctx.lineTo(40, 40);
+                    ctx.stroke();
+                    ctx.fillStyle = '#f8fafc';
+                    ctx.font = '16px Segoe UI';
+                    ctx.fillText('3D-Viewer vorbereitet', 50, 270);
+                });
+                return;
+            }
+
+            document.querySelectorAll('canvas[data-3d]').forEach((canvas) => {
+                const source = canvas.getAttribute('data-3d');
+                if (!source) return;
+                const renderer = new window.THREE.WebGLRenderer({ canvas, antialias: true });
+                renderer.setPixelRatio(window.devicePixelRatio || 1);
+                renderer.setSize(canvas.clientWidth || 300, canvas.clientHeight || 300);
+
+                const scene = new window.THREE.Scene();
+                scene.background = new window.THREE.Color(0x111827);
+                const camera = new window.THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+                camera.position.set(0, 0, 4);
+
+                const light = new window.THREE.DirectionalLight(0xffffff, 1.2);
+                light.position.set(2, 2, 4);
+                scene.add(light);
+                scene.add(new window.THREE.AmbientLight(0x7dd3fc));
+
+                const geometry = new window.THREE.BoxGeometry(1, 1, 1);
+                const material = new window.THREE.MeshStandardMaterial({ color: 0x06b6d4, metalness: 0.2, roughness: 0.4 });
+                const cube = new window.THREE.Mesh(geometry, material);
+                scene.add(cube);
+
+                const loader = new window.THREE.OBJLoader();
+                if (source) {
+                    loader.load(source, (object) => {
+                        object.scale.set(0.8, 0.8, 0.8);
+                        scene.remove(cube);
+                        scene.add(object);
+                    }, undefined, () => {
+                        scene.add(cube);
+                    });
+                }
+
+                const animate = () => {
+                    requestAnimationFrame(animate);
+                    cube.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                };
+                animate();
+            });
+        }
+
+        document.querySelectorAll('[data-export]').forEach((button) => {
+            button.addEventListener('click', () => handleExport(button.getAttribute('data-export')));
+        });
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            saveProfileState();
+            renderPreview();
+            exportPreview.textContent = 'Profil wurde aktualisiert und gespeichert.';
+        });
+
+        addMediaBtn.addEventListener('click', async () => {
+            await addCurrentMediaItem();
+        });
+
+        clearBtn.addEventListener('click', () => {
+            form.reset();
+            document.getElementById('applicantName').value = defaultState.applicantName;
+            document.getElementById('applicantRole').value = defaultState.applicantRole;
+            document.getElementById('applicantFocus').value = defaultState.applicantFocus;
+            document.getElementById('mediaType').value = defaultState.mediaType;
+            document.getElementById('mediaLink').value = defaultState.mediaLink;
+            document.getElementById('mediaDescription').value = defaultState.mediaDescription;
+            state = { ...defaultState, items: [...defaultState.items] };
+            saveState();
+            renderPreview();
+            exportPreview.textContent = 'Profil zurückgesetzt.';
+        });
+
+        mediaFileInput.addEventListener('change', async () => {
+            const files = Array.from(mediaFileInput.files || []);
+            if (!files.length) return;
+            await addCurrentMediaItem();
+            mediaFileInput.value = '';
+        });
+
+        applyStateToForm();
+        renderPreview();
+
+        document.querySelectorAll('a[href^="#"]').forEach((link) => {
+            link.addEventListener('click', (event) => {
+                const targetId = link.getAttribute('href').slice(1);
+                if (!targetId) return;
+                const target = document.getElementById(targetId);
+                if (!target) return;
+                event.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, '', `#${targetId}`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

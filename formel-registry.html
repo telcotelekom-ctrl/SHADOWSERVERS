@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Finanziers01 – Problem→Formel-Registry</title>
+<style>
+  :root {
+    --bg: #07111d;
+    --panel: rgba(7, 17, 29, 0.9);
+    --panel-2: rgba(255, 255, 255, 0.08);
+    --text: #f5f7ff;
+    --muted: #9fb0c9;
+    --accent: #4f8cff;
+    --accent-2: #f4c542;
+    --accent-3: #3edb93;
+    --danger: #ff6b6b;
+    --border: rgba(255,255,255,0.16);
+    --shadow: 0 20px 50px rgba(0,0,0,0.24);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #07111d 0%, #11233d 48%, #0b1626 100%);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .page { max-width: 1200px; margin: 0 auto; padding: 24px 18px 64px; }
+  .top-nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .nav-link, .btn { text-decoration: none; color: var(--text); padding: 10px 14px; border-radius: 999px; background: var(--panel-2); border: 1px solid var(--border); font-weight: 700; cursor: pointer; font: inherit; }
+  .nav-link:hover, .btn:hover { background: rgba(79, 140, 255, 0.24); }
+  .btn.primary { background: rgba(79,140,255,0.35); border-color: var(--accent); }
+  .btn.small { padding: 6px 10px; font-size: 0.85rem; }
+  .hero { border: 1px solid var(--border); border-radius: 24px; padding: 26px; background: linear-gradient(135deg, rgba(79,140,255,0.18), rgba(244,197,66,0.12)); box-shadow: var(--shadow); margin-bottom: 22px; }
+  .kicker { display: inline-block; padding: 8px 12px; border-radius: 999px; background: rgba(244,197,66,0.2); color: var(--accent-2); font-weight: 700; margin-bottom: 10px; }
+  .warn-box { border: 1px solid rgba(255,107,107,0.4); background: rgba(255,107,107,0.08); border-radius: 14px; padding: 12px 14px; margin-top: 14px; font-size: 0.88rem; }
+  h1 { margin-top: 0; font-size: 1.7rem; }
+  h2 { font-size: 1.15rem; margin: 0 0 10px; }
+  p { color: var(--muted); margin-top: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 22px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px; padding: 18px; box-shadow: var(--shadow); }
+  label { display: block; font-size: 0.85rem; color: var(--muted); margin: 10px 0 4px; }
+  input, textarea { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: var(--text); font: inherit; }
+  textarea { resize: vertical; min-height: 70px; }
+  textarea.mono, .fingerprint { font-family: "Consolas", "Courier New", monospace; font-size: 0.78rem; word-break: break-all; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .status { font-size: 0.9rem; margin-top: 10px; color: var(--accent-3); min-height: 1.2em; }
+  .status.error { color: var(--danger); }
+  .list { display: flex; flex-direction: column; gap: 10px; max-height: 500px; overflow-y: auto; margin-top: 10px; }
+  .item { border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,0.04); }
+  .item .meta { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; background: rgba(255,255,255,0.1); margin-left: 6px; }
+  .badge.free { background: rgba(62,219,147,0.25); color: var(--accent-3); }
+  .version-block { border-left: 2px solid var(--border); padding-left: 10px; margin-top: 8px; }
+  .hidden { display: none; }
+  .note { font-size: 0.8rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<main class="page">
+  <nav class="top-nav" aria-label="Sektionen">
+    <a class="nav-link" href="./index.html">← Portal</a>
+    <a class="nav-link" href="./tauschboerse.html">Tauschbörse</a>
+    <a class="nav-link" href="./ceoc.html">CEOC</a>
+  </nav>
+
+  <section class="hero">
+    <div class="kicker">🧩 PROBLEM → FORMEL-REGISTRY (TTT LIGHT)</div>
+    <h1>Von der Idee zur nachvollziehbaren Version</h1>
+    <p>Trage ein Alltagsproblem ein und formuliere deine Lösung dazu ("Formel"). Jede neue Version wird mit
+      Zeitstempel und einem SHA-256-Fingerabdruck des exakten Texts gespeichert.</p>
+    <div class="warn-box">
+      ⚠️ <strong>Wichtig:</strong> Das ist ein technisches Nachweis-Log (Zeitstempel + Hash), <strong>kein</strong> Patent,
+      <strong>kein</strong> Notariat und <strong>keine</strong> Rechtsberatung. Für echten Rechtsschutz (Patent, Urheberrecht,
+      notarielle Beglaubigung) wende dich an eine entsprechende Fachstelle.
+    </div>
+    <div id="authBox">
+      <div id="loggedOutView">
+        <div class="grid" style="margin-top: 12px;">
+          <div class="card">
+            <h2>Anmelden</h2>
+            <label>E-Mail</label><input id="loginEmail" type="email" />
+            <label>Passwort</label><input id="loginPassword" type="password" />
+            <div class="actions"><button class="btn primary" id="btnLogin">Anmelden</button></div>
+          </div>
+          <div class="card">
+            <h2>Neues Konto</h2>
+            <label>Name</label><input id="regName" type="text" />
+            <label>E-Mail</label><input id="regEmail" type="email" />
+            <label>Passwort (min. 8 Zeichen)</label><input id="regPassword" type="password" />
+            <div class="actions"><button class="btn primary" id="btnRegister">Registrieren</button></div>
+          </div>
+        </div>
+        <div class="status" id="authStatus"></div>
+      </div>
+      <div id="loggedInView" class="hidden">
+        <div class="actions" style="align-items:center;">
+          <span class="badge free" id="whoAmI"></span>
+          <button class="btn" id="btnLogout">Abmelden</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Neues Problem eintragen</h2>
+      <label>Titel</label><input id="problemTitle" type="text" placeholder="Kurzer Titel" />
+      <label>Beschreibung</label><textarea id="problemDescription" placeholder="Was ist das Problem genau?"></textarea>
+      <label>Tags (Komma-getrennt)</label><input id="problemTags" type="text" placeholder="z. B. logistik, software" />
+      <label>Erste Formel-Version (optional)</label><textarea id="problemFormula" class="mono" placeholder="Lösungsbeschreibung / Spezifikation"></textarea>
+      <div class="actions"><button class="btn primary" id="btnCreateProblem">Problem speichern</button></div>
+      <div class="status" id="createStatus"></div>
+    </div>
+
+    <div class="card">
+      <h2>Neue Version hinzufügen</h2>
+      <label>Problem-ID</label><input id="versionProblemId" type="text" placeholder="problem-…" />
+      <label>Formeltext (neue Version)</label><textarea id="versionText" class="mono"></textarea>
+      <div class="actions"><button class="btn primary" id="btnAddVersion">Version hinzufügen</button></div>
+      <div class="status" id="versionStatus"></div>
+      <p class="note">Nur der Ersteller des Problems kann neue Versionen anhängen.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom: 22px;">
+    <h2>Alle Probleme</h2>
+    <div class="actions"><button class="btn small" id="btnLoadAll">Aktualisieren</button></div>
+    <div class="list" id="allList"></div>
+    <div class="status" id="allStatus"></div>
+  </div>
+
+  <div class="card">
+    <h2>Problem-Detail (alle Versionen)</h2>
+    <label>Problem-ID</label><input id="detailProblemId" type="text" placeholder="problem-…" />
+    <div class="actions"><button class="btn small" id="btnLoadDetail">Detail laden</button></div>
+    <div class="status" id="detailStatus"></div>
+    <div id="detailBox"></div>
+  </div>
+</main>
+
+<script>
+let authToken = sessionStorage.getItem('uenToken') || null;
+let currentUser = JSON.parse(sessionStorage.getItem('uenUser') || 'null');
+
+function authHeaders() {
+  return authToken ? { 'Authorization': `Bearer ${authToken}` } : {};
+}
+
+function setStatus(id, message, isError) {
+  const el = document.getElementById(id);
+  el.textContent = message || '';
+  el.classList.toggle('error', Boolean(isError));
+}
+
+function updateAuthView() {
+  const loggedOut = document.getElementById('loggedOutView');
+  const loggedIn = document.getElementById('loggedInView');
+  if (authToken && currentUser) {
+    loggedOut.classList.add('hidden');
+    loggedIn.classList.remove('hidden');
+    document.getElementById('whoAmI').textContent = `Angemeldet als ${currentUser.name} (${currentUser.id})`;
+  } else {
+    loggedOut.classList.remove('hidden');
+    loggedIn.classList.add('hidden');
+  }
+}
+
+async function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  try {
+    const res = await fetch('/server/auth/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('authStatus', data.error || 'Anmeldung fehlgeschlagen.', true); return; }
+    authToken = data.token; currentUser = data.user;
+    sessionStorage.setItem('uenToken', authToken);
+    sessionStorage.setItem('uenUser', JSON.stringify(currentUser));
+    setStatus('authStatus', '');
+    updateAuthView();
+  } catch (error) { setStatus('authStatus', 'Netzwerkfehler.', true); }
+}
+
+async function register() {
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  try {
+    const res = await fetch('/server/auth/register', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('authStatus', data.error || 'Registrierung fehlgeschlagen.', true); return; }
+    authToken = data.token; currentUser = data.user;
+    sessionStorage.setItem('uenToken', authToken);
+    sessionStorage.setItem('uenUser', JSON.stringify(currentUser));
+    setStatus('authStatus', '');
+    updateAuthView();
+  } catch (error) { setStatus('authStatus', 'Netzwerkfehler.', true); }
+}
+
+async function logout() {
+  try { await fetch('/server/auth/logout', { method: 'POST', headers: authHeaders() }); } catch (error) { /* ignore */ }
+  authToken = null; currentUser = null;
+  sessionStorage.removeItem('uenToken'); sessionStorage.removeItem('uenUser');
+  updateAuthView();
+}
+
+function renderProblemItem(p) {
+  return `<div class="item">
+    <strong>${p.title}</strong> <span class="badge free">${p.versionCount} Version(en)</span>
+    <div class="meta">${p.description}</div>
+    <div class="meta">ID: ${p.id} · Autor: ${p.userId} · erstellt: ${new Date(p.createdAt).toLocaleString('de-DE')}</div>
+    ${p.tags && p.tags.length ? `<div class="meta">Tags: ${p.tags.join(', ')}</div>` : ''}
+    ${p.latestVersion ? `<div class="meta fingerprint">Letzter Fingerabdruck (v${p.latestVersion.version}): ${p.latestVersion.fingerprint}</div>` : ''}
+  </div>`;
+}
+
+async function loadAll() {
+  try {
+    const res = await fetch('/server/api/formula-registry/problems');
+    const data = await res.json();
+    if (!data.success) { setStatus('allStatus', data.error || 'Fehler beim Laden.', true); return; }
+    document.getElementById('allList').innerHTML = data.items.map(renderProblemItem).join('') || '<p class="note">Noch keine Probleme eingetragen.</p>';
+    setStatus('allStatus', '');
+  } catch (error) { setStatus('allStatus', 'Netzwerkfehler.', true); }
+}
+
+async function createProblem() {
+  if (!authToken) { setStatus('createStatus', 'Bitte zuerst anmelden.', true); return; }
+  const title = document.getElementById('problemTitle').value.trim();
+  const description = document.getElementById('problemDescription').value.trim();
+  const tags = document.getElementById('problemTags').value.split(',').map((t) => t.trim()).filter(Boolean);
+  const formulaText = document.getElementById('problemFormula').value.trim();
+  try {
+    const res = await fetch('/server/api/formula-registry/problems', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify({ title, description, tags, formulaText })
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('createStatus', data.error || 'Fehler.', true); return; }
+    setStatus('createStatus', `Problem gespeichert (ID: ${data.problem.id}).`);
+    document.getElementById('problemTitle').value = '';
+    document.getElementById('problemDescription').value = '';
+    document.getElementById('problemTags').value = '';
+    document.getElementById('problemFormula').value = '';
+    loadAll();
+  } catch (error) { setStatus('createStatus', 'Netzwerkfehler.', true); }
+}
+
+async function addVersion() {
+  if (!authToken) { setStatus('versionStatus', 'Bitte zuerst anmelden.', true); return; }
+  const id = document.getElementById('versionProblemId').value.trim();
+  const text = document.getElementById('versionText').value.trim();
+  if (!id || !text) { setStatus('versionStatus', 'Problem-ID und Text sind erforderlich.', true); return; }
+  try {
+    const res = await fetch(`/server/api/formula-registry/problems/${encodeURIComponent(id)}/versions`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify({ text })
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('versionStatus', data.error || 'Fehler.', true); return; }
+    setStatus('versionStatus', `Version ${data.problem.formulas.length} gespeichert.`);
+    document.getElementById('versionText').value = '';
+    loadAll();
+  } catch (error) { setStatus('versionStatus', 'Netzwerkfehler.', true); }
+}
+
+async function loadDetail() {
+  const id = document.getElementById('detailProblemId').value.trim();
+  if (!id) { setStatus('detailStatus', 'Bitte Problem-ID eingeben.', true); return; }
+  try {
+    const res = await fetch(`/server/api/formula-registry/problems/${encodeURIComponent(id)}`);
+    const data = await res.json();
+    if (!data.success) { setStatus('detailStatus', data.error || 'Fehler.', true); return; }
+    const p = data.problem;
+    document.getElementById('detailBox').innerHTML = `
+      <div class="item">
+        <strong>${p.title}</strong>
+        <div class="meta">${p.description}</div>
+        <div class="meta">Autor: ${p.userId} · erstellt: ${new Date(p.createdAt).toLocaleString('de-DE')}</div>
+        ${p.formulas.map((f) => `
+          <div class="version-block">
+            <div><strong>Version ${f.version}</strong> — ${new Date(f.createdAt).toLocaleString('de-DE')}</div>
+            <div>${f.text.replace(/</g, '&lt;')}</div>
+            <div class="fingerprint">SHA-256: ${f.fingerprint}</div>
+          </div>
+        `).join('') || '<p class="note">Noch keine Formel-Version vorhanden.</p>'}
+      </div>`;
+    setStatus('detailStatus', '');
+  } catch (error) { setStatus('detailStatus', 'Netzwerkfehler.', true); }
+}
+
+document.getElementById('btnLogin').addEventListener('click', login);
+document.getElementById('btnRegister').addEventListener('click', register);
+document.getElementById('btnLogout').addEventListener('click', logout);
+document.getElementById('btnCreateProblem').addEventListener('click', createProblem);
+document.getElementById('btnAddVersion').addEventListener('click', addVersion);
+document.getElementById('btnLoadAll').addEventListener('click', loadAll);
+document.getElementById('btnLoadDetail').addEventListener('click', loadDetail);
+
+updateAuthView();
+loadAll();
+</script>
+</body>
+</html>

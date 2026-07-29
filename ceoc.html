@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Finanziers01 – CEOC (Center · Edge · Circle)</title>
+<style>
+  :root {
+    --bg: #07111d;
+    --panel: rgba(7, 17, 29, 0.9);
+    --panel-2: rgba(255, 255, 255, 0.08);
+    --text: #f5f7ff;
+    --muted: #9fb0c9;
+    --accent: #4f8cff;
+    --accent-2: #f4c542;
+    --accent-3: #3edb93;
+    --danger: #ff6b6b;
+    --border: rgba(255,255,255,0.16);
+    --shadow: 0 20px 50px rgba(0,0,0,0.24);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #07111d 0%, #11233d 48%, #0b1626 100%);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .page { max-width: 1200px; margin: 0 auto; padding: 24px 18px 64px; }
+  .top-nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .nav-link, .btn { text-decoration: none; color: var(--text); padding: 10px 14px; border-radius: 999px; background: var(--panel-2); border: 1px solid var(--border); font-weight: 700; cursor: pointer; font: inherit; }
+  .nav-link:hover, .btn:hover { background: rgba(79, 140, 255, 0.24); }
+  .btn.primary { background: rgba(79,140,255,0.35); border-color: var(--accent); }
+  .btn.warn { background: rgba(255,107,107,0.25); border-color: var(--danger); }
+  .btn.small { padding: 6px 10px; font-size: 0.85rem; }
+  .hero { border: 1px solid var(--border); border-radius: 24px; padding: 26px; background: linear-gradient(135deg, rgba(79,140,255,0.18), rgba(244,197,66,0.12)); box-shadow: var(--shadow); margin-bottom: 22px; }
+  .kicker { display: inline-block; padding: 8px 12px; border-radius: 999px; background: rgba(244,197,66,0.2); color: var(--accent-2); font-weight: 700; margin-bottom: 10px; }
+  h1 { margin-top: 0; font-size: 1.7rem; }
+  h2 { font-size: 1.15rem; margin: 0 0 10px; }
+  p { color: var(--muted); margin-top: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 22px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px; padding: 18px; box-shadow: var(--shadow); }
+  label { display: block; font-size: 0.85rem; color: var(--muted); margin: 10px 0 4px; }
+  input, textarea { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: var(--text); font: inherit; }
+  textarea { resize: vertical; min-height: 60px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .status { font-size: 0.9rem; margin-top: 10px; color: var(--accent-3); min-height: 1.2em; }
+  .status.error { color: var(--danger); }
+  .list { display: flex; flex-direction: column; gap: 10px; max-height: 460px; overflow-y: auto; margin-top: 10px; }
+  .item { border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,0.04); }
+  .item .meta { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; background: rgba(255,255,255,0.1); margin-left: 6px; }
+  .badge.full { background: rgba(255,107,107,0.2); color: var(--danger); }
+  .badge.free { background: rgba(62,219,147,0.25); color: var(--accent-3); }
+  .capacity-bar { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; margin-top: 6px; }
+  .capacity-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+  .hidden { display: none; }
+  .note { font-size: 0.8rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<main class="page">
+  <nav class="top-nav" aria-label="Sektionen">
+    <a class="nav-link" href="./index.html">← Portal</a>
+    <a class="nav-link" href="./tauschboerse.html">Tauschbörse</a>
+    <a class="nav-link" href="./formel-registry.html">Formel-Registry</a>
+  </nav>
+
+  <section class="hero">
+    <div class="kicker">🔵 CEOC · CENTER · EDGE · CIRCLE</div>
+    <h1>Organisationsmodul — Circles, Center und Edges</h1>
+    <p>Ein <strong>Circle</strong> ist eine reale Organisationseinheit oder Kooperation mit einer klar definierten
+      maximalen Kapazität. Wer einen Circle anlegt, wird automatisch <strong>Center</strong> (Koordinator).
+      Wer beitritt, wird <strong>Edge</strong> (Mitglied) — bis die Kapazität erreicht ist.
+      Kein Mystizismus, nur ein überprüfbares Organigramm: Kapazität = Anzahl Edges ÷ maxCapacity.</p>
+    <div id="authBox">
+      <div id="loggedOutView">
+        <div class="grid" style="margin-top: 12px;">
+          <div class="card">
+            <h2>Anmelden</h2>
+            <label>E-Mail</label><input id="loginEmail" type="email" />
+            <label>Passwort</label><input id="loginPassword" type="password" />
+            <div class="actions"><button class="btn primary" id="btnLogin">Anmelden</button></div>
+          </div>
+          <div class="card">
+            <h2>Neues Konto</h2>
+            <label>Name</label><input id="regName" type="text" />
+            <label>E-Mail</label><input id="regEmail" type="email" />
+            <label>Passwort (min. 8 Zeichen)</label><input id="regPassword" type="password" />
+            <div class="actions"><button class="btn primary" id="btnRegister">Registrieren</button></div>
+          </div>
+        </div>
+        <div class="status" id="authStatus"></div>
+      </div>
+      <div id="loggedInView" class="hidden">
+        <div class="actions" style="align-items:center;">
+          <span class="badge free" id="whoAmI"></span>
+          <button class="btn" id="btnLogout">Abmelden</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Neuen Circle anlegen</h2>
+      <label>Name</label><input id="circleName" type="text" placeholder="z. B. Entwickler-Kooperative Nijmegen" />
+      <label>Beschreibung</label><textarea id="circleDescription" placeholder="Ziel und Zweck des Circles"></textarea>
+      <label>Maximale Kapazität (Anzahl Edges)</label><input id="circleMaxCapacity" type="number" min="1" value="10" />
+      <div class="actions"><button class="btn primary" id="btnCreateCircle">Circle anlegen</button></div>
+      <div class="status" id="createStatus"></div>
+      <p class="note">Du wirst automatisch Center dieses Circles.</p>
+    </div>
+
+    <div class="card">
+      <h2>Meine Circles</h2>
+      <div class="actions"><button class="btn small" id="btnLoadMine">Aktualisieren</button></div>
+      <div class="list" id="mineList"></div>
+      <div class="status" id="mineStatus"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom: 22px;">
+    <h2>Alle Circles</h2>
+    <div class="actions"><button class="btn small" id="btnLoadAll">Aktualisieren</button></div>
+    <div class="list" id="allList"></div>
+    <div class="status" id="allStatus"></div>
+  </div>
+
+  <div class="card">
+    <h2>Circle-Detail &amp; Kapazität</h2>
+    <label>Circle-ID</label><input id="detailCircleId" type="text" placeholder="circle-…" />
+    <div class="actions">
+      <button class="btn small" id="btnLoadDetail">Detail laden</button>
+      <button class="btn small primary" id="btnJoin">Beitreten (Edge)</button>
+      <button class="btn small warn" id="btnLeave">Verlassen</button>
+    </div>
+    <div class="status" id="detailStatus"></div>
+    <div id="detailBox"></div>
+  </div>
+</main>
+
+<script>
+let authToken = sessionStorage.getItem('uenToken') || null;
+let currentUser = JSON.parse(sessionStorage.getItem('uenUser') || 'null');
+
+function authHeaders() {
+  return authToken ? { 'Authorization': `Bearer ${authToken}` } : {};
+}
+
+function setStatus(id, message, isError) {
+  const el = document.getElementById(id);
+  el.textContent = message || '';
+  el.classList.toggle('error', Boolean(isError));
+}
+
+function updateAuthView() {
+  const loggedOut = document.getElementById('loggedOutView');
+  const loggedIn = document.getElementById('loggedInView');
+  if (authToken && currentUser) {
+    loggedOut.classList.add('hidden');
+    loggedIn.classList.remove('hidden');
+    document.getElementById('whoAmI').textContent = `Angemeldet als ${currentUser.name} (${currentUser.id})`;
+  } else {
+    loggedOut.classList.remove('hidden');
+    loggedIn.classList.add('hidden');
+  }
+}
+
+async function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  try {
+    const res = await fetch('/server/auth/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('authStatus', data.error || 'Anmeldung fehlgeschlagen.', true); return; }
+    authToken = data.token; currentUser = data.user;
+    sessionStorage.setItem('uenToken', authToken);
+    sessionStorage.setItem('uenUser', JSON.stringify(currentUser));
+    setStatus('authStatus', '');
+    updateAuthView();
+    loadMine();
+  } catch (error) { setStatus('authStatus', 'Netzwerkfehler.', true); }
+}
+
+async function register() {
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  try {
+    const res = await fetch('/server/auth/register', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('authStatus', data.error || 'Registrierung fehlgeschlagen.', true); return; }
+    authToken = data.token; currentUser = data.user;
+    sessionStorage.setItem('uenToken', authToken);
+    sessionStorage.setItem('uenUser', JSON.stringify(currentUser));
+    setStatus('authStatus', '');
+    updateAuthView();
+    loadMine();
+  } catch (error) { setStatus('authStatus', 'Netzwerkfehler.', true); }
+}
+
+async function logout() {
+  try { await fetch('/server/auth/logout', { method: 'POST', headers: authHeaders() }); } catch (error) { /* ignore */ }
+  authToken = null; currentUser = null;
+  sessionStorage.removeItem('uenToken'); sessionStorage.removeItem('uenUser');
+  updateAuthView();
+}
+
+function renderCircleItem(circle) {
+  const percent = Math.round((circle.edgeCount / circle.maxCapacity) * 100);
+  const full = circle.capacityFree === 0;
+  return `<div class="item">
+    <strong>${circle.name}</strong> <span class="badge ${full ? 'full' : 'free'}">${circle.edgeCount}/${circle.maxCapacity} Edges</span>
+    <div class="meta">${circle.description || ''}</div>
+    <div class="meta">ID: ${circle.id} · Center: ${circle.centerUserId}</div>
+    <div class="capacity-bar"><div class="capacity-fill" style="width:${percent}%;"></div></div>
+  </div>`;
+}
+
+async function loadAll() {
+  try {
+    const res = await fetch('/server/api/ceoc/circles');
+    const data = await res.json();
+    if (!data.success) { setStatus('allStatus', data.error || 'Fehler beim Laden.', true); return; }
+    document.getElementById('allList').innerHTML = data.items.map(renderCircleItem).join('') || '<p class="note">Noch keine Circles vorhanden.</p>';
+    setStatus('allStatus', '');
+  } catch (error) { setStatus('allStatus', 'Netzwerkfehler.', true); }
+}
+
+async function loadMine() {
+  if (!authToken) { document.getElementById('mineList').innerHTML = ''; return; }
+  try {
+    const res = await fetch('/server/api/ceoc/circles/mine', { headers: authHeaders() });
+    const data = await res.json();
+    if (!data.success) { setStatus('mineStatus', data.error || 'Fehler beim Laden.', true); return; }
+    document.getElementById('mineList').innerHTML = data.items.map(renderCircleItem).join('') || '<p class="note">Du bist noch keinem Circle beigetreten.</p>';
+    setStatus('mineStatus', '');
+  } catch (error) { setStatus('mineStatus', 'Netzwerkfehler.', true); }
+}
+
+async function createCircle() {
+  if (!authToken) { setStatus('createStatus', 'Bitte zuerst anmelden.', true); return; }
+  const name = document.getElementById('circleName').value.trim();
+  const description = document.getElementById('circleDescription').value.trim();
+  const maxCapacity = Number(document.getElementById('circleMaxCapacity').value);
+  try {
+    const res = await fetch('/server/api/ceoc/circles', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify({ name, description, maxCapacity })
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('createStatus', data.error || 'Fehler.', true); return; }
+    setStatus('createStatus', `Circle „${data.circle.name}“ angelegt (ID: ${data.circle.id}).`);
+    document.getElementById('circleName').value = '';
+    document.getElementById('circleDescription').value = '';
+    loadAll(); loadMine();
+  } catch (error) { setStatus('createStatus', 'Netzwerkfehler.', true); }
+}
+
+async function loadDetail() {
+  const id = document.getElementById('detailCircleId').value.trim();
+  if (!id) { setStatus('detailStatus', 'Bitte Circle-ID eingeben.', true); return; }
+  try {
+    const res = await fetch(`/server/api/ceoc/circles/${encodeURIComponent(id)}`);
+    const data = await res.json();
+    if (!data.success) { setStatus('detailStatus', data.error || 'Fehler.', true); return; }
+    const c = data.circle;
+    const percent = Math.round((c.edgeCount / c.maxCapacity) * 100);
+    document.getElementById('detailBox').innerHTML = `
+      <div class="item">
+        <strong>${c.name}</strong>
+        <div class="meta">${c.description || ''}</div>
+        <div class="meta">Center: ${c.centerUserId} · Kapazität: ${c.edgeCount}/${c.maxCapacity} (${percent}% belegt)</div>
+        <div class="capacity-bar"><div class="capacity-fill" style="width:${percent}%;"></div></div>
+        <div class="meta">Edges:</div>
+        <ul>${c.edges.map((e) => `<li>${e.userId} — ${e.role} (seit ${new Date(e.joinedAt).toLocaleString('de-DE')})</li>`).join('')}</ul>
+      </div>`;
+    setStatus('detailStatus', '');
+  } catch (error) { setStatus('detailStatus', 'Netzwerkfehler.', true); }
+}
+
+async function joinCircle() {
+  if (!authToken) { setStatus('detailStatus', 'Bitte zuerst anmelden.', true); return; }
+  const id = document.getElementById('detailCircleId').value.trim();
+  if (!id) { setStatus('detailStatus', 'Bitte Circle-ID eingeben.', true); return; }
+  try {
+    const res = await fetch(`/server/api/ceoc/circles/${encodeURIComponent(id)}/join`, { method: 'POST', headers: authHeaders() });
+    const data = await res.json();
+    if (!data.success) { setStatus('detailStatus', data.error || 'Fehler.', true); return; }
+    setStatus('detailStatus', 'Beigetreten.');
+    loadDetail(); loadAll(); loadMine();
+  } catch (error) { setStatus('detailStatus', 'Netzwerkfehler.', true); }
+}
+
+async function leaveCircle() {
+  if (!authToken) { setStatus('detailStatus', 'Bitte zuerst anmelden.', true); return; }
+  const id = document.getElementById('detailCircleId').value.trim();
+  if (!id) { setStatus('detailStatus', 'Bitte Circle-ID eingeben.', true); return; }
+  try {
+    const res = await fetch(`/server/api/ceoc/circles/${encodeURIComponent(id)}/leave`, { method: 'POST', headers: authHeaders() });
+    const data = await res.json();
+    if (!data.success) { setStatus('detailStatus', data.error || 'Fehler.', true); return; }
+    setStatus('detailStatus', 'Circle verlassen.');
+    loadDetail(); loadAll(); loadMine();
+  } catch (error) { setStatus('detailStatus', 'Netzwerkfehler.', true); }
+}
+
+document.getElementById('btnLogin').addEventListener('click', login);
+document.getElementById('btnRegister').addEventListener('click', register);
+document.getElementById('btnLogout').addEventListener('click', logout);
+document.getElementById('btnCreateCircle').addEventListener('click', createCircle);
+document.getElementById('btnLoadAll').addEventListener('click', loadAll);
+document.getElementById('btnLoadMine').addEventListener('click', loadMine);
+document.getElementById('btnLoadDetail').addEventListener('click', loadDetail);
+document.getElementById('btnJoin').addEventListener('click', joinCircle);
+document.getElementById('btnLeave').addEventListener('click', leaveCircle);
+
+updateAuthView();
+loadAll();
+loadMine();
+</script>
+</body>
+</html>

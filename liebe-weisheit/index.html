@@ -1,0 +1,2168 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="Geavanceerd systeem voor het exploreren en analyseren van wijsheid uit verschillende religieuze tradities met semantische mapping en parabiblische interpretatie.">
+    <meta name="keywords" content="bijbel, religie, wijsheid, semantische mapping, parabiblisch, tradities, spiritualiteit">
+    <meta name="author" content="Bijbelonline Digital Notar Creator">
+    <meta name="theme-color" content="#7c3aed">
+    <title>Voor Eeuwig Gelukkig - Bijbel Studie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Responsive Design & High DPI Support */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            body {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+        }
+
+        /* Mobile-first responsive design */
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .md\:grid-cols-2 {
+                grid-template-columns: 1fr !important;
+            }
+
+            .text-2xl {
+                font-size: 1.5rem !important;
+            }
+
+            .text-lg {
+                font-size: 1.125rem !important;
+            }
+
+            /* Better contrast for mobile all sections */
+            .bg-card {
+                background-color: #f8fafc !important;
+                color: #0f172a !important;
+                border: 2px solid #e2e8f0 !important;
+                padding: 1rem !important;
+            }
+
+            h2 {
+                color: #0f172a !important;
+                font-size: 1.25rem !important;
+                margin-bottom: 1rem !important;
+            }
+
+            h3 {
+                color: #1e293b !important;
+                font-size: 1.125rem !important;
+                margin-bottom: 0.75rem !important;
+            }
+
+            label {
+                color: #334155 !important;
+                font-weight: 600 !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            input, select, textarea {
+                background-color: #ffffff !important;
+                color: #0f172a !important;
+                border: 2px solid #cbd5e1 !important;
+                padding: 0.75rem !important;
+                font-size: 16px !important; /* Prevents zoom on iOS */
+            }
+
+            input:focus, select:focus, textarea:focus {
+                border-color: #7c3aed !important;
+                background-color: #ffffff !important;
+                outline: none !important;
+            }
+
+            button {
+                background-color: #7c3aed !important;
+                color: #ffffff !important;
+                padding: 0.875rem !important;
+                font-weight: 600 !important;
+                font-size: 1rem !important;
+            }
+
+            /* Filter buttons mobile */
+            .filter-btn {
+                font-size: 0.75rem !important;
+                padding: 0.5rem 0.75rem !important;
+                font-weight: 700 !important;
+                border: 1px solid #94a3b8 !important;
+            }
+
+            .filter-btn.bg-gray-200 {
+                background-color: #f1f5f9 !important;
+                color: #0f172a !important;
+                border-color: #64748b !important;
+            }
+
+            .filter-btn.bg-blue-100 {
+                background-color: #dbeafe !important;
+                color: #1e3a8a !important;
+                border-color: #3b82f6 !important;
+            }
+
+            .filter-btn.bg-green-100 {
+                background-color: #dcfce7 !important;
+                color: #14532d !important;
+                border-color: #16a34a !important;
+            }
+
+            .filter-btn.bg-orange-100 {
+                background-color: #fed7aa !important;
+                color: #7c2d12 !important;
+                border-color: #fb923c !important;
+            }
+
+            .filter-btn.bg-red-100 {
+                background-color: #fecaca !important;
+                color: #7f1d1d !important;
+                border-color: #ef4444 !important;
+            }
+
+            .filter-btn.bg-yellow-100 {
+                background-color: #fef3c7 !important;
+                color: #713f12 !important;
+                border-color: #facc15 !important;
+            }
+
+            .filter-btn.bg-purple-100 {
+                background-color: #e9d5ff !important;
+                color: #581c87 !important;
+                border-color: #a855f7 !important;
+            }
+
+            .filter-btn.bg-indigo-100 {
+                background-color: #e0e7ff !important;
+                color: #312e81 !important;
+                border-color: #6366f1 !important;
+            }
+
+            .filter-btn.bg-pink-100 {
+                background-color: #fce7f3 !important;
+                color: #831843 !important;
+                border-color: #ec4899 !important;
+            }
+
+            .filter-btn.bg-teal-100 {
+                background-color: #ccfbf1 !important;
+                color: #134e4a !important;
+                border-color: #14b8a6 !important;
+            }
+
+            .filter-btn.bg-cyan-100 {
+                background-color: #cffafe !important;
+                color: #164e63 !important;
+                border-color: #06b6d4 !important;
+            }
+
+            .filter-btn.bg-amber-100 {
+                background-color: #fef3c7 !important;
+                color: #78350f !important;
+                border-color: #f59e0b !important;
+            }
+
+            /* Tradition badges mobile */
+            .tradition-badge {
+                font-size: 0.625rem !important;
+                padding: 0.25rem 0.375rem !important;
+                font-weight: 700 !important;
+                border: 1px solid #94a3b8 !important;
+            }
+
+            /* Search results mobile */
+            .wisdom-card {
+                background-color: #ffffff !important;
+                color: #0f172a !important;
+                border: 1px solid #e2e8f0 !important;
+                padding: 0.75rem !important;
+            }
+
+            .wisdom-card blockquote {
+                color: #1e293b !important;
+                font-size: 0.875rem !important;
+            }
+
+            .wisdom-card .text-xs {
+                color: #475569 !important;
+                font-weight: 500 !important;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .bg-white {
+                background-color: #ffffff !important;
+                border: 2px solid #000000 !important;
+            }
+
+            .text-gray-500 {
+                color: #000000 !important;
+            }
+
+            .bg-purple-600 {
+                background-color: #000000 !important;
+                color: #ffffff !important;
+            }
+
+            .bg-card {
+                background-color: #ffffff !important;
+                border: 3px solid #000000 !important;
+                color: #000000 !important;
+            }
+
+            h2, h3, label {
+                color: #000000 !important;
+                font-weight: 700 !important;
+            }
+
+            input, select, textarea {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                border: 2px solid #000000 !important;
+            }
+
+            input:focus, select:focus, textarea:focus {
+                border-color: #000000 !important;
+                box-shadow: 0 0 0 3px #000000 !important;
+            }
+
+            button {
+                background-color: #000000 !important;
+                color: #ffffff !important;
+                border: 2px solid #000000 !important;
+            }
+
+            .wisdom-card {
+                background-color: #ffffff !important;
+                border: 2px solid #000000 !important;
+                color: #000000 !important;
+            }
+
+            .wisdom-card blockquote {
+                color: #000000 !important;
+                font-weight: 600 !important;
+            }
+
+            .wisdom-card .text-xs {
+                color: #000000 !important;
+                font-weight: 700 !important;
+            }
+
+            .filter-btn {
+                border: 2px solid #000000 !important;
+                font-weight: 700 !important;
+            }
+
+            .tradition-badge {
+                border: 2px solid #000000 !important;
+                font-weight: 700 !important;
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1a1a1a;
+                color: #ffffff;
+            }
+
+            .bg-white {
+                background-color: #2d2d2d !important;
+                color: #ffffff !important;
+            }
+
+            .bg-gray-50 {
+                background-color: #3d3d3d !important;
+                color: #ffffff !important;
+            }
+
+            .text-gray-500 {
+                color: #a0a0a0 !important;
+            }
+
+            .text-gray-700 {
+                color: #e0e0e0 !important;
+            }
+
+            .border-gray-200 {
+                border-color: #4d4d4d !important;
+            }
+
+            .bg-card {
+                background-color: #1f2937 !important;
+                color: #f9fafb !important;
+                border: 1px solid #374151 !important;
+            }
+
+            h2, h3 {
+                color: #ffffff !important;
+            }
+
+            label {
+                color: #e5e7eb !important;
+            }
+
+            input, select, textarea {
+                background-color: #374151 !important;
+                color: #f9fafb !important;
+                border-color: #4b5563 !important;
+            }
+
+            input:focus, select:focus, textarea:focus {
+                border-color: #8b5cf6 !important;
+                background-color: #374151 !important;
+            }
+
+            .wisdom-card {
+                background-color: #1f2937 !important;
+                color: #f9fafb !important;
+                border: 1px solid #374151 !important;
+            }
+
+            .wisdom-card blockquote {
+                color: #e5e7eb !important;
+            }
+
+            .wisdom-card .text-xs {
+                color: #9ca3af !important;
+            }
+
+            .filter-btn {
+                border: 1px solid #4b5563 !important;
+            }
+
+            .tradition-badge {
+                border: 1px solid #374151 !important;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .hidden-print {
+                display: none !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            body {
+                font-size: 12pt;
+                line-height: 1.4;
+            }
+
+            .wisdom-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Accessibility improvements */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus styles for keyboard navigation */
+        *:focus-visible {
+            outline: 2px solid #7c3aed;
+            outline-offset: 2px;
+        }
+
+        /* Loading states */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .tradition-badge {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 9999px;
+            font-weight: 500;
+        }
+        .tradition-badge.bijbel { background-color: #dbeafe; color: #1e40af; }
+        .tradition-badge.islam { background-color: #dcfce7; color: #166534; }
+        .tradition-badge.hindoe { background-color: #fed7aa; color: #c2410c; }
+        .tradition-badge.boeddhisme { background-color: #fecaca; color: #b91c1c; }
+        .tradition-badge.jodendom { background-color: #fef3c7; color: #a16207; }
+        .tradition-badge.christendom { background-color: #e9d5ff; color: #7c3aed; }
+        .tradition-badge.sikhisme { background-color: #e0e7ff; color: #4338ca; }
+        .tradition-badge.confucianisme { background-color: #fce7f3; color: #be185d; }
+        .tradition-badge.taoisme { background-color: #ccfbf1; color: #0f766e; }
+        .tradition-badge.shinto { background-color: #cffafe; color: #0e7490; }
+        .tradition-badge.zoroastrisme { background-color: #fef3c7; color: #b45309; }
+        .tradition-badge.algemeen { background-color: #f3f4f6; color: #374151; }
+        .tradition-badge.semantische.mapping { background-color: #dbeafe; color: #1e3a8a; }
+        .tradition-badge.parabiblisch { background-color: #dcfce7; color: #14532d; }
+
+        .love-type-badge {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 9999px;
+            font-weight: 500;
+        }
+        .love-type-badge.onvoorwaardelijk { background-color: #fecaca; color: #b91c1c; }
+        .love-type-badge.actief { background-color: #fed7aa; color: #c2410c; }
+        .love-type-badge.reciproce { background-color: #fef3c7; color: #a16207; }
+        .love-type-badge.transcendent { background-color: #e9d5ff; color: #7c3aed; }
+        .love-type-badge.redzaam { background-color: #dcfce7; color: #166534; }
+        .love-type-badge.voorwaardelijk { background-color: #dbeafe; color: #1e40af; }
+        .love-type-badge.toewijding { background-color: #e0e7ff; color: #4338ca; }
+        .love-type-badge.verdienen { background-color: #fce7f3; color: #be185d; }
+        .love-type-badge.relationeel { background-color: #ccfbf1; color: #0f766e; }
+        .love-type-badge.onthecht { background-color: #f3f4f6; color: #6b7280; }
+
+        .bg-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            color: #1f2937;
+        }
+
+        /* Better contrast for mobile compare section */
+        #compare-section .bg-card {
+            background-color: #ffffff;
+            color: #1f2937;
+            border: 1px solid #e5e7eb;
+        }
+
+        #compare-section h2,
+        #compare-section h3,
+        #compare-section label {
+            color: #111827;
+            font-weight: 600;
+        }
+
+        #compare-section select,
+        #compare-section input {
+            background-color: #ffffff;
+            color: #1f2937;
+            border-color: #d1d5db;
+        }
+
+        #compare-section select:focus,
+        #compare-section input:focus {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+        .text-primary {
+            color: #1f2937;
+        }
+        .text-secondary {
+            color: #4b5563;
+        }
+        .text-muted {
+            color: #6b7280;
+        }
+        .bg-primary {
+            background-color: #2563eb;
+        }
+        .bg-primary\/10 {
+            background-color: #eff6ff;
+        }
+
+        .top-back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            margin: 0.75rem;
+            border-radius: 9999px;
+            background: #ffffff;
+            color: #7c3aed;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+        .top-back-link:hover { background: #f3e8ff; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <a class="top-back-link" href="../index.html">← Portal</a>
+    <!-- Navigation -->
+    <nav class="bg-purple-800 text-white p-4 sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto">
+            <!-- Mobile Header -->
+            <div class="flex justify-between items-center md:hidden">
+                <h1 class="text-lg font-bold truncate">Voor Eeuwig Gelukkig</h1>
+                <button id="mobile-menu-toggle" class="p-2 rounded hover:bg-purple-700 transition" aria-label="Menu">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex justify-between items-center">
+                <h1 class="text-2xl font-bold">Voor Eeuwig Gelukkig</h1>
+                <div class="flex flex-wrap gap-2">
+                    <button data-section="search" class="nav-btn px-3 py-2 rounded hover:bg-purple-700 transition text-sm">🔍 Vind Wijsheid</button>
+                    <button data-section="advanced-search" class="nav-btn px-3 py-2 rounded hover:bg-purple-700 transition text-sm">🔬 Geavanceerd</button>
+                    <button data-section="compare" class="nav-btn px-3 py-2 rounded hover:bg-purple-700 transition text-sm">⚖️ Vergelijk Tradities</button>
+                    <button data-section="reflect" class="nav-btn px-3 py-2 rounded hover:bg-purple-700 transition text-sm">💭 Reflectie</button>
+                </div>
+                <!-- Language Switcher -->
+                <div class="flex items-center gap-2">
+                    <button data-lang="nl" class="language-btn px-2 py-1 rounded bg-purple-600 hover:bg-purple-700 transition text-sm">🇳🇱 NL</button>
+                    <button data-lang="en" class="language-btn px-2 py-1 rounded hover:bg-purple-700 transition text-sm">🇬🇧 EN</button>
+                    <button data-lang="de" class="language-btn px-2 py-1 rounded hover:bg-purple-700 transition text-sm">🇩🇪 DE</button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-purple-700">
+                <div class="flex flex-col gap-2 mb-4">
+                    <button data-section="search" class="nav-btn px-3 py-2 rounded hover:bg-purple-700 transition text-sm w-full text-left">🔍 Vind Wijsheid</button>
+                    <button data-section="advanced-search" class="nav-btn px-3 py-2 rounded hover:bg-purple-700 transition text-sm w-full text-left">🔬 Geavanceerd</button>
+                    <button data-section="compare" class="nav-btn px-3 py-2 rounded hover:bg-purple-700 transition text-sm w-full text-left">⚖️ Vergelijk Tradities</button>
+                    <button data-section="reflect" class="nav-btn px-3 py-2 rounded hover:bg-purple-700 transition text-sm w-full text-left">💭 Reflectie</button>
+                </div>
+                <!-- Language Switcher Mobile -->
+                <div class="flex justify-center gap-2">
+                    <button data-lang="nl" class="language-btn px-2 py-1 rounded bg-purple-600 hover:bg-purple-700 transition text-sm">🇳🇱 NL</button>
+                    <button data-lang="en" class="language-btn px-2 py-1 rounded hover:bg-purple-700 transition text-sm">🇬🇧 EN</button>
+                    <button data-lang="de" class="language-btn px-2 py-1 rounded hover:bg-purple-700 transition text-sm">🇩🇪 DE</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 max-w-7xl">
+        <!-- Search Section -->
+        <div id="search-section" class="section">
+            <div class="bg-card mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-purple-800">🔍 Vind Wijsheid</h2>
+                <div class="flex flex-col sm:flex-row gap-3 mb-4">
+                    <input type="text" id="search-input" placeholder="Zoek wijsheid uit alle tradities..."
+                            class="flex-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-base">
+                    <button id="search-btn" class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition min-w-[120px]">
+                        <i class="fas fa-search mr-2"></i><span class="hidden sm:inline">Zoek</span><span class="sm:hidden">🔍</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-3 text-gray-700">Filter op Traditie:</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
+                    <button data-tradition="all" class="filter-btn px-3 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition text-sm font-medium">Alle</button>
+                    <button data-tradition="Bijbel" class="filter-btn px-3 py-2 bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition text-sm font-medium">Bijbel</button>
+                    <button data-tradition="Islam" class="filter-btn px-3 py-2 bg-green-100 text-green-800 rounded-full hover:bg-green-200 transition text-sm font-medium">Islam</button>
+                    <button data-tradition="Hindoe" class="filter-btn px-3 py-2 bg-orange-100 text-orange-800 rounded-full hover:bg-orange-200 transition text-sm font-medium">Hindoe</button>
+                    <button data-tradition="Boeddhisme" class="filter-btn px-3 py-2 bg-red-100 text-red-800 rounded-full hover:bg-red-200 transition text-sm font-medium">Boeddhisme</button>
+                    <button data-tradition="Jodendom" class="filter-btn px-3 py-2 bg-yellow-100 text-yellow-800 rounded-full hover:bg-yellow-200 transition text-sm font-medium">Jodendom</button>
+                    <button data-tradition="Christendom" class="filter-btn px-3 py-2 bg-purple-100 text-purple-800 rounded-full hover:bg-purple-200 transition text-sm font-medium">Christendom</button>
+                    <button data-tradition="Sikhisme" class="filter-btn px-3 py-2 bg-indigo-100 text-indigo-800 rounded-full hover:bg-indigo-200 transition text-sm font-medium">Sikhisme</button>
+                    <button data-tradition="Confucianisme" class="filter-btn px-3 py-2 bg-pink-100 text-pink-800 rounded-full hover:bg-pink-200 transition text-sm font-medium">Confucianisme</button>
+                    <button data-tradition="Taoisme" class="filter-btn px-3 py-2 bg-teal-100 text-teal-800 rounded-full hover:bg-teal-200 transition text-sm font-medium">Taoisme</button>
+                    <button data-tradition="Shinto" class="filter-btn px-3 py-2 bg-cyan-100 text-cyan-800 rounded-full hover:bg-cyan-200 transition text-sm font-medium">Shinto</button>
+                    <button data-tradition="Zoroastrisme" class="filter-btn px-3 py-2 bg-amber-100 text-amber-800 rounded-full hover:bg-amber-200 transition text-sm font-medium">Zoroastrisme</button>
+                </div>
+            </div>
+
+            <!-- Search Results -->
+            <div id="search-results" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <!-- Results will be displayed here -->
+            </div>
+        </div>
+        <!-- Advanced Search Section -->
+        <div id="advanced-search-section" class="section hidden">
+            <div class="bg-card mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-purple-800">🔬 Geavanceerd Zoeken</h2>
+
+                <!-- Search Type Selection -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Zoektype</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button data-search-type="all" class="search-type-btn px-4 py-2 bg-purple-100 text-purple-800 rounded-full hover:bg-purple-200 transition">Alle Systemen</button>
+                        <button data-search-type="semantic" class="search-type-btn px-4 py-2 bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition">Semantisch 🧠</button>
+                        <button data-search-type="parabiblical" class="search-type-btn px-4 py-2 bg-green-100 text-green-800 rounded-full hover:bg-green-200 transition">Parabiblisch 📚</button>
+                        <button data-search-type="basic" class="search-type-btn px-4 py-2 bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200 transition">Basis 📖</button>
+                    </div>
+                </div>
+
+                <!-- Advanced Search Input -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Geavanceerde Zoekopdracht</label>
+                    <textarea id="advanced-search-input" placeholder="Voer uw zoekopdracht in met context en details..."
+                               class="w-full p-3 border rounded-lg h-24"></textarea>
+                </div>
+
+                <!-- Search Options -->
+                <div class="grid md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Minimum Confidence</label>
+                        <select id="confidence-threshold" class="w-full p-2 border rounded-lg">
+                            <option value="0.5">50% (Meer resultaten)</option>
+                            <option value="0.7" selected>70% (Gebalanceerd)</option>
+                            <option value="0.9">90% (Precisie)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Resultaten per Systeem</label>
+                        <select id="results-limit" class="w-full p-2 border rounded-lg">
+                            <option value="5">5 resultaten</option>
+                            <option value="10" selected>10 resultaten</option>
+                            <option value="20">20 resultaten</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Taal Focus</label>
+                        <select id="language-focus" class="w-full p-2 border rounded-lg">
+                            <option value="all">Alle talen</option>
+                            <option value="nl" selected>Nederlands</option>
+                            <option value="de">Duits</option>
+                            <option value="en">Engels</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="advanced-search-btn" class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+                    <i class="fas fa-search mr-2"></i>Geavanceerd Zoeken
+                </button>
+            </div>
+
+            <!-- Advanced Search Results -->
+            <div id="advanced-search-results" class="grid gap-4 md:grid-cols-2">
+                <!-- Results will be displayed here -->
+            </div>
+        </div>
+        <!-- Compare Section -->
+        <div id="compare-section" class="section hidden">
+            <div class="bg-card mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-purple-800">⚖️ Vergelijk Tradities</h2>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Traditie 1</label>
+                        <select id="tradition1" class="w-full p-3 border rounded-lg">
+                            <option value="">Selecteer traditie</option>
+                            <option value="Bijbel">Bijbel</option>
+                            <option value="Islam">Islam</option>
+                            <option value="Hindoe">Hindoe</option>
+                            <option value="Boeddhisme">Boeddhisme</option>
+                            <option value="Jodendom">Jodendom</option>
+                            <option value="Christendom">Christendom</option>
+                            <option value="Sikhisme">Sikhisme</option>
+                            <option value="Confucianisme">Confucianisme</option>
+                            <option value="Taoisme">Taoisme</option>
+                            <option value="Shinto">Shinto</option>
+                            <option value="Zoroastrisme">Zoroastrisme</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Traditie 2</label>
+                        <select id="tradition2" class="w-full p-3 border rounded-lg">
+                            <option value="">Selecteer traditie</option>
+                            <option value="Bijbel">Bijbel</option>
+                            <option value="Islam">Islam</option>
+                            <option value="Hindoe">Hindoe</option>
+                            <option value="Boeddhisme">Boeddhisme</option>
+                            <option value="Jodendom">Jodendom</option>
+                            <option value="Christendom">Christendom</option>
+                            <option value="Sikhisme">Sikhisme</option>
+                            <option value="Confucianisme">Confucianisme</option>
+                            <option value="Taoisme">Taoisme</option>
+                            <option value="Shinto">Shinto</option>
+                            <option value="Zoroastrisme">Zoroastrisme</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Vraag of Onderwerp</label>
+                    <input type="text" id="compare-question" placeholder="bv. liefde, gerechtigheid, zingeving..."
+                            class="w-full p-3 border rounded-lg">
+                </div>
+                <button id="compare-btn" class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+                    <i class="fas fa-balance-scale mr-2"></i>Vergelijk Tradities
+                </button>
+            </div>
+
+            <!-- Comparison Results -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <div id="tradition1-result" class="bg-card">
+                    <h3 class="font-bold mb-4" id="tradition1-title">Traditie 1 Resultaten</h3>
+                    <!-- Results will be displayed here -->
+                </div>
+                <div id="tradition2-result" class="bg-card">
+                    <h3 class="font-bold mb-4" id="tradition2-title">Traditie 2 Resultaten</h3>
+                    <!-- Results will be displayed here -->
+                </div>
+            </div>
+        </div>
+        <!-- Reflection Section -->
+        <div id="reflect-section" class="section hidden">
+            <div class="bg-card mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-purple-800">💭 Reflectie</h2>
+
+                <!-- Emotion Selection -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2">Hoe voel je je vandaag?</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button data-emotion="vreugde" class="emotion-btn px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full hover:bg-yellow-200 transition">😊 Vreugde</button>
+                        <button data-emotion="rust" class="emotion-btn px-4 py-2 bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition">😌 Rust</button>
+                        <button data-emotion="twijfel" class="emotion-btn px-4 py-2 bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200 transition">🤔 Twijfel</button>
+                        <button data-emotion="dankbaarheid" class="emotion-btn px-4 py-2 bg-green-100 text-green-800 rounded-full hover:bg-green-200 transition">🙏 Dankbaarheid</button>
+                        <button data-emotion="zorgen" class="emotion-btn px-4 py-2 bg-red-100 text-red-800 rounded-full hover:bg-red-200 transition">😟 Zorgen</button>
+                    </div>
+                </div>
+
+                <!-- Wisdom Selection -->
+                <div id="wisdom-selection" class="mb-6">
+                    <!-- Wisdom texts will be displayed here -->
+                </div>
+
+                <!-- Reflection Input -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2">Je Reflectie</label>
+                    <textarea id="reflection-text" rows="4" placeholder="Schrijf je gedachten en reflecties hier..."
+                               class="w-full p-3 border rounded-lg"></textarea>
+                </div>
+
+                <button id="save-reflection-btn" class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+                    <i class="fas fa-save mr-2"></i>Bewaar Reflectie
+                </button>
+            </div>
+
+            <!-- Saved Reflections -->
+            <div id="saved-reflections" class="bg-card">
+                <h3 class="font-bold mb-4">💭 Opgeslagen Reflecties</h3>
+                <!-- Reflections will be displayed here -->
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">Made with ❤️ - GentlyOverDone</p>
+            <p class="text-sm opacity-75">Verbindende wijsheid uit alle tradities</p>
+        </div>
+    </footer>
+    <script src="language-config.js"></script>
+    <script src="semantic-mapping-system.js"></script>
+    <script src="parabiblical-matching-system.js"></script>
+    <script>
+        // Global variables
+        let currentEmotion = null;
+        let currentSection = 'search';
+        let currentLanguage = 'nl';
+
+        // System instances
+        let semanticMapper = null;
+        let parabiblicalMatcher = null;
+        let languageConfig = null;
+
+        // Advanced search settings
+        let currentSearchType = 'all';
+        let confidenceThreshold = 0.7;
+        let resultsLimit = 10;
+
+        // Embedded wisdom data
+        const wisdomData = [
+            // BIJBEL LIEFDE TEXTEN
+            {
+                id: "1KOR-13-1",
+                tradition: "Bijbel",
+                book: "1 Korinthiëren",
+                chapter: 13,
+                verse: 1,
+                text: "Als ik in de talen van mensen en van engelen spreek, maar geen liefde heb, ben ik een schatkistend koper of een bellenklinkend cimbaal.",
+                ai_themas: ["liefde", "onvoorwaardelijk", "spiritualiteit"],
+                ai_vragen: ["Wat is echte liefde?", "Hoe herken je ware liefde?"],
+                theological_concept: "agape",
+                love_type: "onvoorwaardelijk",
+                ai_samenvatting: "Paulus beschrijft dat liefde de essentie is van alle spirituele gaven."
+            },
+            {
+                id: "1KOR-13-4",
+                tradition: "Bijbel",
+                book: "1 Korinthiëren",
+                chapter: 13,
+                verse: 4,
+                text: "De liefde is geduldig en vriendelijk, de liefde is niet afgunstig, de liefde praalt niet, zij is niet hoogmoedig.",
+                ai_themas: ["liefde", "geduld", "nederigheid"],
+                ai_vragen: ["Hoe gedraagt ware liefde zich?", "Wat zijn kenmerken van liefde?"],
+                theological_concept: "liefde-virtues",
+                love_type: "actief",
+                ai_samenvatting: "Liefde toont zich in praktische deugden zoals geduld en vriendelijkheid."
+            },
+            // JODENDOM LIEFDE TEXTEN
+            {
+                id: "LEVITICUS-19-18",
+                tradition: "Jodendom",
+                book: "Leviticus",
+                chapter: 19,
+                verse: 18,
+                text: "Gij zult uw naaste liefhebben als uzelf; Ik ben de HEERE.",
+                ai_themas: ["liefde", "naastenliefde", "gebod"],
+                ai_vragen: ["Wat is het belangrijkste gebod?", "Hoe moet ik mijn naaste behandelen?"],
+                theological_concept: "ahavah",
+                love_type: "relationeel",
+                ai_samenvatting: "Het gebod van naastenliefde is het hart van de joodse ethiek."
+            },
+            {
+                id: "DEUTERONOMIUM-6-5",
+                tradition: "Jodendom",
+                book: "Deuteronomium",
+                chapter: 6,
+                verse: 5,
+                text: "Gij zult de HEERE uw God liefhebben met geheel uw hart, en met geheel uw ziel, en met geheel uw kracht.",
+                ai_themas: ["liefde", "godsdienst", "toewijding"],
+                ai_vragen: ["Hoe moet ik God liefhebben?", "Wat is ware toewijding?"],
+                theological_concept: "shema",
+                love_type: "toewijding",
+                ai_samenvatting: "De Shema is het fundamentele gebed van het jodendom over liefde voor God."
+            },
+            // CHRISTENDOM LIEFDE TEXTEN
+            {
+                id: "JOHANNES-3-16",
+                tradition: "Christendom",
+                book: "Johannes",
+                chapter: 3,
+                verse: 16,
+                text: "Alzo liefde God de wereld, dat Hij Zijn eniggeboren Zoon heeft gegeven, opdat eenieder die in Hem gelooft, niet verloren ga, maar het eeuwige leven hebbe.",
+                ai_themas: ["liefde", "verlossing", "opoffering"],
+                ai_vragen: ["Wat is Gods liefde?", "Waarom stuurde God Zijn Zoon?"],
+                theological_concept: "agape-god",
+                love_type: "transcendent",
+                ai_samenvatting: "Gods liefde wordt geopenbaard in de gave van Zijn Zoon voor de verlossing van de mensheid."
+            },
+            {
+                id: "ROMEO-8-38",
+                tradition: "Christendom",
+                book: "Romeinen",
+                chapter: 8,
+                verse: 38,
+                text: "Want ik ben overtuigd, dat noch dood, noch leven, noch engelen, noch overheden, noch machten, noch het tegenwoordige, noch het toekomstige, enige zaak ons zal kunnen scheiden van de liefde Gods, die in Christus Jezus, onze Heere.",
+                ai_themas: ["liefde", "verzekering", "onwankelbaar"],
+                ai_vragen: ["Is Gods liefde onvoorwaardelijk?", "Kan niets ons van God scheiden?"],
+                theological_concept: "onwankelbare-liefde",
+                love_type: "onvoorwaardelijk",
+                ai_samenvatting: "Niets kan de gelovige scheiden van Gods onwankelbare liefde in Christus."
+            },
+            // ISLAM LIEFDE TEXTEN
+            {
+                id: "KORAN-30-21",
+                tradition: "Islam",
+                book: "Koran",
+                chapter: 30,
+                verse: 21,
+                text: "En onder Zijn tekenen is dit, dat Hij voor u uit uzelf echtgenoten heeft geschapen, opdat gij rust in hen vindt, en Hij heeft tussen u liefde en barmhartigheid gesteld.",
+                ai_themas: ["liefde", "huwelijk", "barmhartigheid"],
+                ai_vragen: ["Wat is islamitische visie op liefde?", "Hoe werkt liefde in huwelijk?"],
+                theological_concept: "mahabbah",
+                love_type: "relationeel",
+                ai_samenvatting: "Allah schept liefde en barmhartigheid tussen echtgenoten als teken van Zijn goedheid."
+            },
+            // HINDOE LIEFDE TEXTEN
+            {
+                id: "BHAGAVAD-2-47",
+                tradition: "Hindoe",
+                book: "Bhagavad Gita",
+                chapter: 2,
+                verse: 47,
+                text: "U hebt alleen recht op uw daden, maar nooit op de vruchten daarvan. Laat de vruchten van uw daden dus niet uw motief zijn, en wees ook niet geneigd tot inactiviteit.",
+                ai_themas: ["karma", "actie", "loslaten"],
+                ai_vragen: ["Wat is karma?", "Hoe moet ik handelen zonder aan resultaten te denken?"],
+                theological_concept: "niskama-karma",
+                love_type: "onthecht",
+                ai_samenvatting: "Handelen zonder gehechtheid aan resultaten is de weg naar spirituele vrijheid."
+            },
+            // BOEDDHIST LIEFDE TEXTEN
+            {
+                id: "DHAMMAPADA-5",
+                tradition: "Boeddhisme",
+                book: "Dhammapada",
+                chapter: 1,
+                verse: 5,
+                text: "Haat wordt nooit door haat overwonnen; haat wordt door liefde overwonnen. Dit is de eeuwige wet.",
+                ai_themas: ["liefde", "vergeving", "geweldloosheid"],
+                ai_vragen: ["Hoe overwin je haat?", "Wat is de kracht van liefde?"],
+                theological_concept: "metta",
+                love_type: "actief",
+                ai_samenvatting: "Liefde is de ultieme kracht die haat en negativiteit transformeert."
+            }
+        ];
+        // Language translations
+        const translations = {
+            'nl': {
+                title: 'Voor Eeuwig Gelukkig - Bijbel Studie',
+                search: 'Vind Wijsheid',
+                advanced: 'Geavanceerd',
+                compare: 'Vergelijk Tradities',
+                reflect: 'Reflectie',
+                searchPlaceholder: 'Zoek wijsheid uit alle tradities...',
+                advancedSearchPlaceholder: 'Voer uw zoekopdracht in met context en details...',
+                allTraditions: 'Alle Tradities',
+                noResults: 'Geen resultaten gevonden',
+                saveReflection: 'Bewaar Reflectie',
+                savedReflections: 'Opgeslagen Reflecties',
+                searchLabel: 'Zoekterm',
+                tradition: 'Traditie',
+                emotion: 'Emotie',
+                all: 'Alle'
+            },
+            'en': {
+                title: 'Forever Happy - Bible Study',
+                search: 'Find Wisdom',
+                advanced: 'Advanced',
+                compare: 'Compare Traditions',
+                reflect: 'Reflection',
+                searchPlaceholder: 'Search wisdom from all traditions...',
+                advancedSearchPlaceholder: 'Enter your search query with context and details...',
+                allTraditions: 'All Traditions',
+                noResults: 'No results found',
+                saveReflection: 'Save Reflection',
+                savedReflections: 'Saved Reflections',
+                searchLabel: 'Search term',
+                tradition: 'Tradition',
+                emotion: 'Emotion',
+                all: 'All'
+            },
+            'de': {
+                title: 'Für immer glücklich - Bibelstudie',
+                search: 'Weisheit finden',
+                advanced: 'Erweitert',
+                compare: 'Traditionen vergleichen',
+                reflect: 'Reflexion',
+                searchPlaceholder: 'Weisheit aus allen Traditionen suchen...',
+                advancedSearchPlaceholder: 'Geben Sie Ihre Suchanfrage mit Kontext und Details ein...',
+                allTraditions: 'Alle Traditionen',
+                noResults: 'Keine Ergebnisse gefunden',
+                saveReflection: 'Reflexion speichern',
+                savedReflections: 'Gespeicherte Reflexionen',
+                searchLabel: 'Suchbegriff',
+                tradition: 'Tradition',
+                emotion: 'Emotion',
+                all: 'Alle'
+            }
+        };
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize advanced systems (defensively - external scripts may be unavailable)
+            try {
+                semanticMapper = typeof SemanticMappingSystem !== 'undefined' ? new SemanticMappingSystem() : null;
+                parabiblicalMatcher = typeof ParabiblicalMatcher !== 'undefined' ? new ParabiblicalMatcher() : null;
+                languageConfig = typeof LanguageConfig !== 'undefined' ? new LanguageConfig() : null;
+            } catch (error) {
+                console.error('Systeem-initialisatie mislukt, val terug op basiszoeken:', error);
+            }
+
+            // Add event listeners for navigation buttons
+            document.querySelectorAll('[data-section]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    showSection(this.getAttribute('data-section'));
+                });
+            });
+
+            // Add event listener for search button
+            const searchBtn = document.getElementById('search-btn');
+            if (searchBtn) {
+                searchBtn.addEventListener('click', performSearch);
+            }
+
+            // Add event listener for search input Enter key
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.addEventListener('keyup', function(event) {
+                    if (event.key === 'Enter') {
+                        performSearch(event);
+                    }
+                });
+            }
+
+            // Add event listeners for filter buttons
+            document.querySelectorAll('[data-tradition]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterByTradition(this.getAttribute('data-tradition'));
+                });
+            });
+
+            // Add event listeners for language buttons
+            document.querySelectorAll('[data-lang]').forEach(btn => {
+                btn.addEventListener('click', function(event) {
+                    switchLanguage(this.getAttribute('data-lang'), event);
+                });
+            });
+
+            // Add event listeners for search type buttons
+            document.querySelectorAll('[data-search-type]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    setSearchType(this.getAttribute('data-search-type'));
+                });
+            });
+
+            // Add event listener for advanced search button
+            const advancedSearchBtn = document.getElementById('advanced-search-btn');
+            if (advancedSearchBtn) {
+                advancedSearchBtn.addEventListener('click', performAdvancedSearch);
+            }
+
+            // Add event listener for compare button
+            const compareBtn = document.getElementById('compare-btn');
+            if (compareBtn) {
+                compareBtn.addEventListener('click', compareTraditions);
+            }
+
+            // Add event listeners for emotion buttons
+            document.querySelectorAll('[data-emotion]').forEach(btn => {
+                btn.addEventListener('click', function(event) {
+                    setEmotion(this.getAttribute('data-emotion'), event);
+                });
+            });
+
+            // Add event listener for save reflection button
+            const saveReflectionBtn = document.getElementById('save-reflection-btn');
+            if (saveReflectionBtn) {
+                saveReflectionBtn.addEventListener('click', saveReflection);
+            }
+
+            // Add event listener for mobile menu toggle
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+            }
+
+            showSection('search');
+            loadSavedReflections();
+            updateLanguage();
+        });
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuToggle = document.getElementById('mobile-menu-toggle');
+
+            if (mobileMenu && menuToggle) {
+                mobileMenu.classList.toggle('hidden');
+                const isHidden = mobileMenu.classList.contains('hidden');
+                menuToggle.innerHTML = isHidden ? '<i class="fas fa-bars text-xl"></i>' : '<i class="fas fa-times text-xl"></i>';
+            }
+        }
+        // Section management
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => {
+                s.classList.add('hidden');
+            });
+
+            // Show selected section
+            const targetSection = document.getElementById(`${section}-section`);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+
+                // Update nav active state
+                document.querySelectorAll('nav button').forEach(btn => {
+                    btn.classList.remove('bg-purple-700');
+                });
+
+                // Close mobile menu after navigation
+                const mobileMenu = document.getElementById('mobile-menu');
+                const menuToggle = document.getElementById('mobile-menu-toggle');
+                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    if (menuToggle) {
+                        menuToggle.innerHTML = '<i class="fas fa-bars text-xl"></i>';
+                    }
+                }
+
+                // Find and activate the correct nav button
+                const targetButton = Array.from(document.querySelectorAll('nav button')).find(btn =>
+                    btn.getAttribute('data-section') === section
+                );
+                if (targetButton) {
+                    targetButton.classList.add('bg-purple-700');
+                }
+
+                currentSection = section;
+            }
+        }
+        // Enhanced language switcher with system integration
+        function switchLanguage(lang, event) {
+            currentLanguage = lang;
+
+            // Update language config if available
+            if (languageConfig) {
+                languageConfig.switchLanguage(lang);
+            }
+
+            updateLanguage();
+
+            // Update button states
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-600');
+                btn.classList.add('hover:bg-purple-700');
+            });
+            if (event && event.target) {
+                event.target.classList.add('bg-purple-600');
+                event.target.classList.remove('hover:bg-purple-700');
+            }
+
+            // Re-run search if there's a current query to get language-specific results
+            const searchInput = document.getElementById('search-input');
+            if (searchInput && searchInput.value.trim()) {
+                performSearch();
+            }
+        }
+        function updateLanguage() {
+            const t = translations[currentLanguage] || translations['nl'];
+
+            // Update page title
+            document.title = t.title;
+
+            // Update navigation buttons
+            const navButtons = document.querySelectorAll('nav button[data-section]');
+            if (navButtons[0]) navButtons[0].textContent = '🔍 ' + t.search;
+            if (navButtons[1]) navButtons[1].textContent = '🔬 ' + t.advanced;
+            if (navButtons[2]) navButtons[2].textContent = '⚖️ ' + t.compare;
+            if (navButtons[3]) navButtons[3].textContent = '💭 ' + t.reflect;
+
+            // Update placeholders
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.placeholder = t.searchPlaceholder;
+            }
+
+            // Update advanced search elements
+            const advancedSearchInput = document.getElementById('advanced-search-input');
+            if (advancedSearchInput) {
+                advancedSearchInput.placeholder = t.advancedSearchPlaceholder || 'Voer uw zoekopdracht in met context en details...';
+            }
+
+            // Update section titles
+            const sectionTitles = document.querySelectorAll('h2');
+            sectionTitles.forEach(title => {
+                if (title.textContent.includes('Vind Wijsheid')) title.textContent = '🔍 ' + t.search;
+                if (title.textContent.includes('Geavanceerd Zoeken')) title.textContent = '🔬 ' + (t.advanced || 'Geavanceerd Zoeken');
+                if (title.textContent.includes('Vergelijk Tradities')) title.textContent = '⚖️ ' + t.compare;
+                if (title.textContent.includes('Reflectie')) title.textContent = '💭 ' + t.reflect;
+            });
+        }
+        // Enhanced search functionality with semantic matching
+        async function performSearch(event) {
+            const searchInput = document.getElementById('search-input');
+            if (!searchInput) return;
+
+            const query = searchInput.value.trim().toLowerCase();
+
+            if (!query) {
+                showMessage('Voer een zoekterm in');
+                return;
+            }
+
+            let results = [];
+
+            // 1. Try semantic mapping first
+            if (semanticMapper) {
+                try {
+                    const semanticResults = await semanticMapper.matchSemanticQuery(query);
+                    if (semanticResults.matches.length > 0) {
+                        results = convertSemanticResults(semanticResults);
+                        console.log('Semantic results found:', semanticResults);
+                    }
+                } catch (error) {
+                    console.error('Semantic mapping error:', error);
+                }
+            }
+
+            // 2. Try parabiblical matching
+            if (results.length === 0 && parabiblicalMatcher) {
+                try {
+                    const paraResults = await parabiblicalMatcher.matchQuery(query);
+                    if (paraResults.matches.length > 0) {
+                        results = convertParabiblicalResults(paraResults);
+                        console.log('Parabiblical results found:', paraResults);
+                    }
+                } catch (error) {
+                    console.error('Parabiblical matching error:', error);
+                }
+            }
+
+            // 3. Fallback to basic wisdom data search + all traditions
+            if (results.length === 0) {
+                // Search in embedded wisdom data
+                let basicResults = wisdomData.filter(item =>
+                    (item.text && item.text.toLowerCase().includes(query)) ||
+                    (item.ai_themas && item.ai_themas.some(theme => theme.toLowerCase().includes(query))) ||
+                    (item.ai_vragen && item.ai_vragen.some(vraag => vraag.toLowerCase().includes(query))) ||
+                    (item.theological_concept && item.theological_concept.toLowerCase().includes(query))
+                );
+
+                // Add fallback data for all traditions to ensure comprehensive results
+                const allTraditions = ['Sikhisme', 'Confucianisme', 'Taoisme', 'Shinto', 'Zoroastrisme'];
+                allTraditions.forEach(trad => {
+                    const fallbackData = generateTraditionFallback(trad, query);
+                    basicResults = basicResults.concat(fallbackData);
+                });
+
+                // Add ultimate fallback if still no results
+                if (basicResults.length === 0) {
+                    basicResults = basicResults.concat(generateFallbackResults(query));
+                }
+
+                results = basicResults;
+            }
+
+            // 4. ULTIMATE FALLBACK - Ensure every word gets results
+            if (results.length === 0) {
+                results = generateFallbackResults(query);
+            }
+
+            displaySearchResults(results, query);
+        }
+        // Generate fallback results for any input word
+        function generateFallbackResults(query) {
+            let fallbackResults = [];
+
+            // Create a generic result for the input word
+            fallbackResults.push({
+                id: `fallback-${query}`,
+                tradition: "Algemeen",
+                book: "Wijsheid",
+                chapter: 1,
+                verse: 1,
+                text: `Uw zoekwoord "${query}" nodigt uit tot reflectie op de diepere betekenis in uw leven. Elke zoektocht naar wijsheid is een stap op uw spirituele pad. ${query} kan een sleutel zijn tot persoonlijke groei en inzicht.`,
+                ai_themas: ["reflectie", "zoektocht", "persoonlijke groei", query],
+                ai_vragen: [`Wat betekent "${query}" voor u?`, `Hoe kunt u "${query}" toepassen in uw leven?`, `Welke lessen biedt ${query}?`],
+                theological_concept: "persoonlijke betekenis",
+                love_type: "toewijding",
+                ai_samenvatting: `Iedere zoektocht naar "${query}" leidt tot persoonlijke inzicht en groei`,
+                confidence: 0.5,
+                matchType: 'fallback'
+            });
+
+            // Add tradition-specific fallback results for the query
+            const allTraditions = ['Sikhisme', 'Confucianisme', 'Taoisme', 'Shinto', 'Zoroastrisme'];
+            allTraditions.forEach(trad => {
+                const traditionFallback = generateTraditionFallback(trad, query);
+                fallbackResults = fallbackResults.concat(traditionFallback);
+            });
+
+            // Add some general wisdom texts that always apply
+            const generalWisdom = [
+                {
+                    id: "wisdom-1",
+                    tradition: "Bijbel",
+                    book: "Spreuken",
+                    chapter: 3,
+                    verse: 5,
+                    text: "Vertrouw op de HEERE met heel uw hart, en steun niet op uw eigen verstand.",
+                    ai_themas: ["vertrouwen", "wijsheid", "geloof"],
+                    ai_vragen: ["Wanneer vertrouw ik op God?", "Hoe kan ik meer vertrouwen ontwikkelen?"],
+                    theological_concept: "vertrouwen",
+                    love_type: "toewijding",
+                    ai_samenvatting: "Ware wijsheid begint met vertrouwen in God",
+                    confidence: 0.6,
+                    matchType: 'general'
+                },
+                {
+                    id: "wisdom-2",
+                    tradition: "Bijbel",
+                    book: "Johannes",
+                    chapter: 13,
+                    verse: 34,
+                    text: "Een nieuw gebod geef ik u, dat u elkaar liefhebt, zoals Ik u heb liefgehad.",
+                    ai_themas: ["liefde", "gebod", "navolging"],
+                    ai_vragen: ["Hoe kan ik anderen liefhebben zoals Jezus?", "Wat is christelijke liefde?"],
+                    theological_concept: "liefde",
+                    love_type: "onvoorwaardelijk",
+                    ai_samenvatting: "Liefde is het kerngebod van het christelijk geloof",
+                    confidence: 0.7,
+                    matchType: 'general'
+                },
+                {
+                    id: "wisdom-3",
+                    tradition: "Boeddhisme",
+                    book: "Dhammapada",
+                    chapter: 1,
+                    verse: 1,
+                    text: "De geest wordt voortgestuwd door gedachten, en wordt erdoor overheerst. Wanneer de gedachten onder controle zijn, is de geest vol vreugde.",
+                    ai_themas: ["geest", "gedachten", "controle", "vreugde"],
+                    ai_vragen: ["Hoe controleer ik mijn gedachten?", "Wat is innerlijke vreugde?"],
+                    theological_concept: "mindfulness",
+                    love_type: "actief",
+                    ai_samenvatting: "Meesterschap over de geest leidt tot ware vreugde",
+                    confidence: 0.6,
+                    matchType: 'general'
+                }
+            ];
+
+            return fallbackResults.concat(generalWisdom);
+        }
+        // Convert semantic mapping results to display format
+        function convertSemanticResults(semanticResults) {
+            const converted = [];
+
+            if (!semanticResults || !semanticResults.matches) return converted;
+
+            semanticResults.matches.forEach(match => {
+                if (match.type === 'concept') {
+                    // Create wisdom-like items from concept matches
+                    if (match.biblicalConcepts && Array.isArray(match.biblicalConcepts)) {
+                        match.biblicalConcepts.forEach(concept => {
+                            converted.push({
+                            id: `semantic-${match.concept}-${concept}`,
+                            tradition: "Semantische Mapping",
+                            book: "Concept",
+                            chapter: 1,
+                            verse: 1,
+                            text: match.explanation || `Concept: ${concept}`,
+                            ai_themas: [concept, match.concept],
+                            ai_vragen: [`Wat is ${concept}?`, `Hoe verhoudt ${concept} zich tot ${match.concept}?`],
+                            theological_concept: concept,
+                            love_type: "onvoorwaardelijk",
+                            ai_samenvatting: match.explanation,
+                            confidence: match.confidence,
+                            matchType: 'semantic'
+                        });
+                        });
+                    }
+                } else if (match.type === 'direct') {
+                    // Create items from direct word matches
+                    if (match.concepts && Array.isArray(match.concepts)) {
+                        match.concepts.forEach(concept => {
+                            converted.push({
+                                id: `semantic-${match.word}-${concept}`,
+                                tradition: "Semantische Mapping",
+                                book: "Woord",
+                                chapter: 1,
+                                verse: 1,
+                                text: `${match.word} → ${concept}: ${(match.triggers || []).join(', ')}`,
+                                ai_themas: [concept, match.word],
+                                ai_vragen: [`Wat betekent ${match.word}?`, `Hoe relateert ${match.word} aan ${concept}?`],
+                                theological_concept: concept,
+                                love_type: "actief",
+                                ai_samenvatting: `${match.word} semantisch gekoppeld aan ${concept}`,
+                                confidence: match.confidence,
+                                matchType: 'semantic'
+                            });
+                        });
+                    }
+                }
+            });
+
+            return converted;
+        }
+        // Convert parabiblical matching results to display format
+        function convertParabiblicalResults(paraResults) {
+            const converted = [];
+
+            if (!paraResults || !paraResults.matches) return converted;
+
+            paraResults.matches.forEach(match => {
+                if (match.verses && match.verses.length > 0) {
+                    match.verses.forEach(verse => {
+                        if (verse) {
+                            converted.push({
+                                id: `para-${match.term}-${verse.reference}`,
+                                tradition: "Parabiblisch",
+                                book: verse.book || match.term,
+                                chapter: verse.chapter || 1,
+                                verse: verse.verse || 1,
+                                text: verse.text || match.definition,
+                                ai_themas: [match.category, match.term],
+                                ai_vragen: [`Wat is ${match.term}?`, match.definition],
+                                theological_concept: match.term,
+                                love_type: "transcendent",
+                                ai_samenvatting: match.explanation,
+                                confidence: match.confidence,
+                                matchType: 'parabiblical'
+                            });
+                        }
+                    });
+                } else {
+                    // Create item without verse
+                    converted.push({
+                        id: `para-${match.term}`,
+                        tradition: "Parabiblisch",
+                        book: match.term,
+                        chapter: 1,
+                        verse: 1,
+                        text: match.definition,
+                        ai_themas: [match.category, match.term],
+                        ai_vragen: [`Wat is ${match.term}?`],
+                        theological_concept: match.term,
+                        love_type: "transcendent",
+                        ai_samenvatting: match.explanation,
+                        confidence: match.confidence,
+                        matchType: 'parabiblical'
+                    });
+                }
+            });
+
+            return converted;
+        }
+        function displaySearchResults(results, query) {
+            const resultsContainer = document.getElementById('search-results');
+            if (!resultsContainer) return;
+
+            if (results.length === 0) {
+                const t = translations[currentLanguage] || translations['nl'];
+                resultsContainer.innerHTML = `<div class="col-span-2 text-center py-8"><i class="fas fa-search text-4xl text-gray-300 mb-4"></i><p class="text-gray-500">${t.noResults}</p></div>`;
+                return;
+            }
+
+            const html = results.map(item => createWisdomCard(item)).join('');
+            resultsContainer.innerHTML = html;
+        }
+        function createWisdomCard(item) {
+            const confidenceColor = item.confidence > 0.8 ? 'green' : item.confidence > 0.6 ? 'yellow' : 'red';
+            const matchTypeIcon = item.matchType === 'semantic' ? '🧠' : item.matchType === 'parabiblical' ? '📚' : item.matchType === 'fallback' ? '🔍' : item.matchType === 'general' ? '✨' : '📖';
+            const traditionClass = (item.tradition || '').toLowerCase().replace(/\s+/g, '-');
+
+            return `
+                <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 hover:shadow-lg transition-shadow wisdom-card">
+                    <div class="flex flex-col sm:flex-row sm:items-start gap-3">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex flex-wrap items-center gap-1 sm:gap-2 mb-2">
+                                <span class="text-base sm:text-lg">${matchTypeIcon}</span>
+                                <span class="tradition-badge ${traditionClass} text-xs">${item.tradition}</span>
+                                <span class="text-xs text-gray-500 hidden sm:inline">${item.book} ${item.chapter}:${item.verse}</span>
+                                ${item.confidence ? `
+                                    <span class="text-xs px-1 sm:px-2 py-1 bg-${confidenceColor}-100 text-${confidenceColor}-800 rounded">
+                                        ${(item.confidence * 100).toFixed(0)}%
+                                    </span>
+                                ` : ''}
+                                ${item.matchType === 'fallback' ? `
+                                    <span class="text-xs px-1 sm:px-2 py-1 bg-purple-100 text-purple-800 rounded">
+                                        Reflectie
+                                    </span>
+                                ` : ''}
+                            </div>
+                            <blockquote class="text-sm italic text-gray-700 mb-2 break-words">
+                                "${item.text}"
+                            </blockquote>
+                            <div class="flex flex-wrap gap-1">
+                                ${(item.ai_themas && Array.isArray(item.ai_themas) ? item.ai_themas.slice(0, 3).map(theme =>
+                                    `<span class="text-xs px-1 sm:px-2 py-1 bg-blue-100 text-blue-800 rounded">${theme}</span>`
+                                ).join('') : '')}
+                            </div>
+                            ${item.ai_samenvatting ? `
+                                <div class="mt-2 text-xs text-gray-600 italic">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    ${item.ai_samenvatting}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        // Filter by tradition
+        function filterByTradition(tradition) {
+            const searchInput = document.getElementById('search-input');
+            const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
+            let filteredData = [];
+
+            if (tradition === 'all') {
+                // For 'all', include both embedded data and fallback data for all traditions
+                const embeddedData = wisdomData;
+                const embeddedTraditions = [...new Set(embeddedData.map(item => item.tradition))];
+
+                embeddedTraditions.forEach(trad => {
+                    const traditionData = wisdomData.filter(item => item.tradition === trad);
+                    filteredData = filteredData.concat(traditionData);
+                });
+
+                // Add fallback data for traditions not in embedded data
+                const allTraditions = ['Bijbel', 'Jodendom', 'Christendom', 'Islam', 'Hindoe', 'Boeddhisme', 'Sikhisme', 'Confucianisme', 'Taoisme', 'Shinto', 'Zoroastrisme'];
+                const missingTraditions = allTraditions.filter(trad => !embeddedTraditions.includes(trad));
+
+                missingTraditions.forEach(trad => {
+                    const fallbackData = generateTraditionFallback(trad, query || 'wijsheid');
+                    filteredData = filteredData.concat(fallbackData);
+                });
+            } else {
+                // For specific traditions, include both embedded data and fallback data
+                const traditionData = wisdomData.filter(item => item.tradition === tradition);
+                filteredData = filteredData.concat(traditionData);
+                filteredData = filteredData.concat(generateTraditionFallback(tradition, query || 'wijsheid'));
+            }
+
+            if (query && filteredData.length > 0) {
+                // For embedded data, apply query filter
+                // For fallback data, they already contain the query dynamically
+                filteredData = filteredData.filter(item =>
+                    (item.text && item.text.toLowerCase().includes(query)) ||
+                    (item.ai_themas && item.ai_themas.some(theme => theme.toLowerCase().includes(query))) ||
+                    (item.matchType === 'fallback' || item.matchType === 'general') // Always include fallback results
+                );
+            }
+
+            displaySearchResults(filteredData, query);
+
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-purple-500');
+            });
+
+            const targetButton = Array.from(document.querySelectorAll('.filter-btn')).find(btn =>
+                btn.getAttribute('data-tradition') === tradition
+            );
+            if (targetButton) {
+                targetButton.classList.add('ring-2', 'ring-purple-500');
+            }
+        }
+        // Compare traditions
+        function compareTraditions() {
+            const tradition1Select = document.getElementById('tradition1');
+            const tradition2Select = document.getElementById('tradition2');
+            const questionInput = document.getElementById('compare-question');
+
+            if (!tradition1Select.value || !tradition2Select.value) {
+                showMessage('Selecteer twee tradities om te vergelijken');
+                return;
+            }
+
+            const tradition1 = tradition1Select.value;
+            const tradition2 = tradition2Select.value;
+            const question = questionInput.value.toLowerCase().trim() || 'liefde';
+
+            let set1 = wisdomData.filter(item => item.tradition === tradition1);
+            let set2 = wisdomData.filter(item => item.tradition === tradition2);
+
+            // Add fallback results for traditions without data
+            if (set1.length === 0) {
+                set1 = generateTraditionFallback(tradition1, question);
+            }
+
+            if (set2.length === 0) {
+                set2 = generateTraditionFallback(tradition2, question);
+            }
+
+            displayTraditionResults('tradition1-result', set1, tradition1);
+            displayTraditionResults('tradition2-result', set2, tradition2);
+        }
+        // Generate fallback wisdom data for traditions without embedded data
+        function generateTraditionFallback(tradition, question) {
+            const fallbackData = {
+                'Sikhisme': [
+                    {
+                        id: "SIKH-1",
+                        tradition: "Sikhisme",
+                        book: "Guru Granth Sahib",
+                        chapter: 1,
+                        verse: 1,
+                        text: `Een en dezelfde Vader van ons allen, de enige Universaliteit en waarheid, de schepper van alles. ${question ? `Reflectie op ${question}:` : ''}`,
+                        ai_themas: ["eenheid", "schepper", "waarheid", ...(question ? [question] : [])],
+                        ai_vragen: ["Wat betekent eenheid in het Sikhisme?", "Hoe zien we God als schepper?", ...(question ? [`Wat is ${question} in het Sikhisme?`] : [])],
+                        theological_concept: "ik onkar",
+                        love_type: "onvoorwaardelijk",
+                        ai_samenvatting: "Alle mensen komen uit dezelfde bron en zijn gelijk.",
+                        confidence: 0.6,
+                        matchType: 'general'
+                    },
+                    {
+                        id: "SIKH-2",
+                        tradition: "Sikhisme",
+                        book: "Guru Granth Sahib",
+                        chapter: 2,
+                        verse: 12,
+                        text: `Dien de mensheid en werk met eerlijkheid en liefde in je hart. ${question ? `Toepassing van ${question}:` : ''}`,
+                        ai_themas: ["dienstbaarheid", "eerlijkheid", "liefde", ...(question ? [question] : [])],
+                        ai_vragen: ["Hoe dienen we de mensheid?", "Wat is eerlijke liefde?", ...(question ? [`Hoe past ${question} in dienstbaarheid?`] : [])],
+                        theological_concept: "seva",
+                        love_type: "actief",
+                        ai_samenvatting: "Ware spiritualiteit toont zich in dienst aan anderen.",
+                        confidence: 0.6,
+                        matchType: 'general'
+                    }
+                ],
+                'Confucianisme': [
+                    {
+                        id: "CONF-1",
+                        tradition: "Confucianisme",
+                        book: "Analecten",
+                        chapter: 4,
+                        verse: 15,
+                        text: `De meester zei: 'Zeng, mijn vriend, is er één woord dat kan dienen als leidend principe voor het hele leven?' Zeng antwoordde: 'Is dat niet wederkerigheid? Behandel anderen zoals jezelf behandeld wilt worden.' ${question ? `Toepassing op ${question}:` : ''}`,
+                        ai_themas: ["wederkerigheid", "gouden regel", "ethiek", ...(question ? [question] : [])],
+                        ai_vragen: ["Wat is de gouden regel?", "Hoe passen we wederkerigheid toe?", ...(question ? [`Hoe past ${question} in de gouden regel?`] : [])],
+                        theological_concept: "shu",
+                        love_type: "actief",
+                        ai_samenvatting: "De kern van alle ethiek is wederkerigheid in behandeling.",
+                        confidence: 0.6,
+                        matchType: 'general'
+                    },
+                    {
+                        id: "CONF-2",
+                        tradition: "Confucianisme",
+                        book: "Analecten",
+                        chapter: 12,
+                        verse: 22,
+                        text: `Behandel anderen met respect en vriendelijkheid, en ze zullen je met respect en vriendelijkheid behandelen. ${question ? `${question} in relaties:` : ''}`,
+                        ai_themas: ["respect", "vriendelijkheid", "relaties", ...(question ? [question] : [])],
+                        ai_vragen: ["Waarom is respect belangrijk?", "Hoe bouwen we goede relaties?", ...(question ? [`Hoe beïnvloedt ${question} relaties?`] : [])],
+                        theological_concept: "ren",
+                        love_type: "actief",
+                        ai_samenvatting: "Harmonieuze relaties beginnen met respect en vriendelijkheid.",
+                        confidence: 0.6,
+                        matchType: 'general'
+                    }
+                ],
+                'Taoisme': [
+                    {
+                        id: "TAO-1",
+                        tradition: "Taoisme",
+                        book: "Tao Te Ching",
+                        chapter: 1,
+                        verse: 1,
+                        text: `De Tao die kan worden uitgesproken is niet de eeuwige Tao. De naam die kan worden genoemd is niet de eeuwige naam. ${question ? `Reflectie op ${question}:` : ''}`,
+                        ai_themas: ["tao", "onbenoembaar", "eindeloos", ...(question ? [question] : [])],
+                        ai_vragen: ["Wat is de Tao?", "Waarom is het onbenoembaar?", ...(question ? [`Hoe relateert ${question} aan de Tao?`] : [])],
+                        theological_concept: "tao",
+                        love_type: "transcendent",
+                        ai_samenvatting: "De ultieme realiteit transcendeert woorden en concepten.",
+                        confidence: 0.6,
+                        matchType: 'general'
+                    },
+                    {
+                        id: "TAO-2",
+                        tradition: "Taoisme",
+                        book: "Tao Te Ching",
+                        chapter: 8,
+                        verse: 1,
+                        text: `Het hoogste goed is als water. Water geeft leven aan alle dingen zonder te concurreren. ${question ? `${question} als water:` : ''}`,
+                        ai_themas: ["water", "niet-concurreren", "vrijgevigheid", ...(question ? [question] : [])],
+                        ai_vragen: ["Waarom is water het hoogste goed?", "Hoe kunnen we niet-concurreren?", ...(question ? [`Hoe past ${question} in niet-concurreren?`] : [])],
+                        theological_concept: "wu wei",
+                        love_type: "transcendent",
+                        ai_samenvatting: "Ware kracht ligt in dienstbaarheid zonder ego.",
+                        confidence: 0.6,
+                        matchType: 'general'
+                    }
+                ],
+                'Shinto': [
+                    {
+                        id: "SHIN-1",
+                        tradition: "Shinto",
+                        book: "Kojiki",
+                        chapter: 1,
+                        verse: 1,
+                        text: `Toen de hemel en aarde nog jong waren, waren de goden talrijk en leefden in harmonie. ${question ? `${question} in de schepping:` : ''}`,
+                        ai_themas: ["schepping", "goden", "harmonie", ...(question ? [question] : [])],
+                        ai_vragen: ["Wat is de oorsprong van alles?", "Hoe leven goden in harmonie?", ...(question ? [`Hoe relateert ${question} aan de schepping?`] : [])],
+                        theological_concept: "kami",
+                        love_type: "transcendent",
+                        ai_samenvatting: "De wereld is gevuld met godelijke aanwezigheid en harmonie.",
+                        confidence: 0.6,
+                        matchType: 'general'
+                    },
+                    {
+                        id: "SHIN-2",
+                        tradition: "Shinto",
+                        book: "Nihon Shoki",
+                        chapter: 2,
+                        verse: 15,
+                        text: `Zuiverheid van hart brengt harmonie met de goden en de natuur. ${question ? `${question} en zuiverheid:` : ''}`,
+                        ai_themas: ["zuiverheid", "harmonie", "natuur", ...(question ? [question] : [])],
+                        ai_vragen: ["Wat betekent zuiverheid?", "Hoe vinden we harmonie?", ...(question ? [`Hoe bevordert ${question} zuiverheid?`] : [])],
+                        theological_concept: "harai",
+                        love_type: "actief",
+                        ai_samenvatting: "Innerlijke zuiverheid leidt tot harmonie met alles.",
+                        confidence: 0.6,
+                        matchType: 'general'
+                    }
+                ],
+                'Zoroastrisme': [
+                    {
+                        id: "ZORO-1",
+                        tradition: "Zoroastrisme",
+                        book: "Avesta",
+                        chapter: 1,
+                        verse: 1,
+                        text: `In het begin was er één schepper, Ahura Mazda, wiens gedachten goed, zijn woorden waar, en zijn daden heilig zijn. ${question ? `${question} en het goede:` : ''}`,
+                        ai_themas: ["schepper", "goedheid", "waarheid", ...(question ? [question] : [])],
+                        ai_vragen: ["Wie is Ahura Mazda?", "Wat is ware goedheid?", ...(question ? [`Hoe relateert ${question} aan Ahura Mazda?`] : [])],
+                        theological_concept: "ahura mazda",
+                        love_type: "onvoorwaardelijk",
+                        ai_samenvatting: "God is de bron van alle goedheid, waarheid en heiligheid.",
+                        confidence: 0.6,
+                        matchType: 'general'
+                    },
+                    {
+                        id: "ZORO-2",
+                        tradition: "Zoroastrisme",
+                        book: "Avesta",
+                        chapter: 3,
+                        verse: 45,
+                        text: `Kies het goede pad van waarheid en rechtvaardigheid, en verwerp het pad van leugen en onrechtvaardigheid. ${question ? `${question} en waarheid:` : ''}`,
+                        ai_themas: ["keuze", "waarheid", "rechtvaardigheid", ...(question ? [question] : [])],
+                        ai_vragen: ["Hoe kiezen we het goede?", "Wat is rechtvaardigheid?", ...(question ? [`Hoe past ${question} in waarheid?`] : [])],
+                        theological_concept: "asha",
+                        love_type: "actief",
+                        ai_samenvatting: "Het leven is een keuze tussen waarheid en leugen.",
+                        confidence: 0.6,
+                        matchType: 'general'
+                    }
+                ]
+            };
+
+            return fallbackData[tradition] || [
+                {
+                    id: `FALLBACK-${tradition}-1`,
+                    tradition: tradition,
+                    book: "Heilige Teksten",
+                    chapter: 1,
+                    verse: 1,
+                    text: `${tradition} leert ons dat liefde en wijsheid de kern van een betekenisvol leven zijn. ${question ? `Reflectie op ${question}:` : ''} Zoek naar harmonie met jezelf, anderen en het universum. ${question ? `In dit verband is ${question} een belangrijk thema.` : ''}`,
+                    ai_themas: ["liefde", "wijsheid", "harmonie", ...(question ? [question] : [])],
+                    ai_vragen: ["Wat is wijsheid in deze traditie?", "Hoe vinden we harmonie?", ...(question ? [`Hoe past ${question} in wijsheid?`] : [])],
+                    theological_concept: "universale wijsheid",
+                    love_type: "onvoorwaardelijk",
+                    ai_samenvatting: `De kern van ${tradition} is het streven naar harmonie en wijsheid.`
+                }
+            ];
+        }
+        function displayTraditionResults(containerId, results, tradition) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            // Update the title to show the tradition name
+            const titleElement = document.getElementById(containerId.replace('-result', '-title'));
+            if (titleElement) {
+                titleElement.textContent = `${tradition} Resultaten (${results.length})`;
+            }
+
+            if (results.length === 0) {
+                container.innerHTML = '<p class="text-gray-500">Geen resultaten gevonden</p>';
+                return;
+            }
+
+            const html = results.map(item => `
+                <div class="mb-4 p-3 bg-gray-50 rounded">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="tradition-badge ${(item.tradition || '').toLowerCase()}">${item.tradition}</span>
+                        <span class="text-xs text-gray-500">${item.book} ${item.chapter}:${item.verse}</span>
+                    </div>
+                    <blockquote class="text-sm italic text-gray-700">
+                        "${item.text}"
+                    </blockquote>
+                    <div class="mt-2 text-xs text-gray-600">
+                        <strong>Concepten:</strong> ${(item.ai_themas && Array.isArray(item.ai_themas) ? item.ai_themas.join(', ') : 'Geen concepten')}
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = html;
+        }
+        // Reflection functions
+        function setEmotion(emotion, event) {
+            currentEmotion = emotion;
+            loadWisdomForEmotion(emotion);
+
+            // Update button states
+            document.querySelectorAll('.emotion-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-purple-500');
+            });
+            if (event && event.target) {
+                event.target.classList.add('ring-2', 'ring-purple-500');
+            }
+        }
+        function loadWisdomForEmotion(emotion) {
+            const container = document.getElementById('wisdom-selection');
+            if (!container) return;
+
+            const emotionWisdomMap = {
+                'vreugde': ['blijdschap', 'geluk', 'vreugde', 'zalig'],
+                'rust': ['rust', 'vrede', 'kalm', 'sereniteit'],
+                'twijfel': ['wijsheid', 'geloof', 'vertrouwen', 'hoop'],
+                'dankbaarheid': ['dankbaarheid', 'lof', 'prijs', 'eer'],
+                'zorgen': ['angst', 'zorgen', 'vrees', 'troost']
+            };
+
+            const emotionKeywords = emotionWisdomMap[emotion] || [];
+
+            const relevantWisdom = wisdomData.filter(item => {
+                if (!item.text || !item.ai_themas) return false;
+
+                const textLower = item.text.toLowerCase();
+                const themesLower = item.ai_themas.join(' ').toLowerCase();
+
+                return emotionKeywords.some(keyword =>
+                    textLower.includes(keyword) || themesLower.includes(keyword)
+                );
+            }).slice(0, 6);
+
+            const displayWisdom = relevantWisdom.length > 0 ? relevantWisdom : wisdomData.slice(0, 6);
+
+            const html = displayWisdom.map(item => {
+                const reference = item.book && item.chapter && item.verse
+                    ? `${item.book} ${item.chapter}:${item.verse}`
+                    : item.tradition;
+
+                return `
+                    <div class="wisdom-card bg-white rounded-lg p-4 mb-3 cursor-pointer hover:shadow-md transition-shadow" data-wisdom-id="${item.id}">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" id="wisdom-${item.id}" value="${item.id}" class="wisdom-checkbox mt-1">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="tradition-badge ${(item.tradition || '').toLowerCase()}">${item.tradition}</span>
+                                    <span class="text-xs text-gray-500">${reference}</span>
+                                </div>
+                                <blockquote class="text-sm italic text-gray-600 mb-2">
+                                    "${item.text}"
+                                </blockquote>
+                                <div class="flex flex-wrap gap-1">
+                                    ${(item.ai_themas && Array.isArray(item.ai_themas) ? item.ai_themas.slice(0, 3).map(theme =>
+                                        `<span class="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">${theme}</span>`
+                                    ).join('') : '')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = html;
+
+            // Add event listeners
+            document.querySelectorAll('.wisdom-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.type !== 'checkbox') {
+                        const checkbox = this.querySelector('.wisdom-checkbox');
+                        if (checkbox) {
+                            checkbox.checked = !checkbox.checked;
+                            this.classList.toggle('selected', checkbox.checked);
+                        }
+                    }
+                });
+            });
+        }
+        function saveReflection() {
+            const reflectionTextInput = document.getElementById('reflection-text');
+            if (!reflectionTextInput) return;
+
+            const reflectionText = reflectionTextInput.value.trim();
+            const selectedWisdom = Array.from(document.querySelectorAll('.wisdom-checkbox:checked'))
+                .map(cb => cb.value);
+
+            if (!currentEmotion || !reflectionText) {
+                showMessage('Selecteer een emotie en schrijf je reflectie');
+                return;
+            }
+
+            if (reflectionText.length < 10) {
+                showMessage('Schrijf een wat langere reflectie (minimaal 10 karakters)');
+                return;
+            }
+
+            const reflection = {
+                id: Date.now(),
+                emotion: currentEmotion,
+                text: reflectionText,
+                wisdom: selectedWisdom,
+                date: new Date().toISOString()
+            };
+
+            // Get existing reflections
+            let reflections = JSON.parse(localStorage.getItem('liefde-weisheit-reflections') || '[]');
+            reflections.push(reflection);
+            localStorage.setItem('liefde-weisheit-reflections', JSON.stringify(reflections));
+
+            // Clear form
+            reflectionTextInput.value = '';
+            document.querySelectorAll('.wisdom-checkbox').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.wisdom-card').forEach(card => card.classList.remove('selected'));
+
+            showMessage('Reflectie opgeslagen!', 'success');
+            loadSavedReflections();
+        }
+        function loadSavedReflections() {
+            const container = document.getElementById('saved-reflections');
+            if (!container) return;
+
+            const reflections = JSON.parse(localStorage.getItem('liefde-weisheit-reflections') || '[]');
+
+            if (reflections.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">Nog geen reflecties opgeslagen</p>';
+                return;
+            }
+
+            const html = reflections.map(reflection => `
+                <div class="mb-4 p-4 bg-gray-50 rounded-lg">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="emotion-badge px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">${reflection.emotion}</span>
+                        <span class="text-xs text-gray-500">${new Date(reflection.date).toLocaleDateString()}</span>
+                    </div>
+                    <p class="text-gray-700 mb-2">${reflection.text}</p>
+                    ${reflection.wisdom && reflection.wisdom.length > 0 ? `
+                        <div class="text-xs text-gray-500">
+                            <i class="fas fa-book-open mr-1"></i>
+                            ${reflection.wisdom.length} wijsheidsteksten geselecteerd
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+
+            container.innerHTML = html;
+        }
+        // Advanced search functions
+        function setSearchType(type) {
+            currentSearchType = type;
+
+            // Update button states
+            document.querySelectorAll('.search-type-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-purple-500');
+            });
+
+            const targetButton = Array.from(document.querySelectorAll('.search-type-btn')).find(btn =>
+                btn.getAttribute('data-search-type') === type
+            );
+            if (targetButton) {
+                targetButton.classList.add('ring-2', 'ring-purple-500');
+            }
+        }
+        async function performAdvancedSearch() {
+            const searchInput = document.getElementById('advanced-search-input');
+            const confidenceSelect = document.getElementById('confidence-threshold');
+            const limitSelect = document.getElementById('results-limit');
+            const languageSelect = document.getElementById('language-focus');
+
+            if (!searchInput) return;
+
+            const query = searchInput.value.trim();
+            if (!query) {
+                showMessage('Voer een zoekopdracht in');
+                return;
+            }
+
+            // Update settings
+            confidenceThreshold = parseFloat(confidenceSelect?.value || 0.7);
+            resultsLimit = parseInt(limitSelect?.value || 10);
+            const languageFocus = languageSelect?.value || 'all';
+
+            let allResults = [];
+
+            // Search based on type
+            if (currentSearchType === 'all' || currentSearchType === 'semantic') {
+                if (semanticMapper) {
+                    try {
+                        const semanticResults = await semanticMapper.matchSemanticQuery(query);
+                        if (semanticResults.matches.length > 0) {
+                            const converted = convertSemanticResults(semanticResults)
+                                .filter(r => !r.confidence || r.confidence >= confidenceThreshold)
+                                .slice(0, resultsLimit);
+                            allResults = allResults.concat(converted);
+                        }
+                    } catch (error) {
+                        console.error('Semantic mapping error:', error);
+                    }
+                }
+            }
+
+            if (currentSearchType === 'all' || currentSearchType === 'parabiblical') {
+                if (parabiblicalMatcher) {
+                    try {
+                        const paraResults = await parabiblicalMatcher.matchQuery(query, { fuzzyThreshold: confidenceThreshold });
+                        if (paraResults.matches.length > 0) {
+                            const converted = convertParabiblicalResults(paraResults)
+                                .filter(r => !r.confidence || r.confidence >= confidenceThreshold)
+                                .slice(0, resultsLimit);
+                            allResults = allResults.concat(converted);
+                        }
+                    } catch (error) {
+                        console.error('Parabiblical matching error:', error);
+                    }
+                }
+            }
+
+            if (currentSearchType === 'all' || currentSearchType === 'basic') {
+                // Search in embedded wisdom data
+                let basicResults = wisdomData.filter(item =>
+                    (item.text && item.text.toLowerCase().includes(query.toLowerCase())) ||
+                    (item.ai_themas && item.ai_themas.some(theme => theme.toLowerCase().includes(query.toLowerCase()))) ||
+                    (item.ai_vragen && item.ai_vragen.some(vraag => vraag.toLowerCase().includes(query.toLowerCase()))) ||
+                    (item.theological_concept && item.theological_concept.toLowerCase().includes(query.toLowerCase()))
+                );
+
+                // Add fallback data for all traditions to ensure comprehensive results
+                const allTraditions = ['Sikhisme', 'Confucianisme', 'Taoisme', 'Shinto', 'Zoroastrisme'];
+                allTraditions.forEach(trad => {
+                    const fallbackData = generateTraditionFallback(trad, query.toLowerCase());
+                    basicResults = basicResults.concat(fallbackData);
+                });
+
+                // Add ultimate fallback if still no results
+                if (basicResults.length === 0) {
+                    basicResults = basicResults.concat(generateFallbackResults(query.toLowerCase()));
+                }
+
+                // Apply limit after combining all results
+                basicResults = basicResults.slice(0, resultsLimit);
+                allResults = allResults.concat(basicResults);
+            }
+
+            // ULTIMATE FALLBACK - Ensure every word gets results in advanced search too
+            if (allResults.length === 0) {
+                allResults = generateFallbackResults(query);
+            }
+
+            // Sort by confidence if available
+            allResults.sort((a, b) => (b.confidence || 0) - (a.confidence || 0));
+
+            displayAdvancedSearchResults(allResults, query);
+        }
+        function displayAdvancedSearchResults(results, query) {
+            const resultsContainer = document.getElementById('advanced-search-results');
+            if (!resultsContainer) return;
+
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="col-span-2 text-center py-8">
+                        <i class="fas fa-search text-4xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500">Geen resultaten gevonden voor "${query}"</p>
+                        <p class="text-sm text-gray-400 mt-2">Probeer een andere zoekterm of verlaag de confidence drempel</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Group results by type
+            const groupedResults = {
+                semantic: results.filter(r => r.matchType === 'semantic'),
+                parabiblical: results.filter(r => r.matchType === 'parabiblical'),
+                basic: results.filter(r => !r.matchType),
+                fallback: results.filter(r => r.matchType === 'fallback'),
+                general: results.filter(r => r.matchType === 'general')
+            };
+
+            let html = '';
+
+            // Display each group
+            if (groupedResults.semantic.length > 0) {
+                html += `
+                    <div class="col-span-2 mb-6">
+                        <h3 class="text-lg font-semibold mb-3 text-blue-800">🧠 Semantische Resultaten (${groupedResults.semantic.length})</h3>
+                        <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                            ${groupedResults.semantic.map(item => createWisdomCard(item)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (groupedResults.parabiblical.length > 0) {
+                html += `
+                    <div class="col-span-2 mb-6">
+                        <h3 class="text-lg font-semibold mb-3 text-green-800">📚 Parabiblische Resultaten (${groupedResults.parabiblical.length})</h3>
+                        <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                            ${groupedResults.parabiblical.map(item => createWisdomCard(item)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (groupedResults.fallback.length > 0) {
+                html += `
+                    <div class="col-span-2 mb-6">
+                        <h3 class="text-lg font-semibold mb-3 text-purple-800">🔍 Persoonlijke Reflectie (${groupedResults.fallback.length})</h3>
+                        <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                            ${groupedResults.fallback.map(item => createWisdomCard(item)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (groupedResults.general.length > 0) {
+                html += `
+                    <div class="col-span-2 mb-6">
+                        <h3 class="text-lg font-semibold mb-3 text-indigo-800">✨ Algemene Wijsheid (${groupedResults.general.length})</h3>
+                        <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                            ${groupedResults.general.map(item => createWisdomCard(item)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (groupedResults.basic.length > 0) {
+                html += `
+                    <div class="col-span-2 mb-6">
+                        <h3 class="text-lg font-semibold mb-3 text-gray-800">📖 Basis Resultaten (${groupedResults.basic.length})</h3>
+                        <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                            ${groupedResults.basic.map(item => createWisdomCard(item)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            resultsContainer.innerHTML = html;
+        }
+        // Message system
+        function showMessage(message, type = 'error') {
+            const toast = document.createElement('div');
+            const bgColor = type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-green-500' : 'bg-blue-500';
+
+            toast.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 max-w-md`;
+            toast.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas ${type === 'error' ? 'fa-exclamation-triangle' : type === 'success' ? 'fa-check-circle' : 'fa-info-circle'} mr-2"></i>
+                    <span>${message}</span>
+                    <button class="toast-close ml-4 text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(toast);
+
+            // Add event listener for close button
+            const closeBtn = toast.querySelector('.toast-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                });
+            }
+
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finanziers01 – Handbuch</title>
+  <style>
+    :root {
+      --bg: #07111d;
+      --panel: #0f1d33;
+      --panel-2: #152845;
+      --text: #f5f7ff;
+      --muted: #c8d3ea;
+      --accent: #f4c542;
+      --accent-2: #4f8cff;
+      --border: rgba(255,255,255,0.16);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(79,140,255,0.25), transparent 24%),
+        radial-gradient(circle at 80% 0%, rgba(244,197,66,0.22), transparent 30%),
+        linear-gradient(135deg, var(--bg), #0e1b30 70%, #14253f);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+      font-weight: 700;
+    }
+    .nav-link:hover { background: rgba(79,140,255,0.2); }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(79,140,255,0.22), rgba(244,197,66,0.16));
+      border: 1px solid rgba(244,197,66,0.22);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 20px 48px rgba(0,0,0,0.24);
+      margin-bottom: 20px;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: auto -20px -30px auto;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(79,140,255,0.2), transparent 70%);
+      pointer-events: none;
+    }
+    .hero h1 { margin: 0 0 10px; font-size: clamp(1.6rem, 2.4vw, 2.3rem); }
+    .hero p { margin: 0; color: var(--muted); max-width: 80ch; }
+    .grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 20px; }
+    .card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.2);
+    }
+    .card h2 { color: var(--accent); margin-top: 0; }
+    ul { padding-left: 18px; color: var(--muted); }
+    .pill { display: inline-block; padding: 7px 10px; border-radius: 999px; background: rgba(244,197,66,0.16); color: var(--accent); font-size: 0.9rem; font-weight: 700; margin-bottom: 10px; }
+    .link-list a { color: #9ed7ff; text-decoration: none; font-weight: 700; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="topbar">
+      <a class="nav-link" href="./index.html">Portal</a>
+      <a class="nav-link" href="./app/index.html">Business</a>
+      <a class="nav-link" href="./bewerbung.html">Bewerbung</a>
+      <a class="nav-link" href="http://127.0.0.1:3000/legacy/index.html" target="_blank" rel="noreferrer">Server B</a>
+    </nav>
+
+    <section class="hero">
+      <div class="pill">Gesamt-Handbuch • Root • Portal • Server B</div>
+      <h1>Finanziers01 ist der sichtbare, klare und dauerhafte Raum für Nutzung, Besitz und Weiterentwicklung.</h1>
+      <p>Dieses Handbuch ist direkt aus dem Portal erreichbar und begleitet den Nutzer von der ersten Begegnung bis zur täglichen Nutzung. Es soll immer eindeutig, sichtbar und stimmig wirken – mit hoher Lesbarkeit, starkem Kontrast und einem ansprechenden, würdigen Ausdruck.</p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>1. Einstieg</h2>
+        <ul>
+          <li>Portal öffnen: <a href="./index.html">index.html</a></li>
+          <li>Business Suite: <a href="./app/index.html">app/index.html</a></li>
+          <li>Bewerbung: <a href="./bewerbung.html">bewerbung.html</a></li>
+          <li>Server B: <a href="http://127.0.0.1:3000/legacy/index.html" target="_blank" rel="noreferrer">lokale Shadow-Ansicht</a></li>
+        <li>Master-Dokument: <a href="./MASTER_DOKUMENT.md">Markdown-Dokument</a></li>
+        <li>Online Office: <a href="./office.html">Teilnahme & Support</a></li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>2. Nutzung</h2>
+        <ul>
+          <li>Portal dient als zentrales Zentrum.</li>
+          <li>Business Suite ist für die Unternehmensstruktur gedacht.</li>
+          <li>Bewerbungssuite dient für Profil- und Präsentationsarbeit.</li>
+          <li>Server B zeigt die Sichtbarkeit und die Runtime-Schicht.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="grid" style="margin-top:20px;">
+      <article class="card">
+        <h2>3. Server und Runtime</h2>
+        <ul>
+          <li>Start: <code>node server/server.js</code></li>
+          <li>Health: <a href="http://127.0.0.1:3000/server/api/health" target="_blank" rel="noreferrer">/server/api/health</a></li>
+          <li>Portal-Root: <a href="http://127.0.0.1:3000/" target="_blank" rel="noreferrer">http://127.0.0.1:3000/</a></li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>4. Design- und Erlebnisprinzipien</h2>
+        <ul>
+          <li>Hoher Kontrast zwischen Hintergrund und Text.</li>
+          <li>Klare, sichtbare Buttons und Navigation.</li>
+          <li>Starke, ruhige, hochwertige Erscheinung.</li>
+          <li>Der Raum soll den Eindruck von Besitz, Sicherheit und Dauer geben.</li>
+        </ul>
+      </article>
+    </section>
+  </div>
+</body>
+</html>

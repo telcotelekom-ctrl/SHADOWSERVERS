@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finanziers01 – Master-Dokument</title>
+  <style>
+    :root {
+      --bg: #07111d;
+      --panel: rgba(7, 17, 29, 0.9);
+      --panel-2: rgba(255, 255, 255, 0.08);
+      --text: #f5f7ff;
+      --muted: #9fb0c9;
+      --accent: #4f8cff;
+      --accent-2: #f4c542;
+      --accent-3: #3edb93;
+      --border: rgba(255,255,255,0.16);
+      --shadow: 0 20px 50px rgba(0,0,0,0.24);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #07111d 0%, #11233d 48%, #0b1626 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px 18px 64px;
+    }
+
+    .top-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .nav-link, .action-btn, .tab-btn {
+      text-decoration: none;
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .nav-link:hover, .action-btn:hover, .tab-btn:hover, .tab-btn.active {
+      background: rgba(79, 140, 255, 0.24);
+      border-color: rgba(79, 140, 255, 0.36);
+    }
+
+    .hero {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      background: linear-gradient(135deg, rgba(79,140,255,0.18), rgba(244,197,66,0.12));
+      box-shadow: var(--shadow);
+    }
+
+    .kicker {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(244,197,66,0.2);
+      color: var(--accent-2);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    h1, h2, h3 { margin-top: 0; }
+    h2 { font-size: 1.25rem; margin-bottom: 10px; }
+    p { margin-top: 0; color: var(--muted); }
+
+    .status-row, .toolbar, .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .toolbar {
+      margin-top: 20px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 280px;
+      padding: 12px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      font: inherit;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .card ul { margin: 8px 0 0; padding-left: 18px; color: var(--muted); }
+    .card li + li { margin-top: 6px; }
+
+    .mono {
+      font-family: Consolas, monospace;
+      color: #d6e7ff;
+    }
+
+    .section-title {
+      margin: 28px 0 12px;
+      color: var(--accent-2);
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .quote {
+      border-left: 3px solid var(--accent-2);
+      padding-left: 12px;
+      margin: 14px 0 0;
+      color: #ffe8b3;
+    }
+
+    .small { font-size: 0.95rem; }
+    .hidden { display: none; }
+
+    @media (max-width: 720px) {
+      .page { padding: 16px 12px 48px; }
+      .hero { padding: 20px; }
+      .toolbar { align-items: stretch; }
+      .search-input { min-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="top-nav" aria-label="Sektionen">
+      <a class="nav-link" href="./index.html">← Portal</a>
+      <a class="nav-link" href="./handbuch.html">Handbuch</a>
+      <a class="nav-link" href="./bedienung.html">Bedienung</a>
+      <a class="nav-link" href="./manifest.html">Manifest</a>
+      <a class="nav-link" href="http://127.0.0.1:3000/legacy/index.html" target="_blank" rel="noreferrer">Server B</a>
+    </nav>
+
+    <section class="hero">
+      <div class="kicker">MASTER-DOKUMENT · UNIVERSAL COMPANY BUILDER</div>
+      <h1>T.&amp;.T. · TEL1.NL · DIGITALNOTAR.IN</h1>
+      <p>Dieses Dokument ist nicht nur eine Beschreibung. Es ist eine lebendige Systemstruktur für Unternehmen, Teams, Zukunft, Erkenntnis, Architektur, Energie und Teilnahme.</p>
+      <div class="status-row">
+        <span class="pill" id="status-pill">Status: wird geladen…</span>
+        <span class="pill">Runtime: Server B</span>
+        <span class="pill">Endpoint: /server/api/master-document</span>
+      </div>
+      <div class="toolbar">
+        <input id="searchInput" class="search-input" type="search" placeholder="Dokumente durchsuchen…" />
+        <div class="actions">
+          <a class="action-btn" id="downloadMarkdown" href="/MASTER_DOKUMENT.md" download>⬇ Markdown</a>
+          <a class="action-btn" id="downloadHtml" href="/master-dokument.html" download>⬇ HTML</a>
+        </div>
+      </div>
+      <div class="tabs" id="tabs"></div>
+      <p class="quote">Das System ist vollständig in die Portal- und Runtime-Welt integriert und kann direkt verwendet werden.</p>
+    </section>
+
+    <h2 class="section-title">Dokumentationsbereiche</h2>
+    <div class="grid" id="sectionGrid"></div>
+
+    <section class="card" style="margin-top: 22px;">
+      <h3>Live-Systemdaten</h3>
+      <p class="small">Die Inhalte werden über die echte Runtime geladen und stehen direkt im System bereit.</p>
+      <div id="live-data" class="small"></div>
+    </section>
+  </main>
+
+  <script>
+    const sectionGrid = document.getElementById('sectionGrid');
+    const tabs = document.getElementById('tabs');
+    const searchInput = document.getElementById('searchInput');
+    const pill = document.getElementById('status-pill');
+    const liveData = document.getElementById('live-data');
+    const downloads = {
+      markdown: document.getElementById('downloadMarkdown'),
+      html: document.getElementById('downloadHtml')
+    };
+
+    let sections = [];
+    let activeGroup = 'all';
+
+    const fallbackSections = [
+      {
+        id: 'system',
+        group: 'system',
+        title: 'Systemübersicht',
+        summary: 'Ein digitales Betriebssystem für Unternehmen, Teams, Zukunft und Nutzung.',
+        bullets: ['Portal, Business Suite und Bewerbung sind direkt erreichbar.', 'Server B fungiert als reale Runtime-Schicht.', 'Die Dokumentation ist Teil des Systems selbst.'],
+        keywords: ['system', 'portal', 'runtime']
+      },
+      {
+        id: 'api',
+        group: 'technik',
+        title: 'API & Backend',
+        summary: 'Echte Node.js-Routen für Health, Auth, Workspaces, Profile und Investor-Rechner.',
+        bullets: ['Health-Endpoint verfügbar.', 'Authentifizierung und Sessions sind funktional.', 'Json-API liefert echte Datenstrukturen.'],
+        keywords: ['api', 'backend', 'node', 'auth']
+      },
+      {
+        id: 'architecture',
+        group: 'architektur',
+        title: 'Architektur & Server',
+        summary: 'Server A und Server B sind als digitale Präsenz und lokale Runtime konzipiert.',
+        bullets: ['Server A ist die sichtbare Präsenz.', 'Server B ist die operative Runtime und Shadow-Ansicht.', 'Portal, App und Daten bleiben synchronisierbar.'],
+        keywords: ['architektur', 'server', 'servera', 'serverb']
+      },
+      {
+        id: 'philosophy',
+        group: 'philosophie',
+        title: 'Teilnahme & Branding',
+        summary: 'Die Plattform verbindet Technik, Verantwortung, Teilnahme und eine dauerhafte Identität.',
+        bullets: ['Freiwilligkeit und Freiheit sind grundlegend.', 'Vertrauen, Wachstum und Verantwortung prägen das System.', 'Die Marke ist sichtbar, dauerhaft und kooperativ.'],
+        keywords: ['philosophie', 'branding', 'teilnahme', 'werte']
+      }
+    ];
+
+    function renderTabs() {
+      const groups = ['all', 'system', 'technik', 'architektur', 'philosophie'];
+      tabs.innerHTML = groups.map((group) => {
+        const label = group === 'all' ? 'Alle' : group.charAt(0).toUpperCase() + group.slice(1);
+        return `<button class="tab-btn ${activeGroup === group ? 'active' : ''}" data-group="${group}" type="button">${label}</button>`;
+      }).join('');
+
+      tabs.querySelectorAll('.tab-btn').forEach((button) => {
+        button.addEventListener('click', () => {
+          activeGroup = button.dataset.group;
+          renderTabs();
+          renderSections();
+        });
+      });
+    }
+
+    function renderSections() {
+      const query = searchInput.value.trim().toLowerCase();
+      const filtered = sections.filter((item) => {
+        const matchesGroup = activeGroup === 'all' || item.group === activeGroup;
+        const haystack = `${item.title} ${item.summary} ${item.keywords.join(' ')}`.toLowerCase();
+        const matchesQuery = !query || haystack.includes(query);
+        return matchesGroup && matchesQuery;
+      });
+
+      if (!filtered.length) {
+        sectionGrid.innerHTML = '<article class="card"><h3>Keine Treffer</h3><p>Die Suche passt zu keinem Dokumentationsbereich.</p></article>';
+        return;
+      }
+
+      sectionGrid.innerHTML = filtered.map((item) => `
+        <article class="card">
+          <h3>${item.title}</h3>
+          <p>${item.summary}</p>
+          <ul>
+            ${item.bullets.map((bullet) => `<li>${bullet}</li>`).join('')}
+          </ul>
+        </article>
+      `).join('');
+    }
+
+    async function loadDocument() {
+      try {
+        const response = await fetch('/server/api/master-document');
+        if (!response.ok) throw new Error('endpoint unavailable');
+        const data = await response.json();
+        sections = data.document?.sections || fallbackSections;
+        if (pill) {
+          pill.textContent = `Status: ${data.document?.status || 'operational'}`;
+        }
+        if (liveData) {
+          liveData.innerHTML = `
+            <strong>${data.document?.title || 'Universal Company Builder'}</strong><br />
+            Version: ${data.document?.version || '1.0.0'}<br />
+            Generiert: ${data.document?.generatedAt || 'jetzt'}<br />
+            Module: ${data.document?.modules?.join(', ') || 'runtime, portal, api'}
+          `;
+        }
+        if (downloads.markdown && data.document?.downloads?.markdown) {
+          downloads.markdown.href = data.document.downloads.markdown;
+        }
+        if (downloads.html && data.document?.downloads?.html) {
+          downloads.html.href = data.document.downloads.html;
+        }
+      } catch (error) {
+        sections = fallbackSections;
+        if (pill) {
+          pill.textContent = 'Status: offline (Fallback aktiv)';
+        }
+        if (liveData) {
+          liveData.innerHTML = 'Die Live-API ist momentan nicht verfügbar. Die Seite arbeitet mit der eingebauten Struktur weiter.';
+        }
+      }
+
+      renderTabs();
+      renderSections();
+    }
+
+    searchInput.addEventListener('input', renderSections);
+    loadDocument();
+  </script>
+</body>
+</html>

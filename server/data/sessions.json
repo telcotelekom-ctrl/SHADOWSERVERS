@@ -1,0 +1,14 @@
+[
+  {
+    "id": "session-1785319817292",
+    "token": "94a165374ad9411ce888a2fc756bf2a0928327de",
+    "userId": "user-4d1e0bad69b4d12d",
+    "createdAt": "2026-07-29T10:10:17.292Z"
+  },
+  {
+    "id": "session-1785319817344",
+    "token": "2256d93f29cb3ba49afd21ff5582459b62c461ea",
+    "userId": "user-4d1e0bad69b4d12d",
+    "createdAt": "2026-07-29T10:10:17.344Z"
+  }
+]

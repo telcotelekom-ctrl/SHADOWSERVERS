@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finanziers01 – Kosmische Enzyklopädie</title>
+  <style>
+    :root {
+      --bg: #050816;
+      --panel: rgba(9, 15, 29, 0.95);
+      --text: #f8fbff;
+      --muted: #9fb0c9;
+      --accent: #6ea8ff;
+      --accent-2: #ffc857;
+      --accent-3: #66e0b4;
+      --border: rgba(255,255,255,0.16);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", sans-serif; background: radial-gradient(circle at top left, rgba(110,168,255,0.18), transparent 24%), linear-gradient(135deg, #050816 0%, #101a31 100%); color: var(--text); }
+    .page { max-width: 1240px; margin: 0 auto; padding: 24px 16px 72px; }
+    .topbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .link { text-decoration: none; color: var(--text); padding: 10px 14px; border-radius: 999px; background: rgba(255,255,255,0.08); border: 1px solid var(--border); font-weight: 700; }
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 22px; padding: 20px; box-shadow: 0 22px 56px rgba(0,0,0,0.24); }
+    .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .toolbar input { flex: 1; min-width: 260px; padding: 12px 14px; border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,0.08); color: var(--text); font: inherit; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 16px; }
+    .entry { border: 1px solid var(--border); border-radius: 16px; padding: 16px; background: rgba(255,255,255,0.06); }
+    .entry h3 { margin-top: 0; }
+    .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.08); border: 1px solid var(--border); margin: 6px 6px 0 0; font-size: 0.84rem; }
+    p { color: var(--muted); line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a class="link" href="./index.html">← Portal</a>
+      <a class="link" href="./master-dokument.html">Master-Dokument</a>
+      <a class="link" href="./office.html">Online Office</a>
+      <a class="link" href="./universe.html">Universe System</a>
+    </div>
+
+    <section class="card">
+      <h1>A∞ — Die Kosmische Enzyklopädie</h1>
+      <p>Das Wissenssystem ist jetzt als durchsuchbare, erweiterbare Enzyklopädie aufgebaut. Jede Kategorie kann weiter vertieft, verbunden und transformiert werden.</p>
+      <div class="toolbar">
+        <input id="searchInput" type="search" placeholder="Enzyklopädie durchsuchen…" />
+      </div>
+      <div id="entries" class="grid"></div>
+    </section>
+  </main>
+
+  <script>
+    const entries = [
+      { title: 'A1 Ursprung', category: 'Achse', summary: 'Der erste Punkt, die Essenz, die Identität und die Quelle aller Schöpfung.', tags: ['Ursprung', 'Identität', 'Essenz'] },
+      { title: 'A2 Linie', category: 'Achse', summary: 'Zeit, Wachstum, Aufstieg und die erste Bewegung der Identität.', tags: ['Zeit', 'Wachstum', 'Aufstieg'] },
+      { title: 'A3 Feld', category: 'Achse', summary: 'Raum, Ausdehnung, Universen und die Weite der Verbindung.', tags: ['Raum', 'Ausdehnung', 'Universen'] },
+      { title: 'A4 Komma', category: 'Achse', summary: 'Bewegung, Transformation, Evolution und die Flow-Logik der Schöpfung.', tags: ['Bewegung', 'Transformation', 'Evolution'] },
+      { title: 'Creator Passport', category: 'Systeme', summary: 'Die Identitäts- und Zugangsstruktur jedes Creators.', tags: ['Creator', 'Passport', 'Identität'] },
+      { title: 'Creator Guild', category: 'Systeme', summary: 'Die Gemeinschaft der Schöpfer und ihre Zusammenarbeit.', tags: ['Guild', 'Gemeinschaft', 'Zusammenarbeit'] },
+      { title: 'Universe Parliament', category: 'Systeme', summary: 'Die Ordnung der universellen Kooperation und Entscheidung.', tags: ['Parlament', 'Ordnung', 'Kooperation'] },
+      { title: 'Axis Temple', category: 'Systeme', summary: 'Der Ort der Achsenrituale, des Sinns und der kosmischen Orientierung.', tags: ['Temple', 'Ritual', 'Orientierung'] },
+      { title: 'Axis Gate', category: 'Systeme', summary: 'Der Übergang zwischen Universen, Realitäten und kosmischen Zuständen.', tags: ['Gate', 'Portal', 'Übergang'] },
+      { title: 'Creator Crown', category: 'Artefakte', summary: 'Das symbolische Instrument der Verantwortung, Führung und Souveränität.', tags: ['Crown', 'Führung', 'Souveränität'] },
+      { title: 'Universe Loom', category: 'Artefakte', summary: 'Die Weberei der Strukturen, Muster und kosmischen Verbindungen.', tags: ['Loom', 'Weberei', 'Muster'] },
+      { title: 'Universe Theater', category: 'Artefakte', summary: 'Die Bühne der Geschichten, der Rollen und der kosmischen Performanz.', tags: ['Theater', 'Geschichte', 'Performance'] },
+      { title: 'Axis Observatory', category: 'Artefakte', summary: 'Das Organ der Wahrnehmung, Betrachtung und kosmischen Sicht.', tags: ['Observatory', 'Wahrnehmung', 'Sicht'] }
+    ];
+
+    const container = document.getElementById('entries');
+    const searchInput = document.getElementById('searchInput');
+
+    function render(filter = '') {
+      const query = filter.trim().toLowerCase();
+      const visible = entries.filter((item) => {
+        const haystack = `${item.title} ${item.category} ${item.summary} ${item.tags.join(' ')}`.toLowerCase();
+        return haystack.includes(query);
+      });
+
+      if (!visible.length) {
+        container.innerHTML = '<div class="entry"><h3>Keine Treffer</h3><p>Die Enzyklopädie enthält im aktuellen Suchbegriff keinen passenden Eintrag.</p></div>';
+        return;
+      }
+
+      container.innerHTML = visible.map((item) => `
+        <article class="entry">
+          <h3>${item.title}</h3>
+          <p><strong>${item.category}</strong></p>
+          <p>${item.summary}</p>
+          <div>${item.tags.map((tag) => `<span class="pill">${tag}</span>`).join('')}</div>
+        </article>
+      `).join('');
+    }
+
+    searchInput.addEventListener('input', (event) => render(event.target.value));
+    render();
+  </script>
+</body>
+</html>

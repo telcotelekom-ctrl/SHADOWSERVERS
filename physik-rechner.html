@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Finanziers01 – Physik-Formel-Rechner</title>
+<style>
+  :root {
+    --bg: #07111d;
+    --panel: rgba(7, 17, 29, 0.9);
+    --panel-2: rgba(255, 255, 255, 0.08);
+    --text: #f5f7ff;
+    --muted: #9fb0c9;
+    --accent: #4f8cff;
+    --accent-2: #f4c542;
+    --accent-3: #3edb93;
+    --danger: #ff6b6b;
+    --border: rgba(255,255,255,0.16);
+    --shadow: 0 20px 50px rgba(0,0,0,0.24);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #07111d 0%, #11233d 48%, #0b1626 100%);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .page { max-width: 1100px; margin: 0 auto; padding: 24px 18px 64px; }
+  .top-nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .nav-link, .btn { text-decoration: none; color: var(--text); padding: 10px 14px; border-radius: 999px; background: var(--panel-2); border: 1px solid var(--border); font-weight: 700; cursor: pointer; font: inherit; }
+  .nav-link:hover, .btn:hover { background: rgba(79, 140, 255, 0.24); }
+  .btn.primary { background: rgba(79,140,255,0.35); border-color: var(--accent); }
+  .hero { border: 1px solid var(--border); border-radius: 24px; padding: 26px; background: linear-gradient(135deg, rgba(79,140,255,0.18), rgba(244,197,66,0.12)); box-shadow: var(--shadow); margin-bottom: 22px; }
+  .kicker { display: inline-block; padding: 8px 12px; border-radius: 999px; background: rgba(244,197,66,0.2); color: var(--accent-2); font-weight: 700; margin-bottom: 10px; }
+  .warn-box { border: 1px solid rgba(255,107,107,0.4); background: rgba(255,107,107,0.08); border-radius: 14px; padding: 12px 14px; margin-top: 14px; font-size: 0.88rem; }
+  h1 { margin-top: 0; font-size: 1.7rem; }
+  h2 { font-size: 1.15rem; margin: 0 0 10px; }
+  p { color: var(--muted); margin-top: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px; padding: 18px; box-shadow: var(--shadow); }
+  label { display: block; font-size: 0.85rem; color: var(--muted); margin: 10px 0 4px; }
+  input, select { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.06); color: var(--text); font: inherit; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .result { margin-top: 12px; padding: 12px; border-radius: 12px; background: rgba(62,219,147,0.12); border: 1px solid rgba(62,219,147,0.3); font-weight: 700; min-height: 1.4em; }
+  .result.error { background: rgba(255,107,107,0.12); border-color: rgba(255,107,107,0.4); color: var(--danger); }
+  .formula { font-family: "Consolas", "Courier New", monospace; color: var(--accent-2); font-size: 1.1rem; margin-bottom: 6px; }
+  .note { font-size: 0.8rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<main class="page">
+  <nav class="top-nav" aria-label="Sektionen">
+    <a class="nav-link" href="./index.html">← Portal</a>
+    <a class="nav-link" href="./ceoc.html">CEOC</a>
+    <a class="nav-link" href="./formel-registry.html">Formel-Registry</a>
+  </nav>
+
+  <section class="hero">
+    <div class="kicker">📐 PHYSIK-FORMEL-RECHNER</div>
+    <h1>Dichte, Masse, Volumen &amp; Ruheenergie — echte Formeln</h1>
+    <p>Ein einfaches Bildungswerkzeug für die vier Grundgleichungen der klassischen Physik.
+      Es rechnet, es simuliert nicht.</p>
+    <div class="warn-box">
+      ⚠️ Dieses Tool <strong>berechnet</strong> Formeln, es <strong>erzeugt keine Energie und keine Materie</strong>.
+      Insbesondere <code>E = m·c²</code> beschreibt die Ruheenergie einer gegebenen Masse (Massen-Energie-Äquivalenz) —
+      es ist keine Anleitung zur Energiegewinnung.
+    </div>
+  </section>
+
+  <div class="grid">
+    <div class="card">
+      <div class="formula">ρ = m / V</div>
+      <h2>Dichte berechnen</h2>
+      <label>Masse m (kg)</label><input id="densMass" type="number" step="any" placeholder="z. B. 10" />
+      <label>Volumen V (m³)</label><input id="densVolume" type="number" step="any" placeholder="z. B. 2" />
+      <div class="actions"><button class="btn primary" id="btnDensity">Berechnen</button></div>
+      <div class="result" id="densResult"></div>
+    </div>
+
+    <div class="card">
+      <div class="formula">m = ρ · V</div>
+      <h2>Masse berechnen</h2>
+      <label>Dichte ρ (kg/m³)</label><input id="massDensity" type="number" step="any" placeholder="z. B. 1000" />
+      <label>Volumen V (m³)</label><input id="massVolume" type="number" step="any" placeholder="z. B. 0.5" />
+      <div class="actions"><button class="btn primary" id="btnMass">Berechnen</button></div>
+      <div class="result" id="massResult"></div>
+    </div>
+
+    <div class="card">
+      <div class="formula">V = m / ρ</div>
+      <h2>Volumen berechnen</h2>
+      <label>Masse m (kg)</label><input id="volMass" type="number" step="any" placeholder="z. B. 500" />
+      <label>Dichte ρ (kg/m³)</label><input id="volDensity" type="number" step="any" placeholder="z. B. 1000" />
+      <div class="actions"><button class="btn primary" id="btnVolume">Berechnen</button></div>
+      <div class="result" id="volResult"></div>
+    </div>
+
+    <div class="card">
+      <div class="formula">E = m · c²</div>
+      <h2>Ruheenergie berechnen (Massen-Energie-Äquivalenz)</h2>
+      <label>Masse m (kg)</label><input id="energyMass" type="number" step="any" placeholder="z. B. 0.001" />
+      <div class="actions"><button class="btn primary" id="btnEnergy">Berechnen</button></div>
+      <div class="result" id="energyResult"></div>
+      <p class="note">c = 299.792.458 m/s (Lichtgeschwindigkeit im Vakuum).</p>
+    </div>
+  </div>
+</main>
+
+<script>
+const C_LIGHT = 299792458; // m/s, exakter SI-Wert
+
+function setResult(id, message, isError) {
+  const el = document.getElementById(id);
+  el.textContent = message;
+  el.classList.toggle('error', Boolean(isError));
+}
+
+function parseNum(id) {
+  const raw = document.getElementById(id).value;
+  const value = Number(raw);
+  return { raw, value, valid: raw !== '' && Number.isFinite(value) };
+}
+
+function calcDensity() {
+  const m = parseNum('densMass');
+  const v = parseNum('densVolume');
+  if (!m.valid || !v.valid) { setResult('densResult', 'Bitte gültige Zahlen für Masse und Volumen eingeben.', true); return; }
+  if (v.value === 0) { setResult('densResult', 'Volumen darf nicht 0 sein.', true); return; }
+  const rho = m.value / v.value;
+  setResult('densResult', `ρ = ${m.value} kg / ${v.value} m³ = ${rho.toLocaleString('de-DE', { maximumFractionDigits: 6 })} kg/m³`);
+}
+
+function calcMass() {
+  const rho = parseNum('massDensity');
+  const v = parseNum('massVolume');
+  if (!rho.valid || !v.valid) { setResult('massResult', 'Bitte gültige Zahlen für Dichte und Volumen eingeben.', true); return; }
+  const m = rho.value * v.value;
+  setResult('massResult', `m = ${rho.value} kg/m³ × ${v.value} m³ = ${m.toLocaleString('de-DE', { maximumFractionDigits: 6 })} kg`);
+}
+
+function calcVolume() {
+  const m = parseNum('volMass');
+  const rho = parseNum('volDensity');
+  if (!m.valid || !rho.valid) { setResult('volResult', 'Bitte gültige Zahlen für Masse und Dichte eingeben.', true); return; }
+  if (rho.value === 0) { setResult('volResult', 'Dichte darf nicht 0 sein.', true); return; }
+  const v = m.value / rho.value;
+  setResult('volResult', `V = ${m.value} kg / ${rho.value} kg/m³ = ${v.toLocaleString('de-DE', { maximumFractionDigits: 6 })} m³`);
+}
+
+function calcEnergy() {
+  const m = parseNum('energyMass');
+  if (!m.valid) { setResult('energyResult', 'Bitte eine gültige Masse eingeben.', true); return; }
+  const e = m.value * C_LIGHT * C_LIGHT;
+  setResult('energyResult', `E = ${m.value} kg × (299.792.458 m/s)² = ${e.toLocaleString('de-DE', { maximumFractionDigits: 2 })} Joule`);
+}
+
+document.getElementById('btnDensity').addEventListener('click', calcDensity);
+document.getElementById('btnMass').addEventListener('click', calcMass);
+document.getElementById('btnVolume').addEventListener('click', calcVolume);
+document.getElementById('btnEnergy').addEventListener('click', calcEnergy);
+</script>
+</body>
+</html>

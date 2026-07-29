@@ -1,0 +1,10 @@
+[
+  {
+    "id": "contact-1785283583384",
+    "name": "Test",
+    "email": "test@example.com",
+    "message": "Hallo",
+    "createdAt": "2026-07-29T00:06:23.384Z",
+    "delivered": false
+  }
+]

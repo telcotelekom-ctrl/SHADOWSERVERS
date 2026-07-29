@@ -1,0 +1,18 @@
+[
+  {
+    "id": "user-raymond",
+    "name": "Raymond Demitrio Tel",
+    "email": "raymond@serverb.local",
+    "role": "admin",
+    "passwordHash": "2258c438b88679e64821d38f229d64dbfda9ee2c775e3383c2f332ef6702e5d8",
+    "createdAt": "2026-07-29T10:10:17.142Z"
+  },
+  {
+    "id": "user-4d1e0bad69b4d12d",
+    "name": "Test User",
+    "email": "auth-education-1785319817250@example.com",
+    "role": "user",
+    "passwordHash": "scrypt$4c71b08582d75a67efbcdb642e7cafca$fef750c42fe94ed3f827f6e184701ee3681fa3216bcd451174795648a6187fb19e3fa9950bd917d8d1771b9d9ddac86d038cddd9c42c3312295556cb5ce6d398",
+    "createdAt": "2026-07-29T10:10:17.290Z"
+  }
+]

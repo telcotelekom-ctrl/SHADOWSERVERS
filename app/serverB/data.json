@@ -1,0 +1,61 @@
+{
+  "title": "Server B • Shadow Control",
+  "subtitle": "Rollenbasierter Shadow-Frame mit sichtbaren Bereichen, Drag&Drop und lokaler Datenbasis.",
+  "roles": {
+    "owner": {
+      "label": "Owner",
+      "description": "Vollzugriff auf Konfiguration, Admin-Panel und Sicherheitslogik."
+    },
+    "editor": {
+      "label": "Editor",
+      "description": "Kann Inhalte pflegen und Module anpassen."
+    },
+    "viewer": {
+      "label": "Viewer",
+      "description": "Nur lesender Zugriff auf die sichtbaren Bereiche."
+    }
+  },
+  "areas": {
+    "owner": [
+      "Owner Console",
+      "Security Hub",
+      "Audit Trail"
+    ],
+    "editor": [
+      "Content Queue",
+      "Media Workflow",
+      "Collaboration Desk"
+    ],
+    "viewer": [
+      "Visibility Report",
+      "Shared Brief",
+      "Status Overview"
+    ]
+  },
+  "security": {
+    "referrerCheck": true,
+    "tokenCheck": true,
+    "sandbox": true,
+    "source": "app/serverB/data.json"
+  },
+  "modules": [
+    {
+      "id": "pulse",
+      "title": "System Pulse",
+      "body": "Die aktive Sicht zeigt den aktuellen Status von Server B, inklusive Rollen-Segmenten und einem sichtbaren Shadow-Frame.",
+      "role": "viewer"
+    },
+    {
+      "id": "ops",
+      "title": "Operations Desk",
+      "body": "Editoren können Inhalte aktualisieren, Module verschieben und neue Inhalte im Rahmen der Arbeitslogik vorbereiten.",
+      "role": "editor"
+    },
+    {
+      "id": "security",
+      "title": "Security Hub",
+      "body": "Owner sehen die Sicherheitslogik mit Token-Check, Referrer-Check und iframe-Sandbox für geschützte Freigaben.",
+      "role": "owner"
+    }
+  ]
+}

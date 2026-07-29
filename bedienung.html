@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finanziers01 – Bedienung</title>
+  <style>
+    :root {
+      --bg: #07111d;
+      --panel: #0f1d33;
+      --text: #f5f7ff;
+      --muted: #c8d3ea;
+      --accent: #f4c542;
+      --accent-2: #4f8cff;
+      --border: rgba(255,255,255,0.16);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(79,140,255,0.25), transparent 24%),
+        radial-gradient(circle at 80% 0%, rgba(244,197,66,0.22), transparent 30%),
+        linear-gradient(135deg, var(--bg), #0e1b30 70%, #14253f);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .shell { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    .topbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+    .nav-link { display: inline-flex; align-items: center; justify-content: center; padding: 10px 14px; border-radius: 999px; text-decoration: none; color: var(--text); background: rgba(255,255,255,0.08); border: 1px solid var(--border); font-weight: 700; }
+    .nav-link:hover { background: rgba(79,140,255,0.2); }
+    .card { background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05)); border: 1px solid rgba(255,255,255,0.14); border-radius: 18px; padding: 20px; box-shadow: 0 14px 32px rgba(0,0,0,0.2); }
+    .card h1, .card h2 { color: var(--accent); }
+    ul { padding-left: 18px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="topbar">
+      <a class="nav-link" href="./index.html">Portal</a>
+      <a class="nav-link" href="./handbuch.html">Handbuch</a>
+      <a class="nav-link" href="http://127.0.0.1:3000/legacy/index.html" target="_blank" rel="noreferrer">Server B</a>
+    </nav>
+    <section class="card">
+      <h1>Bedienungsanleitung</h1>
+      <p>Diese Seite ist für den normalen Nutzer gedacht. Sie soll einfach, klar und direkt nutzbar sein.</p>
+      <h2>So gehst du vor</h2>
+      <ul>
+        <li>Öffne das Portal über <a href="./index.html">index.html</a>.</li>
+        <li>Wähle Business, Bewerbung oder Investor.</li>
+        <li>Nutze das Handbuch oder die Bedienungsseite bei Bedarf.</li>
+        <li>Wenn Server B gebraucht wird, öffne die lokale Shadow-Ansicht.</li>
+        <li>Für die komplette Systemstruktur steht das Master-Dokument bereit.</li>
+        <li>Im Online Office kann jeder Nutzer sein eigenes Ergebnis und seine Zukunftsabsicht sichtbar machen.</li>
+      </ul>
+      <h2>Wichtige Hinweise</h2>
+      <ul>
+        <li>Die Oberfläche soll immer klar sichtbar und gut lesbar sein.</li>
+        <li>Kontrast und Farbe sind bewusst so gewählt, dass Text und Hintergründe eindeutig voneinander getrennt sind.</li>
+        <li>Der Raum soll den Eindruck von Besitz, Sicherheit und dauerhafter Zugehörigkeit geben.</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

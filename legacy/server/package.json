@@ -1,0 +1,11 @@
+{
+  "name": "finanziers01-serverb-runtime",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Server B runtime for legacy portal, auth, API and shadow frame",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js"
+  }
+}

@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Portal - Startup Systems | Z-Canvas Kapitalformeln</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0066CC;
+            --secondary-color: #00AA44;
+            --accent-color: #FF6600;
+            --investor-color: #FFD700;
+            --dark-bg: #1a1a2e;
+            --light-bg: #f5f5f5;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+            --success-color: #00ff88;
+            --error-color: #ff4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #16213e 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .top-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            border-radius: 999px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--dark-bg);
+            background: var(--investor-color);
+            box-shadow: 0 8px 24px rgba(255, 215, 0, 0.25);
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            color: var(--investor-color);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1em;
+        }
+
+        .hero-layout {
+            display: grid;
+            grid-template-columns: 1.4fr 0.9fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .hero-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .hero-pill {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9em;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .module-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        .module-card h3 {
+            color: var(--investor-color);
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .module-card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 12px;
+        }
+
+        .module-card ul {
+            padding-left: 18px;
+            color: rgba(255, 255, 255, 0.82);
+            display: grid;
+            gap: 6px;
+        }
+
+        .module-card.featured {
+            border-color: rgba(255, 215, 0, 0.45);
+            box-shadow: 0 12px 40px rgba(255, 215, 0, 0.18);
+        }
+
+        .serverb-shell {
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 18px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        .serverb-frame {
+            width: 100%;
+            min-height: 720px;
+            border: 0;
+            background: #07161e;
+        }
+
+        .application-builder {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .application-panel,
+        .application-preview,
+        .pipeline-section,
+        .schema-block,
+        .product-description {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        .application-panel h3,
+        .application-preview h3,
+        .pipeline-section h3,
+        .schema-block h3,
+        .product-description h3 {
+            color: var(--investor-color);
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .application-panel p,
+        .application-preview p,
+        .pipeline-section p,
+        .schema-block p,
+        .product-description p,
+        .product-description li {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .application-panel textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            font-size: 1em;
+            resize: vertical;
+        }
+
+        .application-panel textarea:focus {
+            outline: none;
+            border-color: var(--investor-color);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .chip {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .preview-card {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.3), rgba(0, 170, 68, 0.2));
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+        }
+
+        .preview-card h4 {
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .pipeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .pipeline-step {
+            padding: 14px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .schema-block pre {
+            white-space: pre-wrap;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 14px;
+            border-radius: 10px;
+            color: #dff9e8;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+
+        .product-description ul {
+            padding-left: 18px;
+            display: grid;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 900px) {
+            .application-builder {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .calc-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .calc-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(255, 215, 0, 0.2);
+        }
+
+        .calc-card h2 {
+            color: var(--investor-color);
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid var(--investor-color);
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            font-size: 1em;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--investor-color);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--investor-color) 0%, #FFA500 100%);
+            color: var(--dark-bg);
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .results {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid var(--success-color);
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-item {
+            margin-bottom: 10px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: var(--success-color);
+            margin-right: 10px;
+        }
+
+        .result-value {
+            color: var(--text-light);
+            font-size: 1.1em;
+        }
+
+        .scenarios-section {
+            grid-column: 1 / -1;
+            margin-top: 20px;
+        }
+
+        .scenario-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .scenario-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .scenario-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .scenario-card h3 {
+            color: var(--investor-color);
+            margin-bottom: 10px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid var(--investor-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: rgba(255, 68, 68, 0.2);
+            border-left: 4px solid var(--error-color);
+            color: var(--error-color);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .api-info {
+            background: rgba(0, 102, 204, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary-color);
+            font-size: 0.9em;
+        }
+
+        .api-info code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .section-block {
+            scroll-margin-top: 20px;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+        }
+
+        .profile-card h2,
+        .profile-card h3 {
+            color: var(--investor-color);
+            margin-bottom: 12px;
+        }
+
+        .profile-card p,
+        .profile-card li {
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .profile-list {
+            padding-left: 18px;
+            display: grid;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .contact-card {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .contact-card a {
+            color: #8fe0ff;
+            text-decoration: none;
+        }
+
+        .contact-card a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .top-nav {
+                gap: 8px;
+            }
+
+            .nav-link {
+                flex: 1;
+                min-width: calc(50% - 8px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="top-nav" aria-label="Section navigation">
+            <a class="nav-link" href="./app/index.html">Teilnahme ohne finanzielle Beteiligung</a>
+            <a class="nav-link active" href="#portal">Portal</a>
+            <a class="nav-link" href="#spinnen">Spinnen-Maus</a>
+            <a class="nav-link" href="#calculator">Investor-Kalkulator</a>
+            <a class="nav-link" href="./app/index.html">Business Suite</a>
+            <a class="nav-link" href="./bewerbung.html">Bewerbungssuite</a>
+            <a class="nav-link" href="../handbuch.html">Handbuch</a>
+            <a class="nav-link" href="../bedienung.html">Bedienung</a>
+            <a class="nav-link" href="../master-dokument.html">Master-Dokument</a>
+            <a class="nav-link" href="http://127.0.0.1:3000/legacy/index.html" target="_blank" rel="noreferrer">Server B</a>
+            <a class="nav-link" href="#contact">Kontakt</a>
+        </nav>
+
+        <section class="hero-shell">
+            <div class="hero-badge">Root Presence • sichtbar • klar • dauerhaft</div>
+            <h2>Finanziers01 erscheint als ein sichtbarer, würdiger und klarer Raum für Nutzung, Besitz und Entwicklung.</h2>
+            <p>Jeder Nutzer findet sofort die passenden Wege: Handbuch, Bedienung, Business Suite, Bewerbung und Server B.</p>
+            <div class="hero-actions">
+                <a class="btn btn-primary" href="../handbuch.html">📘 Handbuch öffnen</a>
+                <a class="btn btn-secondary" href="../bedienung.html">🧭 Bedienung öffnen</a>
+                <a class="btn btn-secondary" href="../master-dokument.html">📄 Master-Dokument öffnen</a>
+                <a class="btn btn-secondary" href="http://127.0.0.1:3000/legacy/index.html" target="_blank" rel="noreferrer">🕶️ Server B öffnen</a>
+            </div>
+            <div class="hero-highlights">
+                <span>Hoher Kontrast</span>
+                <span>Klare Lesbarkeit</span>
+                <span>Portal und Server-B-Zugang</span>
+                <span>Würdiger Root-Eindruck</span>
+            </div>
+        </section>
+
+        <section class="manual-grid">
+            <article class="manual-card featured">
+                <h3>📘 Gesamt-Handbuch</h3>
+                <p>Die komplette Nutzung, Struktur, Runtime und Wartung sind direkt erreichbar.</p>
+                <a class="manual-link" href="../handbuch.html">Zum Handbuch</a>
+            </article>
+            <article class="manual-card">
+                <h3>🧭 Bedienungsanleitung</h3>
+                <p>Für Nutzer ohne technische Vorkenntnisse ist die einfache Bedienung direkt verfügbar.</p>
+                <a class="manual-link" href="../bedienung.html">Zur Bedienung</a>
+            </article>
+            <article class="manual-card">
+                <h3>� Master-Dokument</h3>
+                <p>Die komplette Systemstruktur, Architektur, Dokumentation und Zukunftsvision sind hier als echtes Master-Dokument verfügbar.</p>
+                <a class="manual-link" href="../master-dokument.html">Zum Master-Dokument</a>
+            </article>
+            <article class="manual-card">
+                <h3>�🕶️ Server B</h3>
+                <p>Der Shadow-Layer und die Runtime-Sicht sind direkt über das Portal erreichbar.</p>
+                <a class="manual-link" href="http://127.0.0.1:3000/legacy/index.html" target="_blank" rel="noreferrer">Server B öffnen</a>
+            </article>
+        </section>
+
+        <div class="header section-block" id="portal">
+            <div class="hero-layout">
+                <div>
+                    <h1>💰 Root-Portal • Spinnen-Maus • Investor & Bewerbung</h1>
+                    <p>Z-Canvas Kapitalformeln | Produktionskosten-Berechnung | Zeitkosten-Leitzahl | Open Participation Framework</p>
+                    <p style="font-size: 0.95em; margin-top: 10px; color: rgba(255, 255, 255, 0.7);">
+                        Ein zentrales digitales System für Investoren, Gründer, kreative Mitwirkende, Bewerber und Produkt-Storytelling.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#calculator">Zum Investor-Kalkulator</a>
+                        <a class="btn btn-secondary" href="./bewerbung.html">Zur Universal Bewerbungssuite</a>
+                        <a class="btn btn-secondary" href="./app/index.html">Zur Business Constellation Suite</a>
+                    </div>
+                    <div class="hero-pills">
+                        <span class="hero-pill">T.&amp;.T. Branding</span>
+                        <span class="hero-pill">Spinnen-Maus Interface</span>
+                        <span class="hero-pill">Universal Bewerbungssuite</span>
+                    </div>
+                </div>
+                <div class="module-card featured">
+                    <h3>System-Architektur</h3>
+                    <p>Das Portal bündelt Investitionslogik, Gründer-Dokumentation, Bewerbungsmedien und offene Mitwirkung in einer einheitlichen Oberfläche.</p>
+                    <ul>
+                        <li>Investor-Kalkulator mit Offline-Fallback</li>
+                        <li>Business Constellation Suite für Gründer</li>
+                        <li>Universal Bewerbungssuite für alle Medienformen</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <section class="module-grid section-block" id="spinnen">
+            <article class="module-card featured">
+                <h3>🕷️ Spinnen-Maus</h3>
+                <p>Das Interface-Produkt des Systems: Bewegung, Drehung, Druck und Position werden zu Aktion, Sequenz und Kontext.</p>
+                <ul>
+                    <li>Produkt- und Interaktionssymbol</li>
+                    <li>Branding-Element und Story-System</li>
+                    <li>Steuerung für Module und Präsentation</li>
+                </ul>
+            </article>
+            <article class="module-card">
+                <h3>📈 Investor-Kalkulator</h3>
+                <p>Wirtschaftliche Bewertung, Kapitalflussmodelle, Produktions- und Zeitkosten in einem zusammenhängenden Tool.</p>
+                <ul>
+                    <li>Lokale und globale Modelle</li>
+                    <li>Szenario- und Produktraten</li>
+                    <li>Export und Offline-Fallback</li>
+                </ul>
+            </article>
+            <article class="module-card">
+                <h3>🏗️ Business Constellation Suite</h3>
+                <p>Der Gründer-Workflow für Vision, Produkt, Markt, Team, Roadmap und Dokumentenausgabe.</p>
+                <ul>
+                    <li>Pitch- und Projektstruktur</li>
+                    <li>Dokumentgenerator und Export</li>
+                    <li>Mitglied und Partnerkommunikation</li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="section-block" id="bewerbung">
+            <div class="module-grid">
+                <article class="module-card featured">
+                    <h3>🎯 Universal Bewerbungssuite</h3>
+                    <p>Die Plattform sammelt Text, Audio, Video, Bilder, Code, 3D, Daten und digitale Produkte in einem einheitlichen Bewerbungsrahmen.</p>
+                    <ul>
+                        <li>Text, Audio, Video, Bild und Code</li>
+                        <li>3D, Portfolio, Git-Links, Daten</li>
+                        <li>Offene Mitwirkung und digitale Präsenz</li>
+                    </ul>
+                    <p style="margin-top: 12px;"><a class="btn btn-secondary" href="./bewerbung.html" style="display: inline-flex;">Komplette Suite öffnen</a></p>
+                </article>
+                <article class="module-card">
+                    <h3>🧠 Open Participation</h3>
+                    <p>Die Beteiligung ist offen, sichtbar und auf kreative Mitwirkung statt auf finanzielle Abhängigkeit ausgerichtet.</p>
+                    <ul>
+                        <li>Copyright für Nutzer-Erzeugnisse</li>
+                        <li>Digitale Beteiligung und Nutzung</li>
+                        <li>Verantwortungs- und Mitwirkungslogik</li>
+                    </ul>
+                </article>
+                <article class="module-card">
+                    <h3>🔗 Branding & Plattform</h3>
+                    <p>T.&amp;.T. wird als Dachmarke gesetzt, während Startup Systems, MyOpenAi und die Spinnen-Maus als operative und produktive Marken erscheinen.</p>
+                    <ul>
+                        <li>Portal als zentrale Plattform</li>
+                        <li>Produkt- und Markenführung</li>
+                        <li>Verbindung aus Story, Nutzung und Wirkung</li>
+                    </ul>
+                </article>
+            </div>
+
+            <div class="application-builder">
+                <div class="application-panel">
+                    <h3>🧩 Bewerbungskonfigurator</h3>
+                    <p>Die Suite führt Nutzer durch Identität, Rolle, Medien, Ziel und Export – in einem konsistenten Bewerbungsformat.</p>
+                    <form id="applicationForm">
+                        <div class="form-group">
+                            <label for="appName">Name / Organisation</label>
+                            <input id="appName" value="Raymond Demitrio Tel" />
+                        </div>
+                        <div class="form-group">
+                            <label for="appRole">Rolle / Position</label>
+                            <input id="appRole" value="Digital Creator & Systems Builder" />
+                        </div>
+                        <div class="form-group">
+                            <label for="appFocus">Fokus / Ziel</label>
+                            <input id="appFocus" value="Portfolio, Bewerbung und digitale Präsenz" />
+                        </div>
+                        <div class="form-group">
+                            <label for="appMediaType">Medienform</label>
+                            <select id="appMediaType">
+                                <option value="Text">Text</option>
+                                <option value="Audio">Audio</option>
+                                <option value="Video">Video</option>
+                                <option value="Bild">Bild</option>
+                                <option value="Code">Code</option>
+                                <option value="3D">3D</option>
+                                <option value="Daten">Daten</option>
+                                <option value="Produkt">Produkt</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="appMediaLink">Link oder Datei</label>
+                            <input id="appMediaLink" value="https://digitalnotar.in" />
+                        </div>
+                        <div class="form-group">
+                            <label for="appDescription">Beschreibung</label>
+                            <textarea id="appDescription">Digitale Präsentation mit Projektkontext, Medienbeleg und sichtbarer Zusammenarbeit.</textarea>
+                        </div>
+                        <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:8px;">
+                            <button type="submit" class="btn btn-primary">Profil vorbereiten</button>
+                            <a class="btn btn-secondary" href="./bewerbung.html">Volle Bewerbungssuite</a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="application-preview">
+                    <h3>🖼️ Live-Vorschau</h3>
+                    <div class="preview-card">
+                        <p id="previewRoleText">Digital Creator & Systems Builder</p>
+                        <h4 id="previewNameText">Raymond Demitrio Tel</h4>
+                        <p id="previewSummaryText">Portfolio, Bewerbung und digitale Präsenz</p>
+                        <div class="chip-list" id="previewMediaList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pipeline-section" style="margin-top: 20px;">
+                <h3>📡 Medienpipeline</h3>
+                <div class="pipeline-grid">
+                    <div class="pipeline-step">
+                        <strong>1. Upload</strong>
+                        <p>Medien werden erfasst, kategorisiert und validiert.</p>
+                    </div>
+                    <div class="pipeline-step">
+                        <strong>2. Struktur</strong>
+                        <p>Text, Audio, Video und Daten werden in einen Bewerbungsrahmen gelegt.</p>
+                    </div>
+                    <div class="pipeline-step">
+                        <strong>3. Vorschau</strong>
+                        <p>Die Inhalte erscheinen als konsistente Profilansicht.</p>
+                    </div>
+                    <div class="pipeline-step">
+                        <strong>4. Export</strong>
+                        <p>PDF, HTML, Markdown und JSON sind direkt verfügbar.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="serverb-shell" style="margin-top: 20px;">
+                <div style="padding: 16px 18px; border-bottom: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04);">
+                    <h3 style="color: var(--investor-color); margin: 0;">🕶️ Server B – Shadow View</h3>
+                    <p style="margin: 6px 0 0; color: rgba(255,255,255,0.78);">Visible, movable, role-based shadow frame direkt im Portal eingebunden.</p>
+                </div>
+                <iframe id="serverbFrame" class="serverb-frame" src="./app/serverB/index.html" title="Server B Shadow View"></iframe>
+            </div>
+
+            <div class="schema-block" style="margin-top: 20px;">
+                <h3>🧱 Bewerbungslogik als JSON-Schema</h3>
+                <pre id="applicationSchema">{
+  "applicant": {
+    "name": "Raymond Demitrio Tel",
+    "role": "Digital Creator & Systems Builder",
+    "focus": "Portfolio, Bewerbung und digitale Präsenz"
+  },
+  "media": [
+    {
+      "type": "Text",
+      "source": "https://digitalnotar.in",
+      "description": "Digitale Präsentation mit Projektkontext"
+    }
+  ],
+  "target": {
+    "audience": "Employer, Investor, Partner",
+    "purpose": "Bewerbung, Portfolio, Netzwerk"
+  },
+  "export": ["pdf", "html", "markdown", "json"]
+}</pre>
+            </div>
+
+            <div class="product-description" style="margin-top: 20px;">
+                <h3>📘 Produktbeschreibung</h3>
+                <p>Die Universal-Bewerbungssuite ist ein digitales Aufnahme- und Präsentationssystem für alle Formen von persönlicher, beruflicher und kreativer Leistung.</p>
+                <ul>
+                    <li>Ermöglicht strukturierte Profile für Bewerber, Kreative, Entwickler und Gründer.</li>
+                    <li>Bindet Medienformen zu einem integrierten Dokument zusammen.</li>
+                    <li>Unterstützt offene Mitwirkung, digitale Sichtbarkeit und professionellen Export.</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="dashboard-grid section-block" id="calculator">
+            <div class="calc-card">
+                <h2>📊 Lokale Kapitalflüsse</h2>
+                <form id="localForm">
+                    <div class="form-group">
+                        <label>N (Anzahl Menschen im Raum)</label>
+                        <input type="number" id="local_N" value="10000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>f (Freies BPP pro Person/Jahr in €)</label>
+                        <input type="number" id="local_f" value="5000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>p (Konversionsrate 0-1)</label>
+                        <input type="number" id="local_p" value="0.1" step="0.01" min="0" max="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>I_avg (Durchschnittliche Investition €)</label>
+                        <input type="number" id="local_I_avg" value="10000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>m (Gewinnmarge 0-1)</label>
+                        <input type="number" id="local_m" value="0.2" step="0.01" min="0" max="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>u (Automatisierungsgrad 0-1)</label>
+                        <input type="number" id="local_u" value="0.8" step="0.01" min="0" max="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>K_fix (Fixkosten pro Jahr in €)</label>
+                        <input type="number" id="local_K_fix" value="50000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>N_employees (Anzahl Mitarbeiter)</label>
+                        <input type="number" id="local_N_employees" value="10" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Berechnen</button>
+                </form>
+                <div class="loading" id="localLoading">
+                    <div class="spinner"></div>
+                </div>
+                <div class="error" id="localError"></div>
+                <div class="results" id="localResults"></div>
+            </div>
+
+            <div class="calc-card">
+                <h2>🌍 Globale BPP-Modelle</h2>
+                <form id="globalForm">
+                    <div class="form-group">
+                        <label>BPP_global (Globale Wirtschaftsleistung in €)</label>
+                        <input type="number" id="global_BPP_global" value="100000000000000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>F_free_rate (Frei investierbarer Anteil 0-1)</label>
+                        <input type="number" id="global_F_free_rate" value="0.05" step="0.01" min="0" max="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>alpha_0 (TTT Startanteil)</label>
+                        <input type="number" id="global_alpha_0" value="0.000001" step="0.000001" required>
+                    </div>
+                    <div class="form-group">
+                        <label>N_employees (Anzahl Mitarbeiter)</label>
+                        <input type="number" id="global_N_employees" value="10" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Berechnen</button>
+                </form>
+                <div class="loading" id="globalLoading">
+                    <div class="spinner"></div>
+                </div>
+                <div class="error" id="globalError"></div>
+                <div class="results" id="globalResults"></div>
+            </div>
+
+            <div class="calc-card">
+                <h2>🏭 Produktionskosten</h2>
+                <form id="productionForm">
+                    <div class="form-group">
+                        <label>product_time_hours (Produktionszeit in Stunden)</label>
+                        <input type="number" id="prod_product_time_hours" value="40" required>
+                    </div>
+                    <div class="form-group">
+                        <label>production_cost_base (Basis-Kosten in €)</label>
+                        <input type="number" id="prod_production_cost_base" value="1000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>mass_capital_factor (Massenkapitaleinsatz-Faktor)</label>
+                        <input type="number" id="prod_mass_capital_factor" value="1.5" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>productivity_rate (Produktivitätsrate 0-1)</label>
+                        <input type="number" id="prod_productivity_rate" value="0.9" step="0.01" min="0" max="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>time_cost_rate (Zeitkosten-Rate €/Stunde)</label>
+                        <input type="number" id="prod_time_cost_rate" value="50" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Berechnen</button>
+                </form>
+                <div class="loading" id="productionLoading">
+                    <div class="spinner"></div>
+                </div>
+                <div class="error" id="productionError"></div>
+                <div class="results" id="productionResults"></div>
+            </div>
+
+            <div class="calc-card">
+                <h2>⏱️ Zeitkosten-Leitzahl</h2>
+                <form id="timeIndexForm">
+                    <div class="form-group">
+                        <label>total_time_invested_hours (Gesamt investierte Zeit)</label>
+                        <input type="number" id="time_total_time" value="1000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>productive_time_hours (Produktive Zeit)</label>
+                        <input type="number" id="time_productive_time" value="800" required>
+                    </div>
+                    <div class="form-group">
+                        <label>time_value_rate (Zeitwert-Rate €/Stunde)</label>
+                        <input type="number" id="time_time_value_rate" value="50" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Berechnen</button>
+                </form>
+                <div class="loading" id="timeIndexLoading">
+                    <div class="spinner"></div>
+                </div>
+                <div class="error" id="timeIndexError"></div>
+                <div class="results" id="timeIndexResults"></div>
+            </div>
+        </div>
+
+        <div class="calc-card scenarios-section">
+            <h2>🔗 Kombinierte Berechnung & Szenarien</h2>
+            <p style="margin-bottom: 20px; color: rgba(255, 255, 255, 0.7);">
+                Kombinieren Sie lokale Kapitalflüsse, globale BPP und Produktionskosten in einem Szenario.
+            </p>
+            <form id="completeForm">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div>
+                        <h3 style="color: var(--investor-color); margin-bottom: 15px;">Lokale Parameter</h3>
+                        <div class="form-group">
+                            <label>N</label>
+                            <input type="number" id="complete_local_N" value="10000">
+                        </div>
+                        <div class="form-group">
+                            <label>f (€)</label>
+                            <input type="number" id="complete_local_f" value="5000">
+                        </div>
+                        <div class="form-group">
+                            <label>p</label>
+                            <input type="number" id="complete_local_p" value="0.1" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>I_avg (€)</label>
+                            <input type="number" id="complete_local_I_avg" value="10000">
+                        </div>
+                        <div class="form-group">
+                            <label>m</label>
+                            <input type="number" id="complete_local_m" value="0.2" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>u</label>
+                            <input type="number" id="complete_local_u" value="0.8" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>K_fix (€)</label>
+                            <input type="number" id="complete_local_K_fix" value="50000">
+                        </div>
+                        <div class="form-group">
+                            <label>N_employees</label>
+                            <input type="number" id="complete_local_N_employees" value="10">
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--investor-color); margin-bottom: 15px;">Globale Parameter</h3>
+                        <div class="form-group">
+                            <label>BPP_global (€)</label>
+                            <input type="number" id="complete_global_BPP_global" value="100000000000000">
+                        </div>
+                        <div class="form-group">
+                            <label>F_free_rate</label>
+                            <input type="number" id="complete_global_F_free_rate" value="0.05" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>alpha_0</label>
+                            <input type="number" id="complete_global_alpha_0" value="0.000001" step="0.000001">
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--investor-color); margin-bottom: 15px;">Produktions-Parameter</h3>
+                        <div class="form-group">
+                            <label>product_time_hours</label>
+                            <input type="number" id="complete_prod_product_time_hours" value="40">
+                        </div>
+                        <div class="form-group">
+                            <label>production_cost_base (€)</label>
+                            <input type="number" id="complete_prod_production_cost_base" value="1000">
+                        </div>
+                        <div class="form-group">
+                            <label>mass_capital_factor</label>
+                            <input type="number" id="complete_prod_mass_capital_factor" value="1.5" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>productivity_rate</label>
+                            <input type="number" id="complete_prod_productivity_rate" value="0.9" step="0.01">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>Szenario-Name (optional)</label>
+                    <input type="text" id="scenarioName" placeholder="z.B. Optimistisches Szenario 2025">
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Kombinierte Berechnung durchführen</button>
+            </form>
+            <div class="loading" id="completeLoading">
+                <div class="spinner"></div>
+            </div>
+            <div class="error" id="completeError"></div>
+            <div class="results" id="completeResults"></div>
+        </div>
+
+        <div class="api-info">
+            <strong>🔌 API-Endpunkte:</strong><br>
+            <code>POST /api/investor/calculate/local</code> | 
+            <code>POST /api/investor/calculate/global</code> | 
+            <code>POST /api/investor/calculate/production</code> | 
+            <code>POST /api/investor/calculate/time-index</code> | 
+            <code>POST /api/investor/calculate/complete</code>
+        </div>
+
+        <section class="profile-card section-block" id="contact" aria-labelledby="contact-title">
+            <h2 id="contact-title">Raymond Demitrio Tel – Contact & Professional Information</h2>
+            <div class="profile-grid">
+                <div>
+                    <p>There is no publicly listed personal phone number for Raymond Demitrio Tel in the supplied sources; his professional contact channels are centered around TEL1.nl, DigitalNotar.in, and related portfolio platforms.</p>
+                    <p style="margin-top: 12px;">Raymond Demitrio Tel has been active in digital content creation since 1990, with expertise in concept development, online research, communication, creative strategy, digital visibility, networking, and structured content.</p>
+                    <ul class="profile-list">
+                        <li>Branded digital storytelling and creative media production</li>
+                        <li>Technology integration and online visibility strategy</li>
+                        <li>Collaboration with projects such as TEL & Gentlyoverdone and Digital Horizon Networks (DHZN)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Professional focus</h3>
+                    <p>His work spans branding, concept development, communications, research, and structured content systems that support digital growth and professional positioning.</p>
+                    <p style="margin-top: 12px;"><strong>Mobile:</strong> +31 613 803 782 (as listed in the supplied profile)</p>
+                </div>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <h3>Official contact points</h3>
+                    <ul class="profile-list">
+                        <li><strong>Website:</strong> <a href="https://tel1.jouwweb.nl" target="_blank" rel="noreferrer">TEL1.nl / tel1.jouwweb.nl</a></li>
+                        <li><strong>Portfolio:</strong> <a href="https://digitalnotar.in" target="_blank" rel="noreferrer">DigitalNotar.in</a></li>
+                        <li><strong>Support & payment:</strong> <a href="https://bunq.me/RaymondDemitrio" target="_blank" rel="noreferrer">bunq.me/RaymondDemitrio</a></li>
+                        <li><strong>Other platforms:</strong> GitHub, ViewunitysystemT, iTMA, GeTec-Service.EU</li>
+                    </ul>
+                </div>
+                <div class="contact-card">
+                    <h3>How to reach him</h3>
+                    <ul class="profile-list">
+                        <li>Use the official TEL1.nl site to find contact forms or email links.</li>
+                        <li>Contact via DigitalNotar.in for professional or collaborative inquiries.</li>
+                        <li>Check social and portfolio pages for the latest communication channels.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const SERVER_ORIGIN = window.location.protocol === 'file:' ? 'http://127.0.0.1:3000' : window.location.origin;
+        const API_BASE = `${SERVER_ORIGIN}/server`;
+
+        function formatNumber(value) {
+            return Number(value).toLocaleString('de-DE', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function showLoading(id) {
+            document.getElementById(id).classList.add('show');
+        }
+
+        function hideLoading(id) {
+            document.getElementById(id).classList.remove('show');
+        }
+
+        function showError(id, message) {
+            const errorEl = document.getElementById(id);
+            errorEl.textContent = message;
+            errorEl.classList.add('show');
+        }
+
+        function hideError(id) {
+            document.getElementById(id).classList.remove('show');
+        }
+
+        function showResults(id, result, options = {}) {
+            const resultsEl = document.getElementById(id);
+            resultsEl.innerHTML = '';
+
+            for (const [key, value] of Object.entries(result)) {
+                if (typeof value === 'number') {
+                    resultsEl.innerHTML += `
+                        <div class="result-item">
+                            <span class="result-label">${key}:</span>
+                            <span class="result-value">${formatNumber(value)}${key.toLowerCase().includes('rate') || key.toLowerCase().includes('ratio') || key.toLowerCase().includes('share') ? '' : ' €'}</span>
+                        </div>
+                    `;
+                } else {
+                    resultsEl.innerHTML += `
+                        <div class="result-item">
+                            <span class="result-label">${key}:</span>
+                            <span class="result-value">${value}</span>
+                        </div>
+                    `;
+                }
+            }
+
+            if (options.offline) {
+                resultsEl.innerHTML += `
+                    <div class="result-item">
+                        <span class="result-label">status:</span>
+                        <span class="result-value">offline fallback</span>
+                    </div>
+                `;
+            }
+
+            resultsEl.classList.add('show');
+        }
+
+        function fallbackLocal(body) {
+            const capitalBase = body.N * body.f * body.p * body.I_avg;
+            return {
+                capital_base: capitalBase,
+                automation_adjustment: (1 + body.u) * (1 - body.m),
+                net_capital_flow: capitalBase * (1 + body.u) * (1 - body.m) - body.K_fix,
+                employee_capacity: body.N / Math.max(1, body.N_employees),
+                scenario_note: 'offline fallback using local estimator'
+            };
+        }
+
+        function fallbackGlobal(body) {
+            return {
+                free_capacity: body.BPP_global * body.F_free_rate * body.alpha_0 * Math.max(1, body.N_employees),
+                employee_factor: body.N_employees,
+                scenario_note: 'offline fallback using local estimator'
+            };
+        }
+
+        function fallbackProduction(body) {
+            const time_cost = body.product_time_hours * body.time_cost_rate * body.productivity_rate;
+            return {
+                direct_cost: body.production_cost_base * body.mass_capital_factor,
+                time_cost,
+                total_cost: body.production_cost_base * body.mass_capital_factor + time_cost,
+                scenario_note: 'offline fallback using local estimator'
+            };
+        }
+
+        function fallbackTimeIndex(body) {
+            const efficiency = body.productive_time_hours / Math.max(1, body.total_time_invested_hours);
+            return {
+                efficiency_ratio: efficiency,
+                time_index_value: efficiency * body.time_value_rate,
+                scenario_note: 'offline fallback using local estimator'
+            };
+        }
+
+        function fallbackComplete(body) {
+            return {
+                local_net_capital_flow: body.local.N * body.local.f * body.local.p * body.local.I_avg * (1 + body.local.u) * (1 - body.local.m) - body.local.K_fix,
+                global_free_capacity: body.global.BPP_global * body.global.F_free_rate * body.global.alpha_0 * Math.max(1, body.local.N_employees),
+                production_total_cost: body.production.production_cost_base * body.production.mass_capital_factor + (body.production.product_time_hours * body.production.time_cost_rate * body.production.productivity_rate),
+                time_index_value: (body.production.productivity_rate || 0.9) * (body.local.N_employees || 1),
+                scenario_name: body.name || 'Unbenanntes Szenario'
+            };
+        }
+
+        async function runCalculation(endpoint, payload, fallback, options = {}) {
+            try {
+                const response = await fetch(`${API_BASE}${endpoint}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                if (data && data.success) {
+                    return { success: true, result: data.result, offline: false };
+                }
+
+                throw new Error(data && data.error ? data.error : 'Unexpected API response');
+            } catch (error) {
+                console.warn(`API unavailable for ${endpoint}; using local estimator.`, error);
+                return { success: true, result: fallback(payload), offline: true };
+            }
+        }
+
+        async function runCalculationWithQuery(endpoint, payload, fallback, query) {
+            try {
+                const response = await fetch(`${API_BASE}${endpoint}${query}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                if (data && data.success) {
+                    return { success: true, result: data.result, offline: false };
+                }
+
+                throw new Error(data && data.error ? data.error : 'Unexpected API response');
+            } catch (error) {
+                console.warn(`API unavailable for ${endpoint}; using local estimator.`, error);
+                return { success: true, result: fallback(payload), offline: true };
+            }
+        }
+
+        const sectionLinks = document.querySelectorAll('.nav-link');
+        const sections = Array.from(document.querySelectorAll('.section-block'));
+
+        function updateActiveNav() {
+            const scrollPosition = window.scrollY + 120;
+            let currentId = 'portal';
+
+            sections.forEach((section) => {
+                if (scrollPosition >= section.offsetTop) {
+                    currentId = section.id;
+                }
+            });
+
+            sectionLinks.forEach((link) => {
+                const href = link.getAttribute('href');
+                const isActive = href.startsWith('#') && href === `#${currentId}`;
+                link.classList.toggle('active', isActive);
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+        window.addEventListener('load', updateActiveNav);
+
+        document.getElementById('localForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError('localError');
+            showLoading('localLoading');
+
+            const params = {
+                N: parseInt(document.getElementById('local_N').value),
+                f: parseFloat(document.getElementById('local_f').value),
+                p: parseFloat(document.getElementById('local_p').value),
+                I_avg: parseFloat(document.getElementById('local_I_avg').value),
+                m: parseFloat(document.getElementById('local_m').value),
+                u: parseFloat(document.getElementById('local_u').value),
+                K_fix: parseFloat(document.getElementById('local_K_fix').value),
+                N_employees: parseInt(document.getElementById('local_N_employees').value)
+            };
+
+            const result = await runCalculation('/api/investor/calculate/local', params, fallbackLocal);
+            hideLoading('localLoading');
+            showResults('localResults', result.result, { offline: result.offline });
+        });
+
+        document.getElementById('globalForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError('globalError');
+            showLoading('globalLoading');
+
+            const params = {
+                BPP_global: parseFloat(document.getElementById('global_BPP_global').value),
+                F_free_rate: parseFloat(document.getElementById('global_F_free_rate').value),
+                alpha_0: parseFloat(document.getElementById('global_alpha_0').value),
+                N_employees: parseInt(document.getElementById('global_N_employees').value)
+            };
+
+            const result = await runCalculation('/api/investor/calculate/global', params, fallbackGlobal);
+            hideLoading('globalLoading');
+            showResults('globalResults', result.result, { offline: result.offline });
+        });
+
+        document.getElementById('productionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError('productionError');
+            showLoading('productionLoading');
+
+            const params = {
+                product_time_hours: parseFloat(document.getElementById('prod_product_time_hours').value),
+                production_cost_base: parseFloat(document.getElementById('prod_production_cost_base').value),
+                mass_capital_factor: parseFloat(document.getElementById('prod_mass_capital_factor').value),
+                productivity_rate: parseFloat(document.getElementById('prod_productivity_rate').value)
+            };
+
+            const time_cost_rate = parseFloat(document.getElementById('prod_time_cost_rate').value);
+            const result = await runCalculationWithQuery('/api/investor/calculate/production', params, fallbackProduction, `?time_cost_rate=${time_cost_rate}`);
+            hideLoading('productionLoading');
+            showResults('productionResults', result.result, { offline: result.offline });
+        });
+
+        document.getElementById('timeIndexForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError('timeIndexError');
+            showLoading('timeIndexLoading');
+
+            const params = {
+                total_time_invested_hours: parseFloat(document.getElementById('time_total_time').value),
+                productive_time_hours: parseFloat(document.getElementById('time_productive_time').value),
+                time_value_rate: parseFloat(document.getElementById('time_time_value_rate').value)
+            };
+
+            const result = await runCalculation('/api/investor/calculate/time-index', params, fallbackTimeIndex);
+            hideLoading('timeIndexLoading');
+            showResults('timeIndexResults', result.result, { offline: result.offline });
+        });
+
+        document.getElementById('completeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError('completeError');
+            showLoading('completeLoading');
+
+            const local = {
+                N: parseInt(document.getElementById('complete_local_N').value) || 10000,
+                f: parseFloat(document.getElementById('complete_local_f').value) || 5000,
+                p: parseFloat(document.getElementById('complete_local_p').value) || 0.1,
+                I_avg: parseFloat(document.getElementById('complete_local_I_avg').value) || 10000,
+                m: parseFloat(document.getElementById('complete_local_m').value) || 0.2,
+                u: parseFloat(document.getElementById('complete_local_u').value) || 0.8,
+                K_fix: parseFloat(document.getElementById('complete_local_K_fix').value) || 50000,
+                N_employees: parseInt(document.getElementById('complete_local_N_employees').value) || 10
+            };
+
+            const global = {
+                BPP_global: parseFloat(document.getElementById('complete_global_BPP_global').value) || 100000000000000,
+                F_free_rate: parseFloat(document.getElementById('complete_global_F_free_rate').value) || 0.05,
+                alpha_0: parseFloat(document.getElementById('complete_global_alpha_0').value) || 0.000001,
+                N_employees: local.N_employees
+            };
+
+            const production = {
+                product_time_hours: parseFloat(document.getElementById('complete_prod_product_time_hours').value) || 40,
+                production_cost_base: parseFloat(document.getElementById('complete_prod_production_cost_base').value) || 1000,
+                mass_capital_factor: parseFloat(document.getElementById('complete_prod_mass_capital_factor').value) || 1.5,
+                productivity_rate: parseFloat(document.getElementById('complete_prod_productivity_rate').value) || 0.9,
+                time_cost_rate: 50
+            };
+
+            const body = {
+                local,
+                global,
+                production,
+                name: document.getElementById('scenarioName').value || 'Unbenanntes Szenario'
+            };
+
+            const result = await runCalculation('/api/investor/calculate/complete', body, fallbackComplete);
+            hideLoading('completeLoading');
+            showResults('completeResults', result.result, { offline: result.offline });
+        });
+
+        const shadowFrame = document.getElementById('serverbFrame');
+        if (shadowFrame) {
+            shadowFrame.src = window.location.protocol === 'file:'
+                ? 'http://127.0.0.1:3000/legacy/app/serverB/index.html'
+                : './app/serverB/index.html';
+        }
+
+        const applicationForm = document.getElementById('applicationForm');
+        const previewRoleText = document.getElementById('previewRoleText');
+        const previewNameText = document.getElementById('previewNameText');
+        const previewSummaryText = document.getElementById('previewSummaryText');
+        const previewMediaList = document.getElementById('previewMediaList');
+        const applicationSchema = document.getElementById('applicationSchema');
+        const applicationStorageKey = 'portal-application-state-v1';
+        const defaultApplicationState = {
+            name: 'Raymond Demitrio Tel',
+            role: 'Digital Creator & Systems Builder',
+            focus: 'Portfolio, Bewerbung und digitale Präsenz',
+            mediaType: 'Text',
+            mediaLink: 'https://digitalnotar.in',
+            description: 'Digitale Präsentation mit Projektkontext, Medienbeleg und sichtbarer Zusammenarbeit.'
+        };
+
+        function getApplicationFormValues() {
+            return {
+                name: document.getElementById('appName').value || defaultApplicationState.name,
+                role: document.getElementById('appRole').value || defaultApplicationState.role,
+                focus: document.getElementById('appFocus').value || defaultApplicationState.focus,
+                mediaType: document.getElementById('appMediaType').value || defaultApplicationState.mediaType,
+                mediaLink: document.getElementById('appMediaLink').value || defaultApplicationState.mediaLink,
+                description: document.getElementById('appDescription').value || defaultApplicationState.description
+            };
+        }
+
+        async function saveApplicationState(values = getApplicationFormValues()) {
+            localStorage.setItem(applicationStorageKey, JSON.stringify(values));
+            try {
+                await fetch(`${API_BASE}/api/profiles`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        applicantName: values.name,
+                        applicantRole: values.role,
+                        applicantFocus: values.focus,
+                        mediaType: values.mediaType,
+                        mediaLink: values.mediaLink
+                    })
+                });
+            } catch (error) {
+                console.warn('Could not sync application state to Server B:', error);
+            }
+        }
+
+        async function loadApplicationState() {
+            try {
+                const saved = localStorage.getItem(applicationStorageKey);
+                if (saved) {
+                    return {
+                        ...defaultApplicationState,
+                        ...JSON.parse(saved)
+                    };
+                }
+            } catch (error) {
+                console.warn('Could not restore application state:', error);
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/profiles`);
+                const data = await response.json();
+                if (data && data.success && Array.isArray(data.items) && data.items.length) {
+                    const latest = data.items[data.items.length - 1];
+                    return {
+                        ...defaultApplicationState,
+                        name: latest.applicantName || defaultApplicationState.name,
+                        role: latest.applicantRole || defaultApplicationState.role,
+                        focus: latest.applicantFocus || defaultApplicationState.focus,
+                        mediaType: latest.mediaType || defaultApplicationState.mediaType,
+                        mediaLink: latest.mediaLink || defaultApplicationState.mediaLink,
+                        description: defaultApplicationState.description
+                    };
+                }
+            } catch (error) {
+                console.warn('Could not restore application state from Server B:', error);
+            }
+
+            return null;
+        }
+
+        function applyApplicationState(state) {
+            document.getElementById('appName').value = state.name || defaultApplicationState.name;
+            document.getElementById('appRole').value = state.role || defaultApplicationState.role;
+            document.getElementById('appFocus').value = state.focus || defaultApplicationState.focus;
+            document.getElementById('appMediaType').value = state.mediaType || defaultApplicationState.mediaType;
+            document.getElementById('appMediaLink').value = state.mediaLink || defaultApplicationState.mediaLink;
+            document.getElementById('appDescription').value = state.description || defaultApplicationState.description;
+        }
+
+        function updateApplicationPreview() {
+            const values = getApplicationFormValues();
+            const { name, role, focus, mediaType, mediaLink, description } = values;
+
+            previewRoleText.textContent = role;
+            previewNameText.textContent = name;
+            previewSummaryText.textContent = `${focus} • ${description}`;
+
+            const chips = [mediaType, 'Portfolio', 'Open Participation'];
+            previewMediaList.innerHTML = '';
+            chips.forEach((chip) => {
+                const span = document.createElement('span');
+                span.className = 'chip';
+                span.textContent = chip;
+                previewMediaList.appendChild(span);
+            });
+
+            const schema = {
+                applicant: {
+                    name,
+                    role,
+                    focus
+                },
+                media: [{
+                    type: mediaType,
+                    source: mediaLink,
+                    description
+                }],
+                target: {
+                    audience: 'Employer, Investor, Partner',
+                    purpose: 'Bewerbung, Portfolio, Netzwerk'
+                },
+                export: ['pdf', 'html', 'markdown', 'json']
+            };
+
+            applicationSchema.textContent = JSON.stringify(schema, null, 2);
+        }
+
+        if (applicationForm) {
+            (async () => {
+                const savedState = await loadApplicationState();
+                if (savedState) {
+                    applyApplicationState(savedState);
+                }
+                updateApplicationPreview();
+            })();
+
+            applicationForm.addEventListener('input', () => {
+                void saveApplicationState();
+                updateApplicationPreview();
+            });
+            applicationForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                void saveApplicationState();
+                updateApplicationPreview();
+            });
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach((link) => {
+            link.addEventListener('click', (event) => {
+                const targetId = link.getAttribute('href').slice(1);
+                if (!targetId) return;
+                const target = document.getElementById(targetId);
+                if (!target) return;
+                event.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, '', `#${targetId}`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

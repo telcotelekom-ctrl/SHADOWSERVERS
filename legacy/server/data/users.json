@@ -1,0 +1,10 @@
+[
+  {
+    "id": "user-raymond",
+    "name": "Raymond Demitrio Tel",
+    "email": "raymond@serverb.local",
+    "role": "admin",
+    "passwordHash": "2258c438b88679e64821d38f229d64dbfda9ee2c775e3383c2f332ef6702e5d8",
+    "createdAt": "2026-07-28T00:00:00.000Z"
+  }
+]

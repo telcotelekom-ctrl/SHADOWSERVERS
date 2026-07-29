@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Finanziers01 – Bildungs- und Ausbildungszentrum</title>
+<style>
+  :root {
+    --bg: #07111d;
+    --panel: rgba(7, 17, 29, 0.9);
+    --panel-2: rgba(255, 255, 255, 0.08);
+    --text: #f5f7ff;
+    --muted: #9fb0c9;
+    --accent: #4f8cff;
+    --accent-2: #f4c542;
+    --accent-3: #3edb93;
+    --border: rgba(255,255,255,0.16);
+    --shadow: 0 20px 50px rgba(0,0,0,0.24);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #07111d 0%, #11233d 48%, #0b1626 100%);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .page { max-width: 1100px; margin: 0 auto; padding: 24px 18px 64px; }
+  .top-nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .nav-link, .btn {
+    text-decoration: none; color: var(--text); padding: 10px 14px; border-radius: 999px;
+    background: var(--panel-2); border: 1px solid var(--border); font-weight: 700; cursor: pointer; font: inherit;
+  }
+  .nav-link:hover, .btn:hover { background: rgba(79, 140, 255, 0.24); }
+  .btn.primary { background: rgba(79,140,255,0.35); border-color: var(--accent); }
+  .hero {
+    border: 1px solid var(--border); border-radius: 24px; padding: 26px;
+    background: linear-gradient(135deg, rgba(79,140,255,0.18), rgba(244,197,66,0.12));
+    box-shadow: var(--shadow); margin-bottom: 22px;
+  }
+  .kicker { display: inline-block; padding: 8px 12px; border-radius: 999px; background: rgba(244,197,66,0.2); color: var(--accent-2); font-weight: 700; margin-bottom: 10px; }
+  h1 { margin-top: 0; font-size: 1.7rem; }
+  h2 { font-size: 1.15rem; margin: 0 0 10px; }
+  p { color: var(--muted); margin-top: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 22px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px; padding: 18px; box-shadow: var(--shadow); }
+  label { display: block; font-size: 0.85rem; color: var(--muted); margin: 10px 0 4px; }
+  input, select, textarea {
+    width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border);
+    background: rgba(255,255,255,0.06); color: var(--text); font: inherit;
+  }
+  textarea { resize: vertical; min-height: 70px; }
+  .level-options { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+  .level-option { border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,0.04); cursor: pointer; }
+  .level-option input { width: auto; margin-right: 8px; }
+  .level-option .note { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+  .fields-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-top: 8px; max-height: 320px; overflow-y: auto; padding: 4px; }
+  .field-option { border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; background: rgba(255,255,255,0.04); font-size: 0.9rem; cursor: pointer; }
+  .field-option input { margin-right: 6px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .status { font-size: 0.9rem; margin-top: 10px; color: var(--accent-3); min-height: 1.2em; }
+  .status.error { color: #ff6b6b; }
+  .list { display: flex; flex-direction: column; gap: 10px; max-height: 420px; overflow-y: auto; margin-top: 10px; }
+  .item { border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,0.04); }
+  .item .meta { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; background: rgba(244,197,66,0.25); color: var(--accent-2); margin-right: 4px; }
+</style>
+</head>
+<body>
+<main class="page">
+  <nav class="top-nav" aria-label="Sektionen">
+    <a class="nav-link" href="./index.html">← Portal</a>
+    <a class="nav-link" href="./tauschboerse.html">Tauschbörse</a>
+    <a class="nav-link" href="./manifest.html">Manifest</a>
+  </nav>
+
+  <section class="hero">
+    <div class="kicker">🎓 BILDUNG · ZUKUNFT · FUNKTION</div>
+    <h1>Bildungs- und Ausbildungszentrum</h1>
+    <p>Ein offenes Angebot für viele Fachrichtungen und Berufe — von freier Weiterbildung bis hin zu formal
+      anerkannten Abschlüssen. Wähle deine Fachrichtungen und dein gewünschtes Niveau, damit dein Interesse
+      im System erfasst wird.</p>
+  </section>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Niveau wählen</h2>
+      <div class="level-options" id="levelOptions"></div>
+    </div>
+    <div class="card">
+      <h2>Fachrichtungen wählen (Mehrfachauswahl)</h2>
+      <div class="fields-grid" id="fieldsGrid"></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Interesse einreichen</h2>
+      <label>Name</label><input id="regName" type="text" />
+      <label>E-Mail (optional)</label><input id="regEmail" type="email" />
+      <label>Nachricht (optional)</label><textarea id="regMessage" placeholder="Was möchtest du lernen oder anbieten?"></textarea>
+      <div class="actions"><button class="btn primary" id="btnSubmit">Interesse einreichen</button></div>
+      <div class="status" id="submitStatus"></div>
+    </div>
+    <div class="card">
+      <h2>Bisherige Einreichungen</h2>
+      <div class="actions"><button class="btn" id="btnRefresh">Aktualisieren</button></div>
+      <div class="list" id="interestList"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+let LEVELS = [];
+let FIELDS = [];
+
+function levelOptionHtml(level) {
+  return `<label class="level-option">
+    <input type="radio" name="level" value="${level.id}" ${level.id === 'offen' ? 'checked' : ''} />
+    <strong>${level.label}</strong>
+    <div class="note">${level.note}</div>
+  </label>`;
+}
+
+function fieldOptionHtml(field) {
+  const id = 'field-' + field.replace(/\s+/g, '-');
+  return `<label class="field-option" for="${id}">
+    <input type="checkbox" id="${id}" value="${field}" />${field}
+  </label>`;
+}
+
+async function loadFields() {
+  const res = await fetch('/server/api/education/fields');
+  const data = await res.json();
+  LEVELS = data.levels || [];
+  FIELDS = data.fields || [];
+  document.getElementById('levelOptions').innerHTML = LEVELS.map(levelOptionHtml).join('');
+  document.getElementById('fieldsGrid').innerHTML = FIELDS.map(fieldOptionHtml).join('');
+}
+
+function setStatus(id, message, isError) {
+  const el = document.getElementById(id);
+  el.textContent = message || '';
+  el.classList.toggle('error', Boolean(isError));
+}
+
+async function submitInterest() {
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const message = document.getElementById('regMessage').value.trim();
+  const level = (document.querySelector('input[name="level"]:checked') || {}).value || 'offen';
+  const fields = Array.from(document.querySelectorAll('.fields-grid input:checked')).map((el) => el.value);
+
+  if (!name || fields.length === 0) {
+    setStatus('submitStatus', 'Bitte Name und mindestens eine Fachrichtung angeben.', true);
+    return;
+  }
+
+  try {
+    const res = await fetch('/server/api/education/interest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, message, level, fields })
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('submitStatus', data.error || 'Fehler beim Einreichen.', true); return; }
+    setStatus('submitStatus', 'Danke! Dein Interesse wurde gespeichert.');
+    document.getElementById('regMessage').value = '';
+    loadInterests();
+  } catch (error) {
+    setStatus('submitStatus', 'Netzwerkfehler.', true);
+  }
+}
+
+function levelLabel(levelId) {
+  const level = LEVELS.find((l) => l.id === levelId);
+  return level ? level.label : levelId;
+}
+
+async function loadInterests() {
+  const res = await fetch('/server/api/education/interest');
+  const data = await res.json();
+  const items = (data.items || []).slice().reverse();
+  document.getElementById('interestList').innerHTML = items.map((item) => `
+    <div class="item">
+      <strong>${item.name}</strong> <span class="badge">${levelLabel(item.level)}</span>
+      <div class="meta">${item.fields.join(', ')}</div>
+      ${item.message ? `<div class="meta">${item.message}</div>` : ''}
+    </div>`).join('') || '<p>Noch keine Einreichungen.</p>';
+}
+
+document.getElementById('btnSubmit').addEventListener('click', submitInterest);
+document.getElementById('btnRefresh').addEventListener('click', loadInterests);
+
+loadFields().then(loadInterests);
+</script>
+</body>
+</html>

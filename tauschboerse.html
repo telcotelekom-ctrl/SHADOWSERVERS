@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Finanziers01 – Tauschbörse (Universal Exchange Network)</title>
+<style>
+  :root {
+    --bg: #07111d;
+    --panel: rgba(7, 17, 29, 0.9);
+    --panel-2: rgba(255, 255, 255, 0.08);
+    --text: #f5f7ff;
+    --muted: #9fb0c9;
+    --accent: #4f8cff;
+    --accent-2: #f4c542;
+    --accent-3: #3edb93;
+    --danger: #ff6b6b;
+    --border: rgba(255,255,255,0.16);
+    --shadow: 0 20px 50px rgba(0,0,0,0.24);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #07111d 0%, #11233d 48%, #0b1626 100%);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .page { max-width: 1200px; margin: 0 auto; padding: 24px 18px 64px; }
+  .top-nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .nav-link, .btn, .tab-btn {
+    text-decoration: none; color: var(--text); padding: 10px 14px; border-radius: 999px;
+    background: var(--panel-2); border: 1px solid var(--border); font-weight: 700; cursor: pointer;
+    font: inherit;
+  }
+  .nav-link:hover, .btn:hover, .tab-btn:hover { background: rgba(79, 140, 255, 0.24); }
+  .btn.primary { background: rgba(79,140,255,0.35); border-color: var(--accent); }
+  .btn.warn { background: rgba(255,107,107,0.25); border-color: var(--danger); }
+  .btn.small { padding: 6px 10px; font-size: 0.85rem; }
+  .hero {
+    border: 1px solid var(--border); border-radius: 24px; padding: 26px;
+    background: linear-gradient(135deg, rgba(79,140,255,0.18), rgba(244,197,66,0.12));
+    box-shadow: var(--shadow); margin-bottom: 22px;
+  }
+  .kicker { display: inline-block; padding: 8px 12px; border-radius: 999px; background: rgba(244,197,66,0.2); color: var(--accent-2); font-weight: 700; margin-bottom: 10px; }
+  h1 { margin-top: 0; font-size: 1.7rem; }
+  h2 { font-size: 1.15rem; margin: 0 0 10px; }
+  p { color: var(--muted); margin-top: 0; }
+  .rule { color: var(--accent-2); font-weight: 700; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 22px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 18px; padding: 18px; box-shadow: var(--shadow); }
+  label { display: block; font-size: 0.85rem; color: var(--muted); margin: 10px 0 4px; }
+  input, select, textarea {
+    width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border);
+    background: rgba(255,255,255,0.06); color: var(--text); font: inherit;
+  }
+  textarea { resize: vertical; min-height: 60px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .status { font-size: 0.9rem; margin-top: 10px; color: var(--accent-3); min-height: 1.2em; }
+  .status.error { color: var(--danger); }
+  .list { display: flex; flex-direction: column; gap: 10px; max-height: 420px; overflow-y: auto; margin-top: 10px; }
+  .item { border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,0.04); }
+  .item .meta { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; background: rgba(255,255,255,0.1); margin-left: 6px; }
+  .badge.open { background: rgba(62,219,147,0.25); color: var(--accent-3); }
+  .badge.matched { background: rgba(244,197,66,0.25); color: var(--accent-2); }
+  .badge.closed, .badge.cancelled { background: rgba(255,107,107,0.2); color: var(--danger); }
+  .tier { font-size: 0.85rem; color: var(--accent-2); }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<main class="page">
+  <nav class="top-nav" aria-label="Sektionen">
+    <a class="nav-link" href="./index.html">← Portal</a>
+    <a class="nav-link" href="./manifest.html">Manifest</a>
+    <a class="nav-link" href="./master-dokument.html">Master-Dokument</a>
+  </nav>
+
+  <section class="hero">
+    <div class="kicker">❤️ WAARDE LIEFDE · UNIVERSAL EXCHANGE NETWORK</div>
+    <h1>Tauschbörse — alles gegen alles, ohne Geld</h1>
+    <p>Werte entstehen durch gegenseitigen Bedarf, Verfügbarkeit, Reputation und Entfernung — nicht durch Geld.
+      <span class="rule">Die einzige Bedingung: es wird niemals Geld, eine Währung oder ein Zahlungsmittel versprochen oder ausgetauscht.</span>
+      Kontaktdaten werden stufenweise freigegeben: 1) Nutzername öffentlich → 2) E-Mail/Telefon nach einem Vorschlag (Match) → 3) Postadresse nach beidseitiger Zusage → 4) Treffpunkt/Zeitfenster erst bei geplanter persönlicher Übergabe.</p>
+    <div id="authBox">
+      <div id="loggedOutView">
+        <div class="grid" style="margin-top: 12px;">
+          <div class="card">
+            <h2>Anmelden</h2>
+            <label>E-Mail</label><input id="loginEmail" type="email" />
+            <label>Passwort</label><input id="loginPassword" type="password" />
+            <div class="actions">
+              <button class="btn primary" id="btnLogin">Anmelden</button>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Neues Konto</h2>
+            <label>Name</label><input id="regName" type="text" />
+            <label>E-Mail</label><input id="regEmail" type="email" />
+            <label>Passwort (min. 8 Zeichen)</label><input id="regPassword" type="password" />
+            <div class="actions">
+              <button class="btn primary" id="btnRegister">Registrieren</button>
+            </div>
+          </div>
+        </div>
+        <div class="status" id="authStatus"></div>
+      </div>
+      <div id="loggedInView" class="hidden">
+        <div class="actions" style="align-items:center;">
+          <span class="badge open" id="whoAmI"></span>
+          <button class="btn" id="btnLogout">Abmelden</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Neue Aanbieding (Offer)</h2>
+      <label>Titel</label><input id="offerTitle" type="text" placeholder="z.B. Laptop, Fotografie, Tuinonderhoud…" />
+      <label>Kategorie</label><select id="offerCategory"></select>
+      <label>Beschreibung</label><textarea id="offerDescription"></textarea>
+      <label>Waarde-index (0–1000)</label><input id="offerValueIndex" type="number" min="0" max="1000" value="500" />
+      <label>Standort (Label, optional Lat/Lon)</label>
+      <input id="offerLocationLabel" type="text" placeholder="z.B. Amsterdam" />
+      <div class="actions">
+        <input id="offerLat" type="number" step="any" placeholder="Lat" style="max-width:120px;" />
+        <input id="offerLon" type="number" step="any" placeholder="Lon" style="max-width:120px;" />
+      </div>
+      <div class="actions"><button class="btn primary" id="btnCreateOffer">Aanbieding plaatsen</button></div>
+      <div class="status" id="offerStatus"></div>
+    </div>
+
+    <div class="card">
+      <h2>Neue Aanvraag (Request)</h2>
+      <label>Titel</label><input id="requestTitle" type="text" placeholder="Wat zoek je?" />
+      <label>Kategorie</label><select id="requestCategory"></select>
+      <label>Beschreibung</label><textarea id="requestDescription"></textarea>
+      <label>Waarde-index (0–1000)</label><input id="requestValueIndex" type="number" min="0" max="1000" value="500" />
+      <label>Standort (Label, optional Lat/Lon)</label>
+      <input id="requestLocationLabel" type="text" placeholder="z.B. Rotterdam" />
+      <div class="actions">
+        <input id="requestLat" type="number" step="any" placeholder="Lat" style="max-width:120px;" />
+        <input id="requestLon" type="number" step="any" placeholder="Lon" style="max-width:120px;" />
+      </div>
+      <div class="actions"><button class="btn primary" id="btnCreateRequest">Aanvraag plaatsen</button></div>
+      <div class="status" id="requestStatus"></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Alle Aanbiedingen</h2>
+      <div class="actions"><button class="btn small" id="btnRefreshOffers">Aktualisieren</button></div>
+      <div class="list" id="offersList"></div>
+    </div>
+    <div class="card">
+      <h2>Alle Aanvragen</h2>
+      <div class="actions"><button class="btn small" id="btnRefreshRequests">Aktualisieren</button></div>
+      <div class="list" id="requestsList"></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>KI-Matching (für dein Konto)</h2>
+      <div class="actions"><button class="btn small" id="btnRefreshMatches">Matches suchen</button></div>
+      <div class="list" id="matchesList"></div>
+      <div class="status" id="matchStatus"></div>
+    </div>
+    <div class="card">
+      <h2>Meine Overeenkomsten (Contracten)</h2>
+      <div class="actions"><button class="btn small" id="btnRefreshContracts">Aktualisieren</button></div>
+      <div class="list" id="contractsList"></div>
+      <div class="status" id="contractStatus"></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Mein Kontaktprofil (privat, wird stufenweise freigegeben)</h2>
+      <label>E-Mail</label><input id="profileEmail" type="email" />
+      <label>Telefon</label><input id="profilePhone" type="text" />
+      <label>Postadresse / Afleveradres</label><textarea id="profileAddress"></textarea>
+      <div class="actions"><button class="btn primary" id="btnSaveProfile">Speichern</button></div>
+      <div class="status" id="profileStatus"></div>
+    </div>
+    <div class="card">
+      <h2>Reputation nachschlagen</h2>
+      <label>Nutzer-ID</label><input id="repUserId" type="text" placeholder="user-…" />
+      <div class="actions"><button class="btn small" id="btnLookupReputation">Suchen</button></div>
+      <div class="status" id="repStatus"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+let authToken = sessionStorage.getItem('uenToken') || null;
+let currentUser = JSON.parse(sessionStorage.getItem('uenUser') || 'null');
+
+const CATEGORIES = ['goederen','diensten','tijd','kennis','vaardigheden','productiecapaciteit','opslagruimte','transport','huisvesting','energie','digitale-producten','software','media','kunst','onderwijs','vrijwilligerswerk','onderzoek','sociale-ondersteuning','overig'];
+const DELIVERY_METHODS = ['persoonlijk','post','pakketdienst','koerier','afhaalpunt','opslaglocatie','derde-partij'];
+
+function fillCategorySelects() {
+  ['offerCategory', 'requestCategory'].forEach((id) => {
+    const select = document.getElementById(id);
+    select.innerHTML = CATEGORIES.map((c) => `<option value="${c}">${c}</option>`).join('');
+  });
+}
+
+function authHeaders() {
+  return authToken ? { 'Authorization': `Bearer ${authToken}` } : {};
+}
+
+function setStatus(id, message, isError) {
+  const el = document.getElementById(id);
+  el.textContent = message || '';
+  el.classList.toggle('error', Boolean(isError));
+}
+
+function updateAuthView() {
+  const loggedOut = document.getElementById('loggedOutView');
+  const loggedIn = document.getElementById('loggedInView');
+  if (authToken && currentUser) {
+    loggedOut.classList.add('hidden');
+    loggedIn.classList.remove('hidden');
+    document.getElementById('whoAmI').textContent = `Angemeldet als ${currentUser.name} (${currentUser.id})`;
+  } else {
+    loggedOut.classList.remove('hidden');
+    loggedIn.classList.add('hidden');
+  }
+}
+
+async function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  try {
+    const res = await fetch('/server/auth/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('authStatus', data.error || 'Anmeldung fehlgeschlagen.', true); return; }
+    authToken = data.token; currentUser = data.user;
+    sessionStorage.setItem('uenToken', authToken);
+    sessionStorage.setItem('uenUser', JSON.stringify(currentUser));
+    setStatus('authStatus', '');
+    updateAuthView();
+    loadProfile(); loadContracts(); loadMatches();
+  } catch (error) { setStatus('authStatus', 'Netzwerkfehler.', true); }
+}
+
+async function register() {
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  try {
+    const res = await fetch('/server/auth/register', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('authStatus', data.error || 'Registrierung fehlgeschlagen.', true); return; }
+    authToken = data.token; currentUser = data.user;
+    sessionStorage.setItem('uenToken', authToken);
+    sessionStorage.setItem('uenUser', JSON.stringify(currentUser));
+    setStatus('authStatus', '');
+    updateAuthView();
+    loadProfile(); loadContracts(); loadMatches();
+  } catch (error) { setStatus('authStatus', 'Netzwerkfehler.', true); }
+}
+
+async function logout() {
+  try { await fetch('/server/auth/logout', { method: 'POST', headers: authHeaders() }); } catch (error) { /* ignore */ }
+  authToken = null; currentUser = null;
+  sessionStorage.removeItem('uenToken'); sessionStorage.removeItem('uenUser');
+  updateAuthView();
+}
+
+function locationPayload(labelId, latId, lonId) {
+  const label = document.getElementById(labelId).value.trim();
+  const lat = document.getElementById(latId).value;
+  const lon = document.getElementById(lonId).value;
+  if (!label && lat === '' && lon === '') return null;
+  return { label, lat: lat === '' ? null : Number(lat), lon: lon === '' ? null : Number(lon) };
+}
+
+async function createOffer() {
+  if (!authToken) { setStatus('offerStatus', 'Bitte zuerst anmelden.', true); return; }
+  const payload = {
+    title: document.getElementById('offerTitle').value,
+    category: document.getElementById('offerCategory').value,
+    description: document.getElementById('offerDescription').value,
+    valueIndex: document.getElementById('offerValueIndex').value,
+    location: locationPayload('offerLocationLabel', 'offerLat', 'offerLon')
+  };
+  try {
+    const res = await fetch('/server/api/exchange/offers', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders() }, body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('offerStatus', data.error, true); return; }
+    setStatus('offerStatus', 'Aanbieding geplaatst.');
+    loadOffers();
+  } catch (error) { setStatus('offerStatus', 'Netzwerkfehler.', true); }
+}
+
+async function createRequest() {
+  if (!authToken) { setStatus('requestStatus', 'Bitte zuerst anmelden.', true); return; }
+  const payload = {
+    title: document.getElementById('requestTitle').value,
+    category: document.getElementById('requestCategory').value,
+    description: document.getElementById('requestDescription').value,
+    valueIndex: document.getElementById('requestValueIndex').value,
+    location: locationPayload('requestLocationLabel', 'requestLat', 'requestLon')
+  };
+  try {
+    const res = await fetch('/server/api/exchange/requests', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders() }, body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('requestStatus', data.error, true); return; }
+    setStatus('requestStatus', 'Aanvraag geplaatst.');
+    loadRequests();
+  } catch (error) { setStatus('requestStatus', 'Netzwerkfehler.', true); }
+}
+
+function renderItemCard(item, kind) {
+  const loc = item.location ? (item.location.label || `${item.location.lat}, ${item.location.lon}`) : '—';
+  return `<div class="item">
+    <strong>${item.title}</strong> <span class="badge ${item.status}">${item.status}</span>
+    <div class="meta">${kind} · ${item.category} · VI ${item.valueIndex} · ${loc} · von ${item.userId}</div>
+    <div class="meta">${item.description || ''}</div>
+  </div>`;
+}
+
+async function loadOffers() {
+  const res = await fetch('/server/api/exchange/offers');
+  const data = await res.json();
+  document.getElementById('offersList').innerHTML = (data.items || []).map((o) => renderItemCard(o, 'Offer')).join('') || '<p>Noch keine Aanbiedingen.</p>';
+}
+
+async function loadRequests() {
+  const res = await fetch('/server/api/exchange/requests');
+  const data = await res.json();
+  document.getElementById('requestsList').innerHTML = (data.items || []).map((r) => renderItemCard(r, 'Request')).join('') || '<p>Noch keine Aanvragen.</p>';
+}
+
+async function loadMatches() {
+  if (!authToken) { document.getElementById('matchesList').innerHTML = ''; return; }
+  const res = await fetch('/server/api/exchange/matches', { headers: authHeaders() });
+  const data = await res.json();
+  if (!data.success) { setStatus('matchStatus', data.error || '', true); return; }
+  setStatus('matchStatus', '');
+  document.getElementById('matchesList').innerHTML = (data.items || []).map((m) => `
+    <div class="item">
+      <strong>${m.offer.title}</strong> ↔ <strong>${m.request.title}</strong>
+      <span class="badge matched">Score ${(m.score * 100).toFixed(0)}%</span>
+      <div class="meta">Offer von ${m.offer.userId} · Request von ${m.request.userId} · ${m.distanceKm != null ? m.distanceKm.toFixed(0) + ' km' : 'Entfernung unbekannt'}</div>
+      <div class="actions">
+        <button class="btn small primary" onclick="proposeContract('${m.offer.id}','${m.request.id}')">Voorstel doen</button>
+      </div>
+    </div>`).join('') || '<p>Keine Matches gefunden. Erstelle zuerst eine Aanbieding oder Aanvraag.</p>';
+}
+
+async function proposeContract(offerId, requestId) {
+  const terms = prompt('Beschrijf kort de voorwaarden van deze ruil (geen geld):', '') || '';
+  try {
+    const res = await fetch('/server/api/exchange/contracts', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify({ offerId, requestId, terms })
+    });
+    const data = await res.json();
+    if (!data.success) { setStatus('matchStatus', data.error, true); return; }
+    setStatus('matchStatus', 'Overeenkomst voorgesteld.');
+    loadMatches(); loadContracts(); loadOffers(); loadRequests();
+  } catch (error) { setStatus('matchStatus', 'Netzwerkfehler.', true); }
+}
+
+async function loadContracts() {
+  if (!authToken) { document.getElementById('contractsList').innerHTML = ''; return; }
+  const res = await fetch('/server/api/exchange/contracts', { headers: authHeaders() });
+  const data = await res.json();
+  if (!data.success) { setStatus('contractStatus', data.error || '', true); return; }
+  setStatus('contractStatus', '');
+  document.getElementById('contractsList').innerHTML = (data.items || []).map((c) => `
+    <div class="item" id="contract-${c.id}">
+      <strong>${c.id}</strong> <span class="badge ${c.status.includes('cancel') ? 'cancelled' : (c.status === 'completed' ? 'closed' : 'matched')}">${c.status}</span>
+      <div class="meta">Terms: ${c.terms || '—'}</div>
+      <div class="meta">Teilnehmer: ${c.participants.join(', ')}</div>
+      <div class="actions">
+        ${c.status === 'proposed' ? `<button class="btn small primary" onclick="acceptContract('${c.id}')">Accepteren</button><button class="btn small warn" onclick="cancelContract('${c.id}')">Annuleren</button>` : ''}
+        ${c.status === 'accepted' ? `<button class="btn small primary" onclick="scheduleDelivery('${c.id}')">Levering plannen</button><button class="btn small warn" onclick="cancelContract('${c.id}')">Annuleren</button>` : ''}
+        ${c.status === 'delivery-scheduled' ? `<button class="btn small primary" onclick="completeContract('${c.id}')">Bevestig voltooiing</button>` : ''}
+        ${c.status === 'completed' ? `<button class="btn small" onclick="rateContract('${c.id}')">Beoordelen</button>` : ''}
+        <button class="btn small" onclick="viewContact('${c.id}')">Contact tonen</button>
+      </div>
+      <div class="tier" id="contact-${c.id}"></div>
+    </div>`).join('') || '<p>Noch keine Overeenkomsten.</p>';
+}
+
+async function acceptContract(id) {
+  const res = await fetch(`/server/api/exchange/contracts/${id}/accept`, { method: 'POST', headers: authHeaders() });
+  const data = await res.json();
+  setStatus('contractStatus', data.success ? '' : data.error, !data.success);
+  loadContracts();
+}
+
+async function cancelContract(id) {
+  const res = await fetch(`/server/api/exchange/contracts/${id}/cancel`, { method: 'POST', headers: authHeaders() });
+  const data = await res.json();
+  setStatus('contractStatus', data.success ? '' : data.error, !data.success);
+  loadContracts(); loadOffers(); loadRequests();
+}
+
+async function scheduleDelivery(id) {
+  const method = prompt(`Levering methode (${DELIVERY_METHODS.join(', ')}):`, 'persoonlijk');
+  if (!method) return;
+  const payload = { method: method.trim() };
+  if (payload.method === 'persoonlijk') {
+    const label = prompt('Afspraakpunt (label):', '') || '';
+    const timeslot = prompt('Tijdslot (bijv. za 14:00):', '') || '';
+    payload.meetingPoint = { label };
+    payload.timeslot = timeslot;
+  }
+  const res = await fetch(`/server/api/exchange/contracts/${id}/delivery`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders() }, body: JSON.stringify(payload)
+  });
+  const data = await res.json();
+  setStatus('contractStatus', data.success ? '' : data.error, !data.success);
+  loadContracts();
+}
+
+async function completeContract(id) {
+  const res = await fetch(`/server/api/exchange/contracts/${id}/complete`, { method: 'POST', headers: authHeaders() });
+  const data = await res.json();
+  setStatus('contractStatus', data.success ? '' : data.error, !data.success);
+  loadContracts(); loadOffers(); loadRequests();
+}
+
+async function rateContract(id) {
+  const score = Number(prompt('Score (1-5):', '5')) || 5;
+  const comment = prompt('Opmerking (optioneel):', '') || '';
+  const res = await fetch('/server/api/exchange/ratings', {
+    method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    body: JSON.stringify({ contractId: id, score, comment })
+  });
+  const data = await res.json();
+  setStatus('contractStatus', data.success ? 'Beoordeling opgeslagen.' : data.error, !data.success);
+}
+
+async function viewContact(id) {
+  const res = await fetch(`/server/api/exchange/contracts/${id}/contact`, { headers: authHeaders() });
+  const data = await res.json();
+  const el = document.getElementById(`contact-${id}`);
+  if (!data.success) { el.textContent = data.error || 'Fehler'; return; }
+  let text = `Niveau ${data.tier} — ${data.user.name}`;
+  if (data.contactEmail || data.contactPhone) text += ` · ${data.contactEmail || '—'} · ${data.contactPhone || '—'}`;
+  if (data.postAddress) text += ` · ${data.postAddress}`;
+  if (data.meetingPoint) text += ` · Treffpunkt: ${data.meetingPoint.label || ''} (${data.timeslot || ''})`;
+  el.textContent = text;
+}
+
+async function loadProfile() {
+  if (!authToken) return;
+  const res = await fetch('/server/api/exchange/profile', { headers: authHeaders() });
+  const data = await res.json();
+  if (!data.success) return;
+  document.getElementById('profileEmail').value = data.profile.contactEmail || '';
+  document.getElementById('profilePhone').value = data.profile.contactPhone || '';
+  document.getElementById('profileAddress').value = data.profile.postAddress || '';
+}
+
+async function saveProfile() {
+  if (!authToken) { setStatus('profileStatus', 'Bitte zuerst anmelden.', true); return; }
+  const payload = {
+    contactEmail: document.getElementById('profileEmail').value,
+    contactPhone: document.getElementById('profilePhone').value,
+    postAddress: document.getElementById('profileAddress').value
+  };
+  const res = await fetch('/server/api/exchange/profile', {
+    method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders() }, body: JSON.stringify(payload)
+  });
+  const data = await res.json();
+  setStatus('profileStatus', data.success ? 'Gespeichert.' : data.error, !data.success);
+}
+
+async function lookupReputation() {
+  const userId = document.getElementById('repUserId').value.trim();
+  if (!userId) return;
+  const res = await fetch(`/server/api/exchange/reputation/${encodeURIComponent(userId)}`);
+  const data = await res.json();
+  setStatus('repStatus', data.reputationScore != null ? `Score: ${data.reputationScore} (${data.ratingCount} Bewertungen)` : 'Noch keine Bewertungen.');
+}
+
+document.getElementById('btnLogin').addEventListener('click', login);
+document.getElementById('btnRegister').addEventListener('click', register);
+document.getElementById('btnLogout').addEventListener('click', logout);
+document.getElementById('btnCreateOffer').addEventListener('click', createOffer);
+document.getElementById('btnCreateRequest').addEventListener('click', createRequest);
+document.getElementById('btnRefreshOffers').addEventListener('click', loadOffers);
+document.getElementById('btnRefreshRequests').addEventListener('click', loadRequests);
+document.getElementById('btnRefreshMatches').addEventListener('click', loadMatches);
+document.getElementById('btnRefreshContracts').addEventListener('click', loadContracts);
+document.getElementById('btnSaveProfile').addEventListener('click', saveProfile);
+document.getElementById('btnLookupReputation').addEventListener('click', lookupReputation);
+
+fillCategorySelects();
+updateAuthView();
+loadOffers();
+loadRequests();
+if (authToken) { loadProfile(); loadContracts(); loadMatches(); }
+</script>
+</body>
+</html>
