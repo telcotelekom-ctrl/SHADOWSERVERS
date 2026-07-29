@@ -1,38 +1,27 @@
-# Architektur-Root – Finanziers01
+﻿# Projektarchitektur – Shadow-Portal
 
-## Ziel
+Die Architektur ist jetzt klar gegliedert: Sichtbare Oberfläche, Shadow-Runtime und Datenebene.
 
-Die Plattform ist als mehrschichtige, browserbasierte Produktarchitektur angelegt. Sie dient gleichzeitig als sichtbare Oberfläche, als Produktprototype und als technische Blaupause für spätere Backend- und Hosting-Integration.
+## Komponenten
+- Portal: [index.html](index.html)
+- Runtime: [server/server.js](server/server.js)
+- Daten: [server/data](server/data)
+- App-Entry: [app/index.html](app/index.html)
+- Legacy-Referenz: [legacy/index.html](legacy/index.html)
 
-## Hauptschichten
+## Datenfluss
+1. Das Portal ruft die Runtime-API auf.
+2. Die Runtime liefert Health-, Status-, Companion- und Profilinformationen.
+3. Die UI stellt diese Daten sichtbar und interaktiv dar.
 
-### Präsentation
-- [index.html](index.html)
-- [bewerbung.html](bewerbung.html)
-- [app/index.html](app/index.html)
+## Zielzustand
+- Ein sichtbarer, konsistenter Portalauftritt
+- Eine operative Shadow-Runtime als Single Source of Truth
+- Eine klare Trennung zwischen Portal, Runtime und Dokumentation
 
-### Applikationslogik
-- [portal.js](portal.js)
-- [style.css](style.css)
-- interne Skript- und State-Logik der Seiten
-
-### Runtime und API
-- [server/server.js](server/server.js)
-- [server/data](server/data)
-- [server/db/schema.sql](server/db/schema.sql)
-
-### Dokumentations- und Produktstruktur
-- [MASTER_DOKUMENT.md](MASTER_DOKUMENT.md)
-- [ROOT_CODE_REPORT.md](ROOT_CODE_REPORT.md)
-- [HANDBUCH_NUTZUNG.md](HANDBUCH_NUTZUNG.md)
-
-## Aktueller Status
-
-Die Architektur ist flexibel, lokal startbar und gut für die frühe Produktphase geeignet. Offen sind noch echte Datenbankintegration, vollständige Auth- und Rollenlogik sowie eine konsolidierte Produkt-Shell.
-
-## Zukunftsstruktur
-
-- gemeinsame Navigation für alle Module
-- einheitliches Design-System
-- eigene Produktseiten für Workspace, Investor und MyOpenAI
-- zentrale API- und Datenlogik
+## Aktueller Betriebsstatus
+- Hauptportal: sichtbar und direkt erreichbar über [index.html](index.html)
+- Runtime: aktiv über [server/server.js](server/server.js)
+- Health-Check: /api/health
+- Companion-Livekanal: /ws/companion
+- Status- und Portfolio-Routen: /api/status, /api/portfolio/findings

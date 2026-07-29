@@ -815,10 +815,17 @@
 
             <div class="serverb-shell" style="margin-top: 20px;">
                 <div style="padding: 16px 18px; border-bottom: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04);">
-                    <h3 style="color: var(--investor-color); margin: 0;">🕶️ Server B – Shadow View</h3>
-                    <p style="margin: 6px 0 0; color: rgba(255,255,255,0.78);">Visible, movable, role-based shadow frame direkt im Portal eingebunden.</p>
+                    <h3 style="color: var(--investor-color); margin: 0;">🕶️ Server B – Shadow Runtime</h3>
+                    <p style="margin: 6px 0 0; color: rgba(255,255,255,0.78);">Die Live-Shadow-Sicht läuft direkt über den aktiven Runtime-Server.</p>
                 </div>
-                <iframe id="serverbFrame" class="serverb-frame" src="./app/serverB/index.html" title="Server B Shadow View"></iframe>
+                <div id="serverbRuntimeCard" style="padding: 18px; display: grid; gap: 10px;">
+                    <div class="status-pill" style="width: fit-content;">● Runtime verbunden</div>
+                    <div id="serverbRuntimeStatus" style="font-family: monospace; color: #dce9ff; white-space: pre-wrap;">Wird geladen…</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <a class="btn btn-primary" href="#portal">Zur Runtime-Übersicht</a>
+                        <a class="btn btn-secondary" href="../index.html">Zum Root-Portal</a>
+                    </div>
+                </div>
             </div>
 
             <div class="schema-block" style="margin-top: 20px;">

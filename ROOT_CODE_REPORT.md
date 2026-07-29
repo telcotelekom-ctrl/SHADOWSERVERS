@@ -1,32 +1,19 @@
-# Codebericht – Finanziers01
+﻿# Root-Code-Report
 
-## Überblick
+Die aktuelle Basis ist ein sichtbares Portal mit Live-API-Unterstützung und einer Shadow-Runtime als zentraler Schicht.
 
-Das Projekt ist aktuell als browserbasiertes Produkt- und Präsentationssystem aufgebaut. Es verbindet Frontend, lokale Runtime und Dokumentationsstruktur in einer gemeinsamen Produktlandschaft.
+## Status
+- Hauptportal: [index.html](index.html)
+- Runtime: [server/server.js](server/server.js)
+- Companion: /ws/companion
+- Health-Check: /api/health
 
-## Stärken
+## Erkenntnis
+Die aktuelle Frontend-Schicht ist nun direkt an die Runtime gekoppelt. Legacy- und alte Einstiegspfade sind nicht mehr der primäre Pfad.
 
-- klare sichtbare Module
-- einfache lokale Nutzung
-- gute Präsentations- und Demosituation
-- lokale Persistenz und einfache Exporte
-- verständliche Struktur für Weiterentwicklung
-
-## Grenzen
-
-- kein vollständiger Backend-Stack
-- keine echte Datenbankanbindung
-- noch keine zentrale Produkt-Shell für alle Module
-- Upload- und Dokumentenlogik noch nicht zentralisiert
-
-## Verifizierter Zustand
-
-Die vorhandene Runtime wurde lokal geprüft. Der Health-Endpoint antwortet korrekt, und die Frontend-Module sind direkt nutzbar.
-
-## Empfehlungen für die nächste Stufe
-
-1. gemeinsame Navigation und Shell
-2. Founder Workspace als zentrales Modul
-3. Investor Cockpit als eigener Produktbereich
-4. MyOpenAI als sichtbarer Hub
-5. Backend- und Datenreife vorbereiten
+## Aktueller Betriebsstatus
+- Hauptportal: sichtbar und direkt erreichbar über [index.html](index.html)
+- Runtime: aktiv über [server/server.js](server/server.js)
+- Health-Check: /api/health
+- Companion-Livekanal: /ws/companion
+- Status- und Portfolio-Routen: /api/status, /api/portfolio/findings

@@ -11,5 +11,17 @@
     "message": "I want to learn more about the platform.",
     "createdAt": "2026-07-29T10:10:17.348Z",
     "status": "submitted"
+  },
+  {
+    "id": "edu-1785324094183",
+    "name": "Test User",
+    "email": "test@example.com",
+    "level": "weiterbildung",
+    "fields": [
+      "Informationstechnologie"
+    ],
+    "message": "Education interest test",
+    "createdAt": "2026-07-29T11:21:34.183Z",
+    "status": "submitted"
   }
 ]

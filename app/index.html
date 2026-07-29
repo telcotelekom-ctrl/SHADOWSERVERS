@@ -228,7 +228,10 @@
     </div>
   </div>
 
-  <script>
+  <script type="module">
+    import { startShadowOS } from '../shadow/kernel.js';
+    import { buildPortalKernelContext, renderShadowKernelStatus } from '../shadow/portal-bridge.mjs';
+
     const steps = ["Unternehmensbasis", "Branding & Identität", "Produkte & Services", "Prozesse & Betrieb", "Kommunikation & Kontakte", "Export & Druck"];
     const STORAGE_KEY = "ucb-business-workspace-state";
     const INITIATOR = {
@@ -244,6 +247,7 @@
     };
 
     let currentStep = 1;
+    let portalKernelState = null;
 
     const enterBtn = document.getElementById("enter-btn");
     const clearBtn = document.getElementById("clear-btn");
@@ -364,6 +368,13 @@
     }
 
     function buildPreviewText(summary) {
+      const kernelContext = buildPortalKernelContext({
+        company: { name: summary.company.name || "Universal Company Builder" },
+        service: { name: summary.service.name || "Founder Workflow" },
+        operations: { process_name: summary.operations.process_name || "Business Setup" },
+        contacts: { official_contacts: summary.contacts.official_contacts || "hello@company.com" }
+      }, portalKernelState || {});
+
       return [
         `Unternehmen: ${summary.company.name}`,
         `Vision: ${summary.company.vision || "—"}`,
@@ -372,6 +383,7 @@
         `Service: ${summary.service.name || "—"}`,
         `Kontakt: ${summary.branding.contact_email || "—"}`,
         `Initiator: ${summary.initiator.name}`,
+        `Shadow Kernel Ω∞: ${renderShadowKernelStatus(kernelContext)}`,
         `Exporte: ${summary.exports.length ? summary.exports.join(", ") : "keine"}`
       ].join("\n");
     }
@@ -557,6 +569,13 @@
     restoreState();
     renderProgress();
     showStep(currentStep);
+
+    startShadowOS().then((result) => {
+      portalKernelState = result?.state || result || {};
+      updatePreview();
+    }).catch((error) => {
+      console.warn("Shadow kernel bootstrap failed", error);
+    });
 
     document.querySelectorAll('a[href^="#"]').forEach((link) => {
       link.addEventListener("click", (event) => {

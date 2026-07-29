@@ -343,12 +343,12 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (pathname === '/server/api/health') {
-    sendJson(res, { ok: true, runtime: 'server-b', timestamp: new Date().toISOString() });
+  if (pathname === '/server/api/health' || pathname === '/api/health') {
+    sendJson(res, { ok: true, runtime: 'shadow-os', timestamp: new Date().toISOString() });
     return;
   }
 
-  if (pathname === '/server/api/shadow/status') {
+  if (pathname === '/server/api/shadow/status' || pathname === '/api/status' || pathname === '/api/status') {
     sendJson(res, {
       ok: true,
       runtime: 'shadow-os',
@@ -357,6 +357,111 @@ const server = http.createServer(async (req, res) => {
       timestamp: new Date().toISOString(),
       message: 'ShadowOS runtime is active and reachable.'
     });
+    return;
+  }
+
+  if (pathname === '/api/manifest/list' && req.method === 'GET') {
+    const manifestItems = [
+      { id: 'portal', title: 'Portal', status: 'active' },
+      { id: 'shadow-runtime', title: 'Shadow Runtime', status: 'active' },
+      { id: 'workspace', title: 'Workspace', status: 'active' }
+    ];
+    sendJson(res, { success: true, items: manifestItems });
+    return;
+  }
+
+  if (pathname === '/api/manifest/sync' && req.method === 'POST') {
+    try {
+      const payload = await readJsonBody(req);
+      sendJson(res, { success: true, item: payload, syncedAt: new Date().toISOString() });
+    } catch (error) {
+      sendJson(res, { success: false, error: 'Ungültige Anfrage' }, 400);
+    }
+    return;
+  }
+
+  if (pathname === '/api/messages' && req.method === 'GET') {
+    const messages = loadJson(contactMessagesFile, []).map((item) => ({
+      id: item.id,
+      name: item.name || 'Shadow',
+      message: item.message || '',
+      createdAt: item.createdAt || new Date().toISOString()
+    }));
+    sendJson(res, { success: true, items: messages });
+    return;
+  }
+
+  if ((pathname === '/server/api/companion-updates' || pathname === '/api/companion-updates') && req.method === 'GET') {
+    const profiles = loadJson(profilesFile, []);
+    const workspaces = loadJson(workspacesFile, []);
+    const contacts = loadJson(contactMessagesFile, []);
+    const portfolioFindings = [
+      'Shadow Companion online und bereit.',
+      `Portfolio-Analyse: ${profiles.length} Profil(e) im Runtime-Workspace erkannt.`,
+      `Arbeitsräume: ${workspaces.length} Workspace(s) verfügbar, inklusive ${workspaces[0]?.data?.company || 'Shadow'} .`,
+      `Kontakt-Queue: ${contacts.length} Nachricht(en) wartet auf Bearbeitung.`
+    ];
+    sendJson(res, { success: true, items: portfolioFindings, insights: { profiles, workspaces, contactsCount: contacts.length } });
+    return;
+  }
+
+  if ((pathname === '/server/api/portfolio/findings' || pathname === '/api/portfolio/findings') && req.method === 'GET') {
+    const profiles = loadJson(profilesFile, []);
+    const workspaces = loadJson(workspacesFile, []);
+    const contacts = loadJson(contactMessagesFile, []);
+    const findings = [
+      {
+        id: 'profile-1',
+        title: 'Profil im Shadow-Workspace erkannt',
+        detail: profiles[0]?.applicantName || 'Profil verfügbar',
+        kind: 'profile'
+      },
+      {
+        id: 'workspace-1',
+        title: 'Arbeitsbereich verbunden',
+        detail: workspaces[0]?.data?.company || 'Workspace verfügbar',
+        kind: 'workspace'
+      },
+      {
+        id: 'contacts-1',
+        title: 'Kontakt-Queue vorhanden',
+        detail: `${contacts.length} neue Nachricht(en) warten`,
+        kind: 'contacts'
+      }
+    ];
+    sendJson(res, { success: true, items: findings });
+    return;
+  }
+
+  if (pathname === '/api/submit' && req.method === 'POST') {
+    try {
+      const payload = await readJsonBody(req);
+      const result = {
+        success: true,
+        message: 'Submission received by Shadow runtime',
+        payload
+      };
+      sendJson(res, result);
+    } catch (error) {
+      sendJson(res, { success: false, error: 'Ungültige Anfrage' }, 400);
+    }
+    return;
+  }
+
+  if ((pathname === '/api/contacts' || pathname === '/server/api/contacts') && req.method === 'GET') {
+    const contacts = loadJson(contactMessagesFile, []);
+    sendJson(res, { success: true, items: contacts });
+    return;
+  }
+
+  if (pathname === '/api/chats' && req.method === 'GET') {
+    const chats = loadJson(contactMessagesFile, []).map((item) => ({
+      id: item.id,
+      title: item.name || 'Chat',
+      message: item.message || '',
+      createdAt: item.createdAt || new Date().toISOString()
+    }));
+    sendJson(res, { success: true, items: chats });
     return;
   }
 
@@ -518,13 +623,13 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (pathname === '/server/api/workspaces' && req.method === 'GET') {
+  if ((pathname === '/server/api/workspaces' || pathname === '/api/workspaces') && req.method === 'GET') {
     const workspaces = loadJson(workspacesFile, []);
     sendJson(res, { success: true, items: workspaces });
     return;
   }
 
-  if (pathname === '/server/api/workspaces' && req.method === 'POST') {
+  if ((pathname === '/server/api/workspaces' || pathname === '/api/workspaces') && req.method === 'POST') {
     const payload = await readJsonBody(req);
     const workspaces = loadJson(workspacesFile, []);
     const record = {
@@ -540,13 +645,13 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (pathname === '/server/api/profiles' && req.method === 'GET') {
+  if ((pathname === '/server/api/profiles' || pathname === '/api/profiles') && req.method === 'GET') {
     const profiles = loadJson(profilesFile, []);
     sendJson(res, { success: true, items: profiles });
     return;
   }
 
-  if (pathname === '/server/api/profiles' && req.method === 'POST') {
+  if ((pathname === '/server/api/profiles' || pathname === '/api/profiles') && req.method === 'POST') {
     const payload = await readJsonBody(req);
     const profiles = loadJson(profilesFile, []);
     const record = {
@@ -737,7 +842,10 @@ const server = http.createServer(async (req, res) => {
           record.delivered = true;
         } catch (mailError) {
           record.deliveryError = mailError.message;
+          record.delivered = false;
         }
+      } else {
+        record.deliveryStatus = 'smtp-unavailable';
       }
 
       const messages = loadJson(contactMessagesFile, []);
@@ -747,8 +855,10 @@ const server = http.createServer(async (req, res) => {
       sendJson(res, {
         success: true,
         delivered: record.delivered,
+        stored: true,
+        status: record.delivered ? 'delivered' : 'stored-locally',
         message: record.delivered
-          ? 'Nachricht per SMTP versendet.'
+          ? 'Nachricht wurde versendet und lokal gespeichert.'
           : 'SMTP nicht konfiguriert oder Versand fehlgeschlagen – Nachricht wurde lokal gespeichert.'
       });
     } catch (error) {
@@ -1189,7 +1299,27 @@ const server = http.createServer(async (req, res) => {
 // (authenticated with a passcode-issued audience token, or open if the
 // room has no access code configured).
 const latestTransposerStateByRoom = new Map();
-const wss = new WebSocket.Server({ server, path: '/psy-tel' });
+const wss = new WebSocket.Server({ noServer: true });
+const companionWss = new WebSocket.Server({ noServer: true });
+
+server.on('upgrade', (req, socket, head) => {
+  const requestUrl = new URL(req.url, `http://${req.headers.host || '127.0.0.1:3000'}`);
+  if (requestUrl.pathname === '/psy-tel') {
+    wss.handleUpgrade(req, socket, head, (ws) => {
+      wss.emit('connection', ws, req);
+    });
+    return;
+  }
+
+  if (requestUrl.pathname === '/ws/companion') {
+    companionWss.handleUpgrade(req, socket, head, (ws) => {
+      companionWss.emit('connection', ws, req);
+    });
+    return;
+  }
+
+  socket.destroy();
+});
 
 function isValidBroadcasterToken(token, room) {
   if (!token || !room) return false;
@@ -1197,6 +1327,22 @@ function isValidBroadcasterToken(token, room) {
   const session = sessions.find((item) => item.token === token);
   return Boolean(session && session.userId === room);
 }
+
+companionWss.on('connection', (ws) => {
+  ws.send(JSON.stringify({
+    type: 'companion-status',
+    message: 'Shadow Companion online. Alle Live-Aktionen laufen über den Shadow-Server.'
+  }));
+
+  ws.on('message', (payload) => {
+    const text = payload.toString();
+    if (!text) return;
+    ws.send(JSON.stringify({
+      type: 'companion-message',
+      message: `Shadow erhalten: ${text}`
+    }));
+  });
+});
 
 wss.on('connection', (ws, req) => {
   const connUrl = new URL(req.url, 'http://internal');

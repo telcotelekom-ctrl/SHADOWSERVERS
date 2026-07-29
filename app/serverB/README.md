@@ -1,7 +1,7 @@
-# Server B – Shadow Control
+﻿# App-Server-B-Referenz
 
-Diese lokale Ordnerstruktur enthält eine Browser-basierte Shadow-Ansicht für Server B.
+Dieser Ordner enthält die lokale Referenzstruktur für die App-Ansicht. Die eigentliche Runtime bleibt in [server/server.js](../../server/server.js).
 
-- Datenquelle: data.json
-- Oberfläche: index.html
-- Ziel: sichtbare, verschiebbare Module mit Rollenlogik und Security-Hinweisen
+## Bezug
+- Hauptportal: [../../index.html](../../index.html)
+- Runtime: [../../server/server.js](../../server/server.js)

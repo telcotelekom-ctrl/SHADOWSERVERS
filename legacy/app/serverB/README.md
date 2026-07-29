@@ -1,7 +1,3 @@
-# Server B – Shadow Control
+﻿# Legacy-Server-B-Referenz
 
-Diese lokale Ordnerstruktur enthält eine Browser-basierte Shadow-Ansicht für Server B.
-
-- Datenquelle: data.json
-- Oberfläche: index.html
-- Ziel: sichtbare, verschiebbare Module mit Rollenlogik und Security-Hinweisen
+Diese Datei ist nur noch eine Referenz. Der aktuelle primäre Einstieg ist [../../index.html](../../index.html) mit der Shadow-Runtime.

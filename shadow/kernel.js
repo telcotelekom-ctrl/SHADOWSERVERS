@@ -1,6 +1,7 @@
 import * as identity from './identity.js';
 import * as state from './state.js';
 import * as mesh from './mesh.js';
+import { startShadowKernelWasm } from './kernel-wasm.js';
 import * as relay from './relay.js';
 import * as transport from './transport.js';
 import * as discovery from './discovery.js';
@@ -23,6 +24,7 @@ import * as merge from './merge.js';
 import * as observability from './observability.js';
 
 export async function startShadowOS() {
+  const adaptiveBootstrap = startShadowKernelWasm({ adapter: 'browser', identityId: 'shadow-portal-self' });
   const identityRecord = await identity.createIdentity();
   const identityPub = identityRecord.pub;
   const peers = discovery.discover();
@@ -91,7 +93,15 @@ export async function startShadowOS() {
     mesh.notifyHandlers({ type: 'shadow-os-ready', state: stateRef, payload: signedEnvelope });
   });
 
-  return { identityPub, state: stateRef, peers, semanticObject, inbox: signedEnvelope };
+  return {
+    identityPub,
+    state: stateRef,
+    peers,
+    semanticObject,
+    inbox: signedEnvelope,
+    runtime: adaptiveBootstrap,
+    protocol: adaptiveBootstrap.protocol?.getSnapshot?.() || null
+  };
 }
 
 export function createShadowKernelApi() {

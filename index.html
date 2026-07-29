@@ -56,6 +56,26 @@
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
         }
 
+        .top-nav-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-light);
+            border-radius: 999px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .top-nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+        }
+
         .nav-link {
             display: inline-flex;
             align-items: center;
@@ -147,6 +167,14 @@
             margin-bottom: 12px;
         }
 
+        .brand-logo {
+            display: block;
+            width: 160px;
+            height: auto;
+            margin-bottom: 16px;
+            border-radius: 18px;
+        }
+
         .hero-actions {
             display: flex;
             flex-wrap: wrap;
@@ -233,6 +261,96 @@
             color: #dce9ff;
             white-space: pre-wrap;
             word-break: break-word;
+        }
+
+        .companion-panel {
+            position: fixed;
+            left: 16px;
+            bottom: 18px;
+            z-index: 9500;
+            width: min(92vw, 320px);
+            background: rgba(7, 17, 29, 0.94);
+            border: 1px solid rgba(79, 140, 255, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(12px);
+            padding: 12px 14px;
+        }
+
+        .companion-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .companion-title {
+            font-size: 0.78rem;
+            color: var(--investor-color);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .companion-connection {
+            font-size: 0.72rem;
+            color: rgba(245, 247, 255, 0.82);
+        }
+
+        .companion-connection-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 5px;
+            background: #64748b;
+        }
+
+        .companion-connection-dot.online {
+            background: #10b981;
+            box-shadow: 0 0 9px rgba(16, 185, 129, 0.6);
+        }
+
+        .companion-connection-dot.warn {
+            background: #f59e0b;
+            box-shadow: 0 0 9px rgba(245, 158, 11, 0.55);
+        }
+
+        .companion-update {
+            margin: 0 0 8px;
+            color: var(--text-light);
+            font-size: 0.92rem;
+            min-height: 44px;
+        }
+
+        .companion-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .companion-actions button {
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-light);
+            border-radius: 8px;
+            font-size: 0.78rem;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+
+        .companion-actions button:hover {
+            border-color: rgba(79, 140, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .companion-panel {
+                left: 10px;
+                right: 10px;
+                width: auto;
+            }
         }
 
         .manual-card p {
@@ -787,11 +905,26 @@
 
             .top-nav {
                 gap: 8px;
+                border-radius: 20px;
+                padding: 10px;
+            }
+
+            .top-nav-toggle {
+                display: inline-flex;
+            }
+
+            .top-nav-links {
+                display: none;
+                flex-direction: column;
+            }
+
+            .top-nav-links.open {
+                display: flex;
             }
 
             .nav-link {
                 flex: 1;
-                min-width: calc(50% - 8px);
+                min-width: 100%;
             }
         }
     </style>
@@ -799,34 +932,38 @@
 <body>
     <div class="container">
         <nav class="top-nav" aria-label="Section navigation">
-            <a class="nav-link" href="./app/index.html">Teilnahme ohne finanzielle Beteiligung</a>
-            <a class="nav-link active" href="#portal">Portal</a>
-            <a class="nav-link" href="#spinnen">Spinnen-Maus</a>
-            <a class="nav-link" href="#calculator">Investor-Kalkulator</a>
-            <a class="nav-link" href="./app/index.html">Business Suite</a>
-            <a class="nav-link" href="./bewerbung.html">Bewerbungssuite</a>
-            <a class="nav-link" href="./handbuch.html">Handbuch</a>
-            <a class="nav-link" href="./bedienung.html">Bedienung</a>
-            <a class="nav-link" href="./master-dokument.html">Master-Dokument</a>
-            <a class="nav-link" href="./office.html">Online Office</a>
-            <a class="nav-link" href="./universe.html">Universe System</a>
-            <a class="nav-link" href="./encyclopedia.html">Enzyklopädie</a>
-            <a class="nav-link" href="./psy-tel-studio.html">PSY‑TEL Studio</a>
-            <a class="nav-link" href="./manifest.html">Manifest</a>
-            <a class="nav-link" href="./tauschboerse.html">Tauschbörse</a>
-            <a class="nav-link" href="./liebe-weisheit/index.html">Liebe & Weisheit</a>
-            <a class="nav-link" href="./bildungszentrum.html">Bildungszentrum</a>
-            <a class="nav-link" href="./nijmegen-ressourcen.html">Nijmegen-Ressourcen</a>
-            <a class="nav-link" href="./ceoc.html">CEOC</a>
-            <a class="nav-link" href="./formel-registry.html">Formel-Registry</a>
-            <a class="nav-link" href="./physik-rechner.html">Physik-Rechner</a>
-            <a class="nav-link" href="./mass-effect.html">MassEffect (fiktiv)</a>
-            <a class="nav-link" href="https://digitalnotar.in/EGR/" target="_blank" rel="noreferrer">EGR Plan Studio ↗</a>
-            <a class="nav-link" href="http://127.0.0.1:3000/legacy/index.html" target="_blank" rel="noreferrer">Server B</a>
-            <a class="nav-link" href="#contact">Kontakt</a>
+            <button class="top-nav-toggle" type="button" id="topNavToggle" aria-expanded="false" aria-controls="topNavLinks">Menu ☰</button>
+            <div class="top-nav-links" id="topNavLinks">
+                <a class="nav-link" href="./app/index.html">Teilnahme ohne finanzielle Beteiligung</a>
+                <a class="nav-link active" href="#portal">Portal</a>
+                <a class="nav-link" href="#spinnen">Spinnen-Maus</a>
+                <a class="nav-link" href="#calculator">Investor-Kalkulator</a>
+                <a class="nav-link" href="./app/index.html">Business Suite</a>
+                <a class="nav-link" href="./bewerbung.html">Bewerbungssuite</a>
+                <a class="nav-link" href="./handbuch.html">Handbuch</a>
+                <a class="nav-link" href="./bedienung.html">Bedienung</a>
+                <a class="nav-link" href="./master-dokument.html">Master-Dokument</a>
+                <a class="nav-link" href="./office.html">Online Office</a>
+                <a class="nav-link" href="./universe.html">Universe System</a>
+                <a class="nav-link" href="./encyclopedia.html">Enzyklopädie</a>
+                <a class="nav-link" href="./psy-tel-studio.html">PSY‑TEL Studio</a>
+                <a class="nav-link" href="./manifest.html">Manifest</a>
+                <a class="nav-link" href="./tauschboerse.html">Tauschbörse</a>
+                <a class="nav-link" href="./liebe-weisheit/index.html">Liebe & Weisheit</a>
+                <a class="nav-link" href="./bildungszentrum.html">Bildungszentrum</a>
+                <a class="nav-link" href="./nijmegen-ressourcen.html">Nijmegen-Ressourcen</a>
+                <a class="nav-link" href="./ceoc.html">CEOC</a>
+                <a class="nav-link" href="./formel-registry.html">Formel-Registry</a>
+                <a class="nav-link" href="./physik-rechner.html">Physik-Rechner</a>
+                <a class="nav-link" href="./mass-effect.html">MassEffect (fiktiv)</a>
+                <a class="nav-link" href="https://digitalnotar.in/EGR/" target="_blank" rel="noreferrer">EGR Plan Studio ↗</a>
+                <a class="nav-link" href="#portal" rel="noreferrer">Server B Runtime</a>
+                <a class="nav-link" href="#contact">Kontakt</a>
+            </div>
         </nav>
 
         <section class="hero-shell">
+            <img src="./assets/logo.svg" alt="www.DIGITALNOTAR.in – ©TM Raymond Demitrio Tel" class="brand-logo" width="160" height="160" />
             <div class="hero-badge">Root Presence • sichtbar • klar • dauerhaft</div>
             <h2>Finanziers01 erscheint als ein sichtbarer, würdiger und klarer Raum für Nutzung, Besitz und Entwicklung.</h2>
             <p>Jeder Nutzer findet sofort die passenden Wege: Handbuch, Bedienung, Business Suite, Bewerbung und Server B. Der Eindruck soll immer eindeutig, sichtbar und stimmig bleiben.</p>
@@ -848,7 +985,7 @@
                 <a class="btn btn-secondary" href="./physik-rechner.html">📐 Physik-Rechner öffnen</a>
                 <a class="btn btn-secondary" href="./mass-effect.html">🧮 MassEffect-Rechner öffnen (fiktiv)</a>
                 <a class="btn btn-secondary" href="https://digitalnotar.in/EGR/" target="_blank" rel="noreferrer">🛠️ EGR Plan Studio öffnen (extern) ↗</a>
-                <a class="btn btn-secondary" href="http://127.0.0.1:3000/legacy/index.html" target="_blank" rel="noreferrer">🕶️ Server B öffnen</a>
+                <a class="btn btn-secondary" href="#portal" rel="noreferrer">🕶️ Server B Runtime öffnen</a>
             </div>
             <div class="hero-highlights">
                 <span>Hoher Kontrast</span>
@@ -881,9 +1018,9 @@
                 <a class="manual-link" href="./master-dokument.html">Zum Master-Dokument</a>
             </article>
             <article class="manual-card">
-                <h3>�🕶️ Server B</h3>
+                <h3>🕶️ Server B Runtime</h3>
                 <p>Der Shadow-Layer und die Runtime-Sicht sind direkt über das Portal erreichbar.</p>
-                <a class="manual-link" href="http://127.0.0.1:3000/legacy/index.html" target="_blank" rel="noreferrer">Server B öffnen</a>
+                <a class="manual-link" href="#portal" rel="noreferrer">Server B Runtime öffnen</a>
             </article>
             <article class="manual-card">
                 <h3>🎸 PSY‑TEL Hotspot Studio</h3>
@@ -1070,10 +1207,17 @@
 
             <div class="serverb-shell" style="margin-top: 20px;">
                 <div style="padding: 16px 18px; border-bottom: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04);">
-                    <h3 style="color: var(--investor-color); margin: 0;">🕶️ Server B – Shadow View</h3>
-                    <p style="margin: 6px 0 0; color: rgba(255,255,255,0.78);">Visible, movable, role-based shadow frame direkt im Portal eingebunden.</p>
+                    <h3 style="color: var(--investor-color); margin: 0;">🕶️ Server B – Shadow Runtime</h3>
+                    <p style="margin: 6px 0 0; color: rgba(255,255,255,0.78);">Die Live-Shadow-Sicht läuft direkt über den aktiven Runtime-Server und zeigt den aktuellen Status im Portal an.</p>
                 </div>
-                <iframe id="serverbFrame" class="serverb-frame" src="http://127.0.0.1:3000/legacy/index.html" title="Server B Shadow View"></iframe>
+                <div id="serverbRuntimeCard" style="padding: 18px; display: grid; gap: 10px;">
+                    <div class="status-pill" style="width: fit-content;">● Runtime verbunden</div>
+                    <div id="serverbRuntimeStatus" style="font-family: monospace; color: #dce9ff; white-space: pre-wrap;">Wird geladen…</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <a class="btn btn-primary" href="#portal">Zur Runtime-Übersicht</a>
+                        <a class="btn btn-secondary" href="./app/index.html">Zur Business Suite</a>
+                    </div>
+                </div>
             </div>
 
             <div class="schema-block" style="margin-top: 20px;">
@@ -1380,25 +1524,93 @@
         </section>
     </div>
 
+    <div class="companion-panel" id="companionPanel" aria-live="polite">
+        <div class="companion-title-row">
+            <p class="companion-title">DHZN Companion</p>
+            <p id="companionConnection" class="companion-connection"><span id="companionConnectionDot" class="companion-connection-dot"></span>Verbinde…</p>
+        </div>
+        <p class="companion-update" id="companionUpdate">Der Shadow-Companion wird mit der Live-Runtime verbunden…</p>
+        <div class="companion-actions">
+            <button id="installCompanion" type="button">Companion installieren</button>
+            <button id="popoutCompanion" type="button">Pop-out</button>
+        </div>
+    </div>
+
     <script type="module">
         import { startShadowOS } from './shadow/kernel.js';
+        import { buildPortalKernelContext, renderShadowKernelStatus } from './shadow/portal-bridge.mjs';
+        import { createShadowSphereArchitecture } from './shadow/snap-geometry.js';
 
-        const DEFAULT_PORTS = [3000, 3001, 3002, 3003, 8000, 8001];
-        const FALLBACK_ORIGIN = 'http://127.0.0.1:3000';
+        const DEFAULT_PORTS = [3000, 3001, 3002, 3003, 3004, 3005, 8000, 8001];
+        const PRIMARY_ORIGIN = 'http://127.0.0.1:3000';
+        const FALLBACK_ORIGIN = 'http://127.0.0.1:3005';
         const LOCAL_SERVER_URLS = window.location.protocol === 'file:'
             ? DEFAULT_PORTS.map((port) => `http://127.0.0.1:${port}`)
             : [window.location.origin];
 
         let resolvedApiBase = null;
+        let portalKernelState = null;
+        let portalKernelContext = buildPortalKernelContext({}, {});
+        let sphereArchitecture = null;
+
+        function buildPortalSummaryFromDom() {
+            const applicationName = document.getElementById('appName')?.value?.trim();
+            const applicationRole = document.getElementById('appRole')?.value?.trim();
+            const applicationFocus = document.getElementById('appFocus')?.value?.trim();
+            const applicationLink = document.getElementById('appMediaLink')?.value?.trim();
+
+            return {
+                company: { name: applicationName || 'Finanziers01 Portal' },
+                service: { name: applicationRole || 'Digital Workspace' },
+                operations: { process_name: applicationFocus || 'Portal Workflow' },
+                contacts: { official_contacts: applicationLink || 'https://digitalnotar.in' }
+            };
+        }
+
+        function syncPortalKernelStatus(kernelState = null, summary = buildPortalSummaryFromDom()) {
+            portalKernelState = kernelState || portalKernelState || {};
+            portalKernelContext = buildPortalKernelContext(summary, portalKernelState);
+
+            const outputEl = document.getElementById('shadowStatusOutput');
+            if (outputEl) {
+                outputEl.textContent = JSON.stringify({
+                    runtime: 'shadow-os',
+                    status: portalKernelContext.active ? 'active' : 'initializing',
+                    signals: portalKernelContext.signals,
+                    kernel: renderShadowKernelStatus(portalKernelContext),
+                    bootedAt: portalKernelContext.bootedAt || null
+                }, null, 2);
+            }
+
+            const updateEl = document.getElementById('companionUpdate');
+            if (updateEl) {
+                const baseMessage = updateEl.dataset.fallback || 'Shadow Companion online und bereit.';
+                const sphereState = sphereArchitecture?.bootstrap?.() || null;
+                const sphereSummary = sphereState ? ` • SSA ${sphereState.geometry.shellCount} shells / ${sphereState.geometry.nodeCount} nodes` : '';
+                updateEl.textContent = portalKernelContext.active
+                    ? `${baseMessage} • ${renderShadowKernelStatus(portalKernelContext)}${sphereSummary}`
+                    : baseMessage;
+            }
+        }
 
         async function resolveApiBase() {
             if (resolvedApiBase) return resolvedApiBase;
 
-            const probeTargets = [...LOCAL_SERVER_URLS, FALLBACK_ORIGIN];
+            const probeTargets = [PRIMARY_ORIGIN, ...LOCAL_SERVER_URLS, FALLBACK_ORIGIN];
             for (const target of probeTargets) {
                 try {
-                    const response = await fetch(`${target}/server/api/health`, { method: 'GET' });
-                    if (response.ok) {
+                    const healthResponse = await fetch(`${target}/api/health`, { method: 'GET', cache: 'no-store' });
+                    if (healthResponse.ok) {
+                        resolvedApiBase = target;
+                        return resolvedApiBase;
+                    }
+                } catch (error) {
+                    // Ignore and continue probing other origins.
+                }
+
+                try {
+                    const legacyResponse = await fetch(`${target}/server/api/health`, { method: 'GET', cache: 'no-store' });
+                    if (legacyResponse.ok) {
                         resolvedApiBase = `${target}/server`;
                         return resolvedApiBase;
                     }
@@ -1407,7 +1619,7 @@
                 }
             }
 
-            resolvedApiBase = `${window.location.protocol === 'file:' ? FALLBACK_ORIGIN : window.location.origin}/server`;
+            resolvedApiBase = PRIMARY_ORIGIN;
             return resolvedApiBase;
         }
 
@@ -1575,6 +1787,25 @@
         const sectionLinks = document.querySelectorAll('.nav-link');
         const sections = Array.from(document.querySelectorAll('.section-block'));
 
+        function initTopNavToggle() {
+            const toggle = document.getElementById('topNavToggle');
+            const links = document.getElementById('topNavLinks');
+            if (!toggle || !links) return;
+
+            toggle.addEventListener('click', () => {
+                const isOpen = links.classList.contains('open');
+                links.classList.toggle('open', !isOpen);
+                toggle.setAttribute('aria-expanded', String(!isOpen));
+            });
+
+            links.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', () => {
+                    links.classList.remove('open');
+                    toggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+
         function updateActiveNav() {
             const scrollPosition = window.scrollY + 120;
             let currentId = 'portal';
@@ -1594,6 +1825,7 @@
 
         window.addEventListener('scroll', updateActiveNav, { passive: true });
         window.addEventListener('load', updateActiveNav);
+        initTopNavToggle();
 
         document.getElementById('localForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1712,7 +1944,7 @@
 
         const shadowFrame = document.getElementById('serverbFrame');
         if (shadowFrame) {
-            shadowFrame.src = 'http://127.0.0.1:3000/legacy/index.html';
+            shadowFrame.src = './legacy/index.html';
         }
 
         const applicationForm = document.getElementById('applicationForm');
@@ -1810,6 +2042,7 @@
         function updateApplicationPreview() {
             const values = getApplicationFormValues();
             const { name, role, focus, mediaType, mediaLink, description } = values;
+            syncPortalKernelStatus(portalKernelState, buildPortalSummaryFromDom());
 
             previewRoleText.textContent = role;
             previewNameText.textContent = name;
@@ -1879,29 +2112,135 @@
             });
         });
 
+        function setCompanionStatus(connectionEl, dotEl, updateEl, stateClass, text) {
+            if (connectionEl) {
+                connectionEl.textContent = text;
+            }
+            if (dotEl) {
+                dotEl.className = `companion-connection-dot ${stateClass}`;
+            }
+            if (updateEl) {
+                const fallbackText = updateEl.dataset.fallback || 'Shadow Companion online und bereit.';
+                updateEl.textContent = updateEl.textContent || fallbackText;
+            }
+        }
+
+        async function initCompanionPanel() {
+            const connectionEl = document.getElementById('companionConnection');
+            const dotEl = document.getElementById('companionConnectionDot');
+            const updateEl = document.getElementById('companionUpdate');
+            if (!connectionEl || !dotEl || !updateEl) return;
+
+            try {
+                const apiBase = await getApiBase();
+                const apiBaseUrl = new URL(apiBase);
+                const companionUpdatesUrl = `${apiBase}/api/companion-updates`;
+                const portfolioFindingsUrl = `${apiBase}/api/portfolio/findings`;
+
+                const updatesResponse = await fetch(companionUpdatesUrl, { cache: 'no-store' });
+                if (!updatesResponse.ok) throw new Error(`HTTP ${updatesResponse.status}`);
+                const updatesData = await updatesResponse.json();
+                const updateItems = Array.isArray(updatesData.items) ? updatesData.items : [];
+                if (updateItems.length) {
+                    updateEl.dataset.fallback = updateItems[0];
+                    updateEl.textContent = updateItems[0];
+                }
+
+                const findingsResponse = await fetch(portfolioFindingsUrl, { cache: 'no-store' });
+                if (findingsResponse.ok) {
+                    const findingsData = await findingsResponse.json();
+                    const findings = Array.isArray(findingsData.findings) ? findingsData.findings : [];
+                    if (findings.length) {
+                        const detail = findings[0].detail || findings[0].title;
+                        updateEl.dataset.fallback = `${updateEl.dataset.fallback || 'Shadow Companion online und bereit.'} • ${detail}`;
+                        updateEl.textContent = `${updateEl.textContent || 'Shadow Companion online und bereit.'} • ${detail}`;
+                    }
+                }
+
+                setCompanionStatus(connectionEl, dotEl, updateEl, 'online', 'Verbunden');
+
+                const wsUrl = `${apiBaseUrl.protocol === 'https:' ? 'wss:' : 'ws:'}//${apiBaseUrl.host}/ws/companion`;
+                const socket = new WebSocket(wsUrl);
+
+                socket.addEventListener('open', () => {
+                    setCompanionStatus(connectionEl, dotEl, updateEl, 'online', 'Verbunden');
+                });
+
+                socket.addEventListener('message', (event) => {
+                    try {
+                        const payload = JSON.parse(event.data);
+                        if (payload && payload.message) {
+                            updateEl.textContent = payload.message;
+                        }
+                    } catch (error) {
+                        console.warn('Companion payload could not be parsed', error);
+                    }
+                });
+
+                socket.addEventListener('close', () => {
+                    setCompanionStatus(connectionEl, dotEl, updateEl, 'warn', 'Offline');
+                });
+
+                socket.addEventListener('error', () => {
+                    setCompanionStatus(connectionEl, dotEl, updateEl, 'warn', 'Begrenzt');
+                });
+            } catch (error) {
+                console.warn('Companion panel could not connect to runtime', error);
+                setCompanionStatus(connectionEl, dotEl, updateEl, 'warn', 'Offline');
+                updateEl.textContent = 'Shadow Companion konnte die Live-Runtime nicht erreichen.';
+            }
+        }
+
+        function initMobileMenu() {
+            const toggle = document.getElementById('mobileMenuToggle');
+            const menu = document.getElementById('mobileMenu');
+            if (!toggle || !menu) return;
+
+            toggle.addEventListener('click', () => {
+                const isOpen = menu.classList.contains('open');
+                menu.classList.toggle('open', !isOpen);
+                toggle.setAttribute('aria-expanded', String(!isOpen));
+            });
+
+            menu.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', () => {
+                    menu.classList.remove('open');
+                    toggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+
         async function updateShadowStatus() {
             const outputEl = document.getElementById('shadowStatusOutput');
             if (!outputEl) return;
             try {
                 const apiBase = await getApiBase();
-                const response = await fetch(`${apiBase}/api/shadow/status`);
+                const response = await fetch(`${apiBase}/api/status`, { cache: 'no-store' });
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
-                outputEl.textContent = JSON.stringify({
-                    runtime: data.runtime || 'shadow-os',
-                    status: data.status || 'unknown',
-                    port: data.port || 'unknown',
-                    timestamp: data.timestamp || new Date().toISOString()
-                }, null, 2);
+                syncPortalKernelStatus({
+                    ready: true,
+                    bootedAt: data.timestamp || new Date().toISOString(),
+                    _v: 1
+                }, buildPortalSummaryFromDom());
             } catch (error) {
+                syncPortalKernelStatus({}, buildPortalSummaryFromDom());
                 outputEl.textContent = JSON.stringify({ runtime: 'shadow-os', status: 'offline', error: error.message }, null, 2);
             }
         }
 
-        startShadowOS().catch((error) => {
+        syncPortalKernelStatus({}, buildPortalSummaryFromDom());
+        sphereArchitecture = createShadowSphereArchitecture({
+            geometry: { core: { id: 'portal-core', label: 'Portal Core' } }
+        });
+        startShadowOS().then((result) => {
+            portalKernelState = result?.state || result || {};
+            syncPortalKernelStatus(portalKernelState, buildPortalSummaryFromDom());
+        }).catch((error) => {
             console.warn('ShadowOS startup failed', error);
         });
         void updateShadowStatus();
+        void initCompanionPanel();
     </script>
 </body>
 </html>

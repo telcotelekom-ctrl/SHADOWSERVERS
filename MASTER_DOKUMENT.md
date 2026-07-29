@@ -1,43 +1,27 @@
-# Master-Dokument – Finanziers01
+﻿# Master-Dokumentation
 
-## Vision
+Die aktuelle Projektstruktur ist auf ein zentrales Portal und eine Shadow-Runtime ausgerichtet. Das Root-Portal in [index.html](index.html) ist die Hauptansicht, während [server/server.js](server/server.js) die operative Logik und die Live-API bereitstellt.
 
-Finanziers01 soll zu einem vollständigen, sichtbaren und nutzbaren Universal Company OS werden. Die Plattform verbindet Unternehmenspräsenz, Gründerarbeit, Bewerbungen, Investorenlogik, Dokumente und Partnerangebote in einem gemeinsamen Rahmen.
+## 1. Sichtbare Ebene
+- [index.html](index.html) als Hauptportal
+- [app/index.html](app/index.html) als App-Startpunkt
+- [legacy/index.html](legacy/index.html) als Referenzstruktur
 
-## Produktmodule
+## 2. Runtime-Ebene
+- [server/server.js](server/server.js) für API-, Companion- und WebSocket-Funktionalität
+- [server/data](server/data) für lokale Zustände und Inhalte
 
-- Portal Hub
-- Founder Workspace
-- Investor Cockpit
-- Talent und Bewerbung
-- MyOpenAI Hub
-- Content und Dokumentenraum
+## 3. Dokumentationsstruktur
+- Root-Dokumente beschreiben den aktuellen Portal- und Runtime-Stand.
+- Unterordner wie [university-deploy](university-deploy) spiegeln die public-facing Variante wider.
 
-## Technische Grundlage
+## 4. Nutzung
+- Öffne [index.html](index.html) für die Hauptansicht.
+- Prüfe /api/health, /api/status und /ws/companion.
 
-### Frontend
-- HTML, CSS und Vanilla JavaScript
-- responsive Oberflächen
-- lokale Persistenz und einfache Exporte
-
-### Runtime
-- lokaler Node.js-Server
-- API-Endpunkte für Health, Sessions, Profile und Workspaces
-- einfache Datenlogik für Prototypen und Tests
-
-### Datenbasis
-- lokale JSON-Daten
-- SQL-Blueprint für spätere Persistenz
-- dokumentierte Architektur als Grundlage für künftige Backend-Integration
-
-## Umsetzungsprioritäten
-
-1. gemeinsame Shell und Navigation
-2. Founder Workspace als zentraler Arbeitsbereich
-3. Investor Cockpit als eigener Bereich
-4. MyOpenAI als sichtbarer Partner-Hub
-5. echte Datenbankintegration und Backend-Reife
-
-## Fazit
-
-Die technische und inhaltliche Basis ist bereits stark genug, um die nächste Produktphase einzuleiten.
+## Aktueller Betriebsstatus
+- Hauptportal: sichtbar und direkt erreichbar über [index.html](index.html)
+- Runtime: aktiv über [server/server.js](server/server.js)
+- Health-Check: /api/health
+- Companion-Livekanal: /ws/companion
+- Status- und Portfolio-Routen: /api/status, /api/portfolio/findings
