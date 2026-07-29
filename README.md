@@ -22,10 +22,28 @@ Finanziers01 ist ein browserbasiertes Produkt- und Unternehmenssystem mit mehrer
 2. Nutze die Navigation zu den wichtigsten Bereichen.
 3. Prüfe Inhalte, Vorschau oder Exportfunktionen.
 
+### Investor Portal und Angebote
+Das zentrale Portal ist unter der öffentlichen URL [Investor Portal - Startup Systems | Z-Canvas Kapitalformeln](https://telcotelekom-ctrl.github.io/university/) erreichbar.
+
+Es bündelt folgende Angebotsbereiche:
+- Investor-Kalkulator mit lokalen, globalen, Produktions- und Zeitindex-Berechnungen
+- Bewerbungssuite und Profil-/Portfolio-Management
+- Business Suite und Projekt-/Workspace-Ansichten
+- Online Office, Dokumentation, Handbuch und Bedienungsanleitung
+- PSY-TEL Studio und Hotspot-Funktionen für Live- und Broadcast-Szenarien
+- CEOC-, Formel-Registry-, Physik- und MassEffect-Module
+
+Der Aufbau ist bewusst so gestaltet, dass Nutzer sowohl schnelle Rechenlogik als auch strukturierte Produkt- und Netzwerkangebote in einem konsistenten Portal erleben.
+
 ### Mit lokalem Server
 1. Öffne ein Terminal im Projektordner.
 2. Starte den Server mit `node server/server.js`.
 3. Öffne die lokale Adresse unter http://127.0.0.1:3000/.
+
+### ShadowServer auf GitHub
+Der Shadow-Server ist als eigenständiges Repository verfügbar unter [telcotelekom-ctrl/SHADOWSERVERS](https://github.com/telcotelekom-ctrl/SHADOWSERVERS).
+
+Die Verbindung zwischen Portal und ShadowServer ist über die lokale Runtime und die API-Endpoints des Servers aufgebaut. Der Server stellt die Backend-Funktionalität bereit, während das Portal die sichtbare Oberfläche und die Nutzerinteraktion darstellt.
 
 ## Wichtige Dateien
 
