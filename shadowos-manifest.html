@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHADOWOS Ω∞ – Universal Adaptive Runtime · Manifest</title>
+  <style>
+    :root {
+      --bg: #07111d;
+      --panel: rgba(7, 17, 29, 0.9);
+      --panel-2: rgba(255, 255, 255, 0.08);
+      --text: #f5f7ff;
+      --muted: #9fb0c9;
+      --accent: #4f8cff;
+      --accent-2: #f4c542;
+      --border: rgba(255,255,255,0.16);
+      --shadow: 0 20px 50px rgba(0,0,0,0.24);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #07111d 0%, #11233d 48%, #0b1626 100%);
+      color: var(--text);
+      line-height: 1.75;
+    }
+    .page { max-width: 900px; margin: 0 auto; padding: 24px 18px 64px; }
+    .top-nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+    .nav-link {
+      text-decoration: none; color: var(--text); padding: 10px 14px;
+      border-radius: 999px; background: var(--panel-2);
+      border: 1px solid var(--border); font-weight: 700;
+    }
+    .nav-link:hover { background: rgba(79, 140, 255, 0.24); }
+    .hero {
+      border: 1px solid var(--border); border-radius: 24px; padding: 28px;
+      background: linear-gradient(135deg, rgba(79,140,255,0.18), rgba(244,197,66,0.12));
+      box-shadow: var(--shadow); margin-bottom: 28px;
+    }
+    .kicker {
+      display: inline-block; padding: 8px 12px; border-radius: 999px;
+      background: rgba(244,197,66,0.2); color: var(--accent-2);
+      font-weight: 700; margin-bottom: 10px;
+    }
+    h1 { margin-top: 0; font-size: 2rem; }
+    h2 { margin: 34px 0 12px; font-size: 1.4rem; color: var(--text); border-top: 1px solid var(--border); padding-top: 24px; }
+    p { margin: 0 0 1.1em; color: var(--muted); }
+    .lead { color: var(--text); font-size: 1.12rem; }
+    blockquote {
+      margin: 0 0 1.2em; padding: 14px 18px; border-left: 4px solid var(--accent);
+      background: rgba(79,140,255,0.1); border-radius: 0 12px 12px 0; color: var(--text);
+    }
+    ul { color: var(--muted); }
+    li { margin: 4px 0; }
+    code, pre {
+      font-family: "Cascadia Code", Consolas, monospace;
+    }
+    pre {
+      background: rgba(0,0,0,0.35); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px 18px; overflow-x: auto;
+      color: #cfe0ff; font-size: 0.92rem; line-height: 1.5;
+    }
+    .legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 4px; }
+    .tag {
+      display: inline-block; padding: 4px 10px; border-radius: 999px;
+      font-size: 0.82rem; font-weight: 700; border: 1px solid var(--border);
+    }
+    .tag.arch { background: rgba(70, 200, 120, 0.18); color: #7ff0ad; }
+    .tag.research { background: rgba(79, 140, 255, 0.18); color: #9dc0ff; }
+    .tag.philo { background: rgba(190, 130, 255, 0.18); color: #d6b3ff; }
+    .signoff {
+      margin-top: 40px; color: var(--muted); font-size: 0.95rem;
+      border-top: 1px solid var(--border); padding-top: 18px;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="top-nav" aria-label="Sektionen">
+      <a class="nav-link" href="./index.html">← Portal</a>
+      <a class="nav-link" href="./manifest.html">Manifest (Raum)</a>
+      <a class="nav-link" href="./master-dokument.html">Master-Dokument</a>
+      <a class="nav-link" href="./MANIFEST_SHADOWOS.md">Markdown-Quelle</a>
+    </nav>
+
+    <section class="hero">
+      <div class="kicker">🌌 MANIFEST · Ω∞</div>
+      <h1>SHADOWOS Ω∞</h1>
+      <p class="lead">Universal Adaptive Runtime • Shadow Geometry Fabric • Universal Communication Architecture</p>
+      <blockquote>„Ein System sollte sich an seine Umgebung anpassen – nicht die Umgebung an das System."</blockquote>
+    </section>
+
+    <article class="manifest">
+      <h2>Lesehilfe – drei Ebenen der Aussagen</h2>
+      <p>Dieses Manifest trennt bewusst drei Aussagetypen, damit es als Entwicklerdokumentation und als Vision belastbar bleibt:</p>
+      <div class="legend">
+        <span class="tag arch">🟢 Architektur — heute umsetzbar</span>
+        <span class="tag research">🔵 Forschungsvision — langfristig</span>
+        <span class="tag philo">🟣 Philosophie — Grundhaltung</span>
+      </div>
+
+      <h2>Ω. Präambel</h2>
+      <p>ShadowOS Ω∞ ist kein Betriebssystem im klassischen Sinn und kein Ersatz für Linux, Windows oder Android. Es ist eine <strong>universelle Runtime-Architektur</strong>, die Anwendungen, Geräte, Dienste und Netzwerke über eine gemeinsame <strong>Fähigkeitsschicht (Capabilities)</strong> verbindet.</p>
+      <blockquote><span class="tag philo">🟣 Philosophie</span> Nicht Betriebssysteme, Server oder Frameworks kommunizieren miteinander — <strong>Capabilities kommunizieren miteinander.</strong></blockquote>
+      <p>ShadowOS beschreibt keine neue Physik, sondern eine neue <strong>Organisationsschicht</strong> über bestehenden Netzwerken.</p>
+
+      <h2>Ω∞ Die Grundidee</h2>
+      <blockquote>Jede digitale Kommunikation entsteht aus der Verarbeitung binärer Zustände (0 und 1). ShadowOS Ω∞ abstrahiert diese Grundlage zu einer universellen Laufzeitarchitektur, die Geräte, Anwendungen und Dienste über gemeinsame Fähigkeiten verbindet.</blockquote>
+      <p><span class="tag philo">🟣</span> Die Binärlogik ist der gemeinsame Nenner aller digitalen Systeme — keine Einschränkung, sondern die Basis, auf der Interoperabilität überhaupt möglich wird.</p>
+
+      <h2>Ω¹ Fünf universelle Prinzipien</h2>
+      <ul>
+        <li><strong>Adaptivität</strong> — Jedes System passt sich seiner Umgebung an, nicht umgekehrt.</li>
+        <li><strong>Kooperation</strong> — Jeder Teilnehmer kann zugleich Nutzer, Entwickler, Infrastruktur, Wissensquelle, Relay, Speicher und Rechenknoten sein.</li>
+        <li><strong>Modularität</strong> — Alles besteht aus Modulen. Nichts ist fest eingebaut. Alles ist ersetzbar.</li>
+        <li><strong>Unsichtbarkeit</strong> — Nutzer sollen nie überlegen müssen „Läuft Node? PHP? Rust?". Die Runtime entscheidet selbst.</li>
+        <li><strong>Kontinuität</strong> — Offline → Synchronisierung → Online → verteiltes Netzwerk bilden keinen prinzipiellen Unterschied mehr.</li>
+      </ul>
+
+      <h2>Ω¹ Die Strategie digitaler Kommunikation</h2>
+      <p>Kommunikation als mehrstufiger Prozess — Ziel ist nicht nur Datentransport, sondern organisierte <strong>digitale Zusammenarbeit</strong>:</p>
+      <pre>Information → Codierung → Übertragung → Interpretation → Kooperation → Wissensbildung</pre>
+
+      <h2>Ω² Die Emergenz digitaler Räume</h2>
+      <ul>
+        <li><strong>Raum A</strong> — Gerät, Browser, Betriebssystem, Netzwerk</li>
+        <li><strong>Raum B</strong> — Anwendung, Dienst, KI, Workflow, Benutzer</li>
+        <li><strong>Raum C</strong> — Die <em>Interaktion</em>: nicht A, nicht B, sondern die <strong>Beziehung zwischen beiden</strong>.</li>
+      </ul>
+      <blockquote><span class="tag philo">🟣</span> ShadowOS beschreibt genau diesen dritten Raum.</blockquote>
+
+      <h2>Ω³ Capability Computing</h2>
+      <p>ShadowOS ersetzt klassische Plattformabhängigkeiten durch Fähigkeiten. Nicht gefragt wird <em>„Läuft Node?"</em>, sondern:</p>
+      <pre>Kann speichern?  ·  Kann synchronisieren?  ·  Kann verschlüsseln?
+Kann rechnen?    ·  Kann transportieren?   ·  Kann KI ausführen?
+Kann Module laden?</pre>
+      <p><span class="tag arch">🟢</span> Fähigkeits-Erkennung im Browser (WebCrypto, IndexedDB/OPFS, WebAssembly, Service Worker, WebRTC) ist heute umsetzbar.</p>
+
+      <h2>Ω⁴ Shadow Kernel</h2>
+      <p>Der Kernel ist der <strong>universelle Runtime-Kern</strong> und die kleinste gemeinsame Grundlage. Er organisiert über austauschbare Engines: Identity · Capability · Geometry · Discovery · Transport · Storage · Synchronization · Cryptography · Registry · Scheduling · AI · Security · Fabric · Knowledge · Marketplace.</p>
+      <p>Jedes Modul besitzt: <strong>Version · Signatur · Fähigkeiten · Abhängigkeiten · Berechtigungen · Lebenszyklus</strong>.</p>
+      <p><span class="tag arch">🟢</span> Der aktuelle Kern (<code>shadow/kernel.js</code>, <code>startShadowOS()</code>) implementiert Identität (ECDSA P-256), Krypto, Storage, Discovery und Modul-Laden bereits browser-nativ.</p>
+
+      <h2>Ω⁵ Shadow Fabric</h2>
+      <p>Die Fabric verbindet keine Computer, sondern <strong>Fähigkeiten</strong>:</p>
+      <pre>Capability → Discovery → Identity → Communication/Overlay → Synchronization → Knowledge</pre>
+      <p>Sie organisiert Discovery, Routing, Synchronisierung, Lastverteilung, Replikation und Vertrauensbeziehungen. <span class="tag arch">🟢</span> localStorage-basierte Discovery/Relay heute; <span class="tag research">🔵</span> globale Lastverteilung/Replikation über viele Knoten.</p>
+
+      <h2>Ω⁶ Shadow Geometry</h2>
+      <p>Ein Organisationsmodell — nicht Baum, Stern, Ring oder klassisches Mesh, sondern <strong>überlagerte logische Kugelschichten (Spherical Overlay Layers)</strong>. Ein Teilnehmer kann gleichzeitig Mitglied beliebig vieler Layer sein: Knowledge · Identity · Storage · Discovery · Communication · AI · Governance · Research.</p>
+      <blockquote><span class="tag research">🔵</span> Logische Organisationsstrukturen, keine physikalische Verdrahtung. Geometrische Overlays sind ein Forschungsziel.</blockquote>
+
+      <h2>Ω⁷ Shadow SNAP — Network Adaptation Protocol</h2>
+      <p>SNAP erkennt automatisch vorhandene Fähigkeiten und nutzt sie; nicht vorhandene werden ignoriert: Storage, Filesystem, Crypto, GPU, WebRTC, Bluetooth, NFC, USB, IndexedDB, OPFS, Service Worker, WebAssembly, AI-Accelerator, Sensoren, Netzwerktypen.</p>
+      <p><span class="tag arch">🟢</span> Feature-Detection im Browser; <span class="tag research">🔵</span> einheitliche Adaption über Hardware-Peripherie plattformübergreifend.</p>
+
+      <h2>Ω⁸ Shadow Package- & Registry-System</h2>
+      <p>Ein fähigkeitsorientiertes Modulsystem. Ein Modul beschreibt: <code>id · version · requires · provides · capabilities · permissions · signature · compatibility</code>. Registries können <strong>lokal, organisationsintern, öffentlich oder verteilt</strong> sein; Module werden kryptographisch signiert.</p>
+
+      <h2>Ω⁹ Shadow Identity</h2>
+      <p>Jeder Teilnehmer besitzt: Identity · Public Key · Capabilities · Roles · Permissions · Trust Score · Contribution Score · Reputation.</p>
+      <p><span class="tag arch">🟢</span> Public-Key-Identität und Signaturen heute umsetzbar; <span class="tag research">🔵</span> Trust-/Contribution-/Reputation-Scoring als verteiltes Modell.</p>
+
+      <h2>Ω¹⁰ Shadow Cooperation & Marketplace</h2>
+      <p>Jeder Teilnehmer kann <strong>freiwillig</strong> beitragen: Rechenleistung, Speicherung, Relay, Wissen, Dokumentation, Entwicklung, Tests, Übersetzungen, Forschung, Lehrmaterial, Beispiele. Der Marketplace stellt bereit: Runtime-Module, Erweiterungen, Themes, KI-Agenten, Workflows, Templates, Datenschemata, Visualisierungen, Lernmaterial.</p>
+      <blockquote><span class="tag philo">🟣</span> Kooperation ist eine <strong>Funktion der Architektur, keine Pflicht.</strong></blockquote>
+
+      <h2>Ω¹¹ Shadow Gateway</h2>
+      <p>Ein Gateway verbindet beliebige Plattformen über dieselbe Shadow Runtime: GitHub Pages, Shared Hosting, Cloudflare, Edge Runtime, Mobile, Desktop, lokale Rechner, Unternehmenssysteme — alle sprechen dasselbe Shadow-Protokoll.</p>
+
+      <h2>Ω¹² Shadow Runtime</h2>
+      <p>ShadowOS passt sich selbst an und läuft überall: Browser, PWAs, Shared Hosting, Edge, Linux, Windows, macOS, Android, iOS, PHP, Python, Go, Rust, Deno, Bun, <strong>Node (optional)</strong>, Cloudflare Workers, Edge Runtime.</p>
+      <blockquote><span class="tag arch">🟢</span> Der browser-native Kern läuft heute ohne Node. <span class="tag research">🔵</span> Einheitliche Runtime über alle genannten Ziele. Keine Laufzeit ist vorgeschrieben.</blockquote>
+
+      <h2>Ω¹³ Shadow Cluster & das kooperative Rechenzentrum</h2>
+      <p>Cluster bestehen aus autonomen Knoten (local · regional · national · continental · global). Jeder Knoten kann aktiv, passiv, Backup, Relay, Compute oder Storage sein.</p>
+      <pre>Klassisch:  Benutzer → Server → Datenbank
+ShadowOS:   Teilnehmer → Shadow Runtime → Shadow Fabric → Kooperatives Rechennetz</pre>
+      <ul>
+        <li>Anwendungen können weiterhin klassische Server oder Cloud-Dienste nutzen.</li>
+        <li>Wo technisch möglich, werden Aufgaben auf mehrere Teilnehmer verteilt.</li>
+        <li>Die Architektur ist nicht an einen einzelnen Server gebunden, sondern an gemeinsame Protokolle und Fähigkeiten.</li>
+      </ul>
+      <blockquote><span class="tag research">🔵</span> Das Rechenzentrum als kooperativer Verbund vieler Knoten.</blockquote>
+
+      <h2>Ω¹⁴ Shadow Research Layer</h2>
+      <p>Langfristige Forschungsfelder — ausdrücklich <span class="tag research">🔵 Forschungsvision</span>, nicht etablierte Technik:</p>
+      <ul>
+        <li>adaptive Routing-Modelle</li>
+        <li>geometrische Overlays</li>
+        <li>selbstorganisierende Netztopologien</li>
+        <li>energieeffiziente / verteilte Synchronisation</li>
+        <li>verteilte Wissensmodelle</li>
+        <li>KI-gestützte Ressourcenplanung</li>
+      </ul>
+
+      <h2>Ω¹⁵ Shadow Governance</h2>
+      <p>Offene Entwicklung auf Basis von: offenen Spezifikationen · versionierten Standards · kryptographischer Integrität · nachvollziehbaren Änderungen · Interoperabilität · Erweiterbarkeit. Beteiligte Rollen: Entwickler, Forschungseinrichtungen, Unternehmen, Hochschulen, Betreiber, Community, Infrastrukturpartner, Anwender.</p>
+
+      <h2>Ω∞ Das Zielbild</h2>
+      <blockquote>ShadowOS Ω∞ ist eine universelle Architektur für digitale Kommunikation. Sie organisiert Anwendungen, Geräte und Dienste über gemeinsame Fähigkeiten statt über feste Plattformen. Durch eine modulare Runtime, eine verteilte Shadow Fabric und capability-basierte Kooperation entsteht eine offene Infrastruktur, die auf bestehenden Internetstandards aufbaut und klassische zentrale Komponenten dort ergänzt oder ersetzt, wo dies technisch sinnvoll ist.</blockquote>
+      <h2>Ehrliche Abgrenzung</h2>
+      <p>Ein World Wide Web <strong>ganz ohne</strong> Server oder öffentlich erreichbare Dienste ist mit der heutigen Internetarchitektur nicht vollständig realisierbar. Realistisch beschreibbar ist eine Architektur, die klassische zentrale Server <strong>weitgehend durch verteilte Laufzeiten, Edge-Dienste und kooperative Knoten ersetzt</strong>. So bleibt die Vision technisch anschlussfähig — und trennt klar, welche Teile heute umsetzbar sind und welche als langfristige Forschungs- und Entwicklungsziele gelten.</p>
+    </article>
+
+    <div class="signoff">
+      Teil von Finanziers01 · SHADOWOS Ω∞ · Quellen zusammengeführt aus eingefügtem Manifest und „Document 13.pdf". Markdown-Quelle: <a class="nav-link" href="./MANIFEST_SHADOWOS.md" style="padding:2px 8px;">MANIFEST_SHADOWOS.md</a>
+    </div>
+  </main>
+</body>
+</html>
