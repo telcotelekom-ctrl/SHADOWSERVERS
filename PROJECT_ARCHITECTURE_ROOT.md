@@ -1,27 +1,29 @@
 ﻿# Projektarchitektur – Shadow-Portal
 
-Die Architektur ist jetzt klar gegliedert: Sichtbare Oberfläche, Shadow-Runtime und Datenebene.
+Die Architektur ist klar gegliedert: sichtbares statisches Portal, serverloser ShadowOS-Kern
+und ein optionales lokales Node-Backend.
 
 ## Komponenten
-- Portal: [index.html](index.html)
-- Runtime: [server/server.js](server/server.js)
-- Daten: [server/data](server/data)
-- App-Entry: [app/index.html](app/index.html)
-- Legacy-Referenz: [legacy/index.html](legacy/index.html)
+- **Portal (statisch):** [index.html](index.html) + Unterseiten – läuft ohne Server.
+- **ShadowOS-Kern (serverlos, browser-nativ):** [shadow/](shadow), Boot über
+  `startShadowOS()`. WebCrypto-Identität, WASM-Kernel (Browser-Adapter), localStorage-Discovery.
+- **Node-Backend (OPTIONAL, lokal):** [server/server.js](server/server.js),
+  Daten in [server/data](server/data).
+- **App-Entry:** [app/index.html](app/index.html) · **Legacy-Referenz:** [legacy/index.html](legacy/index.html)
 
 ## Datenfluss
-1. Das Portal ruft die Runtime-API auf.
-2. Die Runtime liefert Health-, Status-, Companion- und Profilinformationen.
-3. Die UI stellt diese Daten sichtbar und interaktiv dar.
+1. Das Portal bootet ShadowOS direkt im Browser (kein Server erforderlich).
+2. ShadowOS verwaltet Identität, Krypto, Speicherung, Discovery und Module lokal.
+3. Ist optional ein Node-Backend erreichbar, ergänzt es Live-Funktionen (Status, Companion, Profile).
+4. Ohne Backend degradiert das Portal sauber in den Offline-/Shadow-Modus.
 
 ## Zielzustand
-- Ein sichtbarer, konsistenter Portalauftritt
-- Eine operative Shadow-Runtime als Single Source of Truth
-- Eine klare Trennung zwischen Portal, Runtime und Dokumentation
+- Ein sichtbarer, konsistenter Portalauftritt.
+- Ein serverloser ShadowOS-Kern als eigentliches Produkt (kein Node-Zwang).
+- Ein optionales Backend nur dort, wo Live-Features lokal gewünscht sind.
+- Klare Trennung zwischen Portal, Kern, optionalem Backend und Dokumentation.
 
-## Aktueller Betriebsstatus
-- Hauptportal: sichtbar und direkt erreichbar über [index.html](index.html)
-- Runtime: aktiv über [server/server.js](server/server.js)
-- Health-Check: /api/health
-- Companion-Livekanal: /ws/companion
-- Status- und Portfolio-Routen: /api/status, /api/portfolio/findings
+## Betriebsstatus
+- Kern: serverloses ShadowOS, browser-nativ.
+- Portal: statisch, live auf GitHub Pages (telcotelekom-ctrl/university).
+- Node-Backend: optional, nur lokal.

@@ -1,22 +1,22 @@
 ﻿# Premium-Dokumentation
 
-Finanziers01 wird jetzt als sichtbares Produkt- und Unternehmensportal mit Shadow-Runtime verstanden.
+Finanziers01 ist ein sichtbares Produkt- und Unternehmensportal auf einem **serverlosen
+ShadowOS-Kern**. Das Node-Backend ist eine optionale lokale Erweiterung.
 
 ## Fokus
-- Professioneller Portalauftritt
-- Live-Runtime- und API-Integration
-- Companion- und Status-Updates
-- Klare Dokumentationsstruktur
+- Professioneller, statischer Portalauftritt (GitHub Pages-fähig).
+- Serverloser, browser-nativer Kern (ShadowOS) als eigentliches Produkt.
+- Optionale Live-Erweiterungen: Companion- und Status-Updates über ein lokales Backend.
+- Klare Dokumentationsstruktur inkl. Architektur-Manifest.
 
 ## Kernpunkte
-- [index.html](index.html) ist der sichtbare Einstieg.
-- [server/server.js](server/server.js) ist die operative Runtime.
-- [server/data](server/data) enthält die zugrunde liegenden Daten.
-- [university-deploy](university-deploy) enthält die deploybare Variante.
+- [index.html](index.html) ist der sichtbare Einstieg; ShadowOS bootet im Browser.
+- [shadow/](shadow) enthält den serverlosen Kern (`startShadowOS()`).
+- [server/server.js](server/server.js) ist ein OPTIONALES lokales Backend; [server/data](server/data) dessen Daten.
+- [MANIFEST_SHADOWOS.md](MANIFEST_SHADOWOS.md) / [shadowos-manifest.html](shadowos-manifest.html) beschreiben die Vision.
+- [university-deploy](university-deploy) ist die deploybare Live-Kopie (Pages).
 
-## Aktueller Betriebsstatus
-- Hauptportal: sichtbar und direkt erreichbar über [index.html](index.html)
-- Runtime: aktiv über [server/server.js](server/server.js)
-- Health-Check: /api/health
-- Companion-Livekanal: /ws/companion
-- Status- und Portfolio-Routen: /api/status, /api/portfolio/findings
+## Betriebsstatus
+- Kern: serverloses ShadowOS, browser-nativ.
+- Portal: statisch, live auf GitHub Pages.
+- Node-Backend: optional, nur lokal.

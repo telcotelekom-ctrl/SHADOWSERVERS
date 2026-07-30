@@ -1,27 +1,32 @@
 ﻿# Master-Dokumentation
 
-Die aktuelle Projektstruktur ist auf ein zentrales Portal und eine Shadow-Runtime ausgerichtet. Das Root-Portal in [index.html](index.html) ist die Hauptansicht, während [server/server.js](server/server.js) die operative Logik und die Live-API bereitstellt.
+Die Projektstruktur besteht aus einem zentralen statischen Portal, einem serverlosen
+ShadowOS-Kern und einem optionalen lokalen Node-Backend.
 
-## 1. Sichtbare Ebene
+## 1. Sichtbare Ebene (statisch)
 - [index.html](index.html) als Hauptportal
 - [app/index.html](app/index.html) als App-Startpunkt
 - [legacy/index.html](legacy/index.html) als Referenzstruktur
 
-## 2. Runtime-Ebene
+## 2. Kern-Ebene (serverlos)
+- [shadow/](shadow) – ShadowOS-Module, Boot über `startShadowOS()`.
+- Browser-nativ: WebCrypto-Identität, WASM-Kernel (Browser-Adapter), localStorage-Discovery.
+- Kein Node erforderlich; lauffähig auf GitHub Pages.
+
+## 3. Optionale Backend-Ebene (nur lokal)
 - [server/server.js](server/server.js) für API-, Companion- und WebSocket-Funktionalität
 - [server/data](server/data) für lokale Zustände und Inhalte
+- Portal degradiert ohne Backend sauber in den Offline-/Shadow-Modus.
 
-## 3. Dokumentationsstruktur
-- Root-Dokumente beschreiben den aktuellen Portal- und Runtime-Stand.
-- Unterordner wie [university-deploy](university-deploy) spiegeln die public-facing Variante wider.
+## 4. Manifest & Dokumentation
+- [MANIFEST_SHADOWOS.md](MANIFEST_SHADOWOS.md) / [shadowos-manifest.html](shadowos-manifest.html) (SHADOWOS Ω∞).
+- [university-deploy](university-deploy) spiegelt die public-facing Live-Variante (GitHub Pages).
 
-## 4. Nutzung
-- Öffne [index.html](index.html) für die Hauptansicht.
-- Prüfe /api/health, /api/status und /ws/companion.
+## 5. Nutzung
+- Öffne [index.html](index.html); ShadowOS bootet im Browser.
+- Optional das lokale Node-Backend starten, um /api/health, /api/status und /ws/companion zu nutzen.
 
-## Aktueller Betriebsstatus
-- Hauptportal: sichtbar und direkt erreichbar über [index.html](index.html)
-- Runtime: aktiv über [server/server.js](server/server.js)
-- Health-Check: /api/health
-- Companion-Livekanal: /ws/companion
-- Status- und Portfolio-Routen: /api/status, /api/portfolio/findings
+## Betriebsstatus
+- Kern: serverloses ShadowOS, browser-nativ.
+- Portal: statisch, live auf GitHub Pages.
+- Node-Backend: optional, nur lokal.

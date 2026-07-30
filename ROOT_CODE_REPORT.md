@@ -1,19 +1,21 @@
 ﻿# Root-Code-Report
 
-Die aktuelle Basis ist ein sichtbares Portal mit Live-API-Unterstützung und einer Shadow-Runtime als zentraler Schicht.
+Die Basis ist ein sichtbares statisches Portal mit einem serverlosen ShadowOS-Kern.
+Ein Node-Backend kann optional lokal Live-Features ergänzen.
 
 ## Status
-- Hauptportal: [index.html](index.html)
-- Runtime: [server/server.js](server/server.js)
-- Companion: /ws/companion
-- Health-Check: /api/health
+- Hauptportal: [index.html](index.html) (statisch)
+- ShadowOS-Kern: [shadow/](shadow), Boot über `startShadowOS()`
+- Optionales Backend: [server/server.js](server/server.js)
+- Manifest: [MANIFEST_SHADOWOS.md](MANIFEST_SHADOWOS.md) / [shadowos-manifest.html](shadowos-manifest.html)
 
 ## Erkenntnis
-Die aktuelle Frontend-Schicht ist nun direkt an die Runtime gekoppelt. Legacy- und alte Einstiegspfade sind nicht mehr der primäre Pfad.
+- Der Kern läuft ohne Node direkt im Browser (GitHub Pages-fähig).
+- Online-Fehlermeldungen zu 127.0.0.1/api entstehen nur durch die optionale Backend-Suche;
+  sie betreffen nicht den ShadowOS-Kern (siehe [REFERENZBERICHT.md](REFERENZBERICHT.md)).
+- Legacy-/alte Einstiegspfade sind nur Referenz.
 
-## Aktueller Betriebsstatus
-- Hauptportal: sichtbar und direkt erreichbar über [index.html](index.html)
-- Runtime: aktiv über [server/server.js](server/server.js)
-- Health-Check: /api/health
-- Companion-Livekanal: /ws/companion
-- Status- und Portfolio-Routen: /api/status, /api/portfolio/findings
+## Betriebsstatus
+- Kern: serverloses ShadowOS, browser-nativ.
+- Portal: statisch, live auf GitHub Pages.
+- Node-Backend: optional, nur lokal.

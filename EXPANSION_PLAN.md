@@ -1,16 +1,16 @@
 ﻿# Expansion Plan
 
-Der nächste Schritt ist die weitere Verdichtung des Portals um Workspaces, Profile, Companion-Status und automatisierte Dokumentation.
+Der nächste Schritt ist die Verdichtung des Portals um Workspaces, Profile, Companion-Status
+und automatisierte Dokumentation – auf Basis des serverlosen ShadowOS-Kerns.
 
 ## Prioritäten
-1. Portal und Runtime weiter konsolidieren.
-2. Companion- und Portfolio-Endpoints stärken.
-3. Deploy- und Legacy-Variante auf den gleichen Stand bringen.
-4. Dokumentation rund um das aktuelle System pflegen.
+1. ShadowOS-Kern (shadow/) weiter ausbauen – Discovery, Sync, Trust, Fabric.
+2. Portal und optionales Backend sauber entkoppeln (Online = Offline-/Shadow-Modus ohne Fehler).
+3. Companion-, Status- und Portfolio-Features als optionale Live-Erweiterungen stärken.
+4. Deploy- (university-deploy) und Legacy-Variante auf den gleichen Stand bringen.
+5. Dokumentation und Manifest ([MANIFEST_SHADOWOS.md](MANIFEST_SHADOWOS.md)) pflegen.
 
-## Aktueller Betriebsstatus
-- Hauptportal: sichtbar und direkt erreichbar über [index.html](index.html)
-- Runtime: aktiv über [server/server.js](server/server.js)
-- Health-Check: /api/health
-- Companion-Livekanal: /ws/companion
-- Status- und Portfolio-Routen: /api/status, /api/portfolio/findings
+## Betriebsstatus
+- Kern: serverloses ShadowOS, browser-nativ.
+- Portal: statisch, live auf GitHub Pages.
+- Node-Backend: optional, nur lokal.

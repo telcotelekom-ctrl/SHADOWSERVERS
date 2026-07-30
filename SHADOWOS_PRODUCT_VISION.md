@@ -1,15 +1,19 @@
 ﻿# ShadowOS – Produktvision
 
-ShadowOS ist hier als sichtbare Runtime- und Portalstruktur gedacht. Das Portal ist die Oberfläche, die Runtime ist der aktive Kern.
+ShadowOS ist ein **serverloser, browser-nativer Runtime-Kern**. Das Portal ist die sichtbare
+Oberfläche, der ShadowOS-Kern ist das eigentliche Produkt. Ein Node-Backend ist optional.
 
 ## Vision
-- Klarer sichtbarer Einstieg
-- Live-API und Companion-Funktionalität
-- Einheitliche Produkt- und Informationslogik
+- Klarer, sichtbarer Einstieg über ein statisches Portal.
+- Ein Kern, der ohne feste Plattform (kein Node-Zwang) im Browser läuft.
+- Capability-basierte Architektur: Anwendungen verbinden sich über Fähigkeiten statt Plattformen.
+- Optionale Live-Erweiterungen (Companion, Status, Portfolio) über ein lokales Backend.
 
-## Aktueller Betriebsstatus
-- Hauptportal: sichtbar und direkt erreichbar über [index.html](index.html)
-- Runtime: aktiv über [server/server.js](server/server.js)
-- Health-Check: /api/health
-- Companion-Livekanal: /ws/companion
-- Status- und Portfolio-Routen: /api/status, /api/portfolio/findings
+## Ausführliches Manifest
+- [MANIFEST_SHADOWOS.md](MANIFEST_SHADOWOS.md) · Portal-Seite [shadowos-manifest.html](shadowos-manifest.html)
+  (SHADOWOS Ω∞ – Universal Adaptive Runtime; trennt Architektur / Forschungsvision / Philosophie).
+
+## Betriebsstatus
+- Kern: serverloses ShadowOS, browser-nativ, ohne Node lauffähig.
+- Portal: statisch, live auf GitHub Pages.
+- Node-Backend: optional, nur lokal (Health/Status/Companion/Portfolio/Profiles).
