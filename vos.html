@@ -77,6 +77,7 @@
         <label for="op">Operatie</label>
         <select id="op">
           <option value="add-wabe">➕ Wabe toevoegen</option>
+          <option value="compute">🧮 Bereken (compute)</option>
           <option value="promote-status">⬆️ Status promoten</option>
           <option value="link">🔗 Relatie leggen</option>
         </select>
@@ -94,6 +95,11 @@
         <div id="fields-link" style="display:none">
           <label>Bron</label><select id="f-src"></select>
           <label>Doel</label><select id="f-dst"></select>
+        </div>
+        <div id="fields-compute" style="display:none">
+          <label>Functie (echte logica)</label><select id="f-logic"></select>
+          <label>Invoer (JSON, leeg = standaard)</label>
+          <input id="f-input" placeholder='{ "N": 1200, "p": 130 }' />
         </div>
         <button id="btn-sim">🛰️ Simuleer via Shadow Server</button>
       </div>
@@ -120,6 +126,7 @@
   <script type="module">
     import { createWabeMatrix } from './shadow/wabe-matrix.js';
     import { createShadowServer } from './shadow/shadow-server.js';
+    import { listLogic } from './shadow/wabe-logic.js';
 
     const matrix = createWabeMatrix();
     const shadow = createShadowServer(matrix);
@@ -129,6 +136,13 @@
     const svg = document.getElementById('stage');
     const NS = 'http://www.w3.org/2000/svg';
     const W = 900, H = 620, CX = W / 2, CY = H / 2;
+
+    // Fractal navigation: a viewport transform (pan + zoom) applied to a <g>.
+    const view = { x: 0, y: 0, scale: 1 };
+    let viewport = null;
+    function applyView() {
+      if (viewport) viewport.setAttribute('transform', `translate(${view.x} ${view.y}) scale(${view.scale})`);
+    }
 
     // Cluster colours for the optical layer.
     const palette = ['#4f8cff','#f4c542','#7ff0ad','#d6b3ff','#ff9d6e','#6ee7ff','#ff8ab0'];
@@ -162,19 +176,21 @@
 
     function render() {
       svg.innerHTML = '';
+      viewport = el('g', { id: 'viewport' });
+      svg.appendChild(viewport);
       const pos = layout();
 
       // Core node.
-      svg.appendChild(el('circle', { cx: CX, cy: CY, r: 26, fill: 'rgba(79,140,255,0.25)', stroke: '#4f8cff', 'stroke-width': 2 }));
+      viewport.appendChild(el('circle', { cx: CX, cy: CY, r: 26, fill: 'rgba(79,140,255,0.25)', stroke: '#4f8cff', 'stroke-width': 2 }));
       const coreLabel = el('text', { x: CX, y: CY + 4, fill: '#f5f7ff', 'text-anchor': 'middle', 'font-size': 11, 'font-weight': 700 });
       coreLabel.textContent = 'Hyperkernel';
-      svg.appendChild(coreLabel);
+      viewport.appendChild(coreLabel);
 
       // Relations.
       for (const rel of matrix.relations()) {
         const a = pos.get(rel.source), b = pos.get(rel.target);
         if (!a || !b) continue;
-        svg.appendChild(el('line', { x1: a.x, y1: a.y, x2: b.x, y2: b.y, stroke: 'rgba(255,255,255,0.18)', 'stroke-width': 1 }));
+        viewport.appendChild(el('line', { x1: a.x, y1: a.y, x2: b.x, y2: b.y, stroke: 'rgba(255,255,255,0.18)', 'stroke-width': 1 }));
       }
 
       // Wabe nodes.
@@ -186,13 +202,14 @@
         const dim = w.status === 'validated' ? 1 : (w.status === 'concept' ? 0.45 : 0.7);
         const circle = el('circle', { cx: p.x, cy: p.y, r: radius, fill: p.color, 'fill-opacity': dim, stroke: selectedId === w.id ? '#fff' : 'rgba(0,0,0,0.3)', 'stroke-width': selectedId === w.id ? 2.5 : 1 });
         g.appendChild(circle);
-        const label = el('text', { x: p.x, y: p.y + radius + 11, fill: 'var(--muted)', 'text-anchor': 'middle', 'font-size': 9 });
+        const label = el('text', { x: p.x, y: p.y + radius + 11, fill: '#9fb0c9', 'text-anchor': 'middle', 'font-size': 9 });
         label.textContent = w.label.length > 16 ? w.label.slice(0, 15) + '…' : w.label;
         g.appendChild(label);
         g.addEventListener('click', () => selectWabe(w.id));
-        svg.appendChild(g);
+        viewport.appendChild(g);
       }
 
+      applyView();
       updateStats();
       refreshSelects();
     }
@@ -235,7 +252,12 @@
       document.getElementById('fields-add').style.display = op.value === 'add-wabe' ? 'block' : 'none';
       document.getElementById('fields-status').style.display = op.value === 'promote-status' ? 'block' : 'none';
       document.getElementById('fields-link').style.display = op.value === 'link' ? 'block' : 'none';
+      document.getElementById('fields-compute').style.display = op.value === 'compute' ? 'block' : 'none';
     });
+
+    // Populate the real logic functions.
+    document.getElementById('f-logic').innerHTML = listLogic()
+      .map((l) => `<option value="${l.key}">${l.label} · ${l.cluster}</option>`).join('');
 
     function buildProposal() {
       if (op.value === 'add-wabe') {
@@ -250,6 +272,12 @@
       }
       if (op.value === 'promote-status') {
         return { op: 'promote-status', id: document.getElementById('f-wabe').value, status: document.getElementById('f-status').value };
+      }
+      if (op.value === 'compute') {
+        let input = null;
+        const raw = document.getElementById('f-input').value.trim();
+        if (raw) { try { input = JSON.parse(raw); } catch { input = null; } }
+        return { op: 'compute', logicKey: document.getElementById('f-logic').value, input };
       }
       return { op: 'link', source: document.getElementById('f-src').value, target: document.getElementById('f-dst').value, kind: 'relates' };
     }
@@ -283,6 +311,20 @@
         render();
       }
     });
+
+    // Fractal navigation: wheel to zoom, drag to pan.
+    svg.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const factor = e.deltaY < 0 ? 1.1 : 0.9;
+      view.scale = Math.min(4, Math.max(0.4, view.scale * factor));
+      applyView();
+    }, { passive: false });
+
+    let dragging = false, sx = 0, sy = 0;
+    svg.addEventListener('pointerdown', (e) => { dragging = true; sx = e.clientX - view.x; sy = e.clientY - view.y; svg.setPointerCapture(e.pointerId); });
+    svg.addEventListener('pointermove', (e) => { if (!dragging) return; view.x = e.clientX - sx; view.y = e.clientY - sy; applyView(); });
+    svg.addEventListener('pointerup', () => { dragging = false; });
+    svg.addEventListener('pointercancel', () => { dragging = false; });
 
     render();
   </script>

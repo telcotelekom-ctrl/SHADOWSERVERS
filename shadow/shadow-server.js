@@ -6,6 +6,7 @@
 // get a concrete decision + report.
 
 import { mergeStateVectors } from './merge.js';
+import { runLogic } from './wabe-logic.js';
 
 function deepClone(value) {
   if (typeof structuredClone === 'function') return structuredClone(value);
@@ -94,6 +95,7 @@ export function createShadowServer(matrix) {
 
   // Run one proposal end-to-end and return a full decision report.
   function runProposal(proposal) {
+    if (proposal.op === 'compute') return runComputeProposal(proposal);
     const base = matrix.snapshot();
     const { state: simState, effects } = simulate(base, proposal);
     const validation = validate(base, simState, proposal);
@@ -111,12 +113,44 @@ export function createShadowServer(matrix) {
     return report;
   }
 
+  // Compute proposal: actually execute a function-layer wabe's logic in simulation.
+  function runComputeProposal(proposal) {
+    const outcome = runLogic(proposal.logicKey, proposal.input);
+    const checks = [
+      { name: 'compute:executed', pass: outcome.ok, detail: outcome.ok ? 'ran' : (outcome.error || 'failed') },
+      { name: 'compute:numeric-sound', pass: Boolean(outcome.ok && outcome.numericSound), detail: outcome.ok ? (outcome.numericSound ? 'finite numbers' : 'non-finite result') : 'n/a' }
+    ];
+    const passed = checks.every((c) => c.pass);
+    const report = {
+      at: new Date().toISOString(),
+      proposal,
+      effects: outcome.ok ? [`computed ${outcome.label}`, ...Object.entries(outcome.result).map(([k, v]) => `${k} = ${typeof v === 'number' ? v.toLocaleString('de-DE', { maximumFractionDigits: 2 }) : v}`)] : [outcome.error],
+      compute: outcome,
+      validation: { passed, riskScore: 0, checks },
+      evolution: { suggestions: [], mutationCount: 0 },
+      decision: passed ? 'promotable' : 'rejected'
+    };
+    history.push(report);
+    return report;
+  }
+
   // Promote a previously-approved proposal into the live core matrix.
   function promote(report) {
     if (!report || report.decision !== 'promotable') {
       return { ok: false, reason: 'proposal not promotable' };
     }
     const p = report.proposal;
+    if (p.op === 'compute' && report.compute && report.compute.ok) {
+      const created = matrix.addWabe({
+        type: 'data',
+        label: `${report.compute.label} → resultaat`,
+        cluster: report.compute.cluster,
+        status: 'validated',
+        content: report.compute.result
+      });
+      finalizeMerge(report);
+      return { ok: true, created: created.id };
+    }
     if (p.op === 'add-wabe') {
       const created = matrix.addWabe(p.wabe);
       if (p.linkTo) matrix.link(p.linkTo, created.id, p.kind || 'contains');
