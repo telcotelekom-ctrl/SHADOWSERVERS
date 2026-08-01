@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USUP — Universe System Unified Package · live boot</title>
+  <style>
+    :root {
+      --bg: #07111d; --panel: rgba(255,255,255,0.05); --text: #f5f7ff;
+      --muted: #9fb0c9; --accent: #4f8cff; --accent-2: #f4c542;
+      --border: rgba(255,255,255,0.16); --ok: #7ff0ad; --bad: #ff8a8a;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", Tahoma, sans-serif;
+      background: radial-gradient(circle at 30% 10%, #11233d 0%, #07111d 60%);
+      color: var(--text); line-height: 1.55; }
+    header { display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+      padding: 14px 18px; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: 1.15rem; margin: 0; }
+    .kicker { padding: 5px 10px; border-radius: 999px; background: rgba(244,197,66,0.2);
+      color: var(--accent-2); font-weight: 700; font-size: .8rem; }
+    a.nav { color: #9dc0ff; text-decoration: none; font-weight: 700; }
+    a.nav.right { margin-left: auto; }
+    main { max-width: 1100px; margin: 0 auto; padding: 20px 18px 60px; }
+    .lead { color: var(--muted); max-width: 780px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin-top: 18px; }
+    .card { border: 1px solid var(--border); border-radius: 12px; padding: 14px;
+      background: var(--panel); }
+    .card h2 { margin: 0 0 10px; font-size: .98rem; color: var(--accent-2); }
+    .row { display: flex; justify-content: space-between; font-size: .86rem; color: var(--muted);
+      padding: 3px 0; border-bottom: 1px dashed rgba(255,255,255,0.08); }
+    .row b { color: var(--text); }
+    button { cursor: pointer; border: 1px solid var(--border); border-radius: 8px;
+      padding: 9px 14px; background: rgba(79,140,255,0.2); color: var(--text);
+      font-weight: 700; font-size: .85rem; margin: 4px 6px 4px 0; }
+    button:hover { background: rgba(79,140,255,0.35); }
+    pre { font-family: "Cascadia Code", Consolas, monospace; font-size: .78rem;
+      white-space: pre-wrap; color: #cfe0ff; background: #0b1626; border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px; max-height: 320px; overflow: auto; }
+    .check { display: flex; gap: 8px; font-size: .84rem; padding: 2px 0; }
+    .check .ok { color: var(--ok); } .check .bad { color: var(--bad); }
+    .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: .72rem;
+      background: rgba(70,200,120,.18); color: var(--ok); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="kicker">🌌 USUP</span>
+    <h1>Universe System Unified Package — live boot</h1>
+    <a class="nav right" href="./vos.html">🖥️ VOS →</a>
+    <a class="nav" href="./total-build.html">Total Build →</a>
+    <a class="nav" href="./index.html">← Portal</a>
+  </header>
+
+  <main>
+    <p class="lead">
+      Deze pagina is geen tekst over de architectuur — ze <b>compileert en start het
+      hele systeem echt op</b> in je browser. De Hyperkernel (§2) draait de
+      Program Generator (§10), die Identity Core (§3), Wabenmatrix (§4),
+      Arbeiterinnen (§5), Quantum Fluid (§6), VOS (§7) en Shadow Server (§8) bouwt,
+      de bestaande apps als clusters integreert, alles compileert en deployt.
+    </p>
+
+    <div>
+      <button id="btn-boot">▶ Boot USUP (Hyperkernel.init)</button>
+      <button id="btn-integrity">🛡️ enforce_integrity()</button>
+      <button id="btn-compute">∑ validate_updates() — reken Investor Calculator door</button>
+      <button id="btn-worker">👷 Arbeiterin: collect → structure → validate</button>
+    </div>
+
+    <div class="grid">
+      <div class="card"><h2>Build-log (Program Generator)</h2><pre id="buildlog">— nog niet gestart —</pre></div>
+      <div class="card"><h2>Systeemstatus</h2><div id="status" class="report">— nog niet gestart —</div></div>
+      <div class="card"><h2>Integriteit</h2><div id="integrity">— nog niet gecontroleerd —</div></div>
+      <div class="card"><h2>Uitvoer / resultaat</h2><pre id="output">— nog geen uitvoer —</pre></div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { createHyperkernel } from './shadow/hyperkernel.js';
+    import { createArbeiterin } from './shadow/arbeiterinnen.js';
+
+    let hk = null;
+
+    const $ = (id) => document.getElementById(id);
+
+    function renderStatus() {
+      const s = hk.status();
+      const sys = s.system;
+      $('status').innerHTML = sys ? `
+        <div class="row"><span>Systeem</span><b>${sys.code}</b></div>
+        <div class="row"><span>Waben (cellen)</span><b>${sys.matrix.wabeCount}</b></div>
+        <div class="row"><span>Relaties</span><b>${sys.matrix.relationCount}</b></div>
+        <div class="row"><span>Clusters</span><b>${sys.matrix.clusters.length}</b></div>
+        <div class="row"><span>Identiteiten</span><b>${sys.identities}</b></div>
+        <div class="row"><span>Logica-functies</span><b>${sys.logic.length}</b></div>
+        <div class="row"><span>Gevalideerd</span><b>${sys.matrix.byStatus.validated || 0}</b></div>
+      ` : '— nog niet gestart —';
+    }
+
+    $('btn-boot').addEventListener('click', () => {
+      hk = createHyperkernel();
+      hk.init();
+      const sys = hk.system();
+      $('buildlog').textContent = sys.buildLog.map((e) => `[${e.step}] ${e.detail}`).join('\n');
+      renderStatus();
+      $('output').textContent = '✅ USUP gebootst. Hyperkernel actief, alle subsystemen live.';
+    });
+
+    $('btn-integrity').addEventListener('click', () => {
+      if (!hk) return alert('Boot eerst de USUP.');
+      const r = hk.enforce_integrity();
+      $('integrity').innerHTML =
+        `<p><span class="pill">${r.ok ? 'INTEGER' : 'FOUT'}</span></p>` +
+        r.checks.map((c) => `<div class="check"><span class="${c.pass ? 'ok' : 'bad'}">${c.pass ? '✓' : '✗'}</span> ${c.name}</div>`).join('');
+    });
+
+    $('btn-compute').addEventListener('click', () => {
+      if (!hk) return alert('Boot eerst de USUP.');
+      const report = hk.validate_updates({ op: 'compute', logicKey: 'investorLocal', input: undefined });
+      let out = `Decision: ${report.decision}\n\n`;
+      if (report.compute && report.compute.ok) {
+        out += report.effects.join('\n') + '\n\n';
+        // Promote the validated result into the live core matrix.
+        const promo = hk.system().promote(report);
+        out += promo.ok ? `→ gepromoveerd naar core als wabe ${promo.created}` : `→ niet gepromoveerd: ${promo.reason}`;
+      } else {
+        out += report.effects.join('\n');
+      }
+      $('output').textContent = out;
+      renderStatus();
+    });
+
+    $('btn-worker').addEventListener('click', () => {
+      if (!hk) return alert('Boot eerst de USUP.');
+      const matrix = hk.system().matrix;
+      const worker = createArbeiterin(matrix, { name: 'arbeiterin-demo' });
+      const wabe = worker.collect({ type: 'data', label: 'Nieuwe intake', cluster: 'HR', content: { naam: 'Kandidaat', score: 87 } });
+      worker.structure(wabe.id);
+      const v = worker.validate(wabe.id);
+      $('output').textContent =
+        `Arbeiterin ${worker.name}:\n` +
+        worker.journal().map((j) => `[${j.action}] ${JSON.stringify(j.detail)}`).join('\n') +
+        `\n\nValidatie: ${v.ok ? 'OK' : 'incompleet'}`;
+      renderStatus();
+    });
+  </script>
+</body>
+</html>
