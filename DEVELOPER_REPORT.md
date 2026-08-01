@@ -370,5 +370,138 @@ flowchart LR
 
 ---
 
+---
+
+## 11. PORTAL-SEITEN — VOLLSTÄNDIGES INVENTAR (Benutzeranwendungen)
+
+Alle statischen Anwendungen der Portal-Schicht. Jede ist heute eine Seite — die Spalte
+"→ echtes Programm" nennt den konkreten nächsten Schritt (Logik in `wabe-logic.js` + Cluster).
+
+| Seite | Titel / Zweck | Cluster | → echtes Programm |
+|---|---|---|---|
+| `index.html` | Investor Portal (Z-Canvas Kapitalformeln) | INVESTERING | ✅ `investorLocal` angebunden (Offline-Fallback) |
+| `bewerbung.html` | Universal Bewerbungssuite | HR | 🔵 `hrScoring(input)` → Matching-Rechner |
+| `app/index.html` | Universal Company Builder | BEDRIJF | 🔵 `companyBuild(spec)` → Firmen-Blueprint |
+| `office.html` | Online Office (Beteiligungen) | PARTICIPATIE | 🟡 `participation` anbinden |
+| `formel-registry.html` | Problem→Formel-Registry | REGISTRATIE | 🟡 `registryValidate` anbinden |
+| `physik-rechner.html` | Physik-Formel-Rechner | FISCAAL/rechner | 🔵 Formeln als `wabeLogic`-Einträge |
+| `mass-effect.html` | MassEffect Konzept-Rechner (fiktiv) | rechner | 🔵 `massEffect(input)` reine Funktion |
+| `ceoc.html` | CEOC (Center·Edge·Circle) | INTERACTIE | 🔵 Kreis-Graph als Waben |
+| `tauschboerse.html` | Universal Exchange Network | PARTICIPATIE | 🔵 `matchOffers()` Matching-Logik |
+| `bildungszentrum.html` | Bildungs-/Ausbildungszentrum | HR | 🔵 `educationMatch()` |
+| `universe.html` | Universe System | root | 🟡 Waben-Visualisierung → `vos.html` |
+| `encyclopedia.html` | Kosmische Enzyklopädie | root | 🔵 Wissens-Waben (`concept`) |
+| `psy-tel-studio.html` | PSY-TEL Hotspot Studio | INTERACTIE | 🔵 WS-Live via `broadcast.js` |
+| `psy-tel-audience.html` | PSY-TEL Publikums-Ansicht | INTERACTIE | 🔵 Empfänger von `broadcast` |
+| `vos.html` | Visual Operating System (live) | — | ✅ live, `vos-kernel.js` |
+| `usup.html` | USUP live boot (Hyperkernel) | — | ✅ live, `hyperkernel.js` |
+| `total-build.html` | Unified Total Build | — | ✅ Übersicht |
+| `shadowos-manifest.html` | SHADOWOS Ω∞ Manifest | — | 📄 Manifest |
+| `app/serverB/index.html` | Server B – Shadow Control | — | 🟡 Steuerpult → `shadow-server.js` |
+| `handbuch.html`, `bedienung.html`, `master-dokument.html`, `manifest.html`, `nijmegen-ressourcen.html`, `liebe-weisheit/index.html` | Dokumentation/Inhalt | — | 📄 statisch |
+
+Legende: ✅ live · 🟡 anzubinden · 🔵 Roadmap (neue Logik) · 📄 Inhalt.
+
+---
+
+## 12. OPTIONALE NODE-RUNTIME — BIT FÜR BIT (`server/server.js`)
+
+> **Kein Kern.** Nur für lokalen Betrieb (`node server/server.js`). Portal läuft ohne.
+> HTTP + WebSocket, dateibasierte JSON-Persistenz, dynamische Portwahl (`findAvailablePort`).
+
+### 12.1 Route-Landkarte (alle Endpunkte)
+
+| Gruppe | Methode · Pfad(e) |
+|---|---|
+| Health/Status | `GET /api/health` · `/server/api/health` · `GET /api/status` · `/server/api/shadow/status` |
+| Manifest | `GET /api/manifest/list` · `POST /api/manifest/sync` |
+| Messaging | `GET /api/messages` · `GET /api/chats` · `GET /api/contacts` · `POST /api/submit` |
+| Companion/Portfolio | `GET /api/companion-updates` · `GET /api/portfolio/findings` |
+| Auth | `POST /server/auth/login` · `/register` · `GET /me` · `POST /logout` |
+| Investor | `POST …/investor/{local,global,production,time-index,complete}` (+ `/api/investor/calculate/*`) |
+| Workspaces | `GET/POST /server/api/workspaces` (+ `/api/workspaces`) |
+| Profiles | `GET/POST /server/api/profiles` (+ `/api/profiles`) |
+| Schema | `GET /server/api/schema` |
+| Office | `GET/POST /server/api/office/participation` |
+| Education | `GET /server/api/education/fields` · `GET/POST /server/api/education/interest` |
+| Master-Doc | `GET /server/api/master-document` |
+| Contact | `POST /server/api/contact` (nodemailer) |
+| Hotspot | `POST /hotspot/login` · `GET /qr` · `GET /state` · `GET /config-status` · `POST /setup` |
+| Spotify | `GET /server/api/spotify/key` |
+| Exchange | `…/exchange/{categories,offers,requests,matches,contracts,profile,ratings}` |
+| CEOC | `GET/POST …/ceoc/circles` · `GET …/circles/mine` |
+| Formula-Registry | `GET/POST …/formula-registry/problems` · `GET …/problems/mine` |
+| Mass-Effect | `POST …/mass-effect/{calculate,egr-step}` · `GET …/{context,egr-step}/mine` |
+| Static | Fallback → `rootDir` (Path-Traversal-Guard: `filePath.startsWith(rootDir)` sonst 403) |
+| WebSocket | `UPGRADE /ws/companion` · `/psy-tel` |
+
+### 12.2 Server-Module
+
+| Datei | Rolle |
+|---|---|
+| `protected.js` | Hotspot-Auth |
+| `qrcode.js` | Hotspot-QR |
+| `spotify.js` | Spotify-Key-Bridge |
+| `config-store.js` | Hotspot-Konfiguration |
+| `exchange.js` | Tauschbörse (Angebote/Matches/Verträge) |
+| `ceoc.js` | CEOC-Kreise |
+| `formula-registry.js` | Problem→Formel |
+| `mass-effect.js` | MassEffect-Rechner |
+| `port-utils.js` | `findAvailablePort` |
+
+> ⚠️ **Aufräum-Hinweis:** `server/server (# Edit conflict 2026-07-29 …).js` und
+> `server/spotify (# Edit conflict 2026-07-29 …).js` sind **Merge-Konflikt-Duplikate** und
+> sollten gelöscht werden. `server/server.zip` ist ein Archiv-Snapshot (nicht laufzeitrelevant).
+
+### 12.3 Sicherheit der Runtime
+- Passwörter: **scrypt+Salt** (`scrypt$<salt>$<hash>`), Legacy-sha256 wird beim Login **auto-migriert**.
+- `verifyPassword` nutzt konstante-Zeit-Vergleich; statisches Ausliefern path-traversal-sicher.
+- `.env`/`.secret-key` bleiben lokal (nicht im Client). CORS `*` nur lokal.
+
+---
+
+## 13. DATENSCHICHT (jedes Byte Zustand)
+
+### 13.1 JSON-Dateien (`server/data/`)
+`users.json` · `sessions.json` · `workspaces.json` · `profiles.json` · `investor.json` ·
+`office-participations.json` · `contact-messages.json` · `education-interests.json`
++ Unterordner `ceoc/`, `exchange/`, `formula-registry/`, `hotspot-configs/`, `mass-effect/`
++ `.secret-key` (lokales Geheimnis).
+
+### 13.2 Relationales Schema (`server/db/schema.sql`) — Zielmodell
+```sql
+users(id, name, email UNIQUE, role, password_hash, created_at)
+sessions(id, token UNIQUE, user_id, created_at)
+business_workspaces(id, title, owner, created_at, payload)
+application_profiles(id, applicant_name, applicant_role, applicant_focus, media_type, media_link, created_at)
+investor_calculations(id, name, payload, created_at)
+```
+
+### 13.3 Zustand im serverlosen Kern
+- **Laufzeit:** `wabe-matrix` (In-Memory Zellen) — flüchtig pro Session.
+- **Persistenz:** `storage.js` → `localStorage` (überlebt Reload); Roadmap: IndexedDB (§8-II).
+- **Verteilung:** `merge.js` + `sync.js` Deltas + `peer-persistence` (Peer-Zustand).
+
+**Brücke Node ⇄ Kern:** die Node-Tabellen (`business_workspaces`, `investor_calculations`,
+`application_profiles`) entsprechen 1:1 den Clustern BEDRIJF / INVESTERING / HR. Ein Import-Adapter
+kann jede DB-Zeile als `data`-Wabe in die Matrix laden — damit wird die Node-Datenbank optional zum
+Seed für das serverlose Universum.
+
+---
+
+## 14. ZUSAMMENFASSUNG — DER ROTE FADEN ZUM ULTRA-SYSTEM
+
+1. **Heute:** Portal-Seiten + serverloser ShadowOS-Kern (42 Module) + optionale Node-Runtime.
+2. **Nächster Schritt:** jede Seite aus §11 bekommt eine reine Funktion in `wabe-logic.js` und wird
+   über `usup.html`/`vos.html` als echtes, validiertes Programm ausführbar.
+3. **Ultra-Schritt (§8-V):** `program-generator` synthetisiert aus einer Wort-Beschreibung neue
+   Cluster + Logik + UI-Anbindung, validiert im Shadow Server, dann live — das System **baut sich selbst**.
+
+Die Vision des Original-Intentors ist damit vollständig als *ausführbarer Pfad* erfasst: von der
+statischen Seite über die validierte Funktion bis zum selbst-generierenden, visuellen, serverlosen
+Universum.
+
+---
+
 *Dieser Bericht spiegelt den realen, gemessenen Code-Stand wider (keine Fiktion). Alle genannten
-Module existieren und sind in beiden Repos gepusht.*
+Module, Routen, Tabellen und Seiten existieren und sind in beiden Repos gepusht.*
