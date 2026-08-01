@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DAS GESAMTE GESCHEHEN — Living Universe · ShadowOS Ω∞</title>
+  <style>
+    :root {
+      --bg: #040a14; --text: #eaf2ff; --muted: #8ea6c8; --accent: #4f8cff;
+      --gold: #f4c542; --ok: #57f0a5; --bad: #ff6b6b; --warn: #ffcf5c;
+      --border: rgba(255,255,255,0.14);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #040a14;
+      font-family: "Segoe UI", Tahoma, sans-serif; color: var(--text); }
+    #stage { position: fixed; inset: 0; display: block; cursor: grab; }
+    #stage:active { cursor: grabbing; }
+    .overlay { position: fixed; z-index: 5; }
+    #top { top: 0; left: 0; right: 0; display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; background: linear-gradient(180deg, rgba(4,10,20,0.85), rgba(4,10,20,0)); }
+    #top h1 { font-size: 1rem; margin: 0; letter-spacing: .5px; }
+    .kicker { padding: 4px 10px; border-radius: 999px; background: rgba(244,197,66,.18);
+      color: var(--gold); font-weight: 800; font-size: .72rem; }
+    #top a { margin-left: auto; color: #9dc0ff; text-decoration: none; font-weight: 700; font-size: .85rem; }
+    #top a + a { margin-left: 14px; }
+    #hud { bottom: 16px; left: 16px; width: 260px; padding: 14px;
+      background: rgba(6,14,26,0.72); border: 1px solid var(--border); border-radius: 14px;
+      backdrop-filter: blur(8px); }
+    #hud h2 { margin: 0 0 8px; font-size: .82rem; color: var(--gold); letter-spacing: .5px; }
+    .row { display: flex; justify-content: space-between; font-size: .8rem; color: var(--muted); padding: 2px 0; }
+    .row b { color: var(--text); font-variant-numeric: tabular-nums; }
+    #ctrls { bottom: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+    button { cursor: pointer; border: 1px solid var(--border); border-radius: 10px; padding: 9px 13px;
+      background: rgba(79,140,255,0.18); color: var(--text); font-weight: 700; font-size: .82rem; }
+    button:hover { background: rgba(79,140,255,0.34); }
+    .legend { display: flex; gap: 12px; font-size: .72rem; color: var(--muted); margin-top: 8px; flex-wrap: wrap; }
+    .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+    #tip { position: fixed; z-index: 6; pointer-events: none; padding: 6px 9px; font-size: .76rem;
+      background: rgba(6,14,26,0.95); border: 1px solid var(--border); border-radius: 8px; display: none; max-width: 240px; }
+    #decision { font-weight: 800; }
+  </style>
+</head>
+<body>
+  <canvas id="stage"></canvas>
+
+  <div id="top" class="overlay">
+    <span class="kicker">🜂 LIVING UNIVERSE</span>
+    <h1>Das gesamte Geschehen — atmende Animation des Instituts</h1>
+    <a href="./usup.html">🌌 USUP</a>
+    <a href="./vos.html">🖥️ VOS</a>
+    <a href="./index.html">← Portal</a>
+  </div>
+
+  <div id="hud" class="overlay">
+    <h2>◉ LEBENSZEICHEN</h2>
+    <div class="row"><span>Waben (Zellen)</span><b id="m-wabes">0</b></div>
+    <div class="row"><span>Relationen</span><b id="m-rel">0</b></div>
+    <div class="row"><span>Cluster</span><b id="m-clusters">0</b></div>
+    <div class="row"><span>Energie-Pakete</span><b id="m-particles">0</b></div>
+    <div class="row"><span>Herzschlag</span><b id="m-pulse">— BPM</b></div>
+    <div class="row"><span>Letzte Simulation</span><b id="decision">—</b></div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--gold)"></i>Modul</span>
+      <span><i class="dot" style="background:var(--accent)"></i>Konzept</span>
+      <span><i class="dot" style="background:var(--ok)"></i>validiert</span>
+      <span><i class="dot" style="background:#b98bff"></i>Code/synth</span>
+    </div>
+  </div>
+
+  <div id="ctrls" class="overlay">
+    <button id="btn-sim">🜄 Shadow-Simulation pulsen</button>
+    <button id="btn-grow">🜁 Neue Wabe wachsen lassen</button>
+    <button id="btn-reset-view">🎯 Ansicht zentrieren</button>
+  </div>
+
+  <div id="tip"></div>
+
+  <script type="module">
+    import { bootUSUP } from './shadow/hyperkernel.js';
+    import { listLogic } from './shadow/wabe-logic.js';
+
+    // ---------- Real system boot ----------
+    const hk = bootUSUP();
+    const system = hk.system();
+    const matrix = system.matrix;
+
+    // ---------- Canvas setup (crisp on HiDPI) ----------
+    const canvas = document.getElementById('stage');
+    const ctx = canvas.getContext('2d');
+    let W = 0, H = 0, DPR = 1;
+    function resize() {
+      DPR = Math.min(2, window.devicePixelRatio || 1);
+      W = window.innerWidth; H = window.innerHeight;
+      canvas.width = W * DPR; canvas.height = H * DPR;
+      canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    window.addEventListener('resize', resize); resize();
+
+    // ---------- Fractal navigation (pan + zoom) ----------
+    const view = { x: W / 2, y: H / 2, scale: 1, tScale: 1 };
+    function centerView() { view.x = W / 2; view.y = H / 2; view.tScale = 1; }
+    canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const f = e.deltaY < 0 ? 1.12 : 0.89;
+      view.tScale = Math.min(4, Math.max(0.3, view.tScale * f));
+    }, { passive: false });
+    let drag = false, sx = 0, sy = 0;
+    canvas.addEventListener('pointerdown', (e) => { drag = true; sx = e.clientX - view.x; sy = e.clientY - view.y; canvas.setPointerCapture(e.pointerId); });
+    canvas.addEventListener('pointerup', () => { drag = false; });
+    canvas.addEventListener('pointermove', onMove);
+
+    // ---------- Colors ----------
+    const COL = {
+      module: '#f4c542', concept: '#4f8cff', data: '#57f0a5', code: '#b98bff', process: '#ff9f6b',
+      validated: '#57f0a5'
+    };
+    function nodeColor(w) {
+      if (w.type === 'module') return COL.module;
+      if (w.type === 'code') return COL.code;
+      if (w.type === 'data') return COL.data;
+      if (w.type === 'process') return COL.process;
+      return COL.concept;
+    }
+
+    // ---------- Layout: clusters in a ring, wabes in fractal sub-rings ----------
+    let nodes = new Map(); // id -> {id,w,cx,cy,base,phase,radius,flash,spin}
+    let edges = [];        // {a,b}
+    function layout() {
+      const snap = matrix.snapshot();
+      const byCluster = new Map();
+      for (const w of snap.wabes) {
+        if (!byCluster.has(w.cluster)) byCluster.set(w.cluster, []);
+        byCluster.get(w.cluster).push(w);
+      }
+      const clusters = [...byCluster.keys()];
+      const R = Math.min(W, H) * 0.32;
+      const next = new Map();
+      clusters.forEach((cl, ci) => {
+        const ca = (ci / clusters.length) * Math.PI * 2 - Math.PI / 2;
+        const ccx = Math.cos(ca) * R, ccy = Math.sin(ca) * R;
+        const members = byCluster.get(cl);
+        const r2 = 34 + members.length * 9;
+        members.forEach((w, wi) => {
+          const a = (wi / members.length) * Math.PI * 2;
+          const x = ccx + Math.cos(a) * r2, y = ccy + Math.sin(a) * r2;
+          const prev = nodes.get(w.id);
+          next.set(w.id, {
+            id: w.id, w, cx: x, cy: y,
+            base: w.type === 'module' ? 13 : (w.type === 'code' ? 11 : 9),
+            phase: prev ? prev.phase : Math.random() * Math.PI * 2,
+            flash: prev ? prev.flash : 0, spin: prev ? prev.spin : 0
+          });
+        });
+      });
+      nodes = next;
+      edges = snap.relations.filter((r) => nodes.has(r.source) && nodes.has(r.target))
+        .map((r) => ({ a: r.source, b: r.target }));
+    }
+    layout();
+    matrix.subscribe(() => { layout(); });
+
+    // ---------- Quantum Fluid: energy particles along edges ----------
+    const particles = [];
+    function spawnParticle(edge, color = '#9fd0ff') {
+      particles.push({ a: edge.a, b: edge.b, t: 0, speed: 0.006 + Math.random() * 0.01, color });
+    }
+    // Real fluid stream → spawn a visible pulse on a random edge.
+    system.fluid.subscribe(() => { if (edges.length) spawnParticle(edges[(Math.random() * edges.length) | 0]); });
+    // Ambient flow.
+    setInterval(() => { if (edges.length) spawnParticle(edges[(Math.random() * edges.length) | 0]); }, 700);
+
+    // ---------- Shadow Server simulation → green/red/yellow flashes ----------
+    const logicKeys = () => listLogic().map((l) => l.key);
+    let lastDecision = '—';
+    function shadowTick() {
+      const keys = logicKeys();
+      if (!keys.length) return;
+      const key = keys[(Math.random() * keys.length) | 0];
+      const report = system.run({ op: 'compute', logicKey: key });
+      lastDecision = `${key}: ${report.decision}`;
+      const col = report.decision === 'promotable' ? 'var(--ok)' : 'var(--bad)';
+      document.getElementById('decision').textContent = lastDecision;
+      document.getElementById('decision').style.color = report.decision === 'promotable' ? 'var(--ok)' : 'var(--bad)';
+      // Flash all wabes of that cluster.
+      const cluster = report.compute ? report.compute.cluster : null;
+      for (const n of nodes.values()) {
+        if (!cluster || n.w.cluster === cluster) n.flash = report.decision === 'promotable' ? 1 : -1;
+      }
+      coreFlash = report.decision === 'promotable' ? 1 : -1;
+    }
+    document.getElementById('btn-sim').addEventListener('click', shadowTick);
+    setInterval(shadowTick, 3800);
+
+    // ---------- Grow a new wabe (the matrix breathes/grows) ----------
+    let growCount = 0;
+    document.getElementById('btn-grow').addEventListener('click', () => {
+      growCount += 1;
+      const clusters = matrix.snapshot().clusters;
+      const cl = clusters[(Math.random() * clusters.length) | 0] || 'GENERATED';
+      const w = matrix.addWabe({ type: 'concept', label: `Idee ${growCount}`, cluster: cl, status: 'concept' });
+      const others = matrix.list().filter((x) => x.cluster === cl && x.id !== w.id);
+      if (others.length) matrix.link(w.id, others[(Math.random() * others.length) | 0].id, 'relates');
+    });
+    document.getElementById('btn-reset-view').addEventListener('click', centerView);
+
+    // ---------- Logo core pulse (Hyperkernel heartbeat) ----------
+    const logo = new Image();
+    let logoOk = false;
+    logo.onload = () => { logoOk = true; };
+    logo.src = './assets/logo.svg';
+    let coreFlash = 0;
+
+    // ---------- Interaction: hover/click hit-testing in world space ----------
+    let hover = null;
+    function screenToWorld(px, py) { return { x: (px - view.x) / view.scale, y: (py - view.y) / view.scale }; }
+    function onMove(e) {
+      if (drag) { view.x = e.clientX - sx; view.y = e.clientY - sy; }
+      const p = screenToWorld(e.clientX, e.clientY);
+      hover = null;
+      for (const n of nodes.values()) {
+        const dx = p.x - n.cx, dy = p.y - n.cy;
+        if (dx * dx + dy * dy < (n.base + 8) * (n.base + 8)) { hover = n; break; }
+      }
+      const tip = document.getElementById('tip');
+      if (hover) {
+        tip.style.display = 'block'; tip.style.left = (e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 14) + 'px';
+        tip.innerHTML = `<b>${hover.w.label}</b><br>${hover.w.type} · ${hover.w.cluster}<br>Status: ${hover.w.status}`;
+      } else tip.style.display = 'none';
+    }
+    canvas.addEventListener('click', () => { if (hover) hover.spin = 1; });
+
+    // ---------- Render loop ----------
+    let last = performance.now();
+    const bpm = 62;
+    function frame(now) {
+      const dt = (now - last) / 1000; last = now;
+      const t = now / 1000;
+      view.scale += (view.tScale - view.scale) * 0.12;
+
+      // Background nebula.
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      const g = ctx.createRadialGradient(W / 2, H * 0.4, 0, W / 2, H * 0.4, Math.max(W, H) * 0.7);
+      g.addColorStop(0, '#0b1c33'); g.addColorStop(1, '#040a14');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+      ctx.save();
+      ctx.translate(view.x, view.y); ctx.scale(view.scale, view.scale);
+
+      const heart = 0.5 + 0.5 * Math.sin(t * (bpm / 60) * Math.PI * 2); // heartbeat 0..1
+
+      // Edges + flowing particles (Quantum Fluid).
+      ctx.lineWidth = 1;
+      for (const e of edges) {
+        const a = nodes.get(e.a), b = nodes.get(e.b); if (!a || !b) continue;
+        ctx.strokeStyle = `rgba(120,170,255,${0.10 + 0.06 * heart})`;
+        ctx.beginPath(); ctx.moveTo(a.cx, a.cy); ctx.lineTo(b.cx, b.cy); ctx.stroke();
+      }
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i]; const a = nodes.get(p.a), b = nodes.get(p.b);
+        if (!a || !b) { particles.splice(i, 1); continue; }
+        p.t += p.speed * (1 + dt * 60) / 2;
+        if (p.t >= 1) { particles.splice(i, 1); continue; }
+        const x = a.cx + (b.cx - a.cx) * p.t, y = a.cy + (b.cy - a.cy) * p.t;
+        ctx.fillStyle = p.color; ctx.globalAlpha = 0.9 * (1 - Math.abs(0.5 - p.t) * 1.4);
+        ctx.beginPath(); ctx.arc(x, y, 2.6, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
+      }
+
+      // Wabe nodes (breathing + flashing + spin on click).
+      for (const n of nodes.values()) {
+        n.phase += dt * 1.4;
+        const breathe = 1 + 0.16 * Math.sin(n.phase);
+        if (n.flash > 0) n.flash = Math.max(0, n.flash - dt * 1.3);
+        if (n.flash < 0) n.flash = Math.min(0, n.flash + dt * 1.3);
+        if (n.spin > 0) n.spin = Math.max(0, n.spin - dt * 1.6);
+        const r = n.base * breathe * (n.w.status === 'validated' ? 1.05 : 0.92);
+        const col = nodeColor(n.w);
+
+        // Glow.
+        const glow = ctx.createRadialGradient(n.cx, n.cy, 0, n.cx, n.cy, r * 3.4);
+        const flashCol = n.flash > 0 ? '87,240,165' : n.flash < 0 ? '255,107,107' : null;
+        glow.addColorStop(0, `rgba(${flashCol || '120,160,255'},${0.30 + 0.35 * heart + Math.abs(n.flash) * 0.4})`);
+        glow.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(n.cx, n.cy, r * 3.4, 0, Math.PI * 2); ctx.fill();
+
+        // Body.
+        ctx.save(); ctx.translate(n.cx, n.cy); ctx.rotate(n.spin * Math.PI * 2);
+        ctx.fillStyle = col; ctx.globalAlpha = n.w.status === 'concept' ? 0.6 : 1;
+        ctx.beginPath();
+        // hexagon (Wabe = honeycomb cell)
+        for (let k = 0; k < 6; k++) { const a = k / 6 * Math.PI * 2; const px = Math.cos(a) * r, py = Math.sin(a) * r; k ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+        ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
+        if (hover === n) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke(); }
+        ctx.restore();
+      }
+
+      // ---- Logo-Core-Pulse (Hyperkernel heartbeat at center) ----
+      const coreR = 30 + 10 * heart;
+      // pulse rings
+      for (let ring = 0; ring < 3; ring++) {
+        const rr = coreR + ring * 26 + heart * 18;
+        ctx.strokeStyle = `rgba(244,197,66,${0.25 * (1 - ring / 3) * (0.5 + heart)})`;
+        ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(0, 0, rr, 0, Math.PI * 2); ctx.stroke();
+      }
+      const cGlow = ctx.createRadialGradient(0, 0, 0, 0, 0, coreR * 3);
+      const cCol = coreFlash > 0 ? '87,240,165' : coreFlash < 0 ? '255,107,107' : '244,197,66';
+      cGlow.addColorStop(0, `rgba(${cCol},${0.55 + 0.35 * heart})`); cGlow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = cGlow; ctx.beginPath(); ctx.arc(0, 0, coreR * 3, 0, Math.PI * 2); ctx.fill();
+      if (coreFlash > 0) coreFlash = Math.max(0, coreFlash - dt); if (coreFlash < 0) coreFlash = Math.min(0, coreFlash + dt);
+      if (logoOk) {
+        const s = coreR * 2.1;
+        ctx.globalAlpha = 0.92; ctx.drawImage(logo, -s / 2, -s / 2, s, s); ctx.globalAlpha = 1;
+      } else {
+        ctx.fillStyle = '#f4c542'; ctx.beginPath(); ctx.arc(0, 0, coreR, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.fillStyle = 'rgba(234,242,255,0.9)'; ctx.font = '700 11px Segoe UI'; ctx.textAlign = 'center';
+      ctx.fillText('HYPERKERNEL', 0, coreR + 40 + heart * 10);
+
+      ctx.restore();
+
+      // HUD live values.
+      const snap = matrix.snapshot();
+      document.getElementById('m-wabes').textContent = snap.wabeCount;
+      document.getElementById('m-rel').textContent = snap.relationCount;
+      document.getElementById('m-clusters').textContent = snap.clusters.length;
+      document.getElementById('m-particles').textContent = particles.length;
+      document.getElementById('m-pulse').textContent = bpm + ' BPM';
+
+      requestAnimationFrame(frame);
+    }
+    centerView();
+    requestAnimationFrame(frame);
+  </script>
+</body>
+</html>
