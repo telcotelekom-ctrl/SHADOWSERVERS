@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>VisualRuntime — Director's Cut</title>
+  <meta name="theme-color" content="#04060f" />
+  <link rel="stylesheet" href="./css/main.css" />
+</head>
+<body>
+  <!-- Render surface: canvas draws particles/laser/portal, SVG overlays menus/UI -->
+  <div id="stage">
+    <canvas id="vr-canvas"></canvas>
+    <svg id="vr-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="false"></svg>
+
+    <!-- Chapter title card -->
+    <div id="chapter-card">
+      <span id="chapter-index">01</span>
+      <h1 id="chapter-title">Genesis</h1>
+      <p id="chapter-sub"></p>
+    </div>
+
+    <!-- Director panel (Regiepult) -->
+    <aside id="director-panel" class="panel">
+      <header>
+        <strong>Director Panel</strong>
+        <button id="panel-toggle" title="Ein/Aus">▾</button>
+      </header>
+      <div class="panel-body">
+        <div class="transport">
+          <button id="btn-play" title="Play">►</button>
+          <button id="btn-pause" title="Pause">❚❚</button>
+          <button id="btn-restart" title="Neustart">⟲</button>
+        </div>
+        <label>Timeline <input id="ctl-time" type="range" min="0" max="1000" value="0" /></label>
+        <div id="act-list" class="acts"></div>
+        <label>Intensity <input id="ctl-intensity" type="range" min="0" max="100" value="70" /></label>
+        <label>Particle Count <input id="ctl-count" type="range" min="200" max="6000" step="100" value="2200" /></label>
+        <label>Laser Density <input id="ctl-laser" type="range" min="0" max="100" value="45" /></label>
+        <label>Bloom / Glow <input id="ctl-glow" type="range" min="0" max="100" value="60" /></label>
+        <label>Camera Spin <input id="ctl-spin" type="range" min="0" max="100" value="30" /></label>
+        <label class="check"><input id="ctl-ghost" type="checkbox" checked /> Ghost User (AI)</label>
+        <label class="check"><input id="ctl-audio" type="checkbox" /> Audio</label>
+        <div id="hud" class="hud"></div>
+      </div>
+    </aside>
+
+    <!-- Radial main menu (SVG-driven, injected by menu.js) -->
+    <nav id="vr-menu" aria-label="Hauptmenü"></nav>
+  </div>
+
+  <script type="module" src="./js/runtime.js"></script>
+</body>
+</html>
