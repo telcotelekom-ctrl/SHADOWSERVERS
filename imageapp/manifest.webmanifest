@@ -1,0 +1,15 @@
+{
+  "name": "Your Image to App",
+  "short_name": "ImageApp",
+  "description": "Beeld → SVG → objecten → menu → apps. Serverloos, installeerbaar, offline.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#04070d",
+  "theme_color": "#0b1626",
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
