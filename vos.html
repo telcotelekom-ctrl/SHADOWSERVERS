@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOS — Visual Operating System · ShadowOS Ω∞</title>
+  <style>
+    :root {
+      --bg: #07111d; --panel: rgba(255,255,255,0.05); --text: #f5f7ff;
+      --muted: #9fb0c9; --accent: #4f8cff; --accent-2: #f4c542;
+      --border: rgba(255,255,255,0.16); --ok: #7ff0ad; --bad: #ff8a8a;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", Tahoma, sans-serif;
+      background: radial-gradient(circle at 30% 10%, #11233d 0%, #07111d 60%);
+      color: var(--text); line-height: 1.5; }
+    header { display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+      padding: 14px 18px; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: 1.15rem; margin: 0; }
+    .kicker { padding: 5px 10px; border-radius: 999px; background: rgba(244,197,66,0.2);
+      color: var(--accent-2); font-weight: 700; font-size: .8rem; }
+    a.nav { margin-left: auto; color: #9dc0ff; text-decoration: none; font-weight: 700; }
+    .layout { display: grid; grid-template-columns: 1fr 360px; gap: 0; height: calc(100vh - 58px); }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; height: auto; } }
+    .stage { position: relative; overflow: hidden; }
+    svg { width: 100%; height: 100%; min-height: 420px; display: block; }
+    .side { border-left: 1px solid var(--border); padding: 14px; overflow-y: auto;
+      background: rgba(7,17,29,0.6); }
+    .card { border: 1px solid var(--border); border-radius: 12px; padding: 12px;
+      background: var(--panel); margin-bottom: 12px; }
+    .card h2 { margin: 0 0 8px; font-size: .95rem; color: var(--accent-2); }
+    .stat { display: flex; justify-content: space-between; font-size: .85rem; color: var(--muted); }
+    label { display: block; font-size: .78rem; color: var(--muted); margin: 8px 0 3px; }
+    input, select { width: 100%; padding: 7px 9px; border-radius: 8px;
+      border: 1px solid var(--border); background: #0b1626; color: var(--text); font-size: .85rem; }
+    button { cursor: pointer; border: 1px solid var(--border); border-radius: 8px;
+      padding: 8px 10px; background: rgba(79,140,255,0.2); color: var(--text);
+      font-weight: 700; font-size: .82rem; margin-top: 8px; }
+    button:hover { background: rgba(79,140,255,0.35); }
+    button.ghost { background: transparent; }
+    .report { font-family: "Cascadia Code", Consolas, monospace; font-size: .78rem;
+      white-space: pre-wrap; color: #cfe0ff; max-height: 220px; overflow-y: auto; }
+    .check { display: flex; gap: 6px; font-size: .8rem; }
+    .check .ok { color: var(--ok); } .check .bad { color: var(--bad); }
+    .decision { font-weight: 800; padding: 4px 8px; border-radius: 6px; display: inline-block; }
+    .decision.promotable { background: rgba(70,200,120,.2); color: var(--ok); }
+    .decision.rejected { background: rgba(255,120,120,.2); color: var(--bad); }
+    text { font-family: "Segoe UI", sans-serif; }
+    .wabe-node { cursor: pointer; }
+    .log { font-size: .74rem; color: var(--muted); max-height: 140px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="kicker">🖥️ VOS</span>
+    <h1>Visual Operating System — live Wabenmatrix + Shadow Server</h1>
+    <a class="nav" href="./total-build.html">Total Build →</a>
+    <a class="nav" href="./index.html">← Portal</a>
+  </header>
+
+  <div class="layout">
+    <div class="stage">
+      <svg id="stage" viewBox="0 0 900 620" preserveAspectRatio="xMidYMid meet" aria-label="Wabenmatrix"></svg>
+    </div>
+
+    <aside class="side">
+      <div class="card">
+        <h2>Matrix status (live)</h2>
+        <div class="stat"><span>Wabes</span><b id="s-wabes">0</b></div>
+        <div class="stat"><span>Relaties</span><b id="s-rel">0</b></div>
+        <div class="stat"><span>Clusters</span><b id="s-clusters">0</b></div>
+        <div class="stat"><span>Gevalideerd</span><b id="s-validated">0</b></div>
+      </div>
+
+      <div class="card">
+        <h2>Symbolic Command Layer</h2>
+        <label for="op">Operatie</label>
+        <select id="op">
+          <option value="add-wabe">➕ Wabe toevoegen</option>
+          <option value="promote-status">⬆️ Status promoten</option>
+          <option value="link">🔗 Relatie leggen</option>
+        </select>
+        <div id="fields-add">
+          <label>Label</label><input id="f-label" value="Nieuwe module" />
+          <label>Type</label>
+          <select id="f-type"><option>module</option><option>data</option><option>code</option><option>concept</option><option>process</option></select>
+          <label>Cluster</label><select id="f-cluster"></select>
+        </div>
+        <div id="fields-status" style="display:none">
+          <label>Wabe</label><select id="f-wabe"></select>
+          <label>Nieuwe status</label>
+          <select id="f-status"><option>in-development</option><option>validated</option><option>historical</option><option>concept</option></select>
+        </div>
+        <div id="fields-link" style="display:none">
+          <label>Bron</label><select id="f-src"></select>
+          <label>Doel</label><select id="f-dst"></select>
+        </div>
+        <button id="btn-sim">🛰️ Simuleer via Shadow Server</button>
+      </div>
+
+      <div class="card" id="report-card" style="display:none">
+        <h2>Shadow Server rapport</h2>
+        <div>Beslissing: <span id="decision" class="decision"></span> · risico <b id="risk">0</b></div>
+        <div id="checks"></div>
+        <div class="report" id="effects"></div>
+        <button id="btn-promote" disabled>✅ Promoot naar kern</button>
+      </div>
+
+      <div class="card" id="detail-card" style="display:none">
+        <h2 id="d-title">Wabe</h2>
+        <div class="stat"><span>Type</span><b id="d-type"></b></div>
+        <div class="stat"><span>Cluster</span><b id="d-cluster"></b></div>
+        <div class="stat"><span>Status</span><b id="d-status"></b></div>
+        <label>Logboek (Visual Memory Cells)</label>
+        <div class="log" id="d-log"></div>
+      </div>
+    </aside>
+  </div>
+
+  <script type="module">
+    import { createWabeMatrix } from './shadow/wabe-matrix.js';
+    import { createShadowServer } from './shadow/shadow-server.js';
+
+    const matrix = createWabeMatrix();
+    const shadow = createShadowServer(matrix);
+    let lastReport = null;
+    let selectedId = null;
+
+    const svg = document.getElementById('stage');
+    const NS = 'http://www.w3.org/2000/svg';
+    const W = 900, H = 620, CX = W / 2, CY = H / 2;
+
+    // Cluster colours for the optical layer.
+    const palette = ['#4f8cff','#f4c542','#7ff0ad','#d6b3ff','#ff9d6e','#6ee7ff','#ff8ab0'];
+
+    function el(tag, attrs = {}) {
+      const node = document.createElementNS(NS, tag);
+      for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+      return node;
+    }
+
+    function layout() {
+      const clusters = matrix.snapshot().clusters;
+      const positions = new Map();
+      clusters.forEach((cluster, ci) => {
+        const angle = (ci / clusters.length) * Math.PI * 2;
+        const cxx = CX + Math.cos(angle) * 210;
+        const cyy = CY + Math.sin(angle) * 210;
+        const members = matrix.list().filter((w) => w.cluster === cluster);
+        members.forEach((w, mi) => {
+          const a2 = (mi / Math.max(1, members.length)) * Math.PI * 2;
+          const r = members.length > 1 ? 62 : 0;
+          positions.set(w.id, {
+            x: cxx + Math.cos(a2) * r,
+            y: cyy + Math.sin(a2) * r,
+            color: palette[ci % palette.length]
+          });
+        });
+      });
+      return positions;
+    }
+
+    function render() {
+      svg.innerHTML = '';
+      const pos = layout();
+
+      // Core node.
+      svg.appendChild(el('circle', { cx: CX, cy: CY, r: 26, fill: 'rgba(79,140,255,0.25)', stroke: '#4f8cff', 'stroke-width': 2 }));
+      const coreLabel = el('text', { x: CX, y: CY + 4, fill: '#f5f7ff', 'text-anchor': 'middle', 'font-size': 11, 'font-weight': 700 });
+      coreLabel.textContent = 'Hyperkernel';
+      svg.appendChild(coreLabel);
+
+      // Relations.
+      for (const rel of matrix.relations()) {
+        const a = pos.get(rel.source), b = pos.get(rel.target);
+        if (!a || !b) continue;
+        svg.appendChild(el('line', { x1: a.x, y1: a.y, x2: b.x, y2: b.y, stroke: 'rgba(255,255,255,0.18)', 'stroke-width': 1 }));
+      }
+
+      // Wabe nodes.
+      for (const w of matrix.list()) {
+        const p = pos.get(w.id);
+        if (!p) continue;
+        const g = el('g', { class: 'wabe-node' });
+        const radius = w.type === 'module' ? 15 : 10;
+        const dim = w.status === 'validated' ? 1 : (w.status === 'concept' ? 0.45 : 0.7);
+        const circle = el('circle', { cx: p.x, cy: p.y, r: radius, fill: p.color, 'fill-opacity': dim, stroke: selectedId === w.id ? '#fff' : 'rgba(0,0,0,0.3)', 'stroke-width': selectedId === w.id ? 2.5 : 1 });
+        g.appendChild(circle);
+        const label = el('text', { x: p.x, y: p.y + radius + 11, fill: 'var(--muted)', 'text-anchor': 'middle', 'font-size': 9 });
+        label.textContent = w.label.length > 16 ? w.label.slice(0, 15) + '…' : w.label;
+        g.appendChild(label);
+        g.addEventListener('click', () => selectWabe(w.id));
+        svg.appendChild(g);
+      }
+
+      updateStats();
+      refreshSelects();
+    }
+
+    function updateStats() {
+      const s = matrix.snapshot();
+      document.getElementById('s-wabes').textContent = s.wabeCount;
+      document.getElementById('s-rel').textContent = s.relationCount;
+      document.getElementById('s-clusters').textContent = s.clusters.length;
+      document.getElementById('s-validated').textContent = s.byStatus.validated;
+    }
+
+    function refreshSelects() {
+      const clusters = matrix.snapshot().clusters;
+      const wabes = matrix.list();
+      const clusterSel = document.getElementById('f-cluster');
+      clusterSel.innerHTML = clusters.map((c) => `<option>${c}</option>`).join('');
+      const opts = wabes.map((w) => `<option value="${w.id}">${w.label} (${w.status})</option>`).join('');
+      document.getElementById('f-wabe').innerHTML = opts;
+      document.getElementById('f-src').innerHTML = opts;
+      document.getElementById('f-dst').innerHTML = opts;
+    }
+
+    function selectWabe(id) {
+      selectedId = id;
+      const w = matrix.get(id);
+      if (!w) return;
+      document.getElementById('detail-card').style.display = 'block';
+      document.getElementById('d-title').textContent = w.label;
+      document.getElementById('d-type').textContent = w.type;
+      document.getElementById('d-cluster').textContent = w.cluster;
+      document.getElementById('d-status').textContent = w.status;
+      document.getElementById('d-log').innerHTML = w.log.map((l) => `• ${l.action}: ${l.reason}`).reverse().join('<br/>');
+      render();
+    }
+
+    // Command layer field switching.
+    const op = document.getElementById('op');
+    op.addEventListener('change', () => {
+      document.getElementById('fields-add').style.display = op.value === 'add-wabe' ? 'block' : 'none';
+      document.getElementById('fields-status').style.display = op.value === 'promote-status' ? 'block' : 'none';
+      document.getElementById('fields-link').style.display = op.value === 'link' ? 'block' : 'none';
+    });
+
+    function buildProposal() {
+      if (op.value === 'add-wabe') {
+        const cluster = document.getElementById('f-cluster').value;
+        const clusterWabe = matrix.list().find((w) => w.cluster === cluster && w.type === 'module');
+        return {
+          op: 'add-wabe',
+          wabe: { label: document.getElementById('f-label').value, type: document.getElementById('f-type').value, cluster, status: 'concept' },
+          linkTo: clusterWabe ? clusterWabe.id : null,
+          kind: 'contains'
+        };
+      }
+      if (op.value === 'promote-status') {
+        return { op: 'promote-status', id: document.getElementById('f-wabe').value, status: document.getElementById('f-status').value };
+      }
+      return { op: 'link', source: document.getElementById('f-src').value, target: document.getElementById('f-dst').value, kind: 'relates' };
+    }
+
+    document.getElementById('btn-sim').addEventListener('click', () => {
+      lastReport = shadow.runProposal(buildProposal());
+      showReport(lastReport);
+    });
+
+    function showReport(report) {
+      document.getElementById('report-card').style.display = 'block';
+      const dec = document.getElementById('decision');
+      dec.textContent = report.decision;
+      dec.className = 'decision ' + report.decision;
+      document.getElementById('risk').textContent = report.validation.riskScore.toFixed(2);
+      document.getElementById('checks').innerHTML = report.validation.checks.map((c) =>
+        `<div class="check"><span class="${c.pass ? 'ok' : 'bad'}">${c.pass ? '✔' : '✗'}</span><span>${c.name} — ${c.detail}</span></div>`
+      ).join('');
+      document.getElementById('effects').textContent =
+        'EFFECTEN:\n' + report.effects.join('\n') +
+        '\n\nEVOLUTIE-SUGGESTIES:\n' + (report.evolution.suggestions.map((s) => '• ' + s.suggestion).join('\n') || '(geen)');
+      document.getElementById('btn-promote').disabled = report.decision !== 'promotable';
+    }
+
+    document.getElementById('btn-promote').addEventListener('click', () => {
+      if (!lastReport) return;
+      const result = shadow.promote(lastReport);
+      if (result.ok) {
+        document.getElementById('btn-promote').disabled = true;
+        lastReport = null;
+        render();
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>
