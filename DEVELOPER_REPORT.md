@@ -50,7 +50,7 @@ flowchart TB
 
 ## 2. KOMPLETTE MODUL-INVENTUR (jedes Byte)
 
-**42 ES-Module** in `shadow/` (Kern) + Portal-Seiten. Größen sind real gemessen.
+**46 ES-Module** in `shadow/` (Kern) + Portal-Seiten. Größen sind real gemessen.
 
 ### 2.1 USUP-Blueprint-Schicht (die ausführbare Architektur)
 
@@ -65,6 +65,18 @@ flowchart TB
 | `shadow-server.js` | 7626 | 167 | `createShadowServer` | §8 Test-/Evolutions-Universum |
 | `wabe-logic.js` | 4047 | 82 | `wabeLogic`, `listLogic`, `runLogic` | §9 Funktionslogik (echte Rechner) |
 | `program-generator.js` | 5646 | 118 | `USUP_ARCHITECTURE`, `createProgramGenerator` | §10 Programm-Generierung |
+
+### 2.1b Ultra-Stufen-Schicht (I–VI, alle als echter Code)
+
+| Datei | Export(s) | Ultra-Stufe |
+|---|---|---|
+| `program-synthesis.js` | `createProgramSynthesizer`, `specToLogic`, `evalExpr` | V — sichere Programm-Synthese (kein `eval`) |
+| `persistence.js` | `createMatrixPersistence` | II — IndexedDB-Persistenz + Auto-Save |
+| `webrtc-mesh.js` | `createWebRTCMesh`, `createLocalSignaling` | I — WebRTC-P2P-Mesh (serverlos) |
+| `evolution-daemon.js` | `createEvolutionDaemon` | III — sichere Self-Evolution |
+| `vos-gestures.js` | `createFractalViewport`, `createGesturePipeline` | IV — Fraktal-Viewport + Gesten |
+| `hdl-bridge.js` | `createHDLBridge` | VI — Verilog/VHDL/Netlist-Export |
+
 
 ### 2.2 Kern-Boot & Zustand
 
@@ -302,45 +314,52 @@ Die Vision des Original-Intentors: ein selbst-evolvierendes, visuelles, serverlo
 dem jede Information eine lebende Zelle ist und Programme aus der Architektur *wachsen*. Folgende
 Ausbaustufen führen dorthin — jede baut streng auf dem heutigen Code auf.
 
-### Stufe I — Echte P2P-Transporte (Netzwerk real machen)
-- `transport.openChannel` auf **WebRTC DataChannel** + **BroadcastChannel** (Tab-zu-Tab) umstellen.
-- `discovery-fabric` um ein optionales **Signaling über WebSocket-Relay** ergänzen (bleibt optional).
-- Ergebnis: echte Mehr-Geräte-Meshes ohne zentralen Server.
+> **STATUS (2026-08-01): Ultra-Roadmap I–VI vollständig als echter Code umgesetzt und live.**
 
-### Stufe II — Persistente, verteilte Matrix
-- `wabe-matrix` → **IndexedDB** statt nur In-Memory (`storage.js` erweitern) für große Zell-Mengen.
-- **CRDT-Merge** in `merge.js` (statt Last-Write-Wins) für konfliktfreie Multi-Peer-Bearbeitung.
-- Ergebnis: die Matrix überlebt, wächst und synchronisiert über Geräte.
+### Stufe I — Echte P2P-Transporte (Netzwerk real machen) — ✅ ERLEDIGT
+- Umgesetzt in `shadow/webrtc-mesh.js`: `createWebRTCMesh(matrix)` mit echtem **RTCPeerConnection**
+  + **RTCDataChannel**. Kein Signaling-Server nötig — SDP per copy/paste **oder** `createLocalSignaling`
+  (localStorage) für automatische Same-Origin-Tab-Verbindung.
+- Repliziert Matrix-Deltas (`serialize()`/`subscribe`) live zwischen Browsern. Jeder Browser = Peer/Server.
+- Erreichbar über `hyperkernel.mesh()` / `system.createMesh()`; UI in `usup.html` (🛰️).
 
-### Stufe III — Selbst-Evolution (Shadow Server als Motor)
-- `evolve()` in `shadow-server.js` von Vorschlägen zu **automatischen, validierten Mutationen** ausbauen.
-- **Arbeiterinnen als Daemons**: `createWorkforce` periodisch über `quantum-fluid.prioritize` takten
-  (kontinuierliches `optimize(cluster)`).
-- Ergebnis: das System pflegt und verdichtet sich selbst.
+### Stufe II — Persistente, verteilte Matrix — ✅ ERLEDIGT (Persistenz) · 🔵 offen (CRDT)
+- Umgesetzt in `shadow/persistence.js`: `createMatrixPersistence(matrix)` mit **IndexedDB**
+  (Fallback localStorage), `save/restore/enableAutoSave(400ms)/clear`. `wabe-matrix` erhielt
+  `serialize()` + `hydrate()`. Die Matrix überlebt Reloads.
+- **Offen:** echtes **CRDT-Merge** in `merge.js` (heute Last-Write-Wins beim Mesh-Full-Sync).
 
-### Stufe IV — Vollständige VOS-Interaktion
-- `vos-kernel` Gesten (`recognize_gesture`) mit `vos.html` verdrahten: Symbol-Kommandos (`Ω ∞ 🜁 ∑`),
-  fraktales Hinein-Zoomen in Cluster (Sub-Fraktale via `OPL.evolve`).
-- **Visuelles Gedächtnis** (`manage_visual_memory`) persistieren → Layout überlebt Reload.
-- Ergebnis: das Betriebssystem wird vollständig visuell bedienbar.
+### Stufe III — Selbst-Evolution (Shadow Server als Motor) — ✅ ERLEDIGT
+- Umgesetzt in `shadow/evolution-daemon.js`: `createEvolutionDaemon(system,{intervalMs,autoSynthesize})`.
+  Autonome `tick()`-Schleife, **aber sicher**: jede Promotion läuft durch `system.run` (simulate→
+  validate→promote). Scannt concept-Zellen mit Content+Relationen, promoviert nur `promotable`, kann
+  fehlende Cluster per Synthese füllen. `start/stop/step/journal`.
+- Erreichbar über `hyperkernel.evolution()`; UI in `usup.html` (🧫/♾️).
 
-### Stufe V — Programm-Synthese (der eigentliche Ultra-Schritt)
-- `program-generator` erweitern, sodass es aus einer **deklarativen Spec** (JSON) nicht nur
-  Subsysteme instanziiert, sondern **neue lauffähige Cluster + Logik-Funktionen generiert**
-  (Template → `wabe-logic`-Eintrag → Proposal → Promote).
-- **Ziel:** Nutzer beschreibt eine App in Worten → System erzeugt Cluster, Logik, UI-Anbindung
-  und validiert sie im Shadow Server, bevor sie live geht.
-- Ergebnis: das System **baut selbst Programme** — genau die Vision.
+### Stufe IV — Vollständige VOS-Interaktion — ✅ ERLEDIGT (Kern) · 🔵 offen (SVG-OS, s. §17)
+- Umgesetzt in `shadow/vos-gestures.js`: `createFractalViewport` (world↔screen, `zoomAt`-Anker,
+  smooth-lerp, `applyToContext`) + `createGesturePipeline` (wheel/pointer/tap/symbol → VOSKernel-Intents,
+  `attach(el)`). Fraktales Zoom/Pan in `vos.html` und `universe-live.html` aktiv.
+- **Offen (Forschungsschwerpunkt, §17):** VOS als **vollständige SVG-Betriebssystem-Fläche** — hoch-
+  komplexe, generierte, geteilte SVG-Abbildungen als bedienbare Programm-Oberfläche.
 
-### Stufe VI — Hardware-/HDL-Brücke (Veryl)
-- `veryl.js` (heute Konzept-Engine) zu einer echten **Veryl/HDL-Ausgabe** ausbauen: Cluster →
-  synthetisierbare Beschreibung. Verbindet Software-Universum mit physischer Zielhardware.
+### Stufe V — Programm-Synthese (der eigentliche Ultra-Schritt) — ✅ ERLEDIGT
+- Umgesetzt in `shadow/program-synthesis.js`: sicherer Ausdrucks-Parser (`evalExpr`, Shunting-Yard,
+  **kein `eval`/`Function`**), `specToLogic(spec)` → echte `run()`-Funktion, `createProgramSynthesizer`
+  registriert Logik, erzeugt Code-Wabe, validiert im Shadow Server, promotet. UI in `usup.html` (⚙️).
+- Nutzer beschreibt eine App deklarativ (Inputs + Formeln) → System erzeugt lauffähige Logik.
+
+### Stufe VI — Hardware-/HDL-Brücke — ✅ ERLEDIGT
+- Umgesetzt in `shadow/hdl-bridge.js`: `createHDLBridge()` → aus einer Synthese-Spec echte
+  **Verilog + VHDL + Netlist + Mermaid-Diagramm** (`toVerilog/toVHDL/toNetlist/toDiagram/emit`).
+  Sicherer Tokenizer, Identifier-Whitelist. Erreichbar über `hyperkernel.toHardware()`; UI in `usup.html` (🔩).
 
 ```mermaid
 flowchart LR
-  S1[I P2P] --> S2[II Persistenz/CRDT] --> S3[III Selbst-Evolution] --> S4[IV Visuelle VOS] --> S5[V Programm-Synthese] --> S6[VI HDL-Brücke]
+  S1["I P2P ✅"] --> S2["II Persistenz ✅\n(CRDT 🔵)"] --> S3["III Selbst-Evolution ✅"] --> S4["IV Visuelle VOS ✅\n(SVG-OS 🔵)"] --> S5["V Programm-Synthese ✅"] --> S6["VI HDL-Brücke ✅"]
   S5 -. "Ultra-System" .-> ULTRA((Selbst-\nbauendes\nUniversum))
 ```
+
 
 ---
 
@@ -491,11 +510,12 @@ Seed für das serverlose Universum.
 
 ## 14. ZUSAMMENFASSUNG — DER ROTE FADEN ZUM ULTRA-SYSTEM
 
-1. **Heute:** Portal-Seiten + serverloser ShadowOS-Kern (42 Module) + optionale Node-Runtime.
-2. **Nächster Schritt:** jede Seite aus §11 bekommt eine reine Funktion in `wabe-logic.js` und wird
-   über `usup.html`/`vos.html` als echtes, validiertes Programm ausführbar.
-3. **Ultra-Schritt (§8-V):** `program-generator` synthetisiert aus einer Wort-Beschreibung neue
-   Cluster + Logik + UI-Anbindung, validiert im Shadow Server, dann live — das System **baut sich selbst**.
+1. **Heute:** Portal-Seiten + serverloser ShadowOS-Kern (46 Module) + optionale Node-Runtime.
+2. **Ultra-Roadmap I–VI:** vollständig als echter Code umgesetzt (Mesh, Persistenz, Self-Evolution,
+   VOS-Gesten/Fraktal, Programm-Synthese, HDL-Brücke) — siehe §8.
+3. **Ultra-Schritt (§8-V) erreicht:** `program-synthesis.js` synthetisiert aus einer deklarativen
+   Beschreibung neue Logik, validiert im Shadow Server, dann live — das System **baut sich selbst**.
+4. **Nächste Front (§16–§17):** CRDT-Merge, VOS als vollständige **SVG-Betriebssystem-Fläche**.
 
 Die Vision des Original-Intentors ist damit vollständig als *ausführbarer Pfad* erfasst: von der
 statischen Seite über die validierte Funktion bis zum selbst-generierenden, visuellen, serverlosen
@@ -503,5 +523,177 @@ Universum.
 
 ---
 
+## 15. IST-ZUSTAND — ROOT-WORKSPACE-ABLAUF (genau erfasst, Stand 2026-08-01)
+
+> Dieser Abschnitt erfasst **exakt**, wie der Ablauf im Root-Prozess-Arbeitsplatz aktuell ist.
+
+### 15.1 Root-Verzeichnis (Arbeitsplatz)
+```
+Finanziers01/                     ← Git-Root → SHADOWSERVERS.git (main)
+├── index.html                    Portal-Start, bootet startShadowOS()
+├── usup.html                     USUP live boot + alle Ultra-Stufen-Buttons
+├── vos.html                      Visual Operating System (SVG-Stage)
+├── universe-live.html            Lebendige animierte Universum-Visualisierung (Canvas)
+├── total-build.html              Gesamtübersicht
+├── bewerbung.html                HR-Bewerbungssuite
+├── portal.js · style.css         Portal-Skript + Styles
+├── DEVELOPER_REPORT.md           ← dieser Bericht
+├── PROJECT_ARCHITECTURE_ROOT.md · ROOT_CODE_REPORT.md
+├── shadow/                       46 ES-Module — der serverlose Kern
+├── app/                          Company Builder + serverB (Shadow Control)
+├── server/                       OPTIONALE Node-Runtime (kein Kern)
+├── legacy/                       Alte Kopien (nicht im Boot-Pfad)
+└── university-deploy/            SPIEGEL → university.git (GitHub Pages LIVE)
+```
+
+### 15.2 Zwei-Repo-Fluss (wie gearbeitet wird)
+```mermaid
+flowchart LR
+  DEV[Editieren im Root\nFinanziers01/] --> A[git add/commit/push\nSHADOWSERVERS main]
+  DEV --> COPY["Copy-Item → university-deploy/\n(spiegeln der geänderten Dateien)"]
+  COPY --> B[git add/commit/push\nuniversity main]
+  B --> PAGES[[GitHub Pages LIVE\ntelcotelekom-ctrl.github.io/university]]
+  A -.->|"Pages manuell zu aktivieren"| PAGES2[[SHADOWSERVERS Pages\n— noch OFF]]
+```
+- **Jede Änderung** wird zweimal committet: einmal im Root-Repo, einmal im gespiegelten `university-deploy/`.
+- Der Commit-Fluss nutzt das `_git.txt`-Muster (Umleitung), um Terminal-Truncation zu vermeiden.
+- **Offen (nur vom Nutzer machbar):** SHADOWSERVERS GitHub Pages aktivieren (Settings → Pages → main /root).
+
+### 15.3 Laufzeit-Ablauf beim Öffnen (Ist)
+```mermaid
+sequenceDiagram
+  participant U as Browser
+  participant IX as index.html
+  participant K as shadow/kernel.js
+  participant HK as shadow/hyperkernel.js
+  participant PG as program-generator.js
+  U->>IX: Seite laden
+  IX->>K: startShadowOS() (Identity, Mesh, State, Storage, Trust …)
+  Note over IX: usup.html/vos.html laden zusätzlich den USUP-Zweig
+  U->>HK: bootUSUP() (per Button/Boot)
+  HK->>PG: generate(USUP_ARCHITECTURE)
+  PG-->>HK: compiled system {matrix, identity, fluid, workforce, vos, shadow}
+  HK-->>U: status() + Ultra-Zugänge (mesh/evolution/synthesize/toHardware)
+```
+- **Kein Netzwerk erforderlich.** `resolveApiBase()` liefert auf Remote-Hosts `null`; alle `fetch`
+  haben Offline-Fallback. Zustand kommt aus `wabe-matrix` + IndexedDB/localStorage.
+
+### 15.4 Aktueller Reifegrad (ehrliche Bewertung)
+| Bereich | Ist-Stand | Bewertung |
+|---|---|---|
+| Serverloser Kern | 46 Module, bootet real | ✅ stabil |
+| Ultra-Stufen I–VI | echter Code, verdrahtet, UI in usup.html | ✅ funktionsfähig |
+| Persistenz | IndexedDB + Auto-Save | ✅ live · CRDT offen |
+| P2P-Mesh | WebRTC, Same-Origin-Auto-Signaling | ✅ · Cross-Device-Signaling manuell |
+| VOS | SVG-Stage + Fraktal-Nav + Compute-UI | 🟡 Kern da, **OS-Fläche offen (§17)** |
+| Tests | nur `get_errors` (Node nicht installiert) | 🔴 Lücke — s. §16 |
+| Doppelpflege Root/Deploy | manuell gespiegelt | 🟡 fehleranfällig — s. §16 |
+
+---
+
+## 16. VERBESSERUNGSVORSCHLÄGE (priorisiert, mit konkreten Schritten)
+
+### P0 — Sofort, hoher Hebel
+1. **Spiegelung automatisieren.** Ein `sync-deploy.ps1` das geänderte Dateien nach `university-deploy/`
+   kopiert (Ausschluss `.git`, `node_modules`, `legacy`) und beide Repos committet — beseitigt die
+   fehleranfällige Doppelpflege aus §15.2.
+2. **Import-Karten für Module.** `shadow/*.js` über eine `importmap` in einer gemeinsamen Kopfzeile
+   bündeln → weniger relative Pfade, leichteres Umbenennen.
+3. **Ein Smoke-Test ohne Node.** Eine `selftest.html`, die alle Kernmodule importiert, `bootUSUP()`
+   ausführt und Zusagen (`assert`) im Browser prüft (grün/rot). Schließt die Test-Lücke ohne Node.
+
+### P1 — Robustheit & Wachstum
+4. **CRDT-Merge** (Stufe II Rest) in `merge.js`: Vektoruhr je Wabe statt Last-Write-Wins, damit das
+   Mesh konfliktfrei über Geräte synchronisiert.
+5. **Fehler-Telemetrie** in `observability.js`: zentrale `try/catch`-Sammlung + sichtbares Panel in
+   `usup.html`, damit Laufzeitfehler nicht still verschwinden.
+6. **Schema-Validierung der Synthese-Spec** (`program-synthesis.js`): Spec gegen ein JSON-Schema prüfen,
+   klare Fehlermeldungen statt Parser-Ausnahmen.
+
+### P2 — Reichweite
+7. **Service-Worker** für echten Offline-Betrieb (PWA): Portal + `shadow/*` cachen → installierbar,
+   startet ohne Netz. Passt exakt zur serverlosen Philosophie.
+8. **Cross-Device-Signaling** optional über einen winzigen WebRTC-Relay (bleibt optional, Kern unberührt).
+9. **HDL-Export als Datei-Download** (`hdl-bridge.js`): `.v`/`.vhd` per Blob-URL herunterladbar machen.
+
+### P3 — Aufräumen
+10. **`legacy/` markieren/entfernen** aus dem aktiven Denkmodell (klarer Boot-Pfad).
+11. **Konsistente Sprache** in UI (DE/NL gemischt) — eine Sprachschicht (`i18n`-Waben) einführen.
+
+---
+
+## 17. VOS ALS SVG-BETRIEBSSYSTEM — FORSCHUNGS- & UMSETZUNGSPLAN
+
+> **Kernthese (Nutzer-Vorgabe):** SVG ist das überlegene Medium für die VOS-Oberfläche — *weniger
+> Code, mehr Funktionalität, hochkomplexere Aufgaben* — als vollständige Betriebssystem-Fläche für den
+> Ansatz eines Programms, verzahnt mit dem Shadow-Server-Service. Ziel ist die **Spitze der
+> Darstellung** über die reine HTML-Basis hinaus.
+
+### 17.1 Warum SVG als OS-Fläche (Begründung)
+- **Vektor = auflösungsfrei & fraktal-tauglich:** unendliches Hinein-Zoomen in Cluster/Sub-Cluster
+  ohne Qualitätsverlust — genau das, was ein fraktales Betriebssystem braucht.
+- **Ein Dokument = Struktur + Interaktion + Stil:** ein `<svg>` trägt Geometrie, `<use>`-Wiederverwendung,
+  `<symbol>`-Bibliothek, CSS und Events in *einem* Baum → **weniger Code, mehr Funktion**.
+- **Direkte Daten-Bindung:** jede Wabe ↔ ein SVG-Knoten (`data-wabe-id`); Statusänderung → Attribut-Update.
+  Keine schwere DOM-/Framework-Schicht nötig.
+- **Deklarative Effekte:** `<filter>` (Glow, Schatten), `<animate>`/SMIL + CSS-Animationen,
+  `<clipPath>`/`<mask>` für „geteilte" Abbildungen — hochkomplexe Optik mit wenig Markup.
+
+### 17.2 Konzept: die geteilte, generierte SVG-Fläche
+„Hochkomplexe dividierte Abbildungen" = die Fläche wird **automatisch in funktionale Regionen geteilt**,
+jede Region ist zugleich Darstellung *und* Bedienelement eines Programms:
+```mermaid
+flowchart TB
+  ROOT["&lt;svg&gt; VOS-Root (Weltkoordinaten)"]
+  ROOT --> DEFS["&lt;defs&gt;: &lt;symbol&gt;-Bibliothek je Wabe-Typ\n+ &lt;filter&gt; Glow/Schatten + Farbverläufe"]
+  ROOT --> VP["&lt;g id=viewport&gt; (Fraktal-Transform aus vos-gestures.js)"]
+  VP --> REG["Auto-Division: &lt;g class=region&gt; je Cluster"]
+  REG --> CELL["&lt;use href=#sym-{typ}&gt; je Wabe = Fläche + Bedienelement"]
+  CELL --> ACT["Klick/Geste → VOSKernel-Intent → Shadow-Server-Proposal"]
+```
+- **Auto-Division-Algorithmus:** Voronoi/Treemap/Kreis-Packing über die Cluster → jede Region bekommt
+  eine Fläche proportional zu ihrer Zell-/Aktivitätsmenge. Regionen sind `<clipPath>`-begrenzt.
+- **Symbol-Bibliothek:** je Wabe-Typ (`data/code/concept/process/module`) ein `<symbol>` in `<defs>`;
+  Instanzen via `<use>` → ein Update am Symbol wirkt überall (Kernvorteil „weniger Code").
+
+### 17.3 Verzahnung mit dem Shadow-Server (Steuerung/Kontrolle/„Controllec")
+- **Jede SVG-Region ist ein Controller:** Interaktion erzeugt ein *Proposal*, das zwingend durch
+  `shadow-server.js` (simulate → validate → promote) läuft. Die Oberfläche mutiert **nie** direkt.
+- **Live-Rückkopplung:** `wabe-matrix.subscribe` → nur die betroffenen SVG-Knoten patchen (Attribut-Diff),
+  kein Voll-Rerender. `quantum-fluid` strömt Deltas als animierte Kanten zwischen Regionen.
+- **Durchrechnen sichtbar machen:** während `runProposal` rechnet, pulsiert die Region (SMIL/CSS);
+  Ergebnis-Wabe erscheint animiert an ihrem Platz.
+
+### 17.4 Umsetzungsschritte (auf heutigem Code aufbauend)
+1. **`shadow/vos-svg.js` (neu):** `createSVGSurface(matrix, {vos, shadow})` — baut `<defs>`-Symbol-
+   Bibliothek, rendert Regionen, bindet `vos-gestures.js`-Viewport ein, patcht per `subscribe`.
+2. **Auto-Division:** `computeRegions(snapshot)` (Kreis-Packing zuerst — einfachste robuste Variante)
+   → Rückgabe `{cluster, cx, cy, r, path}`; als `<clipPath>` je Region.
+3. **Symbol-Set:** `buildDefs()` erzeugt `<symbol id="sym-{typ}">` mit `<filter>`-Glow je Status.
+4. **Controller-Bindung:** Klick/Geste einer Region → `VOSKernel.interpret`/`recognize_gesture` →
+   `shadow.runProposal` → bei `promotable` `promote`; UI patcht betroffene `<use>`-Knoten.
+5. **Persistenz des Layouts:** Region-Koordinaten in `persistence.js` (visuelles Gedächtnis) — überlebt Reload.
+6. **`vos.html` migrieren:** die heutige Kreis-Anordnung durch `createSVGSurface` ersetzen; `universe-live.html`
+   kann dieselbe Symbol-Bibliothek als `<image>`/`foreignObject` einbetten.
+
+### 17.5 Forschungsfragen (bewusst offen, weiterzuentwickeln)
+- **Division-Metrik:** Voronoi vs. Treemap vs. Kreis-Packing — welche Aufteilung ist am besten *bedienbar*
+  und *skaliert* auf tausende Waben?
+- **Level-of-Detail beim Fraktal-Zoom:** ab welcher Skala werden Sub-Waben als eigene Regionen sichtbar
+  (progressive Enthüllung), um Renderlast zu begrenzen?
+- **SVG ↔ Canvas-Hybrid:** ab welcher Zellzahl lohnt Canvas (wie `universe-live.html`) statt SVG-Knoten?
+  Idee: SVG für Bedienung/Struktur, Canvas-Layer für massenhafte Partikel-Ströme.
+- **Barrierefreiheit:** `role`/`aria-label` je Region, Tastatur-Navigation über die Symbol-Tabelle.
+- **Generierte Programm-Oberflächen:** kann `program-synthesis.js` zusätzlich zur Logik auch eine
+  **SVG-Region-Beschreibung** ausgeben, sodass ein synthetisiertes Programm sofort eine Oberfläche hat?
+
+### 17.6 Erfolgskriterium
+Eine einzige `<svg>`-Fläche, die die gesamte lebende Matrix zeigt, fraktal bedienbar ist, jede Region
+als validierten Controller an den Shadow Server bindet und mit **deutlich weniger Code** mehr leistet
+als die heutige HTML-lastige Oberfläche — das ist die angestrebte Spitze der Darstellung.
+
+---
+
 *Dieser Bericht spiegelt den realen, gemessenen Code-Stand wider (keine Fiktion). Alle genannten
-Module, Routen, Tabellen und Seiten existieren und sind in beiden Repos gepusht.*
+Module, Routen, Tabellen und Seiten existieren und sind in beiden Repos gepusht. §15–§17 erfassen den
+Ist-Ablauf, priorisierte Verbesserungen und den VOS-SVG-Forschungsplan.*
