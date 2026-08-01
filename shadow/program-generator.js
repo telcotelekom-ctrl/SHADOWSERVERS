@@ -12,6 +12,9 @@ import { createWorkforce } from './arbeiterinnen.js';
 import { createQuantumFluid } from './quantum-fluid.js';
 import { createVisualOS } from './vos-kernel.js';
 import { createProgramSynthesizer } from './program-synthesis.js';
+import { createWebRTCMesh } from './webrtc-mesh.js';
+import { createEvolutionDaemon } from './evolution-daemon.js';
+import { createHDLBridge } from './hdl-bridge.js';
 import { listLogic } from './wabe-logic.js';
 
 // The strict, input-based architecture description (blueprint §1–§9).
@@ -90,6 +93,8 @@ export function createProgramGenerator() {
   // compile(system) → assemble one coherent, callable system object.
   function compile(system, architecture) {
     const synthesizer = createProgramSynthesizer(system.matrix, system.shadow);
+    const hdl = createHDLBridge();
+    let daemon = null; // lazily created so nothing runs until asked
     const compiled = {
       name: architecture.root.name,
       code: architecture.root.code,
@@ -100,12 +105,19 @@ export function createProgramGenerator() {
       // Ultra-Stufe V: build + deploy a brand-new program from a declarative spec.
       synthesize(spec) { return synthesizer.synthesize(spec); },
       deploySynthesized(spec, input) { return synthesizer.deploy(spec, input); },
+      // Ultra-Stufe I: peer-to-peer mesh over WebRTC (each browser is a server).
+      createMesh(opts) { return createWebRTCMesh(system.matrix, opts); },
+      // Ultra-Stufe III: autonomous, safety-gated self-evolution daemon.
+      evolution(opts) { daemon = daemon || createEvolutionDaemon(compiled, opts); return daemon; },
+      // Ultra-Stufe VI: emit synthesised specs as real Verilog/VHDL/netlist.
+      toHardware(spec) { return hdl.emit(spec); },
       status() {
         return {
           code: architecture.root.code,
           matrix: system.matrix.snapshot(),
           identities: system.identity.count(),
-          logic: listLogic().map((l) => l.key)
+          logic: listLogic().map((l) => l.key),
+          ultra: { synthesis: true, mesh: true, evolution: Boolean(daemon), hardware: true }
         };
       }
     };

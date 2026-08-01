@@ -82,6 +82,20 @@
       <button id="btn-synth">⚙️ Synthetisieren &amp; live deployen</button>
     </div>
 
+    <div class="card" style="margin-top:14px">
+      <h2>🜂 Ultra-Stufen — I · III · IV · VI (das komplette Ultra-System)</h2>
+      <p class="lead" style="font-size:.86rem">
+        Die restlichen Ausbaustufen, alle als echter Code verdrahtet und über den
+        Hyperkernel erreichbar.
+      </p>
+      <div>
+        <button id="btn-mesh">🛰️ Stufe I — P2P-Mesh (WebRTC) starten</button>
+        <button id="btn-evo">🧫 Stufe III — Self-Evolution: 1 Generation</button>
+        <button id="btn-evo-run">♾️ Stufe III — Daemon start/stop</button>
+        <button id="btn-hdl">🔩 Stufe VI — Synthese → Verilog/VHDL (Hardware)</button>
+      </div>
+    </div>
+
     <div class="grid">
       <div class="card"><h2>Build-log (Program Generator)</h2><pre id="buildlog">— nog niet gestart —</pre></div>
       <div class="card"><h2>Systeemstatus</h2><div id="status" class="report">— nog niet gestart —</div></div>
@@ -90,13 +104,18 @@
     </div>
   </main>
 
+
   <script type="module">
     import { createHyperkernel } from './shadow/hyperkernel.js';
     import { createArbeiterin } from './shadow/arbeiterinnen.js';
     import { createMatrixPersistence } from './shadow/persistence.js';
+    import { createLocalSignaling } from './shadow/webrtc-mesh.js';
 
     let hk = null;
     let persistence = null;
+    let mesh = null;
+    let signaling = null;
+    let daemon = null;
 
     const $ = (id) => document.getElementById(id);
 
@@ -210,6 +229,55 @@
       if (!persistence) return alert('Boot eerst de USUP.');
       await persistence.clear();
       $('output').textContent = '🗑️ Persistenz gelöscht. Beim nächsten Boot startet eine frische Matrix.';
+    });
+
+    // Stufe I — WebRTC-P2P mesh. Same-origin tabs auto-connect via localStorage
+    // signaling; every browser becomes a Shadow Server peer.
+    $('btn-mesh').addEventListener('click', async () => {
+      if (!hk) return alert('Boot eerst de USUP.');
+      if (mesh) { mesh.stop(); signaling && signaling.disable(); mesh = null; signaling = null; $('output').textContent = '🛰️ Mesh gestoppt.'; return; }
+      mesh = hk.mesh();
+      if (!mesh.supported) { $('output').textContent = '🛰️ WebRTC wird hier nicht unterstützt.'; mesh = null; return; }
+      mesh.start();
+      signaling = createLocalSignaling(mesh);
+      signaling.enable();
+      await signaling.announce();
+      mesh.subscribe((e) => { $('output').textContent = `🛰️ Mesh [${e.kind}] ${JSON.stringify(e.peerId || e.state || '')} — peers: ${mesh.status().connected}`; });
+      $('output').textContent = `🛰️ Mesh aktiv (self=${mesh.id}). Öffne diese Seite in einem zweiten Tab → automatische P2P-Verbindung. Matrix-Deltas replizieren live.`;
+    });
+
+    // Stufe III — one generation of safety-gated self-evolution.
+    $('btn-evo').addEventListener('click', () => {
+      if (!hk) return alert('Boot eerst de USUP.');
+      daemon = daemon || hk.evolution({ autoSynthesize: true });
+      const r = daemon.step();
+      $('output').textContent = `🧫 Evolution gen ${r.generation}: ${r.promoted} promoviert, ${r.validated} validiert total.\n\n` +
+        daemon.journal().slice(-6).map((j) => `[${j.kind}] ${JSON.stringify(j.detail)}`).join('\n');
+      renderStatus();
+    });
+
+    // Stufe III — autonomous daemon loop (start/stop).
+    $('btn-evo-run').addEventListener('click', () => {
+      if (!hk) return alert('Boot eerst de USUP.');
+      daemon = daemon || hk.evolution({ autoSynthesize: true, intervalMs: 4000 });
+      const s = daemon.status();
+      if (s.running) { daemon.stop(); $('output').textContent = '♾️ Evolution-Daemon gestoppt.'; return; }
+      daemon.subscribe(() => renderStatus());
+      daemon.start();
+      $('output').textContent = '♾️ Evolution-Daemon läuft — das System wächst nun autonom (jede Änderung durch den Shadow Server abgesichert).';
+    });
+
+    // Stufe VI — emit the synthesised spec as real Verilog + VHDL.
+    $('btn-hdl').addEventListener('click', () => {
+      if (!hk) return alert('Boot eerst de USUP.');
+      let spec;
+      try { spec = JSON.parse($('spec').value); }
+      catch (e) { $('output').textContent = 'Spec ist kein gültiges JSON: ' + e.message; return; }
+      let hw;
+      try { hw = hk.toHardware(spec); }
+      catch (e) { $('output').textContent = 'HDL-Fehler: ' + e.message; return; }
+      $('output').textContent =
+        `🔩 Hardware aus Spec "${hw.spec}"\n\n=== VERILOG ===\n${hw.verilog}\n\n=== VHDL ===\n${hw.vhdl}\n\n=== DIAGRAM (Mermaid) ===\n${hw.diagram}`;
     });
   </script>
 </body>

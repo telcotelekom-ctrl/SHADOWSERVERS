@@ -69,6 +69,11 @@ export function createHyperkernel() {
     manage_processes: manageProcess,
     validate_updates: validateUpdate,
     enforce_integrity: enforceIntegrity,
+    // Ultra-Stufe accessors — delegate to the compiled system.
+    mesh(opts) { if (!system) throw new Error('Hyperkernel not initialised'); return system.createMesh(opts); },
+    evolution(opts) { if (!system) throw new Error('Hyperkernel not initialised'); return system.evolution(opts); },
+    synthesize(spec) { if (!system) throw new Error('Hyperkernel not initialised'); return system.synthesize(spec); },
+    toHardware(spec) { if (!system) throw new Error('Hyperkernel not initialised'); return system.toHardware(spec); },
     status,
     system() { return system; }
   };
