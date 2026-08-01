@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unified Total Build – Compleet ecosysteem-export · ShadowOS Ω∞</title>
+  <style>
+    :root {
+      --bg: #07111d;
+      --panel: rgba(7, 17, 29, 0.9);
+      --panel-2: rgba(255, 255, 255, 0.08);
+      --text: #f5f7ff;
+      --muted: #9fb0c9;
+      --accent: #4f8cff;
+      --accent-2: #f4c542;
+      --border: rgba(255,255,255,0.16);
+      --shadow: 0 20px 50px rgba(0,0,0,0.24);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #07111d 0%, #11233d 48%, #0b1626 100%);
+      color: var(--text);
+      line-height: 1.75;
+    }
+    .page { max-width: 980px; margin: 0 auto; padding: 24px 18px 64px; }
+    .top-nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+    .nav-link {
+      text-decoration: none; color: var(--text); padding: 10px 14px;
+      border-radius: 999px; background: var(--panel-2);
+      border: 1px solid var(--border); font-weight: 700;
+    }
+    .nav-link:hover { background: rgba(79, 140, 255, 0.24); }
+    .hero {
+      border: 1px solid var(--border); border-radius: 24px; padding: 28px;
+      background: linear-gradient(135deg, rgba(79,140,255,0.18), rgba(244,197,66,0.12));
+      box-shadow: var(--shadow); margin-bottom: 28px;
+    }
+    .kicker {
+      display: inline-block; padding: 8px 12px; border-radius: 999px;
+      background: rgba(244,197,66,0.2); color: var(--accent-2);
+      font-weight: 700; margin-bottom: 10px;
+    }
+    h1 { margin-top: 0; font-size: 2.1rem; }
+    h2 { margin: 34px 0 12px; font-size: 1.4rem; color: var(--text); border-top: 1px solid var(--border); padding-top: 24px; }
+    p { margin: 0 0 1.1em; color: var(--muted); }
+    .lead { color: var(--text); font-size: 1.12rem; }
+    blockquote {
+      margin: 0 0 1.2em; padding: 14px 18px; border-left: 4px solid var(--accent);
+      background: rgba(79,140,255,0.1); border-radius: 0 12px 12px 0; color: var(--text);
+    }
+    ul { color: var(--muted); }
+    li { margin: 4px 0; }
+    pre {
+      font-family: "Cascadia Code", Consolas, monospace;
+      background: rgba(0,0,0,0.35); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px 18px; overflow-x: auto;
+      color: #cfe0ff; font-size: 0.92rem; line-height: 1.5;
+    }
+    .legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 4px; }
+    .tag {
+      display: inline-block; padding: 4px 10px; border-radius: 999px;
+      font-size: 0.82rem; font-weight: 700; border: 1px solid var(--border);
+    }
+    .tag.live { background: rgba(70, 200, 120, 0.18); color: #7ff0ad; }
+    .tag.core { background: rgba(244, 197, 66, 0.18); color: #ffd873; }
+    .tag.road { background: rgba(79, 140, 255, 0.18); color: #9dc0ff; }
+    table { width: 100%; border-collapse: collapse; margin: 6px 0 20px; font-size: 0.92rem; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--muted); vertical-align: top; }
+    th { color: var(--text); }
+    td code { color: #cfe0ff; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 12px 0 20px; }
+    .card { border: 1px solid var(--border); border-radius: 16px; padding: 16px; background: var(--panel-2); }
+    .card h3 { margin: 0 0 6px; font-size: 1.05rem; color: var(--text); }
+    .card p { margin: 0; font-size: 0.9rem; }
+    .signoff {
+      margin-top: 40px; color: var(--muted); font-size: 0.95rem;
+      border-top: 1px solid var(--border); padding-top: 18px;
+    }
+    a { color: #9dc0ff; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="top-nav" aria-label="Sektionen">
+      <a class="nav-link" href="./index.html">← Portal</a>
+      <a class="nav-link" href="./shadowos-manifest.html">SHADOWOS Ω∞ Manifest</a>
+      <a class="nav-link" href="./manifest.html">Manifest (Raum)</a>
+      <a class="nav-link" href="./UNIFIED_TOTAL_BUILD.md">Markdown-Quelle</a>
+    </nav>
+
+    <section class="hero">
+      <div class="kicker">🜁 UNIFIED TOTAL BUILD</div>
+      <h1>Compleet ecosysteem — één pakket</h1>
+      <p class="lead">Alle lagen, modules, engines, portalen, waben, arbeiterinnen, shadow-servers en fluid-layers — samengebracht tot één coherent geheel.</p>
+      <blockquote>Niets verdwijnt. Niets wordt overschreven. Alles wordt geïntegreerd. Alles evolueert als één vloeibare substantie.</blockquote>
+    </section>
+
+    <article>
+      <h2>Status-legende</h2>
+      <p>Elk systeem is verankerd in de werkelijke code of gemarkeerd als visie, zodat de architectuur belastbaar blijft — als documentatie én als roadmap.</p>
+      <div class="legend">
+        <span class="tag live">🟢 LIVE — draait nu (serverless, browser-native)</span>
+        <span class="tag core">🟡 KERN AANWEZIG — module/route bestaat, klaar voor uitbouw</span>
+        <span class="tag road">🔵 ROADMAP — architecturaal concept</span>
+      </div>
+
+      <h2>0 · Fundament — wat er nú echt draait</h2>
+      <p>Het hart is <strong>serverless</strong>. ShadowOS boot in de browser via <code>index.html</code> → <code>startShadowOS()</code> uit <code>./shadow/kernel.js</code>. WebCrypto (ECDSA P-256), WASM-kernel (browser-adapter), <code>localStorage</code>-discovery. 33 ES-modules, allemaal bereikbaar, browser-safe. Het Node-backend (<code>server/server.js</code>) is optioneel en alleen lokaal.</p>
+      <pre>Browser (index.html) → startShadowOS() → Serverless ShadowOS Core (33 modules)
+                                        → WebCrypto · WASM · localStorage
+        ⌙ optioneel, alleen lokaal → Node backend (server/server.js)</pre>
+
+      <h2>1 · 🧠 Structuurlaag (Brein + Architectuur)</h2>
+      <table>
+        <thead><tr><th>Systeem</th><th>Status</th><th>Werkelijke drager</th></tr></thead>
+        <tbody>
+          <tr><td>Hyperkernel</td><td>🟢</td><td><code>shadow/kernel.js</code></td></tr>
+          <tr><td>Identity Core</td><td>🟢</td><td><code>shadow/identity.js</code></td></tr>
+          <tr><td>Wabenmatrix</td><td>🟢</td><td><code>geometry.js</code> + <code>snap-geometry.js</code></td></tr>
+          <tr><td>Arbeiterinnen-systeem</td><td>🟡</td><td><code>services.js</code> + <code>scheduler.js</code></td></tr>
+          <tr><td>Shadow Server</td><td>🟢</td><td>de gehele <code>shadow/</code> kern</td></tr>
+          <tr><td>Quantum Fluid Layer</td><td>🟡</td><td><code>sync.js</code> + <code>merge.js</code></td></tr>
+          <tr><td>Communication Mesh</td><td>🟢</td><td><code>mesh.js</code> + <code>broadcast.js</code></td></tr>
+          <tr><td>Semantic Core</td><td>🟢</td><td><code>semantic.js</code> + <code>semantic-routing.js</code></td></tr>
+          <tr><td>Memory Hive</td><td>🟢</td><td><code>storage.js</code> + <code>peer-persistence.js</code></td></tr>
+          <tr><td>Quantum Conflict Resolver</td><td>🟢</td><td><code>merge.js</code> (CRDT)</td></tr>
+          <tr><td>Module Bridge Layer</td><td>🟢</td><td><code>portal-bridge.mjs</code></td></tr>
+          <tr><td>Semantic Transport Layer</td><td>🟢</td><td><code>transport.js</code> + <code>semantic-routing.js</code></td></tr>
+          <tr><td>Architectural Root Matrix</td><td>🟢</td><td><code>geometry.js</code></td></tr>
+          <tr><td>Universal Orchestration / Task Distributor</td><td>🟡</td><td><code>scheduler.js</code></td></tr>
+          <tr><td>Contextual Reasoning Core</td><td>🟡</td><td><code>ai.js</code></td></tr>
+          <tr><td>Adaptive Protocol Engine</td><td>🟡</td><td><code>protocol.js</code></td></tr>
+          <tr><td>System Integrity Sentinel</td><td>🟡</td><td><code>trust.js</code> + <code>observability.js</code></td></tr>
+          <tr><td>Validation Engine</td><td>🟡</td><td><code>trust-graph.js</code></td></tr>
+          <tr><td>Universal Registry Core</td><td>🟡</td><td><code>discovery.js</code> + <code>discovery-fabric.js</code></td></tr>
+          <tr><td>Meta-Structure Engine</td><td>🟡</td><td><code>fabric.js</code></td></tr>
+          <tr><td>Visual OS Kernel · Optical Interface</td><td>🟡</td><td><code>visos.js</code> + <code>veryl.js</code></td></tr>
+          <tr><td>Evolution · Hive Compiler · Simulation · Optimization</td><td>🔵</td><td>roadmap</td></tr>
+          <tr><td>Exponential Bit · Singulariteit · Fractal Logic · Infinite Expansion</td><td>🔵</td><td>roadmap</td></tr>
+        </tbody>
+      </table>
+
+      <h2>2 · 🖥️ Visual Optical OS (IDS / VIOS)</h2>
+      <p>Het optische, intuïtieve, universele besturingssysteem. Drager: <code>visos.js</code> + <code>veryl.js</code> + <code>snap-geometry.js</code>.</p>
+      <div class="grid">
+        <div class="card"><h3>🟡 Optical UI Layer</h3><p><code>visos.js</code></p></div>
+        <div class="card"><h3>🟡 Visual Interaction Grid</h3><p><code>visos.js</code> + <code>snap-geometry.js</code></p></div>
+        <div class="card"><h3>🟡 Symbolic Command Layer</h3><p><code>veryl.js</code></p></div>
+        <div class="card"><h3>🟡 Visual Memory Cells</h3><p><code>visos.js</code> + <code>storage.js</code></p></div>
+        <div class="card"><h3>🟡 Optical Process Manager</h3><p><code>visos.js</code> + <code>scheduler.js</code></p></div>
+        <div class="card"><h3>🟡 Visual Wabe Explorer</h3><p><code>snap-geometry.js</code></p></div>
+        <div class="card"><h3>🔵 Gesture Engine</h3><p>roadmap</p></div>
+        <div class="card"><h3>🔵 Fractal Navigation</h3><p>roadmap</p></div>
+        <div class="card"><h3>🔵 Optical Evolution Layer</h3><p>roadmap</p></div>
+      </div>
+
+      <h2>3 · 🧩 Functielaag (bestaande programma's — niets verdwijnt)</h2>
+      <table>
+        <thead><tr><th>Programma</th><th>Status</th><th>Werkelijke drager</th></tr></thead>
+        <tbody>
+          <tr><td>Sollicitatieportaal</td><td>🟢</td><td><code>bewerbung.html</code></td></tr>
+          <tr><td>Investor Calculator · Scenario Engine</td><td>🟢</td><td><code>index.html</code> (lokaal/global/productie/time-index/complete + offline fallback)</td></tr>
+          <tr><td>Formal Registry · Registry Validator</td><td>🟡</td><td><code>formel-registry</code> · <code>/api/formula-registry/*</code></td></tr>
+          <tr><td>Participation Engine</td><td>🟡</td><td><code>/api/office/participation</code></td></tr>
+          <tr><td>Financiële Bedelingen · Distribution Engine</td><td>🟡</td><td><code>exchange</code> + <code>mass-effect</code></td></tr>
+          <tr><td>Exchange / Tauschbörse</td><td>🟡</td><td><code>/api/exchange/*</code></td></tr>
+          <tr><td>CEOC Circles</td><td>🟡</td><td><code>/api/ceoc/*</code></td></tr>
+          <tr><td>Bildungszentrum / Education</td><td>🟡</td><td><code>/api/education/*</code></td></tr>
+          <tr><td>PSY-TEL Hotspot Studio</td><td>🟡</td><td><code>/api/hotspot/*</code> + <code>/psy-tel</code> WS</td></tr>
+          <tr><td>Spidermouse</td><td>🔵</td><td>roadmap / portal-concept</td></tr>
+        </tbody>
+      </table>
+
+      <h2>4 · 🜂 Integratie — hoe alles samenwerkt</h2>
+      <pre>Functielaag → Wabe-clusters (geometry/snap-geometry)
+            → Arbeiterinnen (services/scheduler: beheer · validatie · optimalisatie)
+            → Shadow Server (test · simuleer · evolueer)
+            → Quantum Fluid Layer (sync/merge: updates · datastromen)
+            → Communication Mesh (mesh/broadcast: audit · logs · berichten)
+            → Hyperkernel (kernel: integriteit · veiligheid · evolutie) → terug</pre>
+
+      <h2>5 · 🧬 Roadmap (de 🔵-lagen — volgorde van uitbouw)</h2>
+      <ul>
+        <li><strong>Arbeiterinnen → volwaardig</strong> (<code>services.js</code>/<code>scheduler.js</code>): taakverdeling + validatie-workers.</li>
+        <li><strong>VIOS optisch</strong> (<code>visos.js</code>/<code>veryl.js</code>): Optical UI Layer + Visual Wabe Explorer zichtbaar in portal.</li>
+        <li><strong>Evolution / Simulation / Optimization</strong>: Shadow Server test-/simulatielus bovenop <code>merge.js</code> + <code>sync.js</code>.</li>
+        <li><strong>Hive Compiler + Fractal Logic + Infinite Expansion</strong>: meta-lagen bovenop <code>fabric.js</code>.</li>
+      </ul>
+
+      <div class="signoff">
+        <p>🜁 Eén pakket. Eén systeem. Eén architectuur. — Volledige bron:
+        <a href="./UNIFIED_TOTAL_BUILD.md">UNIFIED_TOTAL_BUILD.md</a> ·
+        <a href="./shadowos-manifest.html">SHADOWOS Ω∞ Manifest</a> ·
+        <a href="./PROJECT_ARCHITECTURE_ROOT.md">Architectuur</a> ·
+        <a href="./REFERENZBERICHT.md">Referentierapport</a>.</p>
+      </div>
+    </article>
+  </main>
+</body>
+</html>
