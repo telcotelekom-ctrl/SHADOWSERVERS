@@ -10,6 +10,7 @@ import { MenuEngine } from './menu.js';
 import { AudioEngine } from './audio.js';
 import { Director } from './director.js';
 import { UI } from './ui.js';
+import { bindFinalCut } from './final-cut.js';
 
 class VisualRuntime {
   constructor() {
@@ -60,6 +61,7 @@ class VisualRuntime {
 
   boot() {
     console.log('[VisualRuntime] boot → Runtime → Director → Engines');
+    this.finalCut = bindFinalCut(this).render();
     this.director.play();
     this._last = performance.now();
     requestAnimationFrame(this._frame);
