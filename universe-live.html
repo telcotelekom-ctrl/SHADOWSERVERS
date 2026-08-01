@@ -78,11 +78,16 @@
   <script type="module">
     import { bootUSUP } from './shadow/hyperkernel.js';
     import { listLogic } from './shadow/wabe-logic.js';
+    import { createLogoPulseEngine } from './shadow/logo-pulse-engine.js';
+    import { createWabeAnimator, energyOf } from './shadow/wabe-animation.js';
 
     // ---------- Real system boot ----------
     const hk = bootUSUP();
     const system = hk.system();
     const matrix = system.matrix;
+    const animator = createWabeAnimator();
+    const bpm = 62;
+    const logoPulse = createLogoPulseEngine({}, { bpm });
 
     // ---------- Canvas setup (crisp on HiDPI) ----------
     const canvas = document.getElementById('stage');
@@ -237,7 +242,6 @@
       const dt = (now - last) / 1000; last = now;
       const t = now / 1000;
       view.scale += (view.tScale - view.scale) * 0.12;
-
       // Background nebula.
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       const g = ctx.createRadialGradient(W / 2, H * 0.4, 0, W / 2, H * 0.4, Math.max(W, H) * 0.7);
@@ -247,7 +251,7 @@
       ctx.save();
       ctx.translate(view.x, view.y); ctx.scale(view.scale, view.scale);
 
-      const heart = 0.5 + 0.5 * Math.sin(t * (bpm / 60) * Math.PI * 2); // heartbeat 0..1
+      const heart = logoPulse.tick(dt * 1000); // real Logo-Core-Pulse engine, 0..1
 
       // Edges + flowing particles (Quantum Fluid).
       ctx.lineWidth = 1;
@@ -269,7 +273,8 @@
       // Wabe nodes (breathing + flashing + spin on click).
       for (const n of nodes.values()) {
         n.phase += dt * 1.4;
-        const breathe = 1 + 0.16 * Math.sin(n.phase);
+        const nrg = energyOf(n.w); // real derived energy drives amplitude
+        const breathe = 1 + (0.10 + 0.12 * nrg) * Math.sin(n.phase);
         if (n.flash > 0) n.flash = Math.max(0, n.flash - dt * 1.3);
         if (n.flash < 0) n.flash = Math.min(0, n.flash + dt * 1.3);
         if (n.spin > 0) n.spin = Math.max(0, n.spin - dt * 1.6);

@@ -93,6 +93,9 @@
         <button id="btn-evo">🧫 Stufe III — Self-Evolution: 1 Generation</button>
         <button id="btn-evo-run">♾️ Stufe III — Daemon start/stop</button>
         <button id="btn-hdl">🔩 Stufe VI — Synthese → Verilog/VHDL (Hardware)</button>
+        <button id="btn-blueprint">🧩 Blueprint exportieren (JSON)</button>
+        <button id="btn-shape">🔵 3D-Shape exportieren (JSON)</button>
+        <button id="btn-solve">🧠 Self-Solver: Spec lösen</button>
       </div>
     </div>
 
@@ -278,6 +281,44 @@
       catch (e) { $('output').textContent = 'HDL-Fehler: ' + e.message; return; }
       $('output').textContent =
         `🔩 Hardware aus Spec "${hw.spec}"\n\n=== VERILOG ===\n${hw.verilog}\n\n=== VHDL ===\n${hw.vhdl}\n\n=== DIAGRAM (Mermaid) ===\n${hw.diagram}`;
+    });
+
+    // Download helper — browser-native Blob download, no server.
+    function download(filename, text) {
+      const blob = new Blob([text], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = filename; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    // Blueprint-Compiler — whole living system → one portable JSON seed.
+    $('btn-blueprint').addEventListener('click', () => {
+      if (!hk) return alert('Boot eerst de USUP.');
+      const bp = hk.toBlueprint();
+      download('usup-blueprint.json', JSON.stringify(bp, null, 2));
+      $('output').textContent = `🧩 Blueprint exportiert: ${bp.geometry.length} Shapes, ${bp.logic.length} Logik-Funktionen, ${bp.evolution.length} Evolutions-Einträge.`;
+    });
+
+    // Physical-Shaping — living matrix → 3D shape model (CAD/3D-print/CNC).
+    $('btn-shape').addEventListener('click', () => {
+      if (!hk) return alert('Boot eerst de USUP.');
+      const shape = hk.toShape();
+      download('usup-shape.json', JSON.stringify(shape, null, 2));
+      $('output').textContent = `🔵 3D-Shape exportiert: ${shape.length} Körper.\n\n` +
+        shape.slice(0, 6).map((s) => `${s.id} · ${s.shape} r=${s.radius} @(${s.position.x},${s.position.y},${s.position.z})`).join('\n');
+    });
+
+    // Self-Solver — turn the spec into logic and solve it (no eval).
+    $('btn-solve').addEventListener('click', () => {
+      if (!hk) return alert('Boot eerst de USUP.');
+      let spec;
+      try { spec = JSON.parse($('spec').value); }
+      catch (e) { $('output').textContent = 'Spec ist kein gültiges JSON: ' + e.message; return; }
+      const solver = hk.solver();
+      const problem = { ...spec, input: spec.input || {} };
+      const res = solver.solve(problem);
+      $('output').textContent = `🧠 Self-Solver löste "${res.spec}" (Cluster ${res.cluster}):\n\n${JSON.stringify(res.result, null, 2)}`;
     });
   </script>
 </body>
