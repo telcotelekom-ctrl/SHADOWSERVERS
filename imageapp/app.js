@@ -3,6 +3,7 @@ import { VisualObjectEngine } from './visual-object-engine.js';
 import { imageToSemanticSVG } from './image-to-svg.js';
 import { StickerEngine } from './sticker-engine.js';
 import { UserSpace } from './user-space.js';
+import { createImageAppBridge } from './shadow-bridge.js';
 
 const $ = (id) => document.getElementById(id);
 const canvasContainer = $('canvas-container');
@@ -12,15 +13,21 @@ const statusEl = $('status');
 
 const stickerEngine = new StickerEngine();
 const userSpace = new UserSpace();
+const bridge = createImageAppBridge();
 let engine = null;
 let currentSVG = null;
 let currentRegions = { menu: null };
 
 function status(msg) { statusEl.textContent = msg; }
+function matrixLine() {
+  const s = bridge.stats();
+  return `matrix: ${s.wabes} waben · ${s.validated} gevalideerd · ${s.relations} relaties`;
+}
 function renderArchive() {
   const s = userSpace.summary();
   archiveEl.textContent =
-    `apps: ${s.apps} · media: ${s.media} · stickers: ${s.stickers}\n\n` +
+    `apps: ${s.apps} · media: ${s.media} · stickers: ${s.stickers}\n` +
+    matrixLine() + `\n\n` +
     JSON.stringify(userSpace.state, null, 2);
 }
 renderArchive();
@@ -86,14 +93,40 @@ $('image-input').addEventListener('change', async (e) => {
   const actionZone = currentSVG.querySelector('[data-role="action"]');
   currentRegions.menu = menuZone;
 
-  if (menuZone) engine.createMenuItem(menuZone, 'Familie-start', () => { appPreview.textContent = 'Familie-app geopend (voorbeeld).'; });
-  if (contentZone) engine.registerObject(contentZone, 'content-zone', { label: 'Content', onClick: () => { appPreview.textContent = 'Content-zone geactiveerd.'; } });
-  if (stickerZone) engine.registerObject(stickerZone, 'sticker-zone', { label: 'Sticker', onClick: () => makeSticker(stickerZone) });
-  if (actionZone) engine.registerObject(actionZone, 'action', { label: 'Actie', onClick: () => { appPreview.textContent = 'Actie uitgevoerd.'; } });
+  // Register EVERY detected zone as a real wabe in the ShadowOS matrix,
+  // routed through the shadow-server validation pipeline. Clicking a zone
+  // promotes its wabe status to "validated" (simulate → validate → promote).
+  const zoneWabe = new WeakMap();
+  for (const el of currentSVG.querySelectorAll('rect[data-role]')) {
+    const region = {
+      role: el.getAttribute('data-role'),
+      theme: el.getAttribute('data-theme') || 'family',
+      label: el.getAttribute('data-label') || el.getAttribute('data-role'),
+      x: +el.getAttribute('x'), y: +el.getAttribute('y'),
+      w: +el.getAttribute('width'), h: +el.getAttribute('height')
+    };
+    const { id, decision } = bridge.addZone(region);
+    if (id) { zoneWabe.set(el, id); el.setAttribute('data-wabe', id); }
+    else el.setAttribute('data-decision', decision);
+  }
+
+  function activateZone(el, previewText) {
+    const id = zoneWabe.get(el);
+    const res = bridge.activate(id);
+    if (res.ok) el.setAttribute('stroke', '#33ff99');
+    appPreview.textContent = previewText + (res.ok ? ` ✓ wabe gevalideerd` : '');
+    status(matrixLine());
+    renderArchive();
+  }
+
+  if (menuZone) engine.createMenuItem(menuZone, 'Familie-start', () => activateZone(menuZone, 'Familie-app geopend (voorbeeld).'));
+  if (contentZone) engine.registerObject(contentZone, 'content-zone', { label: 'Content', onClick: () => activateZone(contentZone, 'Content-zone geactiveerd.') });
+  if (stickerZone) engine.registerObject(stickerZone, 'sticker-zone', { label: 'Sticker', onClick: () => { activateZone(stickerZone, 'Sticker-zone geactiveerd.'); makeSticker(stickerZone); } });
+  if (actionZone) engine.registerObject(actionZone, 'action', { label: 'Actie', onClick: () => activateZone(actionZone, 'Actie uitgevoerd.') });
 
   userSpace.addMedia({ id: `media-${Date.now()}`, name: file.name, size: file.size, at: Date.now() });
   renderArchive();
-  status(`SVG-oppervlak met ${engine.objects.length} bedienbare objecten.`);
+  status(`SVG-oppervlak met ${engine.objects.length} bedienbare objecten · ${matrixLine()}.`);
 });
 
 function makeSticker(zoneEl) {
