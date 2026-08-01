@@ -1550,7 +1550,16 @@
             ? DEFAULT_PORTS.map((port) => `http://127.0.0.1:${port}`)
             : [window.location.origin];
 
+        // The optional Node backend only exists locally. When the portal is served
+        // from a static/remote host (e.g. GitHub Pages) we must NOT probe 127.0.0.1 —
+        // that only produces endless ERR_CONNECTION_REFUSED noise. In that case the
+        // portal runs purely on the serverless ShadowOS core + offline estimators.
+        const LOCAL_HOSTNAMES = ['localhost', '127.0.0.1', '::1', '[::1]', ''];
+        const IS_LOCAL_CONTEXT = window.location.protocol === 'file:'
+            || LOCAL_HOSTNAMES.includes(window.location.hostname);
+
         let resolvedApiBase = null;
+        let apiBaseProbed = false;
         let portalKernelState = null;
         let portalKernelContext = buildPortalKernelContext({}, {});
         let sphereArchitecture = null;
@@ -1596,7 +1605,15 @@
         }
 
         async function resolveApiBase() {
-            if (resolvedApiBase) return resolvedApiBase;
+            if (apiBaseProbed) return resolvedApiBase;
+            apiBaseProbed = true;
+
+            // Remote/static hosting: no local Node backend exists here. Skip probing
+            // 127.0.0.1 entirely and run in offline mode (null = use local estimators).
+            if (!IS_LOCAL_CONTEXT) {
+                resolvedApiBase = null;
+                return resolvedApiBase;
+            }
 
             const probeTargets = [PRIMARY_ORIGIN, ...LOCAL_SERVER_URLS, FALLBACK_ORIGIN];
             for (const target of probeTargets) {
@@ -1621,7 +1638,8 @@
                 }
             }
 
-            resolvedApiBase = PRIMARY_ORIGIN;
+            // No backend reachable even locally: stay offline instead of hammering 127.0.0.1.
+            resolvedApiBase = null;
             return resolvedApiBase;
         }
 
@@ -1738,6 +1756,9 @@
 
         async function runCalculation(endpoint, payload, fallback, options = {}) {
             const apiBase = await getApiBase();
+            if (!apiBase) {
+                return { success: true, result: fallback(payload), offline: true };
+            }
             try {
                 const response = await fetch(`${apiBase}${endpoint}`, {
                     method: 'POST',
@@ -1763,6 +1784,9 @@
 
         async function runCalculationWithQuery(endpoint, payload, fallback, query) {
             const apiBase = await getApiBase();
+            if (!apiBase) {
+                return { success: true, result: fallback(payload), offline: true };
+            }
             try {
                 const response = await fetch(`${apiBase}${endpoint}${query}`, {
                     method: 'POST',
@@ -1980,6 +2004,7 @@
             localStorage.setItem(applicationStorageKey, JSON.stringify(values));
             try {
                 const apiBase = await getApiBase();
+                if (!apiBase) return;
                 await fetch(`${apiBase}/api/profiles`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -2011,6 +2036,7 @@
 
             try {
                 const apiBase = await getApiBase();
+                if (!apiBase) return null;
                 const response = await fetch(`${apiBase}/api/profiles`);
                 const data = await response.json();
                 if (data && data.success && Array.isArray(data.items) && data.items.length) {
@@ -2133,8 +2159,17 @@
             const updateEl = document.getElementById('companionUpdate');
             if (!connectionEl || !dotEl || !updateEl) return;
 
+            const apiBase = await getApiBase();
+            if (!apiBase) {
+                // Serverless / static hosting: no live Node runtime. Present the
+                // ShadowOS core as the active companion instead of an error.
+                setCompanionStatus(connectionEl, dotEl, updateEl, 'online', 'Serverless');
+                updateEl.textContent = updateEl.dataset.fallback
+                    || 'Shadow Companion läuft serverless über den ShadowOS-Kern im Browser.';
+                return;
+            }
+
             try {
-                const apiBase = await getApiBase();
                 const apiBaseUrl = new URL(apiBase);
                 const companionUpdatesUrl = `${apiBase}/api/companion-updates`;
                 const portfolioFindingsUrl = `${apiBase}/api/portfolio/findings`;
@@ -2215,8 +2250,13 @@
         async function updateShadowStatus() {
             const outputEl = document.getElementById('shadowStatusOutput');
             if (!outputEl) return;
+            const apiBase = await getApiBase();
+            if (!apiBase) {
+                // No Node backend here — report the serverless ShadowOS core status.
+                syncPortalKernelStatus(portalKernelState || {}, buildPortalSummaryFromDom());
+                return;
+            }
             try {
-                const apiBase = await getApiBase();
                 const response = await fetch(`${apiBase}/api/status`, { cache: 'no-store' });
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
