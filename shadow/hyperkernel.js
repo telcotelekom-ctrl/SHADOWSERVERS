@@ -74,6 +74,9 @@ export function createHyperkernel() {
     evolution(opts) { if (!system) throw new Error('Hyperkernel not initialised'); return system.evolution(opts); },
     synthesize(spec) { if (!system) throw new Error('Hyperkernel not initialised'); return system.synthesize(spec); },
     toHardware(spec) { if (!system) throw new Error('Hyperkernel not initialised'); return system.toHardware(spec); },
+    toShape() { if (!system) throw new Error('Hyperkernel not initialised'); return system.toShape(); },
+    toBlueprint() { if (!system) throw new Error('Hyperkernel not initialised'); return system.toBlueprint(); },
+    solver() { if (!system) throw new Error('Hyperkernel not initialised'); return system.solver(); },
     status,
     system() { return system; }
   };

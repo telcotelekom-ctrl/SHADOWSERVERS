@@ -15,6 +15,13 @@ import { createProgramSynthesizer } from './program-synthesis.js';
 import { createWebRTCMesh } from './webrtc-mesh.js';
 import { createEvolutionDaemon } from './evolution-daemon.js';
 import { createHDLBridge } from './hdl-bridge.js';
+import { createWabeAnimator } from './wabe-animation.js';
+import { createShadowVisualizer } from './shadow-visualizer.js';
+import { createQuantumVisualizer } from './quantum-visualizer.js';
+import { createLogoPulseEngine } from './logo-pulse-engine.js';
+import { createSelfSolver } from './self-solver.js';
+import { compileBlueprint } from './blueprint-compiler.js';
+import { exportPhysicalShape } from './physical-shaping.js';
 import { listLogic } from './wabe-logic.js';
 
 // The strict, input-based architecture description (blueprint §1–§9).
@@ -111,6 +118,16 @@ export function createProgramGenerator() {
       evolution(opts) { daemon = daemon || createEvolutionDaemon(compiled, opts); return daemon; },
       // Ultra-Stufe VI: emit synthesised specs as real Verilog/VHDL/netlist.
       toHardware(spec) { return hdl.emit(spec); },
+      // Visual/optical engines — context-driven, wired by vos.html/universe-live.html.
+      animator: createWabeAnimator(),
+      shadowVisualizer: createShadowVisualizer(),
+      quantumVisualizer: createQuantumVisualizer(),
+      logoPulse(ctx, opts) { return createLogoPulseEngine(ctx, opts); },
+      // Export engines: living system → 3D shape model / one portable blueprint.
+      toShape() { return exportPhysicalShape(system.matrix); },
+      toBlueprint() { return compileBlueprint(compiled); },
+      // Self-organizing solver: problem spec → real logic (+ optional deploy).
+      solver() { return createSelfSolver(compiled); },
       status() {
         return {
           code: architecture.root.code,
