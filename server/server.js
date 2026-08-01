@@ -92,6 +92,11 @@ function verifyPassword(password, storedHash) {
   return expected.length === provided.length && crypto.timingSafeEqual(expected, provided);
 }
 
+// True for the old unsalted sha256 format that should be upgraded to scrypt on next login.
+function isLegacyPasswordHash(storedHash) {
+  return typeof storedHash === 'string' && !storedHash.startsWith('scrypt$');
+}
+
 function createToken() {
   return crypto.randomBytes(20).toString('hex');
 }
@@ -106,7 +111,7 @@ function ensureSeedData() {
       name: 'Raymond Demitrio Tel',
       email: 'raymond@serverb.local',
       role: 'admin',
-      passwordHash: hashPassword('serverb2026'),
+      passwordHash: hashPasswordSecure('serverb2026'),
       createdAt: new Date().toISOString()
     });
     saveJson(usersFile, users);
@@ -473,6 +478,12 @@ const server = http.createServer(async (req, res) => {
       if (!user) {
         sendJson(res, { success: false, error: 'Invalid credentials' }, 401);
         return;
+      }
+
+      // Transparently upgrade legacy unsalted sha256 hashes to salted scrypt.
+      if (isLegacyPasswordHash(user.passwordHash)) {
+        user.passwordHash = hashPasswordSecure(body.password || '');
+        saveJson(usersFile, users);
       }
 
       const sessions = loadJson(sessionsFile, []);
