@@ -11,6 +11,7 @@ import { createIdentityCore } from './identity-core.js';
 import { createWorkforce } from './arbeiterinnen.js';
 import { createQuantumFluid } from './quantum-fluid.js';
 import { createVisualOS } from './vos-kernel.js';
+import { createProgramSynthesizer } from './program-synthesis.js';
 import { listLogic } from './wabe-logic.js';
 
 // The strict, input-based architecture description (blueprint §1–§9).
@@ -88,6 +89,7 @@ export function createProgramGenerator() {
 
   // compile(system) → assemble one coherent, callable system object.
   function compile(system, architecture) {
+    const synthesizer = createProgramSynthesizer(system.matrix, system.shadow);
     const compiled = {
       name: architecture.root.name,
       code: architecture.root.code,
@@ -95,6 +97,9 @@ export function createProgramGenerator() {
       // A single entry point that runs a proposal through the Shadow Server.
       run(proposal) { return system.shadow.runProposal(proposal); },
       promote(report) { return system.shadow.promote(report); },
+      // Ultra-Stufe V: build + deploy a brand-new program from a declarative spec.
+      synthesize(spec) { return synthesizer.synthesize(spec); },
+      deploySynthesized(spec, input) { return synthesizer.deploy(spec, input); },
       status() {
         return {
           code: architecture.root.code,

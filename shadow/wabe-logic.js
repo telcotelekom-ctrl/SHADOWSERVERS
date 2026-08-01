@@ -73,11 +73,12 @@ export const wabeLogic = {
 };
 
 export function listLogic() {
-  return Object.entries(wabeLogic).map(([key, def]) => ({ key, label: def.label, cluster: def.cluster, defaults: def.defaults }));
+  return Object.entries({ ...wabeLogic, ...dynamicLogic })
+    .map(([key, def]) => ({ key, label: def.label, cluster: def.cluster, defaults: def.defaults, synthesized: Boolean(def.synthesized) }));
 }
 
 export function runLogic(key, input) {
-  const def = wabeLogic[key];
+  const def = wabeLogic[key] || dynamicLogic[key];
   if (!def) return { ok: false, error: `unknown logic: ${key}` };
   try {
     const result = def.run(input || def.defaults);
@@ -86,4 +87,21 @@ export function runLogic(key, input) {
   } catch (error) {
     return { ok: false, error: String(error && error.message || error) };
   }
+}
+
+// Dynamic registry (Stufe V): synthesized logic functions live here so they join
+// listLogic()/runLogic() exactly like the built-in ones. This is what lets the
+// system build NEW real programs at runtime, not just describe them.
+const dynamicLogic = {};
+
+export function registerLogic(key, def) {
+  if (!key || typeof def?.run !== 'function') return { ok: false, error: 'invalid logic definition' };
+  if (wabeLogic[key] || dynamicLogic[key]) return { ok: false, error: `logic already exists: ${key}` };
+  dynamicLogic[key] = { synthesized: true, cluster: def.cluster || 'GENERATED', label: def.label || key, defaults: def.defaults || {}, run: def.run };
+  return { ok: true, key };
+}
+
+export function unregisterLogic(key) {
+  if (dynamicLogic[key]) { delete dynamicLogic[key]; return { ok: true }; }
+  return { ok: false, error: `not a dynamic logic: ${key}` };
 }

@@ -68,6 +68,17 @@
       <button id="btn-worker">👷 Arbeiterin: collect → structure → validate</button>
     </div>
 
+    <div class="card" style="margin-top:14px">
+      <h2>🧬 Stufe V — Programm-Synthese (das System baut ein neues Programm)</h2>
+      <p class="lead" style="font-size:.86rem">
+        Beschreibe ein Programm deklarativ (Inputs + Formeln). Das System synthetisiert daraus eine
+        <b>echte, ausführbare Funktion</b>, validiert sie im Shadow Server und schaltet sie live —
+        Formeln werden sicher ausgewertet (kein <code>eval</code>).
+      </p>
+      <textarea id="spec" rows="11" style="width:100%;font-family:'Cascadia Code',Consolas,monospace;font-size:.78rem;background:#0b1626;color:#cfe0ff;border:1px solid var(--border);border-radius:8px;padding:10px"></textarea>
+      <button id="btn-synth">⚙️ Synthetisieren &amp; live deployen</button>
+    </div>
+
     <div class="grid">
       <div class="card"><h2>Build-log (Program Generator)</h2><pre id="buildlog">— nog niet gestart —</pre></div>
       <div class="card"><h2>Systeemstatus</h2><div id="status" class="report">— nog niet gestart —</div></div>
@@ -142,6 +153,39 @@
         `Arbeiterin ${worker.name}:\n` +
         worker.journal().map((j) => `[${j.action}] ${JSON.stringify(j.detail)}`).join('\n') +
         `\n\nValidatie: ${v.ok ? 'OK' : 'incompleet'}`;
+      renderStatus();
+    });
+
+    // Stufe V — a ready-to-run example spec: a break-even calculator.
+    const EXAMPLE_SPEC = {
+      name: 'breakEven',
+      cluster: 'BEDRIJF',
+      label: 'Break-Even Rechner (synthetisiert)',
+      inputs: [
+        { name: 'fixkosten', default: 20000 },
+        { name: 'preis', default: 120 },
+        { name: 'stueckkosten', default: 45 }
+      ],
+      outputs: [
+        { name: 'deckungsbeitrag', expr: 'preis - stueckkosten' },
+        { name: 'break_even_menge', expr: 'fixkosten / (preis - stueckkosten)' },
+        { name: 'break_even_umsatz', expr: 'preis * (fixkosten / (preis - stueckkosten))' }
+      ]
+    };
+    $('spec').value = JSON.stringify(EXAMPLE_SPEC, null, 2);
+
+    $('btn-synth').addEventListener('click', () => {
+      if (!hk) return alert('Boot eerst de USUP.');
+      let spec;
+      try { spec = JSON.parse($('spec').value); }
+      catch (e) { $('output').textContent = 'Spec ist kein gültiges JSON: ' + e.message; return; }
+      const res = hk.system().deploySynthesized(spec);
+      if (!res.ok) { $('output').textContent = 'Synthese fehlgeschlagen: ' + res.error; return; }
+      let out = `🧬 Programm "${res.program.key}" synthetisiert in Cluster ${res.program.cluster}.\n`;
+      out += `Decision: ${res.report.decision}\n\n`;
+      out += res.report.effects.join('\n');
+      if (res.promotion && res.promotion.ok) out += `\n\n→ live geschaltet (wabe ${res.promotion.created}). Erscheint jetzt in VOS #f-logic.`;
+      $('output').textContent = out;
       renderStatus();
     });
   </script>
