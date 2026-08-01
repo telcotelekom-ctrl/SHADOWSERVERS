@@ -66,6 +66,8 @@
       <button id="btn-integrity">🛡️ enforce_integrity()</button>
       <button id="btn-compute">∑ validate_updates() — reken Investor Calculator door</button>
       <button id="btn-worker">👷 Arbeiterin: collect → structure → validate</button>
+      <button id="btn-save">💾 Matrix speichern</button>
+      <button id="btn-reset">🗑️ Persistenz zurücksetzen</button>
     </div>
 
     <div class="card" style="margin-top:14px">
@@ -90,8 +92,10 @@
   <script type="module">
     import { createHyperkernel } from './shadow/hyperkernel.js';
     import { createArbeiterin } from './shadow/arbeiterinnen.js';
+    import { createMatrixPersistence } from './shadow/persistence.js';
 
     let hk = null;
+    let persistence = null;
 
     const $ = (id) => document.getElementById(id);
 
@@ -109,13 +113,19 @@
       ` : '— nog niet gestart —';
     }
 
-    $('btn-boot').addEventListener('click', () => {
+    $('btn-boot').addEventListener('click', async () => {
       hk = createHyperkernel();
       hk.init();
       const sys = hk.system();
+      // Stufe II: durable persistence — restore prior state, then auto-save on change.
+      persistence = createMatrixPersistence(sys.matrix);
+      const restored = await persistence.restore();
+      persistence.enableAutoSave();
       $('buildlog').textContent = sys.buildLog.map((e) => `[${e.step}] ${e.detail}`).join('\n');
       renderStatus();
-      $('output').textContent = '✅ USUP gebootst. Hyperkernel actief, alle subsystemen live.';
+      $('output').textContent = restored
+        ? `✅ USUP gebootst + Matrix wiederhergestellt (${restored.count} Waben, gespeichert ${restored.savedAt}). Backend: ${persistence.backend}.`
+        : `✅ USUP gebootst. Kein gespeicherter Zustand — frische Matrix. Backend: ${persistence.backend}. Auto-Save aktiv.`;
     });
 
     $('btn-integrity').addEventListener('click', () => {
@@ -187,6 +197,18 @@
       if (res.promotion && res.promotion.ok) out += `\n\n→ live geschaltet (wabe ${res.promotion.created}). Erscheint jetzt in VOS #f-logic.`;
       $('output').textContent = out;
       renderStatus();
+    });
+
+    $('btn-save').addEventListener('click', async () => {
+      if (!persistence) return alert('Boot eerst de USUP.');
+      const at = await persistence.save();
+      $('output').textContent = `💾 Matrix gespeichert (${persistence.backend}) um ${at}.`;
+    });
+
+    $('btn-reset').addEventListener('click', async () => {
+      if (!persistence) return alert('Boot eerst de USUP.');
+      await persistence.clear();
+      $('output').textContent = '🗑️ Persistenz gelöscht. Beim nächsten Boot startet eine frische Matrix.';
     });
   </script>
 </body>

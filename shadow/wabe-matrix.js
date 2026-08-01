@@ -124,19 +124,40 @@ export function createWabeMatrix(seed = {}) {
     return () => listeners.delete(fn);
   }
 
+  // Full state export (incl. content + log) for durable persistence.
+  function serialize() {
+    return { cells: [...cells.values()], relations: [...relations], counter };
+  }
+
+  // Rebuild the matrix from a serialize() payload (used on restore from IndexedDB).
+  function hydrate(data) {
+    if (!data || !Array.isArray(data.cells)) return { ok: false, reason: 'no data' };
+    cells.clear();
+    relations.length = 0;
+    for (const c of data.cells) cells.set(c.id, c);
+    for (const r of data.relations || []) relations.push(r);
+    if (Number.isFinite(data.counter)) counter = Math.max(counter, data.counter);
+    emit({ kind: 'matrix:hydrate', count: cells.size });
+    return { ok: true, count: cells.size };
+  }
+
   // Seed the existing application suite as wabe-clusters. Nothing is overwritten —
-  // each existing program becomes a validated module wabe.
-  const defaultClusters = seed.clusters || {
-    INTERACTIE: ['Spidermouse'],
-    BEDRIJF: ['Business Suite', 'Business Process Manager'],
-    HR: ['Sollicitatieportaal', 'HR Intake Engine'],
-    INVESTERING: ['Investor Calculator', 'Investment Scenario Engine'],
-    PARTICIPATIE: ['Financiële Bedelingen', 'Financial Distribution Engine'],
-    FISCAAL: ['Fiscale Calculator', 'Fiscal Logic Core'],
-    REGISTRATIE: ['Formal Registry', 'Registry Validator', 'Participation Engine']
-  };
-  for (const [name, apps] of Object.entries(defaultClusters)) {
-    ensureCluster(name, apps);
+  // each existing program becomes a validated module wabe. Skipped when restoring.
+  if (!seed.restore) {
+    const defaultClusters = seed.clusters || {
+      INTERACTIE: ['Spidermouse'],
+      BEDRIJF: ['Business Suite', 'Business Process Manager'],
+      HR: ['Sollicitatieportaal', 'HR Intake Engine'],
+      INVESTERING: ['Investor Calculator', 'Investment Scenario Engine'],
+      PARTICIPATIE: ['Financiële Bedelingen', 'Financial Distribution Engine'],
+      FISCAAL: ['Fiscale Calculator', 'Fiscal Logic Core'],
+      REGISTRATIE: ['Formal Registry', 'Registry Validator', 'Participation Engine']
+    };
+    for (const [name, apps] of Object.entries(defaultClusters)) {
+      ensureCluster(name, apps);
+    }
+  } else {
+    hydrate(seed.restore);
   }
 
   return {
@@ -152,6 +173,8 @@ export function createWabeMatrix(seed = {}) {
     list() { return [...cells.values()]; },
     relations() { return [...relations]; },
     snapshot,
+    serialize,
+    hydrate,
     toVector,
     subscribe
   };
