@@ -337,6 +337,15 @@ function minApp(id){
   var w = document.getElementById("win-"+id);
   if (w){ w.classList.remove("open"); setTaskActive(null); }
 }
+/* Interne Projektseiten IMMER innerhalb des OS oeffnen (kein Verlassen von VOS OS) */
+var __vosBrowsePending=null;
+function vosBrowse(url){
+  var existed=!!document.getElementById("win-browser");
+  __vosBrowsePending=url;
+  openApp("browser");
+  if(existed){ var f=document.getElementById("brFrame"); if(f)f.src=url; var u=document.getElementById("brUrl"); if(u)u.value=url; }
+}
+window.vosBrowse=vosBrowse;
 
 /* ---------- Taskbar ---------- */
 function addTask(app){
@@ -789,7 +798,7 @@ RENDER.manifest = function(){ return ''+
   '<p><b>DE —</b> Wir sind jene, die denken. Nicht aus Gewohnheit, sondern aus Überzeugung. Nicht aus Angst, sondern aus Freiheit. Wir lassen uns nicht von jenen führen, die nicht denken. Ein wacher Geist prüft, bevor er glaubt — und glaubt, ohne aufzuhören zu prüfen.</p>'+
   '<p><b>EN —</b> We are those who think. Not out of habit, but out of conviction. Not out of fear, but out of freedom. We do not let ourselves be led by those who do not think. A wakeful mind examines before it believes — and believes without ceasing to examine.</p>'+
   '<p style="text-align:right;color:#000080"><b>— Raymond Demitrio Tel</b></p></div>'+
-  '<div class="row"><a class="btn" href="manifest.html" target="_blank" rel="noopener">📖 Volles Manifest &amp; lebendige Diskussion</a></div>';
+  '<div class="row"><button class="btn" onclick="vosBrowse(\'manifest.html\')">📖 Volles Manifest &amp; lebendige Diskussion</button></div>';
 };
 
 /* ---- MEMORIAL ---- */
@@ -801,7 +810,7 @@ RENDER.memorial = function(){ return ''+
     '<div id="memNames" style="font-size:.82rem;color:#f4d67a;margin:8px 0"></div></div>'+
   '<label class="lb">Einen Namen zum Gedenken hinzufügen</label>'+
   '<div class="row"><input id="memIn" class="field" placeholder="Name" style="flex:1"><button class="btn pri" id="memAdd">🕊️ Gedenken</button></div>'+
-  '<div class="row"><a class="btn" href="manifest.html" target="_blank" rel="noopener">🕊️ Memorial-Seite (Schrein) öffnen</a></div>';
+  '<div class="row"><button class="btn" onclick="vosBrowse(\'manifest.html\')">🕊️ Memorial-Seite (Schrein) öffnen</button></div>';
 };
 INIT.memorial = function(){
   var KEY="vos.memorial", $=function(id){return document.getElementById(id);};
@@ -1240,7 +1249,7 @@ INIT.browser = function(){
   $("brGo").onclick=function(){ go($("brUrl").value.trim()); };
   $("brTab").onclick=function(){ var u=$("brUrl").value.trim(); if(u)window.open(u,"_blank","noopener"); };
   $("brLinks").querySelectorAll("button").forEach(function(b){ b.onclick=function(){ go(b.dataset.u); }; });
-  go("index.html");
+  go(__vosBrowsePending||"index.html"); __vosBrowsePending=null;
 };
 
 /* ---- ÜBER ---- */
@@ -1252,7 +1261,7 @@ RENDER.about = function(){ return ''+
   'Alle Werkzeuge laufen lokal im Browser.</p>'+
   '<p style="font-size:.8rem">© Raymond Demitrio Tel · <b>TTT-SYSTEMS</b><br>'+
   'TEL1.NL · DigitalNotar.in · GentlyOverdone.com</p>'+
-  '<p><a href="index.html">← Zurück zum Portal</a> · <a href="manifest.html">Manifest &amp; Diskussion</a></p>'+
+  '<p><button class="btn" onclick="vosBrowse(\'index.html\')">🌐 Portal im Fenster</button> <button class="btn" onclick="vosBrowse(\'manifest.html\')">📜 Manifest &amp; Diskussion</button></p>'+
   '</div>';
 };
 
@@ -1662,8 +1671,8 @@ function qrToCanvas(text, canvas, scale){
   });
   var sep=document.createElement("div"); sep.className="smsep"; si.appendChild(sep);
   var back=document.createElement("div"); back.className="smi";
-  back.innerHTML='<span class="em">🏠</span> Zurück zum Portal';
-  back.onclick=function(){ location.href="index.html"; };
+  back.innerHTML='<span class="em">�</span> Portal im Fenster';
+  back.onclick=function(){ vosBrowse("index.html"); toggleStart(false); };
   si.appendChild(back);
 })();
 
