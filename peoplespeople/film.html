@@ -86,6 +86,12 @@
   #seekFill{ position:absolute; left:0; top:0; bottom:0; width:0; border-radius:6px;
     background:linear-gradient(90deg,#00a4ef,#39c8ff,#ffcf5c); }
   #time{ font-variant-numeric:tabular-nums; font-size:.85rem; color:#cfe3ff; min-width:82px; text-align:right; }
+  #vol{ -webkit-appearance:none; appearance:none; width:110px; height:6px; border-radius:6px; cursor:pointer;
+    background:linear-gradient(90deg,#39c8ff var(--vp,60%), rgba(255,255,255,.18) var(--vp,60%)); }
+  #vol::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%;
+    background:#fff; box-shadow:0 0 8px rgba(57,200,255,.8); cursor:pointer; }
+  #vol::-moz-range-thumb{ width:16px; height:16px; border:none; border-radius:50%; background:#fff; box-shadow:0 0 8px rgba(57,200,255,.8); cursor:pointer; }
+  #volPct{ font-variant-numeric:tabular-nums; font-size:.78rem; color:#9fb3cc; min-width:34px; text-align:right; }
   .titlebug{ position:absolute; top:calc(8vh + 14px); left:24px; z-index:30; font-size:.78rem; letter-spacing:.28em;
     text-transform:uppercase; color:rgba(255,255,255,.55); opacity:0; transition:opacity .6s; }
   #stage.playing .titlebug{ opacity:1; }
@@ -107,8 +113,10 @@
     <button id="btnSkip" title="Nächste Szene">⏭</button>
     <div id="seek"><div id="seekFill"></div></div>
     <span id="time">0:00 / 0:00</span>
-    <button id="btnMute" title="Ton an/aus">🔊</button>
-    <button id="btnFull" title="Vollbild">⛶</button>
+    <button id="btnMute" title="Ton an/aus (m)">🔊</button>
+    <input id="vol" type="range" min="0" max="100" value="60" title="Lautstärke (↑/↓)" aria-label="Lautstärke">
+    <span id="volPct">60%</span>
+    <button id="btnFull" title="Vollbild (f)">⛛</button>
   </div>
 
   <div id="start">
@@ -199,6 +207,7 @@
   /* ---------------- AUDIO ENGINE ---------------- */
   var AE=(function(){
     var ctx,master,padGain,arpGain,padOsc=[],padFilter,lfo,arpTimer,started=false,muted=false;
+    var vol=parseFloat(localStorage.getItem("pp_vol")); if(isNaN(vol)) vol=0.6;
     var CHORDS={
       drone:[110,164.81], Am:[220,261.63,329.63], F:[174.61,220,261.63],
       C:[261.63,329.63,392], G:[196,246.94,293.66], Emin:[164.81,246.94,329.63],
@@ -219,7 +228,7 @@
         var g=ctx.createGain(); g.gain.value=i<3?0.25:0; o.connect(g); g.connect(padFilter);
         o.frequency.value=current[i]||current[0]; o.detune.value=(i-1.5)*6; o.start(); padOsc.push({o:o,g:g}); }
       arpGain=ctx.createGain(); arpGain.gain.value=0.0; arpGain.connect(master);
-      master.gain.linearRampToValueAtTime(0.9, ctx.currentTime+2);
+      master.gain.linearRampToValueAtTime(muted?0:vol, ctx.currentTime+2);
       arpTimer=setInterval(arpStep, 260);
     }
     function setChord(name){
@@ -260,7 +269,10 @@
     return {
       init:init, setChord:setChord, hit:hit, whoosh:whoosh, swell:swell,
       suspend:function(){ if(ctx)ctx.suspend(); }, resume:function(){ if(ctx)ctx.resume(); },
-      mute:function(m){ muted=m; if(master&&ctx) master.gain.setTargetAtTime(m?0:0.9, ctx.currentTime, 0.2); }
+      mute:function(m){ muted=m; if(master&&ctx) master.gain.setTargetAtTime(m?0:vol, ctx.currentTime, 0.2); },
+      setVolume:function(v){ vol=Math.max(0,Math.min(1,v)); localStorage.setItem("pp_vol",vol);
+        if(vol>0) muted=false; if(master&&ctx) master.gain.setTargetAtTime(muted?0:vol, ctx.currentTime, 0.12); },
+      getVolume:function(){ return vol; }, isMuted:function(){ return muted; }
     };
   })();
 
@@ -340,7 +352,15 @@
   $("#btnPlay").onclick=function(){ if(playing) pause(); else play(); };
   $("#btnRestart").onclick=function(){ elapsed=0; ended=false; lastScene=-1; play(); };
   $("#btnSkip").onclick=function(){ var i=currentIndex(elapsed); if(i<SCENES.length-1){ elapsed=SCENES[i+1].start+0.01; render(elapsed); } };
-  $("#btnMute").onclick=function(){ var m=this.textContent==="🔊"; AE.mute(m); this.textContent=m?"🔇":"🔊"; };
+  var volEl=$("#vol"), volPct=$("#volPct");
+  function syncVol(v){ v=Math.max(0,Math.min(1,v)); volEl.value=Math.round(v*100);
+    volEl.style.setProperty("--vp",(v*100)+"%"); volPct.textContent=Math.round(v*100)+"%";
+    $("#btnMute").textContent=(v===0||AE.isMuted())?"🔇":"🔊"; }
+  volEl.addEventListener("input", function(){ var v=this.value/100; AE.setVolume(v); syncVol(v); });
+  syncVol(AE.getVolume());
+  $("#btnMute").onclick=function(){ var audible=!AE.isMuted()&&AE.getVolume()>0;
+    if(audible){ AE.mute(true); } else { AE.mute(false); if(AE.getVolume()===0) AE.setVolume(0.6); }
+    syncVol(AE.getVolume()); };
   $("#btnFull").onclick=function(){ if(!document.fullscreenElement) stage.requestFullscreen&&stage.requestFullscreen(); else document.exitFullscreen(); };
   $("#seek").onclick=function(e){ var r=this.getBoundingClientRect(); elapsed=Math.min(TOTAL,Math.max(0,(e.clientX-r.left)/r.width*TOTAL)); ended=false; lastScene=-1; render(elapsed); if(!playing) play(); };
 
@@ -355,6 +375,8 @@
     else if(e.key==="f"){ $("#btnFull").click(); }
     else if(e.key==="m"){ $("#btnMute").click(); }
     else if(e.key==="ArrowRight"){ $("#btnSkip").click(); }
+    else if(e.key==="ArrowUp"){ e.preventDefault(); var vu=Math.min(1,AE.getVolume()+0.05); AE.setVolume(vu); syncVol(vu); }
+    else if(e.key==="ArrowDown"){ e.preventDefault(); var vd=Math.max(0,AE.getVolume()-0.05); AE.setVolume(vd); syncVol(vd); }
   });
 
   /* ---------------- start ---------------- */
