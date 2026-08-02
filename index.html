@@ -2422,8 +2422,13 @@
         }
 
         if (sloganPopup && sloganClose) {
+            let userGestured = false;
+            const markGesture = () => { userGestured = true; };
+            window.addEventListener('pointerdown', markGesture, { once: true });
+            window.addEventListener('keydown', markGesture, { once: true });
             const openPopup = () => {
                 sloganPopup.classList.add('visible');
+                if (!userGestured) return; // Autoplay policy: only chime after a user gesture.
                 try {
                     const ctx = new (window.AudioContext || window.webkitAudioContext)();
                     const osc = ctx.createOscillator();
