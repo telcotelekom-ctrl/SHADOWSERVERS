@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEOPLE'S PEOPLE — Ein Film · Where do you want to go today?</title>
+<style>
+  :root{ --ink:#eef4ff; --gold:#ffcf5c; --accent:#39c8ff; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; background:#000; overflow:hidden; font-family:"Segoe UI",Tahoma,system-ui,sans-serif; color:var(--ink); }
+
+  #stage{ position:fixed; inset:0; background:#000; overflow:hidden; cursor:none; }
+  #stage.ui-on{ cursor:default; }
+
+  /* ---- scene layers ---- */
+  .scene{ position:absolute; inset:0; opacity:0; will-change:opacity; }
+  .scene .img{ position:absolute; inset:-4%; background-size:cover; background-position:center;
+    will-change:transform; transform-origin:center; }
+  .scene.card{ display:flex; align-items:center; justify-content:center; text-align:center; }
+
+  /* ---- cinematic overlays ---- */
+  #vignette{ position:absolute; inset:0; pointer-events:none; z-index:20;
+    background:radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0,0,0,.72) 100%); }
+  #grain{ position:absolute; inset:0; pointer-events:none; z-index:21; opacity:.06; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); }
+  .bar{ position:absolute; left:0; right:0; height:8vh; background:#000; z-index:25; pointer-events:none;
+    transition:height .8s ease; }
+  #barTop{ top:0; } #barBottom{ bottom:0; }
+  #stage.wide .bar{ height:11vh; }
+
+  /* ---- captions ---- */
+  #caption{ position:absolute; left:0; right:0; bottom:14vh; z-index:30; text-align:center;
+    padding:0 8vw; opacity:0; transition:opacity .8s ease, transform .8s ease; transform:translateY(16px);
+    text-shadow:0 3px 24px rgba(0,0,0,.9); pointer-events:none; }
+  #caption.show{ opacity:1; transform:translateY(0); }
+  #caption .big{ font-size:clamp(1.4rem,3.6vw,2.8rem); font-weight:800; letter-spacing:.5px; }
+  #caption .small{ font-size:clamp(.9rem,1.8vw,1.25rem); color:#cfe3ff; margin-top:.4em; font-weight:500; }
+
+  /* ---- card text ---- */
+  .card .inner{ padding:0 8vw; opacity:0; transform:translateY(20px) scale(.98);
+    transition:opacity 1s ease, transform 1.4s cubic-bezier(.2,.7,.2,1); }
+  .scene.card.lit .inner{ opacity:1; transform:translateY(0) scale(1); }
+  .kicker{ text-transform:uppercase; letter-spacing:.42em; font-size:clamp(.7rem,1.4vw,1rem); color:var(--accent); }
+  .title{ font-size:clamp(2.4rem,8vw,6rem); font-weight:900; line-height:.98; margin:.18em 0;
+    background:linear-gradient(90deg,#ffffff,#8fd8ff 60%,#ffcf5c); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .sub{ font-size:clamp(1rem,2.4vw,1.6rem); color:#cfe3ff; font-weight:500; }
+  .slogan{ font-size:clamp(1.8rem,6.4vw,4.6rem); font-weight:800; line-height:1.05;
+    background:linear-gradient(90deg,#39c8ff,#ffffff,#ffcf5c); -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:0 0 60px rgba(57,200,255,.25); }
+  .msft{ display:inline-flex; gap:4px; margin-bottom:1.1em; }
+  .msft span{ width:26px; height:26px; border-radius:4px; }
+  .msft .r{background:#f25022}.msft .g{background:#7fba00}.msft .b{background:#00a4ef}.msft .y{background:#ffb900}
+  .credit{ margin-top:1.3em; font-size:clamp(.8rem,1.6vw,1.05rem); color:#9fb3cc; letter-spacing:.05em; }
+
+  /* logo orb for ident */
+  .orb{ width:min(30vw,180px); height:min(30vw,180px); margin:0 auto 26px; border-radius:50%;
+    background:conic-gradient(#f25022,#7fba00,#00a4ef,#ffb900,#f25022);
+    filter:blur(.3px); animation:spin 8s linear infinite;
+    box-shadow:0 0 70px rgba(0,164,239,.5), inset 0 0 40px rgba(0,0,0,.4); position:relative; }
+  .orb::after{ content:""; position:absolute; inset:22%; border-radius:50%;
+    background:radial-gradient(circle at 40% 35%, #fff, #0a0f1a 75%); box-shadow:0 0 30px rgba(255,255,255,.4); }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  /* ---- start overlay ---- */
+  #start{ position:absolute; inset:0; z-index:60; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:22px; background:radial-gradient(90% 70% at 50% 40%, #0b1626, #000); text-align:center; padding:6vw; }
+  #start h1{ font-size:clamp(2rem,7vw,4.6rem); font-weight:900;
+    background:linear-gradient(90deg,#fff,#8fd8ff,#ffcf5c); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  #start p{ color:#a9c0dd; max-width:560px; }
+  #playBtn{ margin-top:8px; padding:16px 40px; border-radius:999px; border:1px solid rgba(255,255,255,.25);
+    background:linear-gradient(90deg,#00a4ef,#39c8ff); color:#00121f; font-weight:800; font-size:1.15rem;
+    cursor:pointer; box-shadow:0 12px 40px rgba(0,164,239,.4); transition:transform .2s; }
+  #playBtn:hover{ transform:translateY(-2px) scale(1.03); }
+  #start .hint{ font-size:.82rem; color:#6f88a6; }
+  #start.hidden{ opacity:0; pointer-events:none; transition:opacity .8s ease; }
+
+  /* ---- controls ---- */
+  #controls{ position:absolute; left:0; right:0; bottom:0; z-index:50; padding:14px 20px 16px;
+    display:flex; align-items:center; gap:14px; opacity:0; transition:opacity .4s ease;
+    background:linear-gradient(transparent, rgba(0,0,0,.7)); }
+  #stage.ui-on #controls{ opacity:1; }
+  #controls button{ background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); color:#fff;
+    width:42px; height:42px; border-radius:10px; font-size:1.05rem; cursor:pointer; transition:background .2s; }
+  #controls button:hover{ background:rgba(255,255,255,.22); }
+  #seek{ flex:1; height:6px; border-radius:6px; background:rgba(255,255,255,.18); position:relative; cursor:pointer; }
+  #seekFill{ position:absolute; left:0; top:0; bottom:0; width:0; border-radius:6px;
+    background:linear-gradient(90deg,#00a4ef,#39c8ff,#ffcf5c); }
+  #time{ font-variant-numeric:tabular-nums; font-size:.85rem; color:#cfe3ff; min-width:82px; text-align:right; }
+  .titlebug{ position:absolute; top:calc(8vh + 14px); left:24px; z-index:30; font-size:.78rem; letter-spacing:.28em;
+    text-transform:uppercase; color:rgba(255,255,255,.55); opacity:0; transition:opacity .6s; }
+  #stage.playing .titlebug{ opacity:1; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="scenes"></div>
+  <div id="vignette"></div>
+  <div id="grain"></div>
+  <div class="bar" id="barTop"></div>
+  <div class="bar" id="barBottom"></div>
+  <div class="titlebug">People's People · TTT-SYSTEMS</div>
+  <div id="caption"><div class="big"></div><div class="small"></div></div>
+
+  <div id="controls">
+    <button id="btnPlay" title="Play/Pause">⏸</button>
+    <button id="btnRestart" title="Von vorn">⟲</button>
+    <button id="btnSkip" title="Nächste Szene">⏭</button>
+    <div id="seek"><div id="seekFill"></div></div>
+    <span id="time">0:00 / 0:00</span>
+    <button id="btnMute" title="Ton an/aus">🔊</button>
+    <button id="btnFull" title="Vollbild">⛶</button>
+  </div>
+
+  <div id="start">
+    <div class="orb"></div>
+    <h1>PEOPLE'S PEOPLE</h1>
+    <p>Ein freihändiger Blockbuster in einer langen Einstellung — über eine vernetzte Welt, ihre Giganten und den Menschen darin. Mit Musik &amp; Klang.</p>
+    <button id="playBtn">► Film starten</button>
+    <div class="hint">Ton empfohlen · Klick startet Bild und Musik</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(s){return document.querySelector(s);};
+  var stage=$("#stage"), scenesEl=$("#scenes"), capEl=$("#caption"),
+      capBig=capEl.querySelector(".big"), capSmall=capEl.querySelector(".small");
+
+  /* ---------------- SCENES (das Drehbuch) ---------------- */
+  var FADE=1.1; // crossfade seconds
+  var SCENES=[
+    { type:"card", dur:3.0, chord:"drone", html:
+      '<div class="inner"><div class="orb" style="animation-duration:12s"></div>'+
+      '<div class="kicker">TTT-SYSTEMS · TEL1.NL</div>'+
+      '<div class="sub" style="margin-top:.6em">präsentiert</div></div>' },
+
+    { type:"card", dur:3.4, chord:"Am", html:
+      '<div class="inner"><div class="kicker">Ein Film in einer langen Einstellung</div>'+
+      '<div class="title">PEOPLE\'S<br>PEOPLE</div>'+
+      '<div class="sub">Eine Welt. Unendlich verbunden.</div></div>' },
+
+    { type:"img", dur:8.2, chord:"F", src:"world.png", ken:"in",
+      cap:["Eine Welt.", "Menschen, die über Grenzen hinweg zusammen denken."] },
+
+    { type:"img", dur:7.4, chord:"C", src:"global-collaboration-diverse-team-vector-illustration_1029473-117370.avif", ken:"left",
+      cap:["People\u2019s People.", "Vielfalt ist keine Idee — sie ist das Team."] },
+
+    { type:"img", dur:8.6, chord:"G", src:"754936280_122179442612822590_5608972486455485806_n.jpg", ken:"inSlow",
+      cap:["Die Netze der Giganten.", "Facebook · Microsoft · OpenAI — verwoben in einem Gewebe."] },
+
+    { type:"img", dur:7.6, chord:"Am", src:"data-cleaning-process-steps.jpg", ken:"rot",
+      cap:["Aus Chaos wird Klarheit.", "Sieben Schritte — der Kreislauf sauberer Daten."] },
+
+    { type:"img", dur:6.6, chord:"C", src:"avatar_locanto_1_72198854.webp", ken:"inPunch",
+      cap:["Ein Funke Glück.", "In jedem System, in jedem Menschen."] },
+
+    { type:"card", dur:6.2, chord:"Emin", html:
+      '<div class="inner"><div class="msft"><span class="r"></span><span class="g"></span><span class="b"></span><span class="y"></span></div>'+
+      '<div class="slogan">Where do you want<br>to go today?</div>'+
+      '<div class="sub" style="margin-top:1em">Der Weg beginnt mit einer Frage.</div></div>' },
+
+    { type:"card", dur:5.4, chord:"Cbig", html:
+      '<div class="inner"><div class="title" style="font-size:clamp(1.8rem,6vw,4rem)">PEOPLE\'S PEOPLE</div>'+
+      '<div class="sub">Regie, Schnitt &amp; Klang · Visual Operating System</div>'+
+      '<div class="credit">© Raymond Demitrio Tel · TTT-SYSTEMS<br>TEL1.NL · DigitalNotar.in · GentlyOverdone.com</div></div>' }
+  ];
+
+  // cumulative start times
+  var TOTAL=0;
+  SCENES.forEach(function(s){ s.start=TOTAL; TOTAL+=s.dur; });
+
+  // Ken-Burns transforms {from, to} as [scale, x%, y%]
+  var KEN={
+    in:      [[1.05,0,0],[1.28,0,-2]],
+    inSlow:  [[1.08,-3,-2],[1.24,3,2]],
+    inPunch: [[1.02,0,0],[1.35,0,0]],
+    left:    [[1.22,6,0],[1.22,-6,0]],
+    rot:     [[1.10,0,3],[1.24,0,-3]]
+  };
+
+  /* ---------------- build DOM ---------------- */
+  SCENES.forEach(function(s,i){
+    var d=document.createElement("div");
+    d.className="scene"+(s.type==="card"?" card":"");
+    if(s.type==="img"){
+      var im=document.createElement("div"); im.className="img";
+      im.style.backgroundImage="url('"+s.src.replace(/'/g,"%27")+"')";
+      d.appendChild(im); s._img=im;
+    } else {
+      d.innerHTML=s.html;
+    }
+    scenesEl.appendChild(d); s._el=d;
+  });
+
+  function lerp(a,b,t){ return a+(b-a)*t; }
+  function ease(t){ return t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
+
+  /* ---------------- AUDIO ENGINE ---------------- */
+  var AE=(function(){
+    var ctx,master,padGain,arpGain,padOsc=[],padFilter,lfo,arpTimer,started=false,muted=false;
+    var CHORDS={
+      drone:[110,164.81], Am:[220,261.63,329.63], F:[174.61,220,261.63],
+      C:[261.63,329.63,392], G:[196,246.94,293.66], Emin:[164.81,246.94,329.63],
+      Cbig:[130.81,196,261.63,329.63]
+    };
+    var current=CHORDS.drone, arpIdx=0;
+    function init(){
+      if(started) return; started=true;
+      ctx=new (window.AudioContext||window.webkitAudioContext)();
+      master=ctx.createGain(); master.gain.value=0.0;
+      var comp=ctx.createDynamicsCompressor(); comp.threshold.value=-18; comp.ratio.value=4;
+      master.connect(comp); comp.connect(ctx.destination);
+      padFilter=ctx.createBiquadFilter(); padFilter.type="lowpass"; padFilter.frequency.value=900; padFilter.Q.value=2;
+      padGain=ctx.createGain(); padGain.gain.value=0.16; padFilter.connect(padGain); padGain.connect(master);
+      lfo=ctx.createOscillator(); var lg=ctx.createGain(); lg.gain.value=380; lfo.frequency.value=0.08;
+      lfo.connect(lg); lg.connect(padFilter.frequency); lfo.start();
+      for(var i=0;i<4;i++){ var o=ctx.createOscillator(); o.type=i%2?"sine":"sawtooth";
+        var g=ctx.createGain(); g.gain.value=i<3?0.25:0; o.connect(g); g.connect(padFilter);
+        o.frequency.value=current[i]||current[0]; o.detune.value=(i-1.5)*6; o.start(); padOsc.push({o:o,g:g}); }
+      arpGain=ctx.createGain(); arpGain.gain.value=0.0; arpGain.connect(master);
+      master.gain.linearRampToValueAtTime(0.9, ctx.currentTime+2);
+      arpTimer=setInterval(arpStep, 260);
+    }
+    function setChord(name){
+      if(!started||!CHORDS[name]) return; current=CHORDS[name];
+      var t=ctx.currentTime;
+      padOsc.forEach(function(p,i){
+        var f=current[i]!=null?current[i]:current[current.length-1];
+        p.o.frequency.setTargetAtTime(f, t, 0.4);
+        p.g.gain.setTargetAtTime(current[i]!=null?0.25:0.0, t, 0.3);
+      });
+      arpGain.gain.setTargetAtTime(name==="drone"?0.0:0.14, t, 0.5);
+    }
+    function arpStep(){
+      if(!started||muted) return; var t=ctx.currentTime;
+      var base=current[arpIdx%current.length]*2; arpIdx++;
+      var o=ctx.createOscillator(); o.type="triangle"; o.frequency.value=base;
+      var g=ctx.createGain(); g.gain.setValueAtTime(0.0001,t);
+      g.gain.exponentialRampToValueAtTime(0.5,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.9);
+      o.connect(g); g.connect(arpGain); o.start(t); o.stop(t+0.95);
+    }
+    function hit(){ if(!started) return; var t=ctx.currentTime;
+      var o=ctx.createOscillator(); o.type="sine"; o.frequency.setValueAtTime(130,t);
+      o.frequency.exponentialRampToValueAtTime(38,t+0.5);
+      var g=ctx.createGain(); g.gain.setValueAtTime(0.9,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.6);
+      o.connect(g); g.connect(master); o.start(t); o.stop(t+0.65); }
+    function whoosh(){ if(!started) return; var t=ctx.currentTime, dur=0.9;
+      var n=ctx.createBufferSource(); var buf=ctx.createBuffer(1, ctx.sampleRate*dur, ctx.sampleRate);
+      var dd=buf.getChannelData(0); for(var i=0;i<dd.length;i++) dd[i]=Math.random()*2-1; n.buffer=buf;
+      var bp=ctx.createBiquadFilter(); bp.type="bandpass"; bp.Q.value=1.2;
+      bp.frequency.setValueAtTime(300,t); bp.frequency.exponentialRampToValueAtTime(4000,t+dur);
+      var g=ctx.createGain(); g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(0.25,t+dur*0.5);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur); n.connect(bp); bp.connect(g); g.connect(master); n.start(t); }
+    function swell(){ if(!started) return; var t=ctx.currentTime;
+      [261.63,329.63,392,523.25].forEach(function(f,i){ var o=ctx.createOscillator(); o.type="sawtooth"; o.frequency.value=f;
+        var g=ctx.createGain(); g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(0.18,t+1.6);
+        g.gain.setTargetAtTime(0.0001,t+2.2,1.2); var lp=ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=2600;
+        o.connect(g); g.connect(lp); lp.connect(master); o.start(t); o.stop(t+4); }); }
+    return {
+      init:init, setChord:setChord, hit:hit, whoosh:whoosh, swell:swell,
+      suspend:function(){ if(ctx)ctx.suspend(); }, resume:function(){ if(ctx)ctx.resume(); },
+      mute:function(m){ muted=m; if(master&&ctx) master.gain.setTargetAtTime(m?0:0.9, ctx.currentTime, 0.2); }
+    };
+  })();
+
+  /* ---------------- PLAYBACK ENGINE ---------------- */
+  var elapsed=0, last=0, playing=false, lastScene=-1, ended=false;
+
+  function applyScene(s, lt){
+    var p=Math.min(1, Math.max(0, lt/s.dur));
+    // opacity crossfade
+    var op=1, fadeInEnd=FADE/s.dur, fadeOutStart=1-FADE/s.dur;
+    if(p<fadeInEnd) op=p/fadeInEnd;
+    else if(p>fadeOutStart) op=(1-p)/(FADE/s.dur);
+    s._el.style.opacity=op.toFixed(3);
+    // ken burns
+    if(s.type==="img"&&s._img){ var k=KEN[s.ken]||KEN.in; var e=ease(p);
+      var sc=lerp(k[0][0],k[1][0],e), x=lerp(k[0][1],k[1][1],e), y=lerp(k[0][2],k[1][2],e);
+      s._img.style.transform="scale("+sc.toFixed(4)+") translate("+x.toFixed(2)+"%,"+y.toFixed(2)+"%)"; }
+    // card reveal
+    if(s.type==="card"){ if(op>0.35) s._el.classList.add("lit"); else s._el.classList.remove("lit"); }
+  }
+
+  function setCaption(s, lt){
+    if(s.type!=="img"||!s.cap){ capEl.classList.remove("show"); return; }
+    var show = lt>1.0 && lt < s.dur-1.0;
+    if(show){ if(capBig.textContent!==s.cap[0]){ capBig.textContent=s.cap[0]; capSmall.textContent=s.cap[1]||""; } capEl.classList.add("show"); }
+    else capEl.classList.remove("show");
+  }
+
+  function currentIndex(t){
+    for(var i=0;i<SCENES.length;i++){ if(t>=SCENES[i].start && t<SCENES[i].start+SCENES[i].dur) return i; }
+    return SCENES.length-1;
+  }
+
+  function frame(now){
+    if(!playing){ last=now; return; }
+    var dt=(now-last)/1000; last=now; if(dt>0.25)dt=0.25; elapsed+=dt;
+    if(elapsed>=TOTAL){ elapsed=TOTAL; render(elapsed); finish(); return; }
+    render(elapsed);
+    requestAnimationFrame(frame);
+  }
+
+  function render(t){
+    var idx=currentIndex(t);
+    // render current + neighbors for crossfade
+    SCENES.forEach(function(s,i){
+      if(i>=idx-1 && i<=idx+1){ applyScene(s, t - s.start); }
+      else { s._el.style.opacity="0"; if(s.type==="card") s._el.classList.remove("lit"); }
+    });
+    var s=SCENES[idx]; setCaption(s, t-s.start);
+    if(idx!==lastScene){ onSceneEnter(idx); lastScene=idx; }
+    // HUD
+    $("#seekFill").style.width=(t/TOTAL*100)+"%";
+    $("#time").textContent=fmt(t)+" / "+fmt(TOTAL);
+  }
+
+  function onSceneEnter(i){
+    var s=SCENES[i];
+    AE.setChord(s.chord);
+    AE.whoosh();
+    if(i>0) AE.hit();
+    if(s.chord==="Emin") AE.swell();
+    stage.classList.toggle("wide", s.type==="card"); // wider bars on title cards
+  }
+
+  function fmt(t){ t=Math.max(0,Math.round(t)); return Math.floor(t/60)+":"+("0"+(t%60)).slice(-2); }
+
+  function finish(){
+    playing=false; ended=true; $("#btnPlay").textContent="⟲";
+    stage.classList.remove("playing"); showUI(true);
+  }
+
+  /* ---------------- controls ---------------- */
+  function play(){ if(ended){ elapsed=0; ended=false; } playing=true; last=performance.now();
+    $("#btnPlay").textContent="⏸"; stage.classList.add("playing"); AE.resume(); requestAnimationFrame(frame); }
+  function pause(){ playing=false; $("#btnPlay").textContent="►"; AE.suspend(); }
+
+  $("#btnPlay").onclick=function(){ if(playing) pause(); else play(); };
+  $("#btnRestart").onclick=function(){ elapsed=0; ended=false; lastScene=-1; play(); };
+  $("#btnSkip").onclick=function(){ var i=currentIndex(elapsed); if(i<SCENES.length-1){ elapsed=SCENES[i+1].start+0.01; render(elapsed); } };
+  $("#btnMute").onclick=function(){ var m=this.textContent==="🔊"; AE.mute(m); this.textContent=m?"🔇":"🔊"; };
+  $("#btnFull").onclick=function(){ if(!document.fullscreenElement) stage.requestFullscreen&&stage.requestFullscreen(); else document.exitFullscreen(); };
+  $("#seek").onclick=function(e){ var r=this.getBoundingClientRect(); elapsed=Math.min(TOTAL,Math.max(0,(e.clientX-r.left)/r.width*TOTAL)); ended=false; lastScene=-1; render(elapsed); if(!playing) play(); };
+
+  // UI auto-hide
+  var hideTimer;
+  function showUI(persist){ stage.classList.add("ui-on"); clearTimeout(hideTimer);
+    if(!persist) hideTimer=setTimeout(function(){ if(playing) stage.classList.remove("ui-on"); }, 2600); }
+  stage.addEventListener("mousemove", function(){ showUI(false); });
+
+  document.addEventListener("keydown", function(e){
+    if(e.code==="Space"){ e.preventDefault(); playing?pause():play(); }
+    else if(e.key==="f"){ $("#btnFull").click(); }
+    else if(e.key==="m"){ $("#btnMute").click(); }
+    else if(e.key==="ArrowRight"){ $("#btnSkip").click(); }
+  });
+
+  /* ---------------- start ---------------- */
+  $("#playBtn").onclick=function(){
+    AE.init();
+    $("#start").classList.add("hidden");
+    setTimeout(function(){ $("#start").style.display="none"; }, 900);
+    elapsed=0; ended=false; lastScene=-1; play(); showUI(false);
+  };
+
+  render(0);
+})();
+</script>
+</body>
+</html>
