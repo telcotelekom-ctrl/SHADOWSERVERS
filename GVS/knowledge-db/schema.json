@@ -1,0 +1,61 @@
+{
+  "database": {
+    "name": "GVS Knowledge Database",
+    "project": "GVS - Global Vector Systems",
+    "version": "0.1",
+    "status": "R&D",
+    "updatedAt": "2026-08-01"
+  },
+  "tables": [
+    {
+      "name": "projects",
+      "primaryKey": "id",
+      "fields": ["id", "name", "status", "architecture", "core_tech", "goal", "created_at", "updated_at"]
+    },
+    {
+      "name": "modules",
+      "primaryKey": "id",
+      "fields": ["id", "project_id", "name", "description", "status", "tags", "version", "updated_at"]
+    },
+    {
+      "name": "research",
+      "primaryKey": "id",
+      "fields": ["id", "topic", "summary", "source_type", "source_url", "status", "tags", "created_at"]
+    },
+    {
+      "name": "knowledge",
+      "primaryKey": "id",
+      "fields": ["id", "category", "subject", "description", "relations", "source_ref", "version", "tags", "updated_at"]
+    },
+    {
+      "name": "references",
+      "primaryKey": "id",
+      "fields": ["id", "title", "category", "type", "status", "relation", "url", "created_at"]
+    },
+    {
+      "name": "search_history",
+      "primaryKey": "id",
+      "fields": ["id", "topic", "engine", "query", "goal", "status", "notes", "created_at"]
+    },
+    {
+      "name": "changelog",
+      "primaryKey": "id",
+      "fields": ["id", "date", "module", "change", "version", "author", "notes"]
+    },
+    {
+      "name": "documentation",
+      "primaryKey": "id",
+      "fields": ["id", "path", "type", "scope", "description", "updated_at"]
+    },
+    {
+      "name": "wallet_layers",
+      "primaryKey": "id",
+      "fields": ["id", "project_id", "name", "mode", "status", "hint_url", "real_money_enabled", "notes", "updated_at"]
+    },
+    {
+      "name": "verification_objects",
+      "primaryKey": "id",
+      "fields": ["id", "target_id", "hash", "timestamp", "checksum", "source_uri", "model_id", "integrity_score", "mode"]
+    }
+  ]
+}

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>H2O SUN • Bubble Universe</title>
+  <style>
+    :root {
+      --bg: #05070b;
+      --surface: #0b1320;
+      --surface-2: #111c2c;
+      --primary: #eaf2ff;
+      --secondary: #afc6e8;
+      --accent: #74b5ff;
+      --line: #3f6a92;
+      --ok: #6fd49a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--primary);
+      background:
+        radial-gradient(circle at 50% 20%, rgba(116,181,255,0.2), transparent 45%),
+        radial-gradient(circle at 80% 90%, rgba(111,212,154,0.12), transparent 35%),
+        var(--bg);
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .shell { max-width: 1200px; margin: 0 auto; display: grid; gap: 16px; }
+    .panel {
+      background: rgba(17,28,44,0.82);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    h1, h2, h3 { margin: 0 0 10px; }
+    p { margin: 0; color: var(--secondary); }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+    .sphere-wrap {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin: 0 auto;
+    }
+    .sphere {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,0.9), rgba(116,181,255,0.2) 32%, rgba(6,15,30,0.95) 70%),
+        conic-gradient(from 45deg, rgba(116,181,255,0.6), rgba(111,212,154,0.35), rgba(116,181,255,0.6));
+      border: 1px solid rgba(255,255,255,0.22);
+      box-shadow: inset -30px -30px 60px rgba(0,0,0,0.35), 0 20px 48px rgba(0,0,0,0.48);
+      animation: spin 18s linear infinite;
+    }
+    .orbit {
+      position: absolute;
+      inset: -20px;
+      border: 1px dashed rgba(116,181,255,0.35);
+      border-radius: 50%;
+      animation: spin 14s linear infinite reverse;
+    }
+    .satellite {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(11,19,32,0.95);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      color: var(--primary);
+    }
+
+    .slogan {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .chip {
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 600;
+      color: var(--primary);
+      background: rgba(11,19,32,0.8);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      background: rgba(11,19,32,0.9);
+      padding: 12px;
+      transition: transform 0.35s ease, border-color 0.35s ease;
+    }
+    .card:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .card p { margin-top: 6px; }
+
+    .flow {
+      display: grid;
+      gap: 8px;
+    }
+    .step {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 8px 10px;
+      background: rgba(11,19,32,0.85);
+    }
+    .ok { color: var(--ok); font-weight: 700; }
+
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .sphere-wrap { width: 250px; height: 250px; }
+      .sphere { width: 250px; height: 250px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="panel hero">
+      <div class="sphere-wrap" aria-hidden="true">
+        <div class="sphere"></div>
+        <div class="orbit"><div class="satellite">Bubble Universe</div></div>
+      </div>
+      <div>
+        <h1>H2O SUN • Bubble Universe</h1>
+        <p>Im Winter waermt sie dich. Im Sommer kuehlt sie dich. Eine rotierende H2O-Sphaere als Interface, Runtime und lokale Produktionsmetapher.</p>
+        <div class="slogan" id="sloganChips"></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Director's Cut Pipeline</h2>
+      <div class="flow" id="directorFlow"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Lokale Produktion</h2>
+      <div class="grid">
+        <article class="card"><h3>Browser</h3><p>Startpunkt fuer lokale Runtime.</p></article>
+        <article class="card"><h3>Local AI</h3><p>Analyse, Vergleich und Verifikation auf dem Geraet.</p></article>
+        <article class="card"><h3>Lokale Datenbank</h3><p>Versionierte Speicherung mit Herkunftsnachweis.</p></article>
+        <article class="card"><h3>Renderer</h3><p>Ausgabe in SVG, HTML, PDF, Video und Produktformaten.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    const slogan = [
+      'Bubble Universe',
+      'H2O SUN',
+      'Winter warms you.',
+      'Summer cools you.',
+      'Create.',
+      'Imagine.',
+      'Produce.',
+      'Share.',
+      'Repeat.'
+    ];
+
+    const steps = [
+      'Input',
+      'Analyse',
+      'Verifikation',
+      "Director's Cut",
+      'Final Cut',
+      'Render',
+      'Publish',
+      'Verify',
+      'Archive',
+      'Knowledge Base',
+      'Ready'
+    ];
+
+    const sloganChips = document.getElementById('sloganChips');
+    const directorFlow = document.getElementById('directorFlow');
+
+    slogan.forEach((text) => {
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.textContent = text;
+      sloganChips.appendChild(chip);
+    });
+
+    steps.forEach((text, index) => {
+      const row = document.createElement('div');
+      row.className = 'step';
+      row.innerHTML = `<span>${index + 1}. ${text}</span><span class="ok">tracked</span>`;
+      directorFlow.appendChild(row);
+    });
+  </script>
+</body>
+</html>

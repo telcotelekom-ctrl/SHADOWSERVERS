@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#a020f0">
+    <title>FINALY ALL • Das universale Gesamtsystem</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(160, 32, 240, 0.32), transparent 26%),
+                radial-gradient(circle at 80% 0%, rgba(34, 211, 238, 0.22), transparent 32%),
+                linear-gradient(135deg, #07111d 0%, #0f1d33 55%, #07111d 100%);
+            color: #f5f7ff;
+            line-height: 1.7;
+            padding: 2rem 1rem 4rem;
+        }
+        .wrap { max-width: 1000px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 2.5rem; }
+        header h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing: 0.04em; }
+        header p { color: rgba(245, 247, 255, 0.82); margin-top: 0.6rem; }
+        .back-link {
+            display: inline-block; margin-bottom: 1.5rem; color: #7dd3fc;
+            text-decoration: none; font-weight: 600;
+        }
+        section {
+            margin: 1.5rem 0; padding: 1.4rem 1.6rem; border-radius: 20px;
+            background: rgba(7, 17, 29, 0.7); border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.24);
+        }
+        section h2 {
+            font-size: 1.3rem; margin-bottom: 0.8rem; letter-spacing: 0.06em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14); padding-bottom: 0.5rem;
+        }
+        section h3 { margin: 1rem 0 0.4rem; font-size: 1.05rem; color: #c4b5fd; }
+        ul { margin: 0.5rem 0 0.5rem 1.4rem; }
+        li { margin-bottom: 0.3rem; }
+        .principles { display: grid; gap: 0.6rem; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+        .principle {
+            padding: 0.7rem 0.9rem; border-radius: 14px;
+            background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12);
+            font-weight: 600; text-align: center;
+        }
+        .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+        .card { padding: 1rem; border-radius: 14px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .card strong { color: #7dd3fc; }
+        .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+        .chip {
+            padding: 0.35rem 0.7rem; border-radius: 999px; font-size: 0.82rem;
+            background: rgba(139, 92, 246, 0.18); border: 1px solid rgba(139, 92, 246, 0.35);
+        }
+        pre {
+            background: #050b14; border-radius: 14px; padding: 1rem; overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.12); margin-top: 0.8rem;
+            font-size: 0.82rem; color: #d1fae5;
+        }
+        .tool { margin-top: 0.8rem; display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+        .tool select, .tool input {
+            padding: 0.55rem 0.7rem; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2);
+            background: #07111d; color: #f5f7ff; min-width: 160px;
+        }
+        .tool button {
+            padding: 0.55rem 1rem; border-radius: 999px; border: none; cursor: pointer;
+            background: linear-gradient(135deg, #8b5cf6, #22d3ee); color: white; font-weight: 600;
+        }
+        .result {
+            margin-top: 0.9rem; padding: 1rem; border-radius: 14px;
+            background: rgba(34, 211, 238, 0.08); border: 1px solid rgba(34, 211, 238, 0.3);
+        }
+        .result h4 { color: #7dd3fc; margin-bottom: 0.4rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 0.6rem; font-size: 0.9rem; }
+        th, td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        th { color: #c4b5fd; }
+        label.inv { display: flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0; cursor: pointer; }
+        .quote { font-style: italic; color: rgba(245, 247, 255, 0.9); }
+        .flow { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.6rem; }
+        .flow span {
+            padding: 0.45rem 0.8rem; border-radius: 12px; background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12); font-weight: 600;
+        }
+        .flow .arrow { background: none; border: none; color: #7dd3fc; }
+        .progress { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.1); overflow: hidden; margin-top: 0.6rem; }
+        .progress > div { height: 100%; background: linear-gradient(135deg, #8b5cf6, #22d3ee); width: 0; transition: width 0.3s; }
+        .links { display: grid; gap: 0.5rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+        .links a {
+            display: block; padding: 0.7rem 0.9rem; border-radius: 12px; text-decoration: none;
+            background: rgba(255, 255, 255, 0.08); color: #f5f7ff; border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <a class="back-link" href="./index.html">← Zurück zum Portal</a>
+        <header>
+            <h1>⭐ FINALY ALL</h1>
+            <p>Das universale Gesamtsystem • Bildung + Inventur + Organisation + Sprachen + Altersgruppen + Erkenntnis + Wahrheit</p>
+        </header>
+
+        <section>
+            <h2>🌍 1. Universalprinzipien</h2>
+            <div class="flow">
+                <span>Interesse</span><span class="arrow">→</span>
+                <span>Erkenntnis</span><span class="arrow">→</span>
+                <span>Erfahrung</span><span class="arrow">→</span>
+                <span>Wahrheit</span><span class="arrow">→</span>
+                <span>Entwicklung</span><span class="arrow">→</span>
+                <span>Zukunft</span>
+            </div>
+            <div class="principles" style="margin-top:1rem;">
+                <div class="principle">Interesse = Motor</div>
+                <div class="principle">Zeit = Wert</div>
+                <div class="principle">Wert = Verantwortung</div>
+                <div class="principle">Verantwortung = Frieden</div>
+                <div class="principle">Frieden = Ziel</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>🎓 2. Universeller Curriculum-Generator</h2>
+            <p>Wähle Altersgruppe, Sprache und Niveau — das System erzeugt einen konkreten Lernpfad.</p>
+            <div class="tool">
+                <select id="ageSelect"></select>
+                <select id="langSelect"></select>
+                <select id="levelSelect"></select>
+                <button type="button" id="generateBtn">Lernpfad erzeugen</button>
+            </div>
+            <div class="result" id="curriculumResult" hidden></div>
+        </section>
+
+        <section>
+            <h2>👶 3. Alle Altersgruppen (0–120)</h2>
+            <div class="grid" id="ageGrid"></div>
+        </section>
+
+        <section>
+            <h2>🗣️ 4. Alle Sprachen & Niveaus</h2>
+            <h3>Sprachen (A–Z)</h3>
+            <div class="chips" id="langChips"></div>
+            <h3>Niveaus (universal)</h3>
+            <div class="chips" id="levelChips"></div>
+        </section>
+
+        <section>
+            <h2>🧠 5. Erkenntnismodell</h2>
+            <div class="flow" id="cognitionFlow"></div>
+            <p class="quote" style="margin-top:0.8rem;">Wahrheit ist persönlich, nicht absolut.</p>
+        </section>
+
+        <section>
+            <h2>🏫 6. Universales Schulsystem (A–Z)</h2>
+            <table>
+                <thead><tr><th>Bereich</th><th>Inhalt</th></tr></thead>
+                <tbody id="schoolTable"></tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>📋 7. Inventur + Organisation (Final Cut)</h2>
+            <p>Interaktive Checkliste — Fortschritt wird live berechnet.</p>
+            <div class="grid" id="inventoryGrid"></div>
+            <div class="progress"><div id="invBar"></div></div>
+            <p id="invStatus" style="margin-top:0.5rem;">0 von 0 Punkten erfasst (0%)</p>
+        </section>
+
+        <section>
+            <h2>🗄️ 8. Universale Datenbankstruktur</h2>
+            <pre id="dbModel"></pre>
+        </section>
+
+        <section>
+            <h2>🔦 9. Wahrheit</h2>
+            <p class="quote">
+                Wahrheit ist das, was du durch Interesse erkennst, durch Erfahrung bestätigst
+                und durch Bewusstsein verstehst. Sie ist nicht absolut, nicht fremdbestimmt,
+                nicht aufgezwungen. Sie ist dein Ergebnis.
+            </p>
+        </section>
+
+        <section>
+            <h2>🔗 10. Verbindungen</h2>
+            <div class="links">
+                <a href="./final-cut.html">Final Cut · In-N-Out Volume Economy</a>
+                <a href="./developer-universum.html">Developer-Universum · alle Sprachen</a>
+                <a href="./bildungszentrum.html">Bildungszentrum</a>
+                <a href="./encyclopedia.html">Enzyklopädie</a>
+                <a href="./universe.html">Universelle Botschaft</a>
+                <a href="./handbuch.html">Handbuch</a>
+                <a href="./index.html#portal">Nächste Phase → Portal</a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const systemModel = {
+            system: 'Universal Learning & Inventory Matrix',
+            prinzip: 'Interesse schafft Erkenntnis',
+            altersgruppen: ['0-3', '3-6', '6-10', '10-14', '14-18', '16-25', '18+', '25-99', '60-120'],
+            sprachen: ['Deutsch', 'Englisch', 'Niederländisch', 'Französisch', 'Spanisch', 'Arabisch', 'Türkisch', 'Chinesisch', 'Russisch', 'Portugiesisch', 'Italienisch', 'Polnisch', 'Japanisch', 'Gebärdensprache', 'Esperanto'],
+            niveaus: ['A0', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'S'],
+            erkenntnis: ['Interesse', 'Beobachtung', 'Verstehen', 'Anwenden', 'Erfahrung', 'Reflexion', 'Wahrheit'],
+            inventur: ['Gebäude', 'Räume', 'Inventar', 'Dokumente', 'Digitale Systeme', 'Kommunikation', 'Medizin'],
+            berichte: ['Finanzen', 'Anlagen', 'Inventar', 'Räume', 'Wartung', 'Sicherheit', 'Steuer', 'Versicherung']
+        };
+
+        const ageGroups = [
+            { range: '0-3', name: 'Frühkind', focus: ['Wahrnehmung', 'Motorik', 'Spracheinstieg', 'Emotionale Sicherheit', 'Interesse durch Spiel'] },
+            { range: '3-6', name: 'Kindergarten', focus: ['Sprachbildung', 'Sozialverhalten', 'Kreativität', 'Naturerfahrung', 'Musik & Bewegung'] },
+            { range: '6-10', name: 'Grundschule', focus: ['Lesen', 'Schreiben', 'Rechnen', 'Weltwissen', 'Interessen entdecken'] },
+            { range: '10-14', name: 'Sekundarstufe I', focus: ['Logik', 'Wissenschaft', 'Sprache', 'Digitale Kompetenz', 'Selbstständigkeit'] },
+            { range: '14-18', name: 'Sekundarstufe II', focus: ['Spezialisierung', 'Projektarbeit', 'Berufsvorbereitung', 'Identität', 'Verantwortung'] },
+            { range: '16-25', name: 'Berufsausbildung', focus: ['Praxis', 'Fachwissen', 'Teamarbeit', 'Sicherheit', 'Qualität'] },
+            { range: '18+', name: 'Hochschule / Universität', focus: ['Forschung', 'Theorie', 'Analyse', 'Innovation', 'Spezialisierung'] },
+            { range: '25-99', name: 'Erwachsenenbildung', focus: ['Weiterbildung', 'Umschulung', 'Sprachen', 'Digitale Kompetenz', 'Lebenslanges Lernen'] },
+            { range: '60-120', name: 'Seniorenbildung', focus: ['Gedächtnistraining', 'Digitale Teilhabe', 'Gesundheit', 'Soziale Aktivität', 'Erfahrungsaustausch'] }
+        ];
+
+        const levelMeaning = {
+            A0: 'Interesse geweckt', A1: 'Grundlagen', A2: 'Einfache Kommunikation',
+            B1: 'Alltagssprache', B2: 'Professionelle Kommunikation', C1: 'Akademische Sprache',
+            C2: 'Muttersprachliches Niveau', S: 'Spezialniveau (Medizin, Technik, Recht, Wissenschaft)'
+        };
+
+        const schoolSystem = [
+            ['A', 'Administration'], ['B', 'Bauwesen'], ['C', 'Chemie'], ['D', 'Design'],
+            ['E', 'Energie'], ['F', 'Finanzen'], ['G', 'Gesundheit'], ['H', 'Handwerk'],
+            ['I', 'Informatik'], ['J', 'Justiz'], ['K', 'Kommunikation'], ['L', 'Logistik'],
+            ['M', 'Maschinenbau'], ['N', 'Naturwissenschaft'], ['O', 'Organisation'], ['P', 'Produktion'],
+            ['Q', 'Qualitätsmanagement'], ['R', 'Recht'], ['S', 'Sicherheit'], ['T', 'Telekommunikation'],
+            ['U', 'Umwelt'], ['V', 'Verwaltung'], ['W', 'Wirtschaft'], ['X', 'Zukunftsprojekte'],
+            ['Y', 'Youth/Bildung'], ['Z', 'Zentrale Dienste']
+        ];
+
+        const inventory = {
+            'Gebäude': ['Zustand', 'Sicherheit', 'Energie', 'Infrastruktur', 'Dokumentation'],
+            'Räume': ['Nummer', 'Nutzung', 'Zustand', 'Technik', 'Fotos', 'Verantwortliche'],
+            'Inventar': ['Nummer', 'Wert', 'Standort', 'Wartung', 'QR-Code'],
+            'Digitale Systeme': ['Hardware', 'Software', 'Netzwerke', 'Sicherheit', 'Backups'],
+            'Dokumente': ['Verträge', 'Rechnungen', 'Personal', 'Genehmigungen', 'Datenschutz'],
+            'Kommunikation': ['Telefon', 'E-Mail', 'Website', 'Portale', 'Sicherheit'],
+            'Medizin': ['Geräte', 'Hygiene', 'Datenschutz', 'Wartung']
+        };
+
+        // Populate selectors
+        const ageSelect = document.getElementById('ageSelect');
+        ageGroups.forEach((g) => {
+            const opt = document.createElement('option');
+            opt.value = g.range;
+            opt.textContent = `${g.range} · ${g.name}`;
+            ageSelect.appendChild(opt);
+        });
+        const langSelect = document.getElementById('langSelect');
+        systemModel.sprachen.forEach((l) => {
+            const opt = document.createElement('option');
+            opt.value = l; opt.textContent = l;
+            langSelect.appendChild(opt);
+        });
+        const levelSelect = document.getElementById('levelSelect');
+        systemModel.niveaus.forEach((n) => {
+            const opt = document.createElement('option');
+            opt.value = n; opt.textContent = `${n} · ${levelMeaning[n]}`;
+            levelSelect.appendChild(opt);
+        });
+
+        // Curriculum generator
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            const age = ageGroups.find((g) => g.range === ageSelect.value);
+            const lang = langSelect.value;
+            const level = levelSelect.value;
+            const path = systemModel.erkenntnis.map((step, i) => `${i + 1}. ${step}`).join(' → ');
+            const result = document.getElementById('curriculumResult');
+            result.hidden = false;
+            result.innerHTML = `
+                <h4>Lernpfad: ${age.name} (${age.range}) · ${lang} · ${level}</h4>
+                <p><strong>Niveau-Ziel:</strong> ${levelMeaning[level]}</p>
+                <p><strong>Schwerpunkte:</strong></p>
+                <div class="chips">${age.focus.map((f) => `<span class="chip">${f}</span>`).join('')}</div>
+                <p style="margin-top:0.6rem;"><strong>Erkenntniszyklus:</strong> ${path}</p>
+                <p style="margin-top:0.6rem;"><strong>Prinzip:</strong> ${systemModel.prinzip}.</p>
+            `;
+        });
+
+        // Age grid
+        const ageGrid = document.getElementById('ageGrid');
+        ageGroups.forEach((g) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `<strong>${g.name}</strong> · ${g.range}
+                <div class="chips">${g.focus.map((f) => `<span class="chip">${f}</span>`).join('')}</div>`;
+            ageGrid.appendChild(card);
+        });
+
+        // Language & level chips
+        const langChips = document.getElementById('langChips');
+        systemModel.sprachen.forEach((l) => {
+            const s = document.createElement('span');
+            s.className = 'chip'; s.textContent = l;
+            langChips.appendChild(s);
+        });
+        const levelChips = document.getElementById('levelChips');
+        systemModel.niveaus.forEach((n) => {
+            const s = document.createElement('span');
+            s.className = 'chip'; s.textContent = `${n} · ${levelMeaning[n]}`;
+            levelChips.appendChild(s);
+        });
+
+        // Cognition flow
+        const cognitionFlow = document.getElementById('cognitionFlow');
+        systemModel.erkenntnis.forEach((step, i) => {
+            const s = document.createElement('span');
+            s.textContent = step;
+            cognitionFlow.appendChild(s);
+            if (i < systemModel.erkenntnis.length - 1) {
+                const a = document.createElement('span');
+                a.className = 'arrow'; a.textContent = '→';
+                cognitionFlow.appendChild(a);
+            }
+        });
+
+        // School table
+        const schoolTable = document.getElementById('schoolTable');
+        schoolSystem.forEach(([letter, content]) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td><strong>${letter}</strong></td><td>${content}</td>`;
+            schoolTable.appendChild(tr);
+        });
+
+        // Inventory checklist with live progress
+        const inventoryGrid = document.getElementById('inventoryGrid');
+        let totalItems = 0;
+        Object.entries(inventory).forEach(([group, items]) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `<strong>${group}</strong>`;
+            items.forEach((item) => {
+                totalItems += 1;
+                const label = document.createElement('label');
+                label.className = 'inv';
+                label.innerHTML = `<input type="checkbox"> ${item}`;
+                card.appendChild(label);
+            });
+            inventoryGrid.appendChild(card);
+        });
+
+        const invBar = document.getElementById('invBar');
+        const invStatus = document.getElementById('invStatus');
+        function updateInventory() {
+            const checked = inventoryGrid.querySelectorAll('input:checked').length;
+            const pct = totalItems ? Math.round((checked / totalItems) * 100) : 0;
+            invBar.style.width = `${pct}%`;
+            invStatus.textContent = `${checked} von ${totalItems} Punkten erfasst (${pct}%)`;
+        }
+        inventoryGrid.addEventListener('change', updateInventory);
+        invStatus.textContent = `0 von ${totalItems} Punkten erfasst (0%)`;
+
+        // DB model
+        document.getElementById('dbModel').textContent = JSON.stringify(systemModel, null, 2);
+    </script>
+</body>
+</html>

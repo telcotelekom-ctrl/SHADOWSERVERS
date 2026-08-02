@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>T.&.T. Trust Board</title>
+  <style>
+    :root {
+      --bg: #071019;
+      --surface: rgba(16, 28, 42, 0.92);
+      --surface-2: rgba(10, 19, 30, 0.96);
+      --line: rgba(255,255,255,0.1);
+      --text: #eef5ff;
+      --muted: #aebfd3;
+      --accent: #79b4ff;
+      --accent-2: #7ce0af;
+      --warn: #f6ad55;
+      --danger: #ff8b8b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(121,180,255,0.18), transparent 24%),
+        radial-gradient(circle at 85% 15%, rgba(124,224,175,0.1), transparent 24%),
+        var(--bg);
+    }
+    .shell { max-width: 1320px; margin: 0 auto; display: grid; gap: 16px; }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+    }
+    .hero { display: flex; justify-content: space-between; gap: 16px; align-items: center; flex-wrap: wrap; }
+    h1, h2, h3, p { margin: 0 0 12px; }
+    p, li { color: var(--muted); line-height: 1.6; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .badge { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.04); }
+    .layout { display: grid; grid-template-columns: minmax(320px, 1.1fr) minmax(280px, 0.9fr); gap: 16px; }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(70px, 1fr));
+      gap: 10px;
+    }
+    .tile {
+      min-height: 120px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      padding: 10px;
+      display: grid;
+      gap: 6px;
+      align-content: start;
+    }
+    .tile.current { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(121,180,255,0.35); }
+    .tile.owned { border-color: rgba(124,224,175,0.5); }
+    .tile h3 { font-size: 0.95rem; margin: 0; }
+    .tile small { color: var(--muted); }
+    .tokens { display: flex; flex-wrap: wrap; gap: 6px; }
+    .token {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      color: #08111b;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+    .sidebar { display: grid; gap: 16px; }
+    .card {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .players { display: grid; gap: 10px; }
+    .player {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      background: rgba(255,255,255,0.03);
+    }
+    .player.active { border-color: var(--accent); }
+    .controls, .setup { display: flex; flex-wrap: wrap; gap: 10px; }
+    button, input, select {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      padding: 10px 12px;
+      font: inherit;
+    }
+    button { cursor: pointer; }
+    button:hover { border-color: var(--accent); }
+    button:disabled { opacity: 0.55; cursor: default; }
+    .log {
+      max-height: 260px;
+      overflow: auto;
+      display: grid;
+      gap: 8px;
+    }
+    .log-entry {
+      border-left: 3px solid var(--accent);
+      padding-left: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .hint { border-left: 4px solid var(--warn); background: rgba(246,173,85,0.09); border-radius: 10px; padding: 12px 14px; }
+    .winner { color: var(--accent-2); font-weight: 700; }
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .board { grid-template-columns: repeat(3, minmax(80px, 1fr)); }
+    }
+    @media (max-width: 680px) {
+      .board { grid-template-columns: repeat(2, minmax(100px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="panel hero">
+      <div>
+        <h1>T.&.T. Trust Board</h1>
+        <p>Original browser-side board game with XSTOX mock coins, region tiles, trust fees, event cards, and local persistence.</p>
+      </div>
+      <div class="row">
+        <span class="badge">Mock coins only</span>
+        <span class="badge">No real money</span>
+        <span class="badge">Local save</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="setup">
+        <label>Players
+          <select id="playerCount">
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+          </select>
+        </label>
+        <label>Rounds
+          <select id="roundLimit">
+            <option value="12">12</option>
+            <option value="18" selected>18</option>
+            <option value="24">24</option>
+          </select>
+        </label>
+        <button id="newGameBtn" type="button">New Game</button>
+        <button id="resetStorageBtn" type="button">Reset Save</button>
+      </div>
+    </section>
+
+    <section class="layout">
+      <section class="panel">
+        <h2>Board</h2>
+        <div id="board" class="board"></div>
+      </section>
+
+      <aside class="sidebar">
+        <section class="card">
+          <h2>Turn Control</h2>
+          <p id="turnStatus">Create a game to begin.</p>
+          <div class="controls">
+            <button id="rollBtn" type="button">Roll Dice</button>
+            <button id="buyBtn" type="button">Claim Tile</button>
+            <button id="endTurnBtn" type="button">End Turn</button>
+          </div>
+          <p id="diceResult"></p>
+        </section>
+
+        <section class="card">
+          <h2>Players</h2>
+          <div id="players" class="players"></div>
+        </section>
+
+        <section class="card">
+          <h2>Event Log</h2>
+          <div id="log" class="log"></div>
+        </section>
+
+        <section class="card">
+          <h2>Play Zone</h2>
+          <div class="hint">This game is part of the T.&amp;.T. Trust mock system. All coins are symbolic. The highest stable balance at the round limit wins.</div>
+          <p id="winnerOutput" class="winner" style="margin-top: 12px;"></p>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <script type="module">
+    const STORAGE_KEY = 'tnt-trust-board-state-v1';
+    const COLORS = ['#7ab5ff', '#7ce0af', '#f6ad55', '#ff8b8b'];
+    const TILES = [
+      { id: 0, name: 'Start Gate', type: 'start', price: 0, fee: 0 },
+      { id: 1, name: 'North Region', type: 'region', price: 120, fee: 18 },
+      { id: 2, name: 'Trust Signal', type: 'event', price: 0, fee: 0 },
+      { id: 3, name: 'East Studio', type: 'region', price: 140, fee: 20 },
+      { id: 4, name: 'Knowledge Vault', type: 'region', price: 160, fee: 24 },
+      { id: 5, name: 'Play Zone', type: 'event', price: 0, fee: 0 },
+      { id: 6, name: 'South Region', type: 'region', price: 180, fee: 28 },
+      { id: 7, name: 'Network Tax', type: 'tax', price: 0, fee: 35 },
+      { id: 8, name: 'West Forge', type: 'region', price: 200, fee: 30 },
+      { id: 9, name: 'Architect Link', type: 'event', price: 0, fee: 0 },
+      { id: 10, name: 'Central Ring', type: 'region', price: 220, fee: 34 },
+      { id: 11, name: 'T.&.T. Nexus', type: 'region', price: 260, fee: 40 }
+    ];
+    const EVENTS = [
+      { text: 'Trust generator bonus: +45 XSTOX', apply: (player) => { player.coins += 45; } },
+      { text: 'Network maintenance: -20 XSTOX', apply: (player) => { player.coins -= 20; } },
+      { text: 'Children\'s zone support: +25 XSTOX', apply: (player) => { player.coins += 25; } },
+      { text: 'Regional delay: move back 1 tile', apply: (player) => { player.position = (player.position + TILES.length - 1) % TILES.length; } },
+      { text: 'Studio boost: move forward 2 tiles', apply: (player) => { player.position = (player.position + 2) % TILES.length; } }
+    ];
+
+    const boardEl = document.getElementById('board');
+    const playersEl = document.getElementById('players');
+    const logEl = document.getElementById('log');
+    const turnStatusEl = document.getElementById('turnStatus');
+    const diceResultEl = document.getElementById('diceResult');
+    const winnerOutputEl = document.getElementById('winnerOutput');
+    const playerCountEl = document.getElementById('playerCount');
+    const roundLimitEl = document.getElementById('roundLimit');
+    const newGameBtn = document.getElementById('newGameBtn');
+    const resetStorageBtn = document.getElementById('resetStorageBtn');
+    const rollBtn = document.getElementById('rollBtn');
+    const buyBtn = document.getElementById('buyBtn');
+    const endTurnBtn = document.getElementById('endTurnBtn');
+
+    let state = null;
+
+    function createPlayers(count) {
+      return Array.from({ length: count }, (_, index) => ({
+        id: index + 1,
+        name: `Player ${index + 1}`,
+        position: 0,
+        coins: 500,
+        regions: [],
+        color: COLORS[index],
+        rolled: false
+      }));
+    }
+
+    function newState(count = 3, roundLimit = 18) {
+      return {
+        round: 1,
+        roundLimit,
+        currentPlayerIndex: 0,
+        players: createPlayers(count),
+        owners: {},
+        log: ['Game created. T.&.T. Trust board is live.'],
+        lastRoll: null,
+        winner: null
+      };
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function addLog(message) {
+      state.log.unshift(message);
+      state.log = state.log.slice(0, 20);
+    }
+
+    function currentPlayer() {
+      return state.players[state.currentPlayerIndex];
+    }
+
+    function ownerOf(tileId) {
+      return state.owners[tileId] ?? null;
+    }
+
+    function rollDice() {
+      const player = currentPlayer();
+      if (player.rolled || state.winner) return;
+      const roll = Math.floor(Math.random() * 6) + 1;
+      player.rolled = true;
+      state.lastRoll = roll;
+      player.position = (player.position + roll) % TILES.length;
+      if (player.position < roll) {
+        player.coins += 30;
+        addLog(`${player.name} passed Start Gate and received 30 XSTOX.`);
+      }
+      resolveTile(player);
+      saveState();
+      render();
+    }
+
+    function resolveTile(player) {
+      const tile = TILES[player.position];
+      if (tile.type === 'event') {
+        const event = EVENTS[Math.floor(Math.random() * EVENTS.length)];
+        event.apply(player);
+        addLog(`${player.name} triggered ${tile.name}: ${event.text}`);
+        return;
+      }
+      if (tile.type === 'tax') {
+        player.coins -= tile.fee;
+        addLog(`${player.name} paid ${tile.fee} XSTOX on ${tile.name}.`);
+        return;
+      }
+      if (tile.type === 'region') {
+        const ownerId = ownerOf(tile.id);
+        if (!ownerId) {
+          addLog(`${player.name} landed on ${tile.name}. It can be claimed for ${tile.price} XSTOX.`);
+          return;
+        }
+        if (ownerId !== player.id) {
+          const fee = tile.fee;
+          player.coins -= fee;
+          const owner = state.players.find((entry) => entry.id === ownerId);
+          owner.coins += fee;
+          addLog(`${player.name} paid ${fee} XSTOX to ${owner.name} for ${tile.name}.`);
+        }
+      }
+    }
+
+    function claimTile() {
+      const player = currentPlayer();
+      const tile = TILES[player.position];
+      if (!player.rolled || tile.type !== 'region' || ownerOf(tile.id) || player.coins < tile.price || state.winner) return;
+      player.coins -= tile.price;
+      player.regions.push(tile.id);
+      state.owners[tile.id] = player.id;
+      addLog(`${player.name} claimed ${tile.name} for ${tile.price} XSTOX.`);
+      saveState();
+      render();
+    }
+
+    function endTurn() {
+      const player = currentPlayer();
+      if (!player.rolled || state.winner) return;
+      player.rolled = false;
+      state.currentPlayerIndex = (state.currentPlayerIndex + 1) % state.players.length;
+      if (state.currentPlayerIndex === 0) {
+        state.round += 1;
+      }
+      if (state.round > state.roundLimit) {
+        finishGame();
+      }
+      saveState();
+      render();
+    }
+
+    function finishGame() {
+      const sorted = [...state.players].sort((a, b) => b.coins - a.coins);
+      state.winner = sorted[0].id;
+      addLog(`${sorted[0].name} wins the T.&.T. Trust board with ${sorted[0].coins} XSTOX.`);
+    }
+
+    function renderBoard() {
+      boardEl.innerHTML = '';
+      TILES.forEach((tile) => {
+        const tileEl = document.createElement('article');
+        tileEl.className = 'tile';
+        const ownerId = ownerOf(tile.id);
+        const hasCurrent = currentPlayer().position === tile.id;
+        if (ownerId) tileEl.classList.add('owned');
+        if (hasCurrent && !state.winner) tileEl.classList.add('current');
+        const owner = ownerId ? state.players.find((entry) => entry.id === ownerId) : null;
+        tileEl.innerHTML = `
+          <small>${tile.type.toUpperCase()}</small>
+          <h3>${tile.name}</h3>
+          <small>${tile.price ? `Claim ${tile.price} XSTOX` : tile.fee ? `Fee ${tile.fee} XSTOX` : 'Action tile'}</small>
+          <small>${owner ? `Owner: ${owner.name}` : 'Unowned / open'}</small>
+        `;
+        const tokens = document.createElement('div');
+        tokens.className = 'tokens';
+        state.players.filter((player) => player.position === tile.id).forEach((player) => {
+          const token = document.createElement('span');
+          token.className = 'token';
+          token.style.background = player.color;
+          token.textContent = player.id;
+          tokens.appendChild(token);
+        });
+        tileEl.appendChild(tokens);
+        boardEl.appendChild(tileEl);
+      });
+    }
+
+    function renderPlayers() {
+      playersEl.innerHTML = '';
+      state.players.forEach((player, index) => {
+        const box = document.createElement('article');
+        box.className = 'player';
+        if (index === state.currentPlayerIndex && !state.winner) box.classList.add('active');
+        box.innerHTML = `
+          <div class="row"><span class="token" style="background:${player.color}; color:#08111b;">${player.id}</span><strong>${player.name}</strong></div>
+          <p>Coins: ${player.coins} XSTOX</p>
+          <p>Regions: ${player.regions.length}</p>
+          <p>Tile: ${TILES[player.position].name}</p>
+        `;
+        playersEl.appendChild(box);
+      });
+    }
+
+    function renderLog() {
+      logEl.innerHTML = '';
+      state.log.forEach((entry) => {
+        const line = document.createElement('div');
+        line.className = 'log-entry';
+        line.textContent = entry;
+        logEl.appendChild(line);
+      });
+    }
+
+    function render() {
+      renderBoard();
+      renderPlayers();
+      renderLog();
+      const player = currentPlayer();
+      turnStatusEl.textContent = state.winner
+        ? `${state.players.find((entry) => entry.id === state.winner).name} has won after round ${state.roundLimit}.`
+        : `Round ${state.round}/${state.roundLimit} • ${player.name}'s turn`;
+      diceResultEl.textContent = state.lastRoll ? `Last roll: ${state.lastRoll}` : 'No roll yet.';
+      buyBtn.disabled = state.winner || !player.rolled || TILES[player.position].type !== 'region' || !!ownerOf(player.position) || player.coins < TILES[player.position].price;
+      rollBtn.disabled = state.winner || player.rolled;
+      endTurnBtn.disabled = state.winner || !player.rolled;
+      winnerOutputEl.textContent = state.winner ? `${state.players.find((entry) => entry.id === state.winner).name} wins with ${state.players.find((entry) => entry.id === state.winner).coins} XSTOX.` : '';
+    }
+
+    function startGame() {
+      state = newState(Number(playerCountEl.value), Number(roundLimitEl.value));
+      saveState();
+      render();
+    }
+
+    newGameBtn.addEventListener('click', startGame);
+    resetStorageBtn.addEventListener('click', () => {
+      localStorage.removeItem(STORAGE_KEY);
+      state = newState(Number(playerCountEl.value), Number(roundLimitEl.value));
+      render();
+    });
+    rollBtn.addEventListener('click', rollDice);
+    buyBtn.addEventListener('click', claimTile);
+    endTurnBtn.addEventListener('click', endTurn);
+
+    state = loadState() || newState(Number(playerCountEl.value), Number(roundLimitEl.value));
+    render();
+  </script>
+</body>
+</html>

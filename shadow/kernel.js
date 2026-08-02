@@ -22,6 +22,7 @@ import * as trustGraph from './trust-graph.js';
 import * as semanticRouting from './semantic-routing.js';
 import * as merge from './merge.js';
 import * as observability from './observability.js';
+import { createExtensionDiscoveryEngine } from './extension-discovery.js';
 
 export async function startShadowOS() {
   const adaptiveBootstrap = startShadowKernelWasm({ adapter: 'browser', identityId: 'shadow-portal-self' });
@@ -59,6 +60,7 @@ export async function startShadowOS() {
   const observer = observability.createObserver();
   observer.record({ type: 'kernel-start', detail: 'shadow-os booted' });
   const mergedState = merge.mergeStateVectors(stateRef, sessionDelta);
+  const extensionDiscovery = createExtensionDiscoveryEngine(['visual-runtime', 'knowledge-engine', 'timeline-engine', 'studio-engine', 'pwa-first', 'ai-engine']);
 
   const inbox = protocol.wrapInProtocol({
     semanticObject,
@@ -100,7 +102,8 @@ export async function startShadowOS() {
     semanticObject,
     inbox: signedEnvelope,
     runtime: adaptiveBootstrap,
-    protocol: adaptiveBootstrap.protocol?.getSnapshot?.() || null
+    protocol: adaptiveBootstrap.protocol?.getSnapshot?.() || null,
+    extensionDiscovery
   };
 }
 
@@ -118,6 +121,7 @@ export function createShadowKernelApi() {
     ai,
     semantic,
     fabric,
-    protocol
+    protocol,
+    extensionDiscovery: createExtensionDiscoveryEngine(['visual-runtime', 'knowledge-engine', 'timeline-engine', 'studio-engine', 'pwa-first', 'ai-engine'])
   };
 }

@@ -4,6 +4,7 @@ export class PortalEngine {
   constructor(logoSrc = './svg/digitalnotar.svg') {
     this.active = 0;       // 0..1 portal openness
     this.merge = 0;        // 0..1 logo/sphere merge
+    this.opacity = 1;
     this.logo = new Image();
     this.logo.src = logoSrc;
     this.logoReady = false;
@@ -37,7 +38,7 @@ export class PortalEngine {
       const size = radius * (1.1 + this.merge * 0.3);
       const alpha = Math.max(this.active, this.merge);
       ctx.save();
-      ctx.globalAlpha = alpha;
+      ctx.globalAlpha = alpha * this.opacity;
       ctx.translate(cx, cy);
       const scale = 0.9 + Math.sin(this._t * 1.2) * 0.02 * this.active;
       ctx.scale(scale, scale);

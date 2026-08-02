@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GVS Ernstfall Korrektur Center</title>
+  <style>
+    :root {
+      --bg: #071019;
+      --panel: rgba(14, 27, 41, 0.9);
+      --line: rgba(255, 255, 255, 0.12);
+      --text: #eef5ff;
+      --muted: #b2c4d8;
+      --ok: #7ce0af;
+      --warn: #f6ad55;
+      --err: #ff7f87;
+      --accent: #7ab5ff;
+      --shadow: 0 24px 52px rgba(0, 0, 0, 0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(122, 181, 255, 0.2), transparent 30%),
+        radial-gradient(circle at 88% 18%, rgba(124, 224, 175, 0.12), transparent 28%),
+        var(--bg);
+      padding: 24px;
+    }
+    .shell {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    h1, h2, p { margin: 0 0 12px; }
+    p { color: var(--muted); line-height: 1.65; }
+    .title { font-size: clamp(2rem, 5vw, 3.2rem); letter-spacing: -0.03em; }
+    .controls { display: flex; flex-wrap: wrap; gap: 10px; }
+    button {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.primary {
+      border-color: rgba(122, 181, 255, 0.45);
+      background: rgba(122, 181, 255, 0.15);
+    }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+    .stat strong { display: block; font-size: 1.45rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { color: #d5e5fa; }
+    .sev-ok { color: var(--ok); }
+    .sev-warn { color: var(--warn); }
+    .sev-error { color: var(--err); }
+    .mono {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.9rem;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 12px; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="panel">
+      <h1 class="title">GVS Ernstfall Korrektur Center</h1>
+      <p>Direkt auslesbar ohne Entpacken. Dieses Center prueft die Kernseiten, die Knowledge DB und die Integrationspfade auf Erreichbarkeit und Struktur. Es erstellt zusaetzlich automatische Korrekturhinweise fuer Fehlersuche und Nacharbeit.</p>
+      <div class="pill-row">
+        <span class="pill">Ernstfall</span>
+        <span class="pill">Auto-Diagnose</span>
+        <span class="pill">Korrekturhilfe</span>
+        <span class="pill">TXT/JSON Export</span>
+      </div>
+      <div class="controls" style="margin-top: 12px;">
+        <button id="runChecks" class="primary" type="button">Vollpruefung starten</button>
+        <button id="exportTxt" type="button">Report als TXT</button>
+        <button id="exportJson" type="button">Report als JSON</button>
+        <button id="copyChecklist" type="button">Korrektur-Checkliste kopieren</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Status</h2>
+      <div class="stats" id="stats">
+        <div class="stat"><strong id="totalChecks">0</strong><span>Checks</span></div>
+        <div class="stat"><strong id="okCount">0</strong><span>OK</span></div>
+        <div class="stat"><strong id="warnCount">0</strong><span>Warnung</span></div>
+        <div class="stat"><strong id="errorCount">0</strong><span>Fehler</span></div>
+      </div>
+      <p id="lastRunText">Noch keine Pruefung ausgefuehrt.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Severity</th>
+            <th>Code</th>
+            <th>Target</th>
+            <th>Message</th>
+            <th>Automatic Help</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody"></tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Korrektur-Skript (lesbar, nicht gepackt)</h2>
+      <p>Dieses Skript ist nur ein lesbarer Vorschlag fuer Korrekturarbeiten und kann direkt fuer manuelle Nacharbeit genutzt werden.</p>
+      <div id="scriptBox" class="mono">Noch keine Daten. Fuehre zuerst die Vollpruefung aus.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Navigation</h2>
+      <div class="footer-links">
+        <a href="./start.html">GVS Start</a>
+        <a href="./all-also-hub.html">ALL ALSO Hub</a>
+        <a href="./knowledge-db/index.html">Knowledge DB Dashboard</a>
+        <a href="./knowledge-db/records/db.json">Knowledge DB Records</a>
+        <a href="../index.html">Root Portal</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const requiredUrls = [
+      "./start.html",
+      "./all-also-hub.html",
+      "./tnt-trust-board.html",
+      "./xstox-metamask-standby.html",
+      "./knowledge-db/index.html",
+      "./knowledge-db/records/db.json",
+      "../index.html",
+      "../MASTER_DOKUMENT.md"
+    ];
+
+    const requiredDbTables = [
+      "projects",
+      "modules",
+      "knowledge",
+      "references",
+      "changelog",
+      "documentation",
+      "wallet_layers",
+      "verification_objects"
+    ];
+
+    const requiredModuleIds = ["MOD-0019", "MOD-0020", "MOD-0021"];
+    const requiredReferenceIds = ["REF-0008", "REF-0009", "REF-0010"];
+    const requiredDocPaths = [
+      "GVS/start.html",
+      "GVS/xstox-metamask-standby.html",
+      "GVS/tnt-trust-board.html"
+    ];
+
+    const severityOrder = { error: 0, warn: 1, ok: 2 };
+    const state = {
+      findings: [],
+      lastRunAt: null,
+      reportText: "",
+      reportJson: "{}",
+      checklist: ""
+    };
+
+    const resultsBody = document.getElementById("resultsBody");
+    const totalChecks = document.getElementById("totalChecks");
+    const okCount = document.getElementById("okCount");
+    const warnCount = document.getElementById("warnCount");
+    const errorCount = document.getElementById("errorCount");
+    const lastRunText = document.getElementById("lastRunText");
+    const scriptBox = document.getElementById("scriptBox");
+
+    function addFinding(severity, code, target, message, help) {
+      state.findings.push({ severity, code, target, message, help });
+    }
+
+    function buildHelp(code, target) {
+      const map = {
+        URL_UNREACHABLE: "Pfad pruefen, Dateiname exakt abgleichen, lokalen Server starten, danach Vollpruefung erneut ausfuehren.",
+        DB_FETCH_FAILED: "Pruefen ob records/db.json gueltiges JSON ist und ueber HTTP erreichbar ist.",
+        DB_TABLE_MISSING: "Fehlende Tabelle in records/db.json anlegen und mit schema.json abstimmen.",
+        DB_MODULE_MISSING: "Fehlenden Modulknoten in modules[] registrieren und mit changelog verknuepfen.",
+        DB_REFERENCE_MISSING: "Fehlende Referenz in references[] nachtragen und relation auf Modul setzen.",
+        DB_DOC_PATH_MISSING: "Fehlenden Dokumentpfad in documentation[] ergaenzen, Scope und Typ setzen.",
+        DB_INTEGRITY_OK: "Keine Korrektur notwendig. Nur Monitoring fortsetzen."
+      };
+      return map[code] || ("Manuelle Pruefung erforderlich fuer: " + target);
+    }
+
+    async function checkUrl(url) {
+      try {
+        const response = await fetch(url, { cache: "no-store" });
+        if (response.ok) {
+          addFinding("ok", "URL_OK", url, "HTTP " + response.status, "Keine Aktion erforderlich.");
+        } else {
+          addFinding("error", "URL_UNREACHABLE", url, "HTTP " + response.status, buildHelp("URL_UNREACHABLE", url));
+        }
+      } catch (error) {
+        addFinding("error", "URL_UNREACHABLE", url, String(error.message || error), buildHelp("URL_UNREACHABLE", url));
+      }
+    }
+
+    function hasId(list, id) {
+      return Array.isArray(list) && list.some((item) => item && item.id === id);
+    }
+
+    function hasDocPath(list, path) {
+      return Array.isArray(list) && list.some((item) => item && item.path === path);
+    }
+
+    async function checkDb() {
+      let db;
+      try {
+        const response = await fetch("./knowledge-db/records/db.json", { cache: "no-store" });
+        if (!response.ok) {
+          addFinding("error", "DB_FETCH_FAILED", "knowledge-db/records/db.json", "HTTP " + response.status, buildHelp("DB_FETCH_FAILED", "knowledge-db/records/db.json"));
+          return;
+        }
+        db = await response.json();
+      } catch (error) {
+        addFinding("error", "DB_FETCH_FAILED", "knowledge-db/records/db.json", String(error.message || error), buildHelp("DB_FETCH_FAILED", "knowledge-db/records/db.json"));
+        return;
+      }
+
+      requiredDbTables.forEach((table) => {
+        if (!(table in db)) {
+          addFinding("error", "DB_TABLE_MISSING", table, "Tabelle fehlt im DB-Objekt", buildHelp("DB_TABLE_MISSING", table));
+        } else {
+          addFinding("ok", "DB_TABLE_OK", table, "Tabelle gefunden", "Keine Aktion erforderlich.");
+        }
+      });
+
+      requiredModuleIds.forEach((id) => {
+        if (hasId(db.modules, id)) {
+          addFinding("ok", "DB_MODULE_OK", id, "Modul vorhanden", "Keine Aktion erforderlich.");
+        } else {
+          addFinding("warn", "DB_MODULE_MISSING", id, "Modul fehlt in modules[]", buildHelp("DB_MODULE_MISSING", id));
+        }
+      });
+
+      requiredReferenceIds.forEach((id) => {
+        if (hasId(db.references, id)) {
+          addFinding("ok", "DB_REFERENCE_OK", id, "Referenz vorhanden", "Keine Aktion erforderlich.");
+        } else {
+          addFinding("warn", "DB_REFERENCE_MISSING", id, "Referenz fehlt in references[]", buildHelp("DB_REFERENCE_MISSING", id));
+        }
+      });
+
+      requiredDocPaths.forEach((path) => {
+        if (hasDocPath(db.documentation, path)) {
+          addFinding("ok", "DB_DOC_PATH_OK", path, "Dokumentpfad vorhanden", "Keine Aktion erforderlich.");
+        } else {
+          addFinding("warn", "DB_DOC_PATH_MISSING", path, "Dokumentpfad fehlt in documentation[]", buildHelp("DB_DOC_PATH_MISSING", path));
+        }
+      });
+
+      if (!state.findings.some((item) => item.severity === "error" || item.severity === "warn")) {
+        addFinding("ok", "DB_INTEGRITY_OK", "knowledge-db/records/db.json", "Keine Integritaetsprobleme erkannt", buildHelp("DB_INTEGRITY_OK", "knowledge-db/records/db.json"));
+      }
+    }
+
+    function renderFindings() {
+      const sorted = [...state.findings].sort((a, b) => {
+        return severityOrder[a.severity] - severityOrder[b.severity] || a.code.localeCompare(b.code);
+      });
+
+      const counters = sorted.reduce((acc, item) => {
+        acc.total += 1;
+        if (item.severity === "ok") acc.ok += 1;
+        if (item.severity === "warn") acc.warn += 1;
+        if (item.severity === "error") acc.error += 1;
+        return acc;
+      }, { total: 0, ok: 0, warn: 0, error: 0 });
+
+      totalChecks.textContent = String(counters.total);
+      okCount.textContent = String(counters.ok);
+      warnCount.textContent = String(counters.warn);
+      errorCount.textContent = String(counters.error);
+
+      resultsBody.innerHTML = sorted.map((item) => {
+        const cls = item.severity === "error" ? "sev-error" : item.severity === "warn" ? "sev-warn" : "sev-ok";
+        return "<tr>"
+          + "<td class='" + cls + "'>" + item.severity.toUpperCase() + "</td>"
+          + "<td>" + escapeHtml(item.code) + "</td>"
+          + "<td>" + escapeHtml(item.target) + "</td>"
+          + "<td>" + escapeHtml(item.message) + "</td>"
+          + "<td>" + escapeHtml(item.help) + "</td>"
+          + "</tr>";
+      }).join("");
+
+      const iso = new Date().toISOString();
+      lastRunText.textContent = "Letzte Vollpruefung: " + iso;
+
+      const lines = [];
+      lines.push("# GVS Ernstfall Report");
+      lines.push("timestamp=" + iso);
+      lines.push("total=" + counters.total + " ok=" + counters.ok + " warn=" + counters.warn + " error=" + counters.error);
+      lines.push("");
+      sorted.forEach((item, index) => {
+        lines.push((index + 1) + ". [" + item.severity.toUpperCase() + "] " + item.code + " | " + item.target);
+        lines.push("   msg: " + item.message);
+        lines.push("   help: " + item.help);
+      });
+
+      const checklist = sorted
+        .filter((item) => item.severity !== "ok")
+        .map((item, index) => (index + 1) + ". " + item.target + " -> " + item.help)
+        .join("\n");
+
+      const scriptLines = [];
+      scriptLines.push("# PowerShell-Pruefgrundlage (lesbar)");
+      scriptLines.push("# Hinweis: Dies ist eine Korrekturhilfe fuer manuelle Nacharbeit.");
+      scriptLines.push("$urls = @(");
+      requiredUrls.forEach((url) => scriptLines.push("  \"" + url + "\""));
+      scriptLines.push(")");
+      scriptLines.push("foreach ($url in $urls) {");
+      scriptLines.push("  try { $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5; Write-Host \"OK $($r.StatusCode) $url\" }");
+      scriptLines.push("  catch { Write-Host \"FAIL $url\" }");
+      scriptLines.push("}");
+      scriptLines.push("");
+      scriptLines.push("# Offene Punkte");
+      scriptLines.push(checklist || "Keine offenen Punkte.");
+
+      state.reportText = lines.join("\n");
+      state.reportJson = JSON.stringify({
+        generated_at: iso,
+        counters,
+        findings: sorted
+      }, null, 2);
+      state.checklist = checklist || "Keine offenen Punkte.";
+      state.lastRunAt = iso;
+      scriptBox.textContent = scriptLines.join("\n");
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function download(filename, content, contentType) {
+      const blob = new Blob([content], { type: contentType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    async function runFullCheck() {
+      state.findings = [];
+      for (const url of requiredUrls) {
+        await checkUrl(url);
+      }
+      await checkDb();
+      renderFindings();
+    }
+
+    async function copyChecklist() {
+      const content = state.checklist || "Keine offenen Punkte.";
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(content);
+        return;
+      }
+      const ta = document.createElement("textarea");
+      ta.value = content;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+
+    document.getElementById("runChecks").addEventListener("click", runFullCheck);
+    document.getElementById("exportTxt").addEventListener("click", () => {
+      download("gvs-ernstfall-report.txt", state.reportText || "Noch kein Report vorhanden.", "text/plain;charset=utf-8");
+    });
+    document.getElementById("exportJson").addEventListener("click", () => {
+      download("gvs-ernstfall-report.json", state.reportJson || "{}", "application/json;charset=utf-8");
+    });
+    document.getElementById("copyChecklist").addEventListener("click", copyChecklist);
+  </script>
+</body>
+</html>

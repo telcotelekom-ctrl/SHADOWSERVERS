@@ -21,6 +21,44 @@
 | Wo ist die visuelle Oberfläche? | `vos.html` (+ `shadow/vos-kernel.js`) und `usup.html` |
 | Wo liegt der Zustand? | `shadow/wabe-matrix.js` (Zellen) + localStorage (`shadow/storage.js`) |
 | Braucht es einen Server? | Nein. `server/` (Node) ist **optional/lokal**, nicht der Kern. |
+| Wo ist die UVR-Engine? | `shadow/uvr-runtime.js` (`UniversalVisualRuntime`, `createUvrManifest`) |
+| Wo liegt das UVR-Manifest? | `shadow/portal.vos.json` (`.vos`-Format, `myopenai.portal`) |
+
+---
+
+## 0b. UNIVERSAL VISUAL RUNTIME (UVR) — PRODUKTIVSOFTWARE
+
+Grundsatz: **„Alles ist ein Objekt. Alles ist eine Regel. Alles andere erzeugt die Runtime."**
+Kein Demo — echte Fabrikations-Standardsoftware.
+
+- **Engine:** `shadow/uvr-runtime.js` exportiert `UniversalVisualRuntime`, `createUvrManifest()`,
+  `createUvrSummary()` und `adaptWordPressToUVR()`.
+- **Modell:** Objekt + Regel + Szene. `loadFromManifest()` → `load()` → `present(container, sceneId)`.
+- **Renderer:** automatische Auswahl in `selectRenderer()` — `html` bei vorhandenem DOM,
+  sonst `text` (Node/Fallback). Hardware- und OS-übergreifend kompatibel.
+- **Manifest:** `shadow/portal.vos.json` (`.vos`), Manifest `myopenai.portal`,
+  Hardware-Targets desktop/mobile/tv/terminal/vr/legacy.
+- **Portal-Integration:** Sektion „UVR Runtime" in `index.html` (`initUvrRuntime()`) mit echtem
+  `.vos`-Import (FileReader → `loadFromManifest`) und `.vos`-Export (Blob-Download des Manifests).
+- **Vision-Seite:** `final-cut.html` mit funktionierender Wertfunktion
+  `calculateValue(secondsSince2025, multiplier=0.1)`.
+- **Gesamtsystem:** `finaly-all.html` (FINALY ALL) — Bildung, Inventur, Sprachen, Altersgruppen,
+  Curriculum-Generator, JSON-Datenmodell.
+- **Developer-Bereich:** `developer-universum.html` (SERVICESOFTWARE TEL1.NL) — 28 Sprachen
+  level-schaltbar (Dummy→Experte) mit `localStorage`-Profil (Name + Level), mehrsprachiger
+  Live-Playground (JavaScript echt via `new Function`-Sandbox, andere Sprachen als
+  Ausgabe-Simulation), Konzept-Übersetzer, Snippet-Bibliothek (Clipboard-Kopie),
+  Developer-Curriculum (level-gerechter Lernpfad) und Fortschritts-Tracker
+  (`devUniverse.progress`, Fortschrittsbalken).
+- **Developer-Manifest:** `developer-manifest.html` — Präambel, 8 Artikel, Code-Standard,
+  JSON-Modell, signiert von Raymond Demitrio Tel.
+- **Universale Suche:** `suche.html` + `search/search-engine.js` + `search/search-index.json` —
+  client-seitige Suchmaschine über die gesamte Struktur (42 Dokumente). Web-Worker-Pipeline via
+  Blob + `importScripts` (off-main-thread, mit Hauptthread-Fallback), Fuzzy-Matching (Levenshtein),
+  Vorhersage/Autocomplete, Synonyme/Bezugsworte, Kategorie-Filter, „Meinten Sie …?"-Korrektur und
+  Fallback-Anfrageformular (`localStorage: search.requests`). **Skalierung:** kein zentraler
+  DB-Server → kein Flaschenhals; CDN liefert den statischen Index, jeder Browser ist ein autonomer
+  Such-Knoten → unbegrenzt horizontal skalierbar bei Massenlast.
 
 ---
 

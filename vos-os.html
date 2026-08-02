@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VOS OS · Das digitale Schweizer Taschenmesser</title>
+<meta name="description" content="VOS OS — Windows-95-Hommage mit Notizbuch, Werkzeugkasten, App Maker, System-Kommandozentrale, Service-Store & bunq-Kasse. Von Raymond Demitrio Tel · TTT-SYSTEMS." />
+<style>
+  :root{
+    --w95-bg:#008080; --w95-face:#c0c0c0; --w95-shadow:#808080; --w95-dark:#404040;
+    --w95-light:#ffffff; --w95-blue:#000080; --w95-text:#000; --w95-title:#fff;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; height:100%; font-family:"Segoe UI","Tahoma",sans-serif; }
+  body{ background:var(--w95-bg); overflow:hidden; user-select:none; -webkit-user-select:none; }
+
+  /* ============ BOOT SPLASH ============ */
+  #boot{ position:fixed; inset:0; background:#000; color:#c0c0c0; z-index:9999;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    font-family:"Courier New",monospace; transition:opacity .6s; }
+  #boot .logo{ font-size:2.4rem; font-weight:900; letter-spacing:2px;
+    background:linear-gradient(90deg,#00c8c8,#7affff,#00c8c8); -webkit-background-clip:text;
+    background-clip:text; color:transparent; margin-bottom:6px; }
+  #boot .sub{ color:#6cc; font-size:.9rem; margin-bottom:26px; }
+  #boot .bar{ width:280px; height:18px; border:2px solid #444; background:#111; padding:2px; }
+  #boot .fill{ height:100%; width:0; background:repeating-linear-gradient(90deg,#00a0a0 0 10px,#008080 10px 14px); transition:width .1s; }
+  #boot .lines{ margin-top:18px; font-size:.72rem; color:#4a8; height:60px; text-align:left; width:280px; }
+
+  /* ============ DESKTOP ============ */
+  #desktop{ position:fixed; inset:0 0 34px 0; padding:14px; display:flex; flex-direction:column;
+    flex-wrap:wrap; align-content:flex-start; gap:4px; }
+  .icon{ width:84px; padding:8px 4px; text-align:center; cursor:pointer; border:1px solid transparent; border-radius:3px; }
+  .icon:hover{ background:rgba(0,0,128,.25); border-color:rgba(255,255,255,.35); }
+  .icon .em{ font-size:2rem; display:block; filter:drop-shadow(1px 1px 0 rgba(0,0,0,.5)); }
+  .icon .lbl{ color:#fff; font-size:.74rem; margin-top:4px; text-shadow:1px 1px 1px #000; word-wrap:break-word; }
+
+  /* ============ WINDOWS ============ */
+  .win{ position:absolute; min-width:280px; background:var(--w95-face);
+    border-top:2px solid var(--w95-light); border-left:2px solid var(--w95-light);
+    border-right:2px solid var(--w95-dark); border-bottom:2px solid var(--w95-dark);
+    box-shadow:2px 2px 0 rgba(0,0,0,.4); display:none; flex-direction:column; z-index:10; }
+  .win.open{ display:flex; }
+  .win .title{ background:linear-gradient(90deg,var(--w95-blue),#1084d0); color:var(--w95-title);
+    font-weight:700; font-size:.82rem; padding:3px 4px 3px 6px; display:flex; align-items:center;
+    justify-content:space-between; cursor:move; }
+  .win .title .t{ display:flex; align-items:center; gap:6px; }
+  .win .title .btns{ display:flex; gap:2px; }
+  .win .title button{ width:18px; height:16px; border-top:1px solid var(--w95-light);
+    border-left:1px solid var(--w95-light); border-right:1px solid var(--w95-dark);
+    border-bottom:1px solid var(--w95-dark); background:var(--w95-face); color:#000;
+    font-size:.7rem; font-weight:900; cursor:pointer; line-height:1; padding:0; }
+  .win .body{ padding:10px; overflow:auto; font-size:.84rem; color:#000; background:var(--w95-face); }
+  .win .body.pad0{ padding:0; }
+
+  /* W95 form controls */
+  .field{ width:100%; padding:5px 7px; border-top:2px solid var(--w95-shadow);
+    border-left:2px solid var(--w95-shadow); border-right:2px solid var(--w95-light);
+    border-bottom:2px solid var(--w95-light); background:#fff; color:#000; font-family:inherit;
+    font-size:.82rem; }
+  textarea.field{ resize:vertical; font-family:"Consolas","Courier New",monospace; }
+  .btn{ padding:5px 12px; cursor:pointer; background:var(--w95-face); color:#000; font-family:inherit;
+    font-size:.8rem; font-weight:600; border-top:2px solid var(--w95-light);
+    border-left:2px solid var(--w95-light); border-right:2px solid var(--w95-dark);
+    border-bottom:2px solid var(--w95-dark); }
+  .btn:active{ border-top:2px solid var(--w95-dark); border-left:2px solid var(--w95-dark);
+    border-right:2px solid var(--w95-light); border-bottom:2px solid var(--w95-light); }
+  .btn.pri{ background:#000080; color:#fff; }
+  .row{ display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin:6px 0; }
+  label.lb{ font-size:.78rem; font-weight:700; display:block; margin:8px 0 3px; }
+  .out{ font-family:"Consolas","Courier New",monospace; font-size:.78rem; background:#fff;
+    border:2px inset #808080; padding:6px; white-space:pre-wrap; word-break:break-all; min-height:34px; }
+  .tabs{ display:flex; flex-wrap:wrap; gap:2px; background:#c0c0c0; padding:4px 4px 0; }
+  .tab{ padding:5px 10px; cursor:pointer; font-size:.76rem; background:var(--w95-face);
+    border-top:2px solid var(--w95-light); border-left:2px solid var(--w95-light);
+    border-right:2px solid var(--w95-dark); border-bottom:none; }
+  .tab.active{ background:#dcdcdc; font-weight:700; position:relative; top:1px; }
+  .panel{ display:none; padding:10px; background:#dcdcdc; }
+  .panel.active{ display:block; }
+  .warn{ background:#ffffcc; border:2px solid #cc0000; color:#800; padding:8px;
+    font-size:.78rem; margin:8px 0; }
+  .note{ font-size:.72rem; color:#333; margin-top:4px; }
+  a{ color:#000080; }
+
+  /* ============ TASKBAR ============ */
+  #taskbar{ position:fixed; left:0; right:0; bottom:0; height:34px; background:var(--w95-face);
+    border-top:2px solid var(--w95-light); display:flex; align-items:center; gap:5px; padding:0 5px; z-index:5000; }
+  #startbtn{ display:flex; align-items:center; gap:6px; font-weight:800; font-size:.84rem;
+    padding:4px 10px; cursor:pointer; border-top:2px solid var(--w95-light);
+    border-left:2px solid var(--w95-light); border-right:2px solid var(--w95-dark);
+    border-bottom:2px solid var(--w95-dark); background:var(--w95-face); }
+  #startbtn.on{ border-top:2px solid var(--w95-dark); border-left:2px solid var(--w95-dark);
+    border-right:2px solid var(--w95-light); border-bottom:2px solid var(--w95-light); }
+  #tasklist{ flex:1; display:flex; gap:4px; overflow:hidden; }
+  .taskitem{ font-size:.76rem; padding:3px 10px; max-width:160px; overflow:hidden; white-space:nowrap;
+    text-overflow:ellipsis; cursor:pointer; border-top:2px solid var(--w95-light);
+    border-left:2px solid var(--w95-light); border-right:2px solid var(--w95-dark);
+    border-bottom:2px solid var(--w95-dark); background:var(--w95-face); }
+  .taskitem.active{ border-top:2px solid var(--w95-dark); border-left:2px solid var(--w95-dark);
+    border-right:2px solid var(--w95-light); border-bottom:2px solid var(--w95-light); background:#dcdcdc; }
+  #clock{ font-size:.78rem; padding:4px 8px; border:2px inset #808080; min-width:64px; text-align:center; }
+
+  /* ============ START MENU ============ */
+  #startmenu{ position:fixed; left:5px; bottom:36px; width:250px; background:var(--w95-face);
+    border-top:2px solid var(--w95-light); border-left:2px solid var(--w95-light);
+    border-right:2px solid var(--w95-dark); border-bottom:2px solid var(--w95-dark);
+    z-index:6000; display:none; }
+  #startmenu.open{ display:flex; }
+  #startmenu .side{ width:32px; background:linear-gradient(#000080,#1084d0); color:#fff;
+    writing-mode:vertical-rl; text-orientation:mixed; font-weight:900; font-size:1rem;
+    text-align:center; padding:8px 0; letter-spacing:2px; transform:rotate(180deg); }
+  #startmenu .items{ flex:1; padding:4px; }
+  .smi{ display:flex; align-items:center; gap:10px; padding:6px 8px; cursor:pointer; font-size:.84rem; }
+  .smi:hover{ background:#000080; color:#fff; }
+  .smi .em{ font-size:1.1rem; width:22px; text-align:center; }
+  .smsep{ height:1px; background:var(--w95-shadow); border-bottom:1px solid var(--w95-light); margin:4px 2px; }
+
+  /* store / bunq specifics */
+  .kasse{ background:linear-gradient(160deg,#0a3d2e,#062018); color:#d8ffe8; border-radius:6px; padding:14px; }
+  .kasse h3{ margin:0 0 8px; color:#5effa0; }
+  .amt-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:8px 0; }
+  .amt{ padding:10px 0; text-align:center; cursor:pointer; font-weight:800; border-radius:6px;
+    background:#0e5b41; color:#eafff3; border:1px solid #1c8a63; }
+  .amt.sel,.amt:hover{ background:#17c07f; color:#042; }
+  .paybtn{ display:block; width:100%; text-align:center; text-decoration:none; padding:13px;
+    border-radius:8px; font-weight:900; font-size:1rem; margin-top:10px;
+    background:linear-gradient(90deg,#17c07f,#5effa0); color:#042; }
+  .contact-card{ background:#fff; border:2px inset #808080; padding:10px; font-size:.8rem; line-height:1.6; }
+  .badge{ display:inline-block; background:#000080; color:#fff; font-size:.68rem; padding:2px 7px;
+    border-radius:3px; margin:2px 2px 0 0; }
+  .book h4{ margin:12px 0 4px; color:#000080; }
+  .book p{ margin:4px 0; font-size:.8rem; line-height:1.55; }
+  .book pre{ background:#f4f4f4; border:1px solid #aaa; padding:8px; font-size:.72rem; overflow:auto; }
+  .arch{ display:flex; flex-direction:column; gap:3px; margin:6px 0; }
+  .arch .layer{ padding:7px 10px; color:#fff; font-size:.78rem; font-weight:700; border-radius:3px; }
+
+  /* ============ LOGO-PHASE (Kugel/Kernel nach Win95-Start) ============ */
+  #logoPhase{ position:fixed; inset:0; z-index:9998; display:none; flex-direction:column;
+    align-items:center; justify-content:center; opacity:0; transition:opacity .8s;
+    background:radial-gradient(circle at 50% 45%, #04141c 0%, #000 70%); }
+  #logoPhase.show{ display:flex; opacity:1; }
+  .lp-orb{ width:240px; height:240px; }
+  .lp-cap{ margin-top:24px; color:#7affff; font-family:"Courier New",monospace; letter-spacing:2px;
+    font-size:.92rem; min-height:20px; text-shadow:0 0 8px rgba(0,224,224,.6); }
+  .lp-cap b{ color:#fff3c4; }
+
+  /* Kugel/Sphere SVG (transparent, drehend, rotierender Kern) */
+  .vos-sphere{ width:100%; height:100%; overflow:visible; }
+  .vos-sphere .outline{ fill:rgba(0,224,224,.04); stroke:#00e0e0; stroke-width:1; }
+  .vos-sphere .ring{ fill:none; stroke:#39f6ff; stroke-width:1; opacity:.5; }
+  .vos-sphere .spin{ transform-origin:50% 50%; animation:sph-spin 9s linear infinite; }
+  .vos-sphere .spin2{ transform-origin:50% 50%; animation:sph-spin 6s linear infinite reverse; }
+  .vos-sphere .core{ transform-origin:50% 50%; animation:core-spin 3.2s linear infinite; }
+  .vos-sphere .halo{ transform-origin:50% 50%; animation:halo-pulse 2.6s ease-in-out infinite; }
+  @keyframes sph-spin{ to{ transform:rotate(360deg);} }
+  @keyframes core-spin{ to{ transform:rotate(-360deg);} }
+  @keyframes halo-pulse{ 0%,100%{ opacity:.35; } 50%{ opacity:.9; } }
+
+  /* Schwebende Desktop-Kugel */
+  #deskSphere{ position:fixed; right:44px; bottom:74px; width:150px; height:150px; z-index:3;
+    pointer-events:none; display:none; filter:drop-shadow(0 0 18px rgba(0,224,224,.5));
+    animation:sph-float 6s ease-in-out infinite; }
+  #deskSphere.show{ display:block; }
+  @keyframes sph-float{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-16px);} }
+
+  /* Systemsteuerung — Theme-Voransicht */
+  .thm-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:8px 0; }
+  .thm{ cursor:pointer; border:2px solid #808080; overflow:hidden; }
+  .thm .pv{ height:50px; }
+  .thm .nm{ font-size:.7rem; padding:3px 4px; background:#c0c0c0; text-align:center; }
+  .thm.sel{ border-color:#000080; box-shadow:0 0 0 2px #1084d0 inset; }
+  .slider{ width:100%; }
+
+  /* Gauges (System-Analyse) */
+  .gauge-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin:6px 0; }
+  .gauge{ background:#001; border:2px inset #808080; padding:8px; text-align:center;
+    color:#0f0; font-family:"Courier New",monospace; }
+  .gauge .val{ font-size:1.3rem; font-weight:900; }
+  .gauge .lbl2{ font-size:.66rem; color:#3fa; }
+  .bar-meter{ height:9px; background:#111; border:1px solid #333; margin-top:5px; }
+  .bar-meter i{ display:block; height:100%; background:linear-gradient(90deg,#0f0,#3f6); width:0; }
+
+  /* Oszilloskop */
+  .scope-canvas{ width:100%; height:200px; background:#001208; border:2px inset #808080; display:block; }
+
+  /* Story / Bericht */
+  .story{ background:#fff; border:2px inset #808080; padding:12px; font-size:.84rem;
+    line-height:1.6; max-height:300px; overflow:auto; }
+  .story h4{ color:#000080; margin:10px 0 4px; }
+  .frame{ width:100%; height:340px; border:2px inset #808080; background:#fff; }
+</style>
+
+</head>
+<body>
+
+<!-- BOOT -->
+<div id="boot">
+  <div class="logo">VOS&nbsp;OS</div>
+  <div class="sub">Verstehen durch Visualisierung · v9.5</div>
+  <div class="bar"><div class="fill" id="bootFill"></div></div>
+  <div class="lines" id="bootLines"></div>
+</div>
+
+<!-- DESKTOP -->
+<div id="desktop"></div>
+
+<!-- LOGO-PHASE (erscheint NACH der natürlichen Win95-Startsequenz) -->
+<div id="logoPhase"><div class="lp-orb" id="lpOrb"></div><div class="lp-cap" id="lpCap"></div></div>
+
+<!-- Schwebende Desktop-Kugel (Kernel), per Einstellungen steuerbar -->
+<div id="deskSphere"></div>
+
+<!-- TASKBAR -->
+<div id="taskbar">
+  <div id="startbtn"><span style="font-size:1rem">🪟</span> Start</div>
+  <div id="tasklist"></div>
+  <div id="clock">--:--</div>
+</div>
+
+<!-- START MENU -->
+<div id="startmenu">
+  <div class="side">VOS&nbsp;OS</div>
+  <div class="items" id="startItems"></div>
+</div>
+
+<script>
+"use strict";
+/* =================================================================
+   VOS OS — Client-only Windows-95-Hommage · Schweizer Taschenmesser
+   Autor: Raymond Demitrio Tel · TEL1.NL · TTT-SYSTEMS
+   Alles läuft im Browser (file:// & GitHub Pages). Keine Installation.
+   ================================================================= */
+
+/* ---------- App-Definitionen ---------- */
+var APPS = [
+  { id:"settings",icon:"⚙️", name:"Einstellungen",         w:560, h:500 },
+  { id:"notiz",  icon:"📝", name:"Notizbuch",              w:460, h:420 },
+  { id:"tools",  icon:"🧰", name:"Werkzeugkasten",         w:520, h:470 },
+  { id:"calc",   icon:"🧮", name:"Rechner & Monteur",      w:360, h:480 },
+  { id:"elab",   icon:"⚡", name:"Elektronik-Labor",       w:520, h:500 },
+  { id:"scope",  icon:"🔬", name:"Oszilloskop",            w:560, h:440 },
+  { id:"sysinfo",icon:"🖥️", name:"System-Analyse",         w:560, h:520 },
+  { id:"maker",  icon:"🛠️", name:"App Maker",              w:640, h:520 },
+  { id:"gomaker",icon:"🐹", name:"Go App Maker",           w:640, h:520 },
+  { id:"appstore",icon:"🛍️",name:"App Store (EOS)",        w:560, h:520 },
+  { id:"studio", icon:"🎬", name:"Media-Studio",           w:640, h:540 },
+  { id:"office", icon:"📄", name:"Office-Suite",           w:640, h:540 },
+  { id:"qr",     icon:"▦",  name:"QR-Code Generator",      w:440, h:500 },
+  { id:"clock",  icon:"🕐", name:"Uhren & Zeit",           w:520, h:500 },
+  { id:"wallet", icon:"🦊", name:"Wallet & Bank",          w:520, h:520 },
+  { id:"cmd",    icon:"💻", name:"System-Kommandozentrale",w:600, h:500 },
+  { id:"usb",    icon:"💾", name:"USB-Boot-Kit",           w:560, h:500 },
+  { id:"browser",icon:"🌐", name:"Web-Browser",            w:640, h:520 },
+  { id:"media",  icon:"🎵", name:"Multimedia",             w:540, h:480 },
+  { id:"voice",  icon:"🎤", name:"Sprachsteuerung",        w:460, h:420 },
+  { id:"api",    icon:"🔑", name:"API & Tokens",           w:540, h:480 },
+  { id:"manifest",icon:"📜",name:"Manifest & Denker",      w:560, h:500 },
+  { id:"memorial",icon:"🕯️",name:"Memorial",              w:460, h:460 },
+  { id:"fbreport",icon:"📘",name:"FB-Bericht (offline)",   w:520, h:500 },
+  { id:"inspire",icon:"💡", name:"db.com Inspiration",     w:500, h:460 },
+  { id:"w95hist",icon:"🕹️", name:"Windows-95-Geschichte",  w:560, h:500 },
+  { id:"xmas",   icon:"🎄", name:"Kindergeschichte",       w:520, h:480 },
+  { id:"store",  icon:"🏪", name:"Service-Store & bunq",   w:520, h:560 },
+  { id:"book",   icon:"📖", name:"Systembuch (VOS OS)",    w:600, h:540 },
+  { id:"about",  icon:"ℹ️", name:"Über VOS OS",            w:420, h:360 }
+];
+
+var Z = 10;
+var winState = {};
+
+/* ---------- Fenster erstellen/öffnen ---------- */
+function openApp(id){
+  var app = APPS.find(function(a){ return a.id===id; });
+  if (!app) return;
+  var w = document.getElementById("win-"+id);
+  if (!w){
+    w = document.createElement("div");
+    w.className = "win"; w.id = "win-"+id;
+    w.style.width = app.w+"px";
+    var left = 40 + (Object.keys(winState).length*26)%260;
+    var top  = 30 + (Object.keys(winState).length*22)%160;
+    w.style.left = left+"px"; w.style.top = top+"px";
+    w.innerHTML =
+      '<div class="title" data-drag="'+id+'"><span class="t">'+app.icon+' '+app.name+'</span>'+
+      '<span class="btns"><button data-min="'+id+'">_</button><button data-close="'+id+'">✕</button></span></div>'+
+      '<div class="body" id="body-'+id+'" style="max-height:'+app.h+'px"></div>';
+    document.body.appendChild(w);
+    document.getElementById("body-"+id).innerHTML = RENDER[id] ? RENDER[id]() : "";
+    if (INIT[id]) INIT[id]();
+    makeDraggable(w, w.querySelector(".title"));
+    winState[id] = true;
+    addTask(app);
+  }
+  w.classList.add("open");
+  focusWin(w, id);
+  setTaskActive(id);
+}
+function focusWin(w, id){ Z++; w.style.zIndex = Z; }
+function closeApp(id){
+  var w = document.getElementById("win-"+id);
+  if (w){ w.remove(); delete winState[id]; removeTask(id); }
+}
+function minApp(id){
+  var w = document.getElementById("win-"+id);
+  if (w){ w.classList.remove("open"); setTaskActive(null); }
+}
+
+/* ---------- Taskbar ---------- */
+function addTask(app){
+  if (document.getElementById("task-"+app.id)) return;
+  var t = document.createElement("div");
+  t.className = "taskitem active"; t.id = "task-"+app.id;
+  t.innerHTML = app.icon+" "+app.name;
+  t.onclick = function(){
+    var w = document.getElementById("win-"+app.id);
+    if (w.classList.contains("open") && +w.style.zIndex===Z){ minApp(app.id); }
+    else { w.classList.add("open"); focusWin(w, app.id); setTaskActive(app.id); }
+  };
+  document.getElementById("tasklist").appendChild(t);
+}
+function removeTask(id){ var t=document.getElementById("task-"+id); if(t) t.remove(); }
+function setTaskActive(id){
+  document.querySelectorAll(".taskitem").forEach(function(t){
+    t.classList.toggle("active", t.id==="task-"+id);
+  });
+}
+
+/* ---------- Draggable ---------- */
+function makeDraggable(win, handle){
+  var sx,sy,ox,oy,drag=false;
+  handle.addEventListener("mousedown", function(e){
+    if (e.target.tagName==="BUTTON") return;
+    drag=true; sx=e.clientX; sy=e.clientY;
+    ox=parseInt(win.style.left); oy=parseInt(win.style.top);
+    Z++; win.style.zIndex=Z; e.preventDefault();
+  });
+  document.addEventListener("mousemove", function(e){
+    if(!drag) return;
+    win.style.left=Math.max(0,ox+e.clientX-sx)+"px";
+    win.style.top=Math.max(0,oy+e.clientY-sy)+"px";
+  });
+  document.addEventListener("mouseup", function(){ drag=false; });
+  win.addEventListener("mousedown", function(){ Z++; win.style.zIndex=Z; });
+}
+
+/* =================================================================
+   RENDER: HTML pro App
+   ================================================================= */
+var RENDER = {};
+var INIT = {};
+
+/* ---- NOTIZBUCH ---- */
+RENDER.notiz = function(){ return ''+
+  '<div class="row"><input id="nzTitle" class="field" placeholder="Titel der Notiz" style="flex:1">'+
+  '<button class="btn pri" id="nzNew">➕ Neu</button></div>'+
+  '<textarea id="nzBody" class="field" rows="8" placeholder="Schreib hier … (wird automatisch lokal gespeichert)"></textarea>'+
+  '<div class="row"><button class="btn" id="nzSave">💾 Speichern</button>'+
+  '<button class="btn" id="nzDel">🗑️ Löschen</button>'+
+  '<button class="btn" id="nzExport">⬇️ Als .txt</button></div>'+
+  '<label class="lb">Gespeicherte Notizen</label>'+
+  '<select id="nzList" class="field" size="5" style="height:auto"></select>'+
+  '<div class="note">Speicherung erfolgt lokal in deinem Browser (localStorage).</div>';
+};
+INIT.notiz = function(){
+  var KEY="vos.notes";
+  var load=function(){ try{return JSON.parse(localStorage.getItem(KEY))||[];}catch(e){return[];} };
+  var save=function(a){ localStorage.setItem(KEY, JSON.stringify(a)); };
+  var cur=-1;
+  var $=function(id){return document.getElementById(id);};
+  function refresh(){
+    var a=load(), sel=$("nzList"); sel.innerHTML="";
+    a.forEach(function(n,i){ var o=document.createElement("option"); o.value=i;
+      o.textContent=(n.title||"(ohne Titel)")+" · "+n.date; sel.appendChild(o); });
+  }
+  $("nzNew").onclick=function(){ cur=-1; $("nzTitle").value=""; $("nzBody").value=""; };
+  $("nzSave").onclick=function(){
+    var a=load(); var n={title:$("nzTitle").value, body:$("nzBody").value, date:new Date().toLocaleDateString()};
+    if(cur>=0) a[cur]=n; else a.push(n);
+    save(a); refresh();
+  };
+  $("nzDel").onclick=function(){ var a=load(); if(cur>=0){ a.splice(cur,1); save(a); cur=-1; $("nzTitle").value=""; $("nzBody").value=""; refresh(); } };
+  $("nzExport").onclick=function(){ download(($("nzTitle").value||"notiz")+".txt", $("nzBody").value); };
+  $("nzList").onchange=function(){ var a=load(); cur=+this.value; if(a[cur]){ $("nzTitle").value=a[cur].title; $("nzBody").value=a[cur].body; } };
+  $("nzBody").oninput=function(){ if(cur>=0){ var a=load(); a[cur]={title:$("nzTitle").value,body:$("nzBody").value,date:a[cur].date}; save(a);} };
+  refresh();
+};
+
+/* ---- WERKZEUGKASTEN (tabbed) ---- */
+RENDER.tools = function(){ return ''+
+  '<div class="tabs" id="twTabs">'+
+    '<div class="tab active" data-tab="b64">Base64</div>'+
+    '<div class="tab" data-tab="hash">Hash</div>'+
+    '<div class="tab" data-tab="json">JSON</div>'+
+    '<div class="tab" data-tab="text">Text</div>'+
+    '<div class="tab" data-tab="regex">Regex</div>'+
+    '<div class="tab" data-tab="num">Zahlen</div>'+
+    '<div class="tab" data-tab="color">Farbe</div>'+
+    '<div class="tab" data-tab="pass">Passwort</div>'+
+    '<div class="tab" data-tab="time">Zeit</div>'+
+  '</div>'+
+  /* Base64 */
+  '<div class="panel active" data-p="b64">'+
+    '<textarea id="b64in" class="field" rows="3" placeholder="Text oder Base64"></textarea>'+
+    '<div class="row"><button class="btn" id="b64enc">→ Kodieren</button><button class="btn" id="b64dec">← Dekodieren</button></div>'+
+    '<div class="out" id="b64out"></div></div>'+
+  /* Hash */
+  '<div class="panel" data-p="hash">'+
+    '<textarea id="hin" class="field" rows="3" placeholder="Text zum Hashen"></textarea>'+
+    '<div class="row"><button class="btn" id="hsha256">SHA-256</button><button class="btn" id="hsha512">SHA-512</button><button class="btn" id="hsha1">SHA-1</button></div>'+
+    '<div class="out" id="hout"></div></div>'+
+  /* JSON */
+  '<div class="panel" data-p="json">'+
+    '<textarea id="jin" class="field" rows="5" placeholder=\'{"json":true}\'></textarea>'+
+    '<div class="row"><button class="btn" id="jfmt">✨ Formatieren</button><button class="btn" id="jmin">📦 Minify</button><button class="btn" id="jval">✔ Prüfen</button></div>'+
+    '<div class="out" id="jout"></div></div>'+
+  /* Text */
+  '<div class="panel" data-p="text">'+
+    '<textarea id="tin" class="field" rows="4" placeholder="Text …"></textarea>'+
+    '<div class="row"><button class="btn" id="tup">GROSS</button><button class="btn" id="tlow">klein</button><button class="btn" id="tcap">Titel</button>'+
+    '<button class="btn" id="tsort">Sortieren</button><button class="btn" id="tdedup">Duplikate weg</button><button class="btn" id="trev">Umkehren</button></div>'+
+    '<div class="out" id="tstat"></div>'+
+    '<textarea id="tout" class="field" rows="4" readonly></textarea></div>'+
+  /* Regex */
+  '<div class="panel" data-p="regex">'+
+    '<input id="rpat" class="field" placeholder="Muster z. B. \\\\d+"><div class="row"><input id="rflags" class="field" placeholder="Flags: gi" style="max-width:90px"></div>'+
+    '<textarea id="rtext" class="field" rows="4" placeholder="Testtext"></textarea>'+
+    '<div class="row"><button class="btn" id="rrun">🔎 Treffer</button></div><div class="out" id="rout"></div></div>'+
+  /* Zahlen */
+  '<div class="panel" data-p="num">'+
+    '<label class="lb">Dezimal</label><input id="ndec" class="field" placeholder="255">'+
+    '<label class="lb">Hex</label><input id="nhex" class="field" placeholder="ff">'+
+    '<label class="lb">Binär</label><input id="nbin" class="field" placeholder="11111111">'+
+    '<label class="lb">Oktal</label><input id="noct" class="field" placeholder="377"></div>'+
+  /* Farbe */
+  '<div class="panel" data-p="color">'+
+    '<div class="row"><input type="color" id="cpick" value="#17c07f" style="width:60px;height:40px">'+
+    '<div class="out" id="cout" style="flex:1"></div></div></div>'+
+  /* Passwort */
+  '<div class="panel" data-p="pass">'+
+    '<div class="row"><label class="lb">Länge</label><input id="plen" class="field" type="number" value="20" style="max-width:80px">'+
+    '<button class="btn" id="pgen">🔐 Passwort</button><button class="btn" id="uuid">🆔 UUID</button></div>'+
+    '<div class="out" id="pout"></div><div class="note">Erzeugt mit crypto.getRandomValues() — kryptografisch sicher.</div></div>'+
+  /* Zeit */
+  '<div class="panel" data-p="time">'+
+    '<label class="lb">Unix-Zeitstempel (Sek.)</label><input id="tsin" class="field" placeholder="1700000000">'+
+    '<div class="row"><button class="btn" id="tsnow">Jetzt</button><button class="btn" id="tsconv">→ Datum</button></div>'+
+    '<div class="out" id="tsout"></div></div>';
+};
+INIT.tools = function(){
+  var $=function(id){return document.getElementById(id);};
+  // tabs
+  document.querySelectorAll('#twTabs .tab').forEach(function(tab){
+    tab.onclick=function(){
+      document.querySelectorAll('#twTabs .tab').forEach(function(t){t.classList.remove('active');});
+      document.querySelectorAll('#win-tools .panel').forEach(function(p){p.classList.remove('active');});
+      tab.classList.add('active');
+      document.querySelector('#win-tools .panel[data-p="'+tab.dataset.tab+'"]').classList.add('active');
+    };
+  });
+  // base64
+  $("b64enc").onclick=function(){ try{$("b64out").textContent=btoa(unescape(encodeURIComponent($("b64in").value)));}catch(e){$("b64out").textContent="Fehler: "+e.message;} };
+  $("b64dec").onclick=function(){ try{$("b64out").textContent=decodeURIComponent(escape(atob($("b64in").value.trim())));}catch(e){$("b64out").textContent="Kein gültiges Base64.";} };
+  // hash
+  function hash(algo){ var d=new TextEncoder().encode($("hin").value);
+    crypto.subtle.digest(algo,d).then(function(buf){
+      $("hout").textContent=algo+": "+[].map.call(new Uint8Array(buf),function(b){return b.toString(16).padStart(2,"0");}).join(""); }); }
+  $("hsha256").onclick=function(){hash("SHA-256");}; $("hsha512").onclick=function(){hash("SHA-512");}; $("hsha1").onclick=function(){hash("SHA-1");};
+  // json
+  $("jfmt").onclick=function(){ try{$("jout").textContent=JSON.stringify(JSON.parse($("jin").value),null,2);}catch(e){$("jout").textContent="✖ "+e.message;} };
+  $("jmin").onclick=function(){ try{$("jout").textContent=JSON.stringify(JSON.parse($("jin").value));}catch(e){$("jout").textContent="✖ "+e.message;} };
+  $("jval").onclick=function(){ try{JSON.parse($("jin").value);$("jout").textContent="✔ Gültiges JSON";}catch(e){$("jout").textContent="✖ "+e.message;} };
+  // text
+  function tset(v){ $("tout").value=v; stat(); }
+  function stat(){ var s=$("tin").value; $("tstat").textContent="Zeichen: "+s.length+" · Wörter: "+(s.trim()?s.trim().split(/\s+/).length:0)+" · Zeilen: "+s.split(/\n/).length; }
+  $("tin").oninput=stat;
+  $("tup").onclick=function(){tset($("tin").value.toUpperCase());};
+  $("tlow").onclick=function(){tset($("tin").value.toLowerCase());};
+  $("tcap").onclick=function(){tset($("tin").value.replace(/\w\S*/g,function(w){return w.charAt(0).toUpperCase()+w.slice(1).toLowerCase();}));};
+  $("tsort").onclick=function(){tset($("tin").value.split(/\n/).sort().join("\n"));};
+  $("tdedup").onclick=function(){tset(Array.from(new Set($("tin").value.split(/\n/))).join("\n"));};
+  $("trev").onclick=function(){tset($("tin").value.split("").reverse().join(""));};
+  // regex
+  $("rrun").onclick=function(){ try{ var re=new RegExp($("rpat").value,$("rflags").value||"g");
+      var m=$("rtext").value.match(re); $("rout").textContent=m?("Treffer ("+m.length+"):\n"+m.join("\n")):"Keine Treffer."; }
+    catch(e){$("rout").textContent="✖ "+e.message;} };
+  // num
+  function fromDec(v){ var n=parseInt(v,10); if(isNaN(n))return; $("nhex").value=n.toString(16); $("nbin").value=n.toString(2); $("noct").value=n.toString(8); }
+  $("ndec").oninput=function(){fromDec(this.value);};
+  $("nhex").oninput=function(){var n=parseInt(this.value,16); if(!isNaN(n)){$("ndec").value=n;$("nbin").value=n.toString(2);$("noct").value=n.toString(8);}};
+  $("nbin").oninput=function(){var n=parseInt(this.value,2); if(!isNaN(n)){$("ndec").value=n;$("nhex").value=n.toString(16);$("noct").value=n.toString(8);}};
+  $("noct").oninput=function(){var n=parseInt(this.value,8); if(!isNaN(n)){$("ndec").value=n;$("nhex").value=n.toString(16);$("nbin").value=n.toString(2);}};
+  // color
+  function col(){ var h=$("cpick").value; var r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);
+    $("cout").innerHTML="HEX: "+h+"<br>RGB: "+r+", "+g+", "+b+"<br><div style='height:30px;margin-top:4px;background:"+h+"'></div>"; }
+  $("cpick").oninput=col; col();
+  // pass
+  $("pgen").onclick=function(){ var len=Math.max(4,Math.min(128,+$("plen").value||20));
+    var chars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%&*?";
+    var a=new Uint32Array(len); crypto.getRandomValues(a);
+    $("pout").textContent=[].map.call(a,function(x){return chars[x%chars.length];}).join(""); };
+  $("uuid").onclick=function(){ $("pout").textContent = (crypto.randomUUID?crypto.randomUUID():"crypto.randomUUID nicht verfügbar"); };
+  // time
+  $("tsnow").onclick=function(){ $("tsin").value=Math.floor(Date.now()/1000); };
+  $("tsconv").onclick=function(){ var t=parseInt($("tsin").value,10); if(isNaN(t)){$("tsout").textContent="Ungültig.";return;}
+    $("tsout").textContent=new Date(t*1000).toString(); };
+};
+
+/* ---- RECHNER & MONTEUR ---- */
+RENDER.calc = function(){ return ''+
+  '<input id="calcDisp" class="field" style="text-align:right;font-size:1.2rem;font-family:monospace" value="0" readonly>'+
+  '<div id="calcPad" style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:6px"></div>'+
+  '<hr style="margin:12px 0">'+
+  '<label class="lb">⚡ Ohmsches Gesetz (2 Werte eingeben)</label>'+
+  '<div class="row"><input id="ohmU" class="field" placeholder="U (V)" style="width:70px">'+
+  '<input id="ohmI" class="field" placeholder="I (A)" style="width:70px">'+
+  '<input id="ohmR" class="field" placeholder="R (Ω)" style="width:70px">'+
+  '<button class="btn" id="ohmCalc">=</button></div><div class="out" id="ohmOut"></div>'+
+  '<label class="lb">📏 Einheiten-Umrechner</label>'+
+  '<div class="row"><input id="uval" class="field" placeholder="Wert" style="width:80px">'+
+  '<select id="ufrom" class="field" style="width:90px"></select>➜'+
+  '<select id="uto" class="field" style="width:90px"></select></div><div class="out" id="uout"></div>';
+};
+INIT.calc = function(){
+  var $=function(id){return document.getElementById(id);};
+  var disp=$("calcDisp"), expr="";
+  var keys=["7","8","9","/","4","5","6","*","1","2","3","-","0",".","=","+","C","(",")","%"];
+  var pad=$("calcPad");
+  keys.forEach(function(k){ var b=document.createElement("button"); b.className="btn"; b.textContent=k;
+    b.onclick=function(){
+      if(k==="C"){ expr=""; disp.value="0"; return; }
+      if(k==="="){ try{ if(/^[0-9+\-*/().%\s]+$/.test(expr)){ disp.value=String(Function('"use strict";return('+expr+')')()); expr=disp.value; } else disp.value="Err"; }catch(e){disp.value="Err";} return; }
+      expr+=k; disp.value=expr;
+    }; pad.appendChild(b); });
+  $("ohmCalc").onclick=function(){ var U=parseFloat($("ohmU").value),I=parseFloat($("ohmI").value),R=parseFloat($("ohmR").value),o=$("ohmOut");
+    if(!isNaN(U)&&!isNaN(I)){o.textContent="R = "+(U/I).toFixed(3)+" Ω · P = "+(U*I).toFixed(3)+" W";}
+    else if(!isNaN(U)&&!isNaN(R)){o.textContent="I = "+(U/R).toFixed(3)+" A · P = "+(U*U/R).toFixed(3)+" W";}
+    else if(!isNaN(I)&&!isNaN(R)){o.textContent="U = "+(I*R).toFixed(3)+" V · P = "+(I*I*R).toFixed(3)+" W";}
+    else o.textContent="Bitte genau 2 Werte eingeben."; };
+  var units={ "mm":1,"cm":10,"m":1000,"km":1000000,"inch":25.4,"ft":304.8 };
+  var f=$("ufrom"), t=$("uto");
+  Object.keys(units).forEach(function(u){ f.add(new Option(u,u)); t.add(new Option(u,u)); });
+  t.value="cm";
+  function conv(){ var v=parseFloat($("uval").value); if(isNaN(v)){$("uout").textContent="";return;}
+    $("uout").textContent=(v*units[f.value]/units[t.value]).toFixed(4)+" "+t.value; }
+  [$("uval"),f,t].forEach(function(el){ el.oninput=conv; el.onchange=conv; });
+};
+
+/* ---- APP MAKER ---- */
+RENDER.maker = function(){ return ''+
+  '<div class="row"><button class="btn pri" id="mkRun">▶ Ausführen</button>'+
+  '<button class="btn" id="mkTpl">📄 Vorlage</button>'+
+  '<button class="btn" id="mkDl">⬇️ Als .html speichern</button></div>'+
+  '<label class="lb">HTML / CSS / JS (alles in einem)</label>'+
+  '<textarea id="mkCode" class="field" rows="10" spellcheck="false"></textarea>'+
+  '<label class="lb">Live-Vorschau</label>'+
+  '<iframe id="mkFrame" style="width:100%;height:180px;border:2px inset #808080;background:#fff" sandbox="allow-scripts"></iframe>'+
+  '<div class="note">Die Vorschau läuft in einer abgeschotteten Sandbox (allow-scripts, ohne same-origin).</div>';
+};
+INIT.maker = function(){
+  var $=function(id){return document.getElementById(id);};
+  var tpl='<!DOCTYPE html>\n<html>\n<head><meta charset="utf-8"><style>\n  body{font-family:sans-serif;text-align:center;padding:20px;background:#111;color:#0f0}\n  button{padding:10px 18px;font-size:1rem;cursor:pointer}\n</style></head>\n<body>\n  <h1>Meine App</h1>\n  <button onclick="c.textContent=++n">Klick: <span id="c">0</span></button>\n  <script>var n=0,c=document.getElementById("c");<\/script>\n</body>\n</html>';
+  $("mkCode").value=tpl;
+  var run=function(){ $("mkFrame").srcdoc=$("mkCode").value; };
+  $("mkRun").onclick=run;
+  $("mkTpl").onclick=function(){ $("mkCode").value=tpl; run(); };
+  $("mkDl").onclick=function(){ download("meine-app.html",$("mkCode").value); };
+  run();
+};
+
+/* ---- SYSTEM-KOMMANDOZENTRALE ---- */
+RENDER.cmd = function(){ return ''+
+  '<div class="warn">⚠️ <b>Ehrliche Ansage:</b> Eine Webseite kann aus Sicherheitsgründen keinen USB-Stick formatieren oder Windows reparieren. '+
+  'Diese Zentrale <b>erzeugt für dich geprüfte, kopierbare Befehle</b>, die du selbst in einer <b>Administrator-PowerShell / CMD</b> ausführst. '+
+  'Befehle mit Datenverlust sind rot markiert — <b>doppelt prüfen!</b></div>'+
+  '<label class="lb">Aufgabe wählen</label>'+
+  '<select id="cmdSel" class="field"></select>'+
+  '<div class="row"><button class="btn pri" id="cmdCopy">📋 Kopieren</button></div>'+
+  '<div class="out" id="cmdOut" style="min-height:120px"></div>'+
+  '<div id="cmdDesc" class="note"></div>';
+};
+INIT.cmd = function(){
+  var $=function(id){return document.getElementById(id);};
+  var CMDS=[
+    { n:"🔌 USB-Stick formatieren (diskpart)", danger:true,
+      d:"Löscht ALLE Daten des gewählten Datenträgers. Prüfe die Disk-Nummer mit 'list disk' ganz genau!",
+      c:"# In Admin-PowerShell oder CMD:\ndiskpart\nlist disk\nselect disk X        # X = deine USB-Nummer (VORSICHT!)\nclean\ncreate partition primary\nformat fs=fat32 quick label=USB\nassign\nexit" },
+    { n:"🔌 USB formatieren mit Go-Programm", danger:true,
+      d:"Go-Vorlage, die diskpart automatisiert. Erst 'go mod init', dann 'go run .'. Ersetzt X durch die Disk-Nummer.",
+      c:'// main.go — USB-Formatierer (ruft diskpart auf). BUILD: go build -o usbformat.exe\npackage main\nimport ("fmt";"os";"os/exec";"strings")\nfunc main(){\n  fmt.Print("Disk-Nummer (list disk zuerst prüfen!): ")\n  var d string; fmt.Scanln(&d)\n  script := strings.Join([]string{\n    "select disk "+d, "clean",\n    "create partition primary",\n    "format fs=fat32 quick label=USB", "assign", "exit"}, "\\n")\n  f,_ := os.CreateTemp("", "dp*.txt"); f.WriteString(script); f.Close()\n  defer os.Remove(f.Name())\n  out,err := exec.Command("diskpart","/s",f.Name()).CombinedOutput()\n  fmt.Println(string(out)); if err!=nil{ fmt.Println("Fehler:",err) }\n}' },
+    { n:"🛠️ Windows-Systemdateien reparieren (SFC/DISM)", danger:false,
+      d:"Prüft und repariert beschädigte Systemdateien. Sicher — ändert keine Nutzerdaten.",
+      c:"# Admin-PowerShell:\nsfc /scannow\nDISM /Online /Cleanup-Image /CheckHealth\nDISM /Online /Cleanup-Image /ScanHealth\nDISM /Online /Cleanup-Image /RestoreHealth" },
+    { n:"💾 Datenträger auf Fehler prüfen (chkdsk)", danger:false,
+      d:"Prüft das Laufwerk C: beim nächsten Neustart auf Fehler.",
+      c:"# Admin-PowerShell:\nchkdsk C: /f /r" },
+    { n:"🌐 Netzwerk zurücksetzen", danger:false,
+      d:"Setzt TCP/IP und Winsock zurück, leert den DNS-Cache. Danach neu starten.",
+      c:"# Admin-PowerShell:\nipconfig /flushdns\nipconfig /release\nipconfig /renew\nnetsh winsock reset\nnetsh int ip reset" },
+    { n:"🧹 Temporäre Dateien löschen", danger:false,
+      d:"Leert den Temp-Ordner und startet die Datenträgerbereinigung.",
+      c:"# PowerShell:\nRemove-Item \"$env:TEMP\\*\" -Recurse -Force -ErrorAction SilentlyContinue\ncleanmgr /sagerun:1" },
+    { n:"📦 Go installieren (winget)", danger:false,
+      d:"Installiert die Go-Programmiersprache über den Windows Paketmanager.",
+      c:"winget install --id GoLang.Go -e" },
+    { n:"🚀 Neue Go-App starten", danger:false,
+      d:"Legt ein neues Go-Modul an und führt es aus.",
+      c:"mkdir meine-app; cd meine-app\ngo mod init meine-app\n'package main' , 'import \"fmt\"' , 'func main(){ fmt.Println(\"Hallo VOS OS\") }' | Set-Content main.go\ngo run ." },
+    { n:"🔋 Akku-Bericht erstellen", danger:false,
+      d:"Erzeugt einen HTML-Bericht über den Akkuzustand (Laptop).",
+      c:"powercfg /batteryreport /output \"$HOME\\battery.html\"" },
+    { n:"📋 Systeminfo anzeigen", danger:false,
+      d:"Zeigt Hardware- und Betriebssysteminformationen.",
+      c:"systeminfo\nGet-ComputerInfo | Select-Object CsName,WindowsProductName,OsArchitecture,CsTotalPhysicalMemory" }
+  ];
+  var sel=$("cmdSel");
+  CMDS.forEach(function(c,i){ sel.add(new Option(c.n,i)); });
+  function show(){ var c=CMDS[+sel.value]; var o=$("cmdOut");
+    o.textContent=c.c; o.style.borderColor=c.danger?"#cc0000":"#808080";
+    $("cmdDesc").innerHTML=(c.danger?'<span style="color:#c00;font-weight:800">⚠ DATENVERLUST MÖGLICH — </span>':'')+c.d; }
+  sel.onchange=show; show();
+  $("cmdCopy").onclick=function(){ var t=$("cmdOut").textContent;
+    if(navigator.clipboard) navigator.clipboard.writeText(t).then(function(){ $("cmdCopy").textContent="✓ Kopiert"; setTimeout(function(){$("cmdCopy").textContent="📋 Kopieren";},1200); });
+    else { var ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); } };
+};
+
+/* ---- SERVICE-STORE & bunq ---- */
+RENDER.store = function(){ return ''+
+  '<div class="contact-card">'+
+    '<b>TTT-SYSTEMS · Corp. Inc.</b><br>'+
+    'Raymond Demitrio Tel — Gründer & Systemarchitekt<br>'+
+    '<span class="badge">TEL1.NL</span><span class="badge">DigitalNotar.in</span><span class="badge">GentlyOverdone.com</span><br>'+
+    '📞 <a href="tel:+31613803782">.t.&amp;.t.+31-613-803-782.t.&amp;.t.</a><br>'+
+    '🏦 Bank &amp; Systems: bunq · Zahlungslink live<br>'+
+    '<span class="badge">Trust TM²</span><span class="badge">Service-by-Contract</span>'+
+  '</div>'+
+  '<div class="warn" style="background:#eef;border-color:#008">🛡️ <b>Verantwortung &amp; Garantie (Trust TM²):</b> '+
+    'Jede beauftragte Leistung wird nach bestem Wissen, dokumentiert und nachvollziehbar erbracht. '+
+    'Im Servicefall gilt Gewährleistung nach Vereinbarung (Service-by-Contract). Volles Systembuch im Fenster 📖.</div>'+
+  '<div class="kasse">'+
+    '<h3>💶 Automatische Kasse · bunq</h3>'+
+    '<div style="font-size:.8rem;opacity:.85">Zahle einen Betrag deiner Wahl für die Leistung — wie an einem Geldautomaten. Du bestimmst den Wert.</div>'+
+    '<div class="amt-grid" id="amtGrid"></div>'+
+    '<div class="row"><input id="amtFree" class="field" placeholder="Freier Betrag (€)" style="flex:1;color:#042"></div>'+
+    '<input id="payDesc" class="field" placeholder="Wofür? z. B. Service, Reparatur, Beratung" style="color:#042;margin-top:6px">'+
+    '<a class="paybtn" id="payBtn" href="https://bunq.me/RaymondDemitrioTel" target="_blank" rel="noopener noreferrer">💳 Mit bunq bezahlen</a>'+
+    '<div class="note" style="color:#bfe">Sichere Weiterleitung zu bunq.me · kein Betrag wird auf dieser Seite gespeichert.</div>'+
+  '</div>';
+};
+INIT.store = function(){
+  var $=function(id){return document.getElementById(id);};
+  var amounts=[5,10,25,50,100,150,250,500]; var sel=null;
+  var grid=$("amtGrid");
+  amounts.forEach(function(a){ var d=document.createElement("div"); d.className="amt"; d.textContent="€"+a;
+    d.onclick=function(){ document.querySelectorAll(".amt").forEach(function(x){x.classList.remove("sel");});
+      d.classList.add("sel"); sel=a; $("amtFree").value=""; build(); };
+    grid.appendChild(d); });
+  $("amtFree").oninput=function(){ document.querySelectorAll(".amt").forEach(function(x){x.classList.remove("sel");}); sel=null; build(); };
+  $("payDesc").oninput=build;
+  function build(){
+    var base="https://bunq.me/RaymondDemitrioTel";
+    var amt=sel || parseFloat($("amtFree").value);
+    var url=base;
+    if(amt && amt>0){ url=base+"/"+amt; var d=$("payDesc").value.trim(); if(d) url+="/"+encodeURIComponent(d); }
+    $("payBtn").href=url;
+  }
+  build();
+};
+
+/* ---- SYSTEMBUCH ---- */
+RENDER.book = function(){
+  var spec={
+    vos_os:{
+      prinzip:"Verstehen durch Visualisierung. Entwickeln durch Einfachheit. Wachsen durch Zusammenarbeit.",
+      autor:"Raymond Demitrio Tel · TTT-SYSTEMS",
+      schichten:["Hardware","Shadow Runtime","Graph Engine","Domain (Welten)","Visual OS"],
+      hub:"Developer Hub Cockpit",
+      ui:["Glass UI","Win95 Desktop"]
+    }
+  };
+  var layers=[
+    {n:"5 · Visual OS",c:"#7c3aed",d:"Glass UI, Win95-Desktop, Fenster, Sichtbarkeit"},
+    {n:"4 · Domain / Welten",c:"#2563eb",d:"Fachdomänen als begehbare Welten"},
+    {n:"3 · Graph Engine",c:"#0891b2",d:"Wissen & Beziehungen als Netz"},
+    {n:"2 · Shadow Runtime",c:"#059669",d:"Laufzeit, Prozesse, Zustände"},
+    {n:"1 · Hardware",c:"#4b5563",d:"Physische Basis"}
+  ];
+  var arch=layers.map(function(l){ return '<div class="layer" style="background:'+l.c+'"><b>'+l.n+'</b> — '+l.d+'</div>'; }).join("");
+  return '<div class="book">'+
+    '<h4>VOS OS — Das Systembuch</h4>'+
+    '<p><i>„'+spec.vos_os.prinzip+'"</i></p>'+
+    '<h4>Kapitel 1 · Was ist VOS OS?</h4>'+
+    '<p>VOS OS ist ein digitales Schweizer Taschenmesser im Browser — eine Hommage an Windows 95. '+
+    'Es vereint Werkzeuge für Entwickler, Monteure und Macher: Notizbuch, Werkzeugkasten, Rechner, App Maker, '+
+    'System-Kommandozentrale, Service-Store und dieses Buch. Alles läuft lokal, ohne Installation.</p>'+
+    '<h4>Kapitel 2 · Die Architektur (5 Schichten)</h4>'+
+    '<div class="arch">'+arch+'</div>'+
+    '<h4>Kapitel 3 · Der Developer Hub</h4>'+
+    '<p>Das Cockpit verbindet die Schichten. Verstehen durch Visualisierung: jede Domäne wird zu einer '+
+    'begehbaren „Welt", jedes Wissen zu einem Knoten im Graphen.</p>'+
+    '<h4>Kapitel 4 · Verantwortung &amp; Trust TM²</h4>'+
+    '<p>Leistungen werden dokumentiert und nachvollziehbar erbracht; Gewährleistung nach Vereinbarung '+
+    '(Service-by-Contract). Kontakt und Kasse findest du im Fenster 🏪.</p>'+
+    '<h4>Anhang · Systemmodell (JSON)</h4>'+
+    '<pre>'+JSON.stringify(spec,null,2)+'</pre>'+
+  '</div>';
+};
+
+/* ---- EINSTELLUNGEN (Systemsteuerung) ---- */
+RENDER.settings = function(){
+  var s=getSettings();
+  var thumbs=Object.keys(THEMES).map(function(k){
+    return '<div class="thm'+(s.theme===k?' sel':'')+'" data-theme="'+k+'"><div class="pv" style="background:'+THEMES[k].css+'"></div><div class="nm">'+THEMES[k].name+'</div></div>';
+  }).join("");
+  return ''+
+  '<div class="tabs" id="stTabs"><div class="tab active" data-tab="desk">Desktop</div><div class="tab" data-tab="kugel">Kugel/Kernel</div><div class="tab" data-tab="sys">System</div></div>'+
+  '<div class="panel active" data-p="desk">'+
+    '<label class="lb">Desktop-Hintergrund — Voransicht (Klick übernimmt sofort)</label>'+
+    '<div class="thm-grid" id="thmGrid">'+thumbs+'</div></div>'+
+  '<div class="panel" data-p="kugel">'+
+    '<label class="lb"><input type="checkbox" id="stSphere"'+(s.sphere?' checked':'')+'> Schwebende Kugel (Kernel) auf dem Desktop</label>'+
+    '<label class="lb">Transparenz der Kugel</label>'+
+    '<input type="range" min="0.15" max="1" step="0.05" value="'+s.opacity+'" id="stOpacity" class="slider">'+
+    '<div class="row"><button class="btn" id="stPreview">👁 Kugel kurz zeigen</button></div>'+
+    '<div class="note">Die Kugel dreht frei im Raum; der innere Kern (Kernel) rotiert gegenläufig — die Energie deiner Software.</div></div>'+
+  '<div class="panel" data-p="sys">'+
+    '<p style="font-size:.82rem">VOS OS · v9.6 — dein digitales Schweizer Taschenmesser. Alle Einstellungen werden lokal gespeichert (localStorage).</p>'+
+    '<div class="row"><button class="btn" id="stReset">↺ Auf Standard zurücksetzen</button></div></div>';
+};
+INIT.settings = function(){
+  var $=function(id){return document.getElementById(id);};
+  tabsWire("stTabs","win-settings");
+  var s=getSettings();
+  document.querySelectorAll("#thmGrid .thm").forEach(function(el){
+    el.onclick=function(){ document.querySelectorAll("#thmGrid .thm").forEach(function(x){x.classList.remove("sel");});
+      el.classList.add("sel"); s.theme=el.dataset.theme; saveSettings(s); applySettings(s); };
+  });
+  $("stSphere").onchange=function(){ s.sphere=this.checked; saveSettings(s); applySettings(s); };
+  $("stOpacity").oninput=function(){ s.opacity=parseFloat(this.value); saveSettings(s); applySettings(s); };
+  $("stPreview").onclick=function(){ var ds=$("deskSphere"); ds.classList.add("show"); setTimeout(function(){ applySettings(s); },2600); };
+  $("stReset").onclick=function(){ s={theme:"teal",sphere:true,opacity:0.8}; saveSettings(s); applySettings(s); closeApp("settings"); openApp("settings"); };
+};
+
+/* ---- MANIFEST & MANIFEST OF THINKERS ---- */
+RENDER.manifest = function(){ return ''+
+  '<div class="story"><h4>Das Manifest — Der Raum, der sich selbst eröffnet</h4>'+
+  '<p>Aus einem Prinzip wird ein Prozess. Aus einem Prozess eine Wirklichkeit, die sich erweitert, ohne ihren Ursprung zu verlieren. VOS OS ist dieser Raum: <b>Verstehen durch Visualisierung. Entwickeln durch Einfachheit. Wachsen durch Zusammenarbeit.</b></p>'+
+  '<h4>Manifest of the Thinking · Manifest der Denker</h4>'+
+  '<p><b>DE —</b> Wir sind jene, die denken. Nicht aus Gewohnheit, sondern aus Überzeugung. Nicht aus Angst, sondern aus Freiheit. Wir lassen uns nicht von jenen führen, die nicht denken. Ein wacher Geist prüft, bevor er glaubt — und glaubt, ohne aufzuhören zu prüfen.</p>'+
+  '<p><b>EN —</b> We are those who think. Not out of habit, but out of conviction. Not out of fear, but out of freedom. We do not let ourselves be led by those who do not think. A wakeful mind examines before it believes — and believes without ceasing to examine.</p>'+
+  '<p style="text-align:right;color:#000080"><b>— Raymond Demitrio Tel</b></p></div>'+
+  '<div class="row"><a class="btn" href="manifest.html" target="_blank" rel="noopener">📖 Volles Manifest &amp; lebendige Diskussion</a></div>';
+};
+
+/* ---- MEMORIAL ---- */
+RENDER.memorial = function(){ return ''+
+  '<div style="text-align:center;background:#000;color:#eee;padding:16px;border:2px inset #808080">'+
+    '<div style="font-size:2.6rem" class="halo">🕯️</div>'+
+    '<h3 style="color:#f4d67a;margin:6px 0">In Memoriam</h3>'+
+    '<p style="font-size:.82rem;color:#ccc">Zum Gedenken an alle, die uns vorangingen — Wegbereiter, Lehrer, geliebte Menschen. Ihr Licht bleibt im Code, in den Gedanken und in diesem Raum.</p>'+
+    '<div id="memNames" style="font-size:.82rem;color:#f4d67a;margin:8px 0"></div></div>'+
+  '<label class="lb">Einen Namen zum Gedenken hinzufügen</label>'+
+  '<div class="row"><input id="memIn" class="field" placeholder="Name" style="flex:1"><button class="btn pri" id="memAdd">🕊️ Gedenken</button></div>'+
+  '<div class="row"><a class="btn" href="manifest.html" target="_blank" rel="noopener">🕊️ Memorial-Seite (Schrein) öffnen</a></div>';
+};
+INIT.memorial = function(){
+  var KEY="vos.memorial", $=function(id){return document.getElementById(id);};
+  var load=function(){ try{return JSON.parse(localStorage.getItem(KEY))||[];}catch(e){return[];} };
+  function render(){ var a=load(); $("memNames").innerHTML=a.length?a.map(function(n){return "🕯️ "+esc(n);}).join("<br>"):"<span style='color:#888'>(noch keine Namen)</span>"; }
+  $("memAdd").onclick=function(){ var v=$("memIn").value.trim(); if(!v)return; var a=load(); a.push(v); localStorage.setItem(KEY,JSON.stringify(a)); $("memIn").value=""; render(); };
+  render();
+};
+
+/* ---- FACEBOOK-BERICHT (Offline-Spiegel) ---- */
+RENDER.fbreport = function(){ return ''+
+  '<div class="warn" style="background:#e7f0ff;border-color:#3b5998;color:#1a2b4a">📘 <b>Offline-Spiegel:</b> Facebook-Einbettungen brauchen Internet. Hier bleibt dein Bericht <b>dauerhaft offline</b> in der App — Text und Bild sind eingebacken (localStorage).</div>'+
+  '<label class="lb">Titel</label><input id="fbTitle" class="field" placeholder="Titel des Berichts">'+
+  '<label class="lb">Bericht (Text)</label><textarea id="fbText" class="field" rows="6" placeholder="Füge hier den Inhalt des Facebook-Berichts ein — er bleibt offline erhalten."></textarea>'+
+  '<label class="lb">Bild/Medium (wird als Offline-Kopie gespeichert)</label>'+
+  '<div class="row"><input type="file" id="fbImg" accept="image/*"><button class="btn" id="fbClearImg">Bild entfernen</button></div>'+
+  '<div id="fbPreview" style="margin-top:8px"></div>'+
+  '<div class="row"><button class="btn pri" id="fbSave">💾 Offline speichern</button><span class="note" id="fbStatus"></span></div>';
+};
+INIT.fbreport = function(){
+  var KEY="vos.fbreport", $=function(id){return document.getElementById(id);};
+  var data=(function(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} })();
+  if(data.title)$("fbTitle").value=data.title; if(data.text)$("fbText").value=data.text;
+  function preview(){ $("fbPreview").innerHTML=data.img?'<img src="'+data.img+'" style="max-width:100%;border:2px inset #808080">':""; }
+  preview();
+  $("fbImg").onchange=function(){ var f=this.files[0]; if(!f)return; var r=new FileReader(); r.onload=function(){ data.img=r.result; preview(); }; r.readAsDataURL(f); };
+  $("fbClearImg").onclick=function(){ data.img=null; preview(); };
+  $("fbSave").onclick=function(){ data.title=$("fbTitle").value; data.text=$("fbText").value; localStorage.setItem(KEY,JSON.stringify(data)); $("fbStatus").textContent="✓ Offline gespeichert"; setTimeout(function(){$("fbStatus").textContent="";},1500); };
+};
+
+/* ---- db.com INSPIRATION ---- */
+RENDER.inspire = function(){ return ''+
+  '<div class="note">Kleine Ideen-Datenbank (db.com) — Gedanken von Raymond Demitrio Tel + deine eigenen.</div>'+
+  '<div class="out" id="inspOut" style="min-height:70px;font-family:inherit;font-size:.9rem;background:#fff"></div>'+
+  '<div class="row"><button class="btn pri" id="inspNext">🎲 Nächster Gedanke</button></div>'+
+  '<label class="lb">Eigenen Gedanken hinzufügen</label>'+
+  '<div class="row"><input id="inspIn" class="field" placeholder="Dein Gedanke …" style="flex:1"><button class="btn" id="inspAdd">＋</button></div>';
+};
+INIT.inspire = function(){
+  var $=function(id){return document.getElementById(id);}, KEY="vos.inspire";
+  var seed=[
+    "Software ohne Hardware — wir fliegen durch die Luft.",
+    "Ein Programm ist wie Verdrahtung: jeder Weg führt dorthin zurück, wo er herkommt.",
+    "Verstehen durch Visualisierung. Entwickeln durch Einfachheit. Wachsen durch Zusammenarbeit.",
+    "Der Kern ist der Kernel — dort steckt die Energie.",
+    "Je komplizierter es wird, desto heißer wirst du dafür.",
+    "Es läuft auf jedem Gerät — auch auf dem uralten. Wichtige Arbeit braucht keinen teuren Rechner.",
+    "Nächstes Weihnachten der Computer — den USB-Stick hast du schon.",
+    "Nicht aus Angst, sondern aus Freiheit."
+  ];
+  var user=(function(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch(e){return[];}})();
+  function all(){ return seed.concat(user); }
+  function show(){ var a=all(); $("inspOut").textContent="„"+a[Math.floor(Math.random()*a.length)]+"“"; }
+  $("inspNext").onclick=show;
+  $("inspAdd").onclick=function(){ var v=$("inspIn").value.trim(); if(!v)return; user.push(v); localStorage.setItem(KEY,JSON.stringify(user)); $("inspIn").value=""; $("inspOut").textContent="„"+v+"“"; };
+  show();
+};
+
+/* ---- WINDOWS-95-GESCHICHTE ---- */
+RENDER.w95hist = function(){ return ''+
+  '<div class="story"><h4>Windows 95 — das Jahr, in dem alle ausflippten</h4>'+
+  '<p>1995. Der Start-Button erschien, Plug-and-Play, die Taskleiste, lange Dateinamen. Millionen standen Schlange. Es war das erste Programm, bei dem beinahe jeder sagte: „Das will ich haben."</p>'+
+  '<h4>Aus der db.com-Chronik · eine persönliche Erinnerung</h4>'+
+  '<p>„Ich war in der Umschulung als technischer Zeichner — Unix-Altsysteme auf großen Servern. Der Lehrer fuhr die Kiste um 6 Uhr hoch, damit wir um 8 Uhr arbeiten konnten. Gute Kiste, Unix, <b>ME10</b> — 2D, ideal zum Einsteigen. Später <b>AutoCAD Mechanical Desktop 13/14</b>. Schöne Programme — aber ohne Beruf, in dem man damit arbeitet, kommt man nicht heran."</p>'+
+  '<p>Heute genügt Technik, die Spaß macht — und ein USB-Stick, der überall läuft.</p></div>';
+};
+
+/* ---- KINDERGESCHICHTE ---- */
+RENDER.xmas = function(){ return ''+
+  '<div class="story" style="background:#fff8f0"><h4>🎄 Der Stick unterm Weihnachtsbaum</h4>'+
+  '<p>Du hast noch keinen Computer. Aber du weißt: <i>es läuft.</i> In deiner Hand liegt ein kleiner USB-Stick — und darauf ist alles. Ein ganzes System. Ein Schweizer Taschenmesser aus Software.</p>'+
+  '<p>Nächstes Jahr zu Weihnachten bekommst du den Computer dazu. Den Stick hast du schon. Du wartest — und dann steckst du ihn ein, ein Bildschirm, eine Tastatur, und los geht es.</p>'+
+  '<p>Es läuft überall. Auch auf alten Geräten, auch in Ländern, wo Menschen sich nur einen gebrauchten Rechner für ein paar hundert Euro leisten können. Und auch sie tun damit Wichtiges: denken, arbeiten, planen, sich absprechen.</p>'+
+  '<p style="color:#000080"><b>Viel Spaß, herzlich willkommen — und vielleicht bald auf Wiedersehen.</b></p></div>';
+};
+
+/* ---- ELEKTRONIK-LABOR ---- */
+RENDER.elab = function(){ return ''+
+  '<div class="tabs" id="elTabs"><div class="tab active" data-tab="ohm">Ohm/P</div><div class="tab" data-tab="led">LED-R</div>'+
+  '<div class="tab" data-tab="div">Teiler</div><div class="tab" data-tab="rc">RC/LC</div><div class="tab" data-tab="net">R-Netz</div><div class="tab" data-tab="ref">Formeln</div></div>'+
+  '<div class="panel active" data-p="ohm"><div class="row"><input id="elU" class="field" placeholder="U (V)" style="width:70px"><input id="elI" class="field" placeholder="I (A)" style="width:70px"><input id="elR" class="field" placeholder="R (Ω)" style="width:70px"><button class="btn" id="elOhm">=</button></div><div class="out" id="elOhmOut"></div></div>'+
+  '<div class="panel" data-p="led"><div class="row"><input id="ledVs" class="field" placeholder="Quelle V" style="width:80px"><input id="ledVf" class="field" placeholder="LED V (2.0)" style="width:80px"><input id="ledI" class="field" placeholder="LED mA (20)" style="width:80px"><button class="btn" id="ledCalc">=</button></div><div class="out" id="ledOut"></div></div>'+
+  '<div class="panel" data-p="div"><div class="row"><input id="dvIn" class="field" placeholder="Vin" style="width:70px"><input id="dvR1" class="field" placeholder="R1 Ω" style="width:80px"><input id="dvR2" class="field" placeholder="R2 Ω" style="width:80px"><button class="btn" id="dvCalc">=</button></div><div class="out" id="dvOut"></div></div>'+
+  '<div class="panel" data-p="rc"><label class="lb">RC-Zeitkonstante</label><div class="row"><input id="rcR" class="field" placeholder="R Ω" style="width:80px"><input id="rcC" class="field" placeholder="C µF" style="width:80px"><button class="btn" id="rcCalc">τ =</button></div><div class="out" id="rcOut"></div>'+
+  '<label class="lb">LC-Resonanz</label><div class="row"><input id="lcL" class="field" placeholder="L mH" style="width:80px"><input id="lcC" class="field" placeholder="C µF" style="width:80px"><button class="btn" id="lcCalc">f =</button></div><div class="out" id="lcOut"></div></div>'+
+  '<div class="panel" data-p="net"><label class="lb">Widerstände (Ω), mit Komma getrennt</label><input id="rnIn" class="field" placeholder="100, 220, 470"><div class="row"><button class="btn" id="rnSer">Reihe</button><button class="btn" id="rnPar">Parallel</button></div><div class="out" id="rnOut"></div></div>'+
+  '<div class="panel" data-p="ref"><div class="story" style="max-height:220px"><h4>Der Formel-Zirkel der Elektronik</h4>'+
+  '<p>U = R·I &nbsp;•&nbsp; P = U·I = I²·R = U²/R &nbsp;•&nbsp; τ = R·C &nbsp;•&nbsp; f₀ = 1/(2π·√(L·C)) &nbsp;•&nbsp; X_C = 1/(2πfC) &nbsp;•&nbsp; X_L = 2πfL &nbsp;•&nbsp; Reihe: R = ΣRᵢ &nbsp;•&nbsp; Parallel: 1/R = Σ(1/Rᵢ) &nbsp;•&nbsp; Q = C·U &nbsp;•&nbsp; W = ½·C·U²</p></div></div>';
+};
+INIT.elab = function(){
+  var $=function(id){return document.getElementById(id);}, n=function(id){return parseFloat($(id).value);};
+  tabsWire("elTabs","win-elab");
+  $("elOhm").onclick=function(){ var U=n("elU"),I=n("elI"),R=n("elR"),o=$("elOhmOut");
+    if(!isNaN(U)&&!isNaN(I))o.textContent="R = "+(U/I).toFixed(3)+" Ω · P = "+(U*I).toFixed(3)+" W";
+    else if(!isNaN(U)&&!isNaN(R))o.textContent="I = "+(U/R).toFixed(3)+" A · P = "+(U*U/R).toFixed(3)+" W";
+    else if(!isNaN(I)&&!isNaN(R))o.textContent="U = "+(I*R).toFixed(3)+" V · P = "+(I*I*R).toFixed(3)+" W";
+    else o.textContent="Bitte 2 Werte eingeben."; };
+  $("ledCalc").onclick=function(){ var Vs=n("ledVs"),Vf=n("ledVf"),I=n("ledI")/1000;
+    if(isNaN(Vs)||isNaN(Vf)||isNaN(I)){$("ledOut").textContent="Alle Felder ausfüllen.";return;}
+    var R=(Vs-Vf)/I; $("ledOut").textContent="Vorwiderstand ≈ "+R.toFixed(1)+" Ω · Verlust "+((Vs-Vf)*I*1000).toFixed(0)+" mW"; };
+  $("dvCalc").onclick=function(){ var Vin=n("dvIn"),R1=n("dvR1"),R2=n("dvR2");
+    if(isNaN(Vin)||isNaN(R1)||isNaN(R2)){$("dvOut").textContent="Alle Felder ausfüllen.";return;}
+    $("dvOut").textContent="Vout = "+(Vin*R2/(R1+R2)).toFixed(3)+" V"; };
+  $("rcCalc").onclick=function(){ var R=n("rcR"),C=n("rcC")*1e-6; if(isNaN(R)||isNaN(C)){$("rcOut").textContent="R und C angeben.";return;}
+    $("rcOut").textContent="τ = "+(R*C*1000).toFixed(3)+" ms"; };
+  $("lcCalc").onclick=function(){ var L=n("lcL")*1e-3,C=n("lcC")*1e-6; if(isNaN(L)||isNaN(C)){$("lcOut").textContent="L und C angeben.";return;}
+    $("lcOut").textContent="f₀ = "+(1/(2*Math.PI*Math.sqrt(L*C))).toFixed(1)+" Hz"; };
+  function nums(){ return $("rnIn").value.split(",").map(function(x){return parseFloat(x);}).filter(function(x){return !isNaN(x)&&x>0;}); }
+  $("rnSer").onclick=function(){ var a=nums(); $("rnOut").textContent=a.length?"Reihe: "+a.reduce(function(s,x){return s+x;},0)+" Ω":"Werte eingeben."; };
+  $("rnPar").onclick=function(){ var a=nums(); if(!a.length){$("rnOut").textContent="Werte eingeben.";return;} $("rnOut").textContent="Parallel: "+(1/a.reduce(function(s,x){return s+1/x;},0)).toFixed(3)+" Ω"; };
+};
+
+/* ---- OSZILLOSKOP ---- */
+RENDER.scope = function(){ return ''+
+  '<canvas id="scCanvas" class="scope-canvas" width="520" height="200"></canvas>'+
+  '<div class="row"><button class="btn pri" id="scTone">🔊 Testton</button><button class="btn" id="scMic">🎙 Mikrofon</button><button class="btn" id="scStop">⏹ Stop</button></div>'+
+  '<div class="row"><span class="lb" style="margin:0">Welle</span><select id="scWave" class="field" style="width:110px"><option value="sine">Sinus</option><option value="square">Rechteck</option><option value="sawtooth">Säge</option><option value="triangle">Dreieck</option></select>'+
+  '<span class="lb" style="margin:0">Freq</span><input id="scFreq" type="range" min="50" max="2000" value="440" class="slider" style="flex:1"><span id="scFreqV">440 Hz</span></div>'+
+  '<div class="note">Echtes Oszilloskop: Web-Audio erzeugt die Welle, der Analyser zeichnet die Zeitdomäne. Mikrofon zeigt reale Signale.</div>';
+};
+INIT.scope = function(){
+  var $=function(id){return document.getElementById(id);};
+  var cv=$("scCanvas"), cx=cv.getContext("2d"), ac=null,an=null,osc=null,stream=null,raf=null,buf=null;
+  function ctx(){ if(!ac){ ac=new (window.AudioContext||window.webkitAudioContext)(); an=ac.createAnalyser(); an.fftSize=2048; buf=new Uint8Array(an.fftSize);} return ac; }
+  function draw(){ raf=requestAnimationFrame(draw); if(!an)return; an.getByteTimeDomainData(buf);
+    cx.fillStyle="#001208"; cx.fillRect(0,0,cv.width,cv.height); cx.strokeStyle="#0a3"; cx.lineWidth=1;
+    for(var gx=0;gx<cv.width;gx+=40){cx.beginPath();cx.moveTo(gx,0);cx.lineTo(gx,cv.height);cx.stroke();}
+    for(var gy=0;gy<cv.height;gy+=40){cx.beginPath();cx.moveTo(0,gy);cx.lineTo(cv.width,gy);cx.stroke();}
+    cx.strokeStyle="#3dff88"; cx.lineWidth=2; cx.beginPath(); var sl=cv.width/buf.length;
+    for(var i=0;i<buf.length;i++){ var y=buf[i]/128*cv.height/2, x=i*sl; if(i===0)cx.moveTo(x,y); else cx.lineTo(x,y);} cx.stroke(); }
+  function stopSrc(){ if(osc){try{osc.stop();}catch(e){}osc=null;} if(stream){stream.getTracks().forEach(function(t){t.stop();});stream=null;} }
+  $("scTone").onclick=function(){ ctx(); if(ac.resume)ac.resume(); stopSrc(); osc=ac.createOscillator(); osc.type=$("scWave").value; osc.frequency.value=+$("scFreq").value;
+    var g=ac.createGain(); g.gain.value=0.15; osc.connect(g); g.connect(an); g.connect(ac.destination); osc.start(); if(!raf)draw(); };
+  $("scMic").onclick=function(){ if(!navigator.mediaDevices){alert("Mikrofon nicht verfügbar.");return;} ctx(); stopSrc();
+    navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){ stream=s; ac.createMediaStreamSource(s).connect(an); if(!raf)draw(); }).catch(function(){alert("Mikrofon-Zugriff verweigert.");}); };
+  $("scStop").onclick=function(){ stopSrc(); if(raf){cancelAnimationFrame(raf);raf=null;} cx.fillStyle="#001208";cx.fillRect(0,0,cv.width,cv.height); };
+  $("scFreq").oninput=function(){ $("scFreqV").textContent=this.value+" Hz"; if(osc)osc.frequency.value=+this.value; };
+  $("scWave").onchange=function(){ if(osc)osc.type=this.value; };
+};
+
+/* ---- SYSTEM-ANALYSE ---- */
+RENDER.sysinfo = function(){ return ''+
+  '<div class="row"><button class="btn pri" id="siScan">🔍 System scannen</button><button class="btn" id="siGpu">🎮 GPU</button></div>'+
+  '<div class="gauge-grid" id="siGauges"></div><div class="out" id="siOut" style="min-height:120px"></div>'+
+  '<div class="note">Ehrliche Erkennung über Browser-APIs — keine Cloud. Manche Werte sind je nach Gerät/Browser nicht verfügbar.</div>';
+};
+INIT.sysinfo = function(){
+  var $=function(id){return document.getElementById(id);};
+  function gauge(v,l){ return '<div class="gauge"><div class="val">'+v+'</div><div class="lbl2">'+l+'</div></div>'; }
+  function scan(){
+    var g=[]; g.push(gauge(navigator.hardwareConcurrency||"?","CPU-Kerne"));
+    g.push(gauge((navigator.deviceMemory||"?")+" GB","RAM (ca.)"));
+    g.push(gauge(screen.width+"×"+screen.height,"Bildschirm"));
+    g.push(gauge((window.devicePixelRatio||1).toFixed(2)+"×","Pixel-Ratio"));
+    $("siGauges").innerHTML=g.join("");
+    var lines=[];
+    lines.push("Plattform: "+(navigator.platform||"?"));
+    lines.push("Sprachen: "+((navigator.languages||[navigator.language]).join(", ")));
+    lines.push("Online: "+(navigator.onLine?"ja":"nein"));
+    var c=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+    if(c) lines.push("Netz: "+(c.effectiveType||"?")+" · "+(c.downlink||"?")+" Mbit/s");
+    lines.push("Touch: "+("ontouchstart" in window || navigator.maxTouchPoints>0 ? "ja":"nein"));
+    lines.push("Farbtiefe: "+screen.colorDepth+" bit");
+    lines.push("WebUSB: "+(navigator.usb?"verfügbar":"nein")+" · Bluetooth: "+(navigator.bluetooth?"verfügbar":"nein")+" · Serial: "+(navigator.serial?"verfügbar":"nein"));
+    lines.push("Zeitzone: "+(Intl.DateTimeFormat().resolvedOptions().timeZone||"?"));
+    lines.push("User-Agent: "+navigator.userAgent);
+    $("siOut").textContent=lines.join("\n");
+    if(navigator.getBattery) navigator.getBattery().then(function(b){ $("siGauges").innerHTML+=gauge(Math.round(b.level*100)+"%",(b.charging?"⚡ lädt":"Akku")); });
+    if(navigator.storage&&navigator.storage.estimate) navigator.storage.estimate().then(function(e){ $("siOut").textContent+="\nSpeicher: "+(e.usage/1048576).toFixed(1)+" / "+(e.quota/1048576).toFixed(0)+" MB"; });
+    if(navigator.mediaDevices&&navigator.mediaDevices.enumerateDevices) navigator.mediaDevices.enumerateDevices().then(function(d){ $("siOut").textContent+="\nMedien-Geräte: "+d.length; });
+  }
+  $("siScan").onclick=scan;
+  $("siGpu").onclick=function(){ try{ var cvs=document.createElement("canvas"), gl=cvs.getContext("webgl")||cvs.getContext("experimental-webgl");
+    var dbg=gl.getExtension("WEBGL_debug_renderer_info"); var r=dbg?gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER);
+    $("siOut").textContent="GPU: "+r+"\n"+$("siOut").textContent; }catch(e){ $("siOut").textContent="GPU nicht auslesbar."; } };
+  scan();
+};
+
+/* ---- UHREN & ZEIT ---- */
+RENDER.clock = function(){ return ''+
+  '<div class="tabs" id="clkTabs"><div class="tab active" data-tab="world">Weltuhr</div><div class="tab" data-tab="analog">Analog</div><div class="tab" data-tab="sw">Stoppuhr</div><div class="tab" data-tab="timer">Timer</div></div>'+
+  '<div class="panel active" data-p="world"><div id="clkWorld" style="font-family:monospace;font-size:.9rem"></div></div>'+
+  '<div class="panel" data-p="analog"><canvas id="clkCanvas" width="220" height="220" style="background:#fff;border:2px inset #808080;display:block;margin:auto"></canvas></div>'+
+  '<div class="panel" data-p="sw"><div class="out" id="swOut" style="font-size:1.6rem;text-align:center">00:00.0</div><div class="row"><button class="btn pri" id="swStart">Start</button><button class="btn" id="swStop">Stop</button><button class="btn" id="swReset">Reset</button></div></div>'+
+  '<div class="panel" data-p="timer"><div class="row"><input id="tmMin" class="field" type="number" value="5" style="width:70px"> Minuten <button class="btn pri" id="tmStart">Start</button></div><div class="out" id="tmOut" style="font-size:1.6rem;text-align:center">--:--</div></div>';
+};
+INIT.clock = function(){
+  var $=function(id){return document.getElementById(id);};
+  tabsWire("clkTabs","win-clock");
+  var zones=[["Amsterdam","Europe/Amsterdam"],["New York","America/New_York"],["London","Europe/London"],["Tokio","Asia/Tokyo"],["Sydney","Australia/Sydney"],["UTC","UTC"]];
+  function world(){ if(!$("clkWorld"))return; $("clkWorld").innerHTML=zones.map(function(z){ try{ return "<div>🕒 "+z[0]+": <b>"+new Date().toLocaleTimeString("de-DE",{timeZone:z[1]})+"</b></div>"; }catch(e){ return ""; } }).join(""); }
+  function analog(){ var cv=$("clkCanvas"); if(!cv)return; var x=cv.getContext("2d"),R=100; x.clearRect(0,0,220,220); x.save(); x.translate(110,110);
+    x.beginPath(); x.arc(0,0,R,0,7); x.strokeStyle="#000"; x.lineWidth=3; x.stroke();
+    for(var i=0;i<12;i++){ x.save(); x.rotate(i*Math.PI/6); x.beginPath(); x.moveTo(0,-R); x.lineTo(0,-R+10); x.stroke(); x.restore(); }
+    var d=new Date(), h=d.getHours()%12,m=d.getMinutes(),s=d.getSeconds();
+    function hand(ang,len,w,col){ x.save(); x.rotate(ang); x.beginPath(); x.moveTo(0,10); x.lineTo(0,-len); x.lineWidth=w; x.strokeStyle=col; x.stroke(); x.restore(); }
+    hand((h+m/60)*Math.PI/6,52,5,"#000"); hand((m+s/60)*Math.PI/30,74,3,"#000"); hand(s*Math.PI/30,82,1,"#c00"); x.restore(); }
+  var iv=setInterval(function(){ world(); analog(); },1000); world(); analog();
+  var swT=0,swR=null; function fmt(ms){ var t=ms/1000; return ("0"+Math.floor(t/60)).slice(-2)+":"+("0"+Math.floor(t%60)).slice(-2)+"."+Math.floor((ms%1000)/100); }
+  $("swStart").onclick=function(){ if(swR)return; var start=Date.now()-swT; swR=setInterval(function(){ swT=Date.now()-start; $("swOut").textContent=fmt(swT); },100); };
+  $("swStop").onclick=function(){ clearInterval(swR); swR=null; };
+  $("swReset").onclick=function(){ clearInterval(swR); swR=null; swT=0; $("swOut").textContent="00:00.0"; };
+  var tmR=null; $("tmStart").onclick=function(){ if(tmR)clearInterval(tmR); var end=Date.now()+(+$("tmMin").value)*60000;
+    tmR=setInterval(function(){ var left=end-Date.now(); if(left<=0){ clearInterval(tmR); $("tmOut").textContent="⏰ Zeit!"; return; }
+      $("tmOut").textContent=("0"+Math.floor(left/60000)).slice(-2)+":"+("0"+Math.floor(left%60000/1000)).slice(-2); },250); };
+};
+
+/* ---- SPRACHSTEUERUNG ---- */
+RENDER.voice = function(){ return ''+
+  '<div class="note">Steuere VOS OS mit deiner Stimme (Web Speech API). Sag z. B. „öffne Rechner", „Einstellungen", „öffne Oszilloskop".</div>'+
+  '<div class="row"><button class="btn pri" id="vcStart">🎤 Zuhören</button><button class="btn" id="vcStop">⏹ Stop</button></div>'+
+  '<div class="out" id="vcOut" style="min-height:80px"></div>'+
+  '<div class="note">Funktioniert in Chrome/Edge. Wird nichts erkannt, ist die Spracherkennung im Browser nicht verfügbar.</div>';
+};
+INIT.voice = function(){
+  var $=function(id){return document.getElementById(id);};
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){ $("vcOut").textContent="Spracherkennung wird von diesem Browser nicht unterstützt."; $("vcStart").disabled=true; return; }
+  var rec=new SR(); rec.lang="de-DE"; rec.continuous=true; rec.interimResults=false;
+  var map={rechner:"calc",notizbuch:"notiz",notiz:"notiz",einstellungen:"settings",werkzeug:"tools",oszilloskop:"scope",elektronik:"elab",office:"office",browser:"browser",uhr:"clock",wallet:"wallet",bank:"wallet",studio:"studio",manifest:"manifest",store:"store",qr:"qr"};
+  rec.onresult=function(e){ var txt=e.results[e.results.length-1][0].transcript.toLowerCase().trim(); $("vcOut").textContent="🗣 "+txt;
+    for(var k in map){ if(txt.indexOf(k)>=0){ openApp(map[k]); $("vcOut").textContent+="\n→ öffne "+map[k]; if(window.speechSynthesis){var u=new SpeechSynthesisUtterance("Öffne "+k);u.lang="de-DE";speechSynthesis.speak(u);} return; } }
+    $("vcOut").textContent+="\n(kein Befehl erkannt)"; };
+  rec.onerror=function(e){ $("vcOut").textContent="Fehler: "+e.error; };
+  $("vcStart").onclick=function(){ try{rec.start(); $("vcOut").textContent="🎧 höre zu …";}catch(e){} };
+  $("vcStop").onclick=function(){ rec.stop(); };
+};
+
+/* ---- API & TOKENS ---- */
+RENDER.api = function(){ return ''+
+  '<div class="warn">🔑 Deine Tokens bleiben <b>nur lokal</b> in diesem Browser (localStorage). Teile diese Seite nicht mit gespeicherten Tokens. Gib niemals fremde Geheimnisse ein.</div>'+
+  '<label class="lb">Name</label><input id="apName" class="field" placeholder="z. B. OpenAI">'+
+  '<label class="lb">Token / API-Key</label><input id="apKey" class="field" type="password" placeholder="sk-…">'+
+  '<div class="row"><button class="btn pri" id="apSave">💾 Speichern</button></div>'+
+  '<label class="lb">Gespeicherte Verbindungen</label><select id="apList" class="field" size="3" style="height:auto"></select>'+
+  '<hr><label class="lb">Fetch-Tester (GET)</label><input id="apUrl" class="field" placeholder="https://api.example.com/…">'+
+  '<div class="row"><label class="lb" style="margin:0"><input type="checkbox" id="apAuth"> Authorization: Bearer &lt;gewählter Token&gt;</label><button class="btn" id="apGo">Anfrage</button></div>'+
+  '<div class="out" id="apOut" style="min-height:80px"></div><div class="note">Hinweis: Bei fremden APIs kann der Browser CORS blockieren — das liegt am Zielserver, nicht an VOS OS.</div>';
+};
+INIT.api = function(){
+  var $=function(id){return document.getElementById(id);}, KEY="vos.api";
+  var store=(function(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch(e){return[];}})();
+  function refresh(){ var l=$("apList"); l.innerHTML=""; store.forEach(function(x,i){ l.add(new Option(x.name,i)); }); }
+  $("apSave").onclick=function(){ var n=$("apName").value.trim(); if(!n)return; store.push({name:n,key:$("apKey").value}); localStorage.setItem(KEY,JSON.stringify(store)); $("apName").value="";$("apKey").value=""; refresh(); };
+  $("apGo").onclick=function(){ var url=$("apUrl").value.trim(); if(!url)return; var h={};
+    if($("apAuth").checked&&store[$("apList").value]) h.Authorization="Bearer "+store[$("apList").value].key;
+    $("apOut").textContent="… lädt"; fetch(url,{headers:h}).then(function(r){return r.text();}).then(function(t){ $("apOut").textContent=t.slice(0,4000); }).catch(function(e){ $("apOut").textContent="Fehler: "+e.message+"\n(oft CORS — Zielserver erlaubt keinen Browser-Zugriff.)"; }); };
+  refresh();
+};
+
+/* ---- USB-BOOT-KIT ---- */
+RENDER.usb = function(){ return ''+
+  '<div class="warn">💾 <b>Ehrlich:</b> Ein Browser kann sich nicht selbst auf einen USB-Stick „brennen". Aber VOS OS ist <b>eine einzige Datei</b> — kopiere sie auf einen Stick und sie läuft überall, offline, auf jedem Gerät mit Browser.</div>'+
+  '<div class="row"><button class="btn pri" id="usbDl">⬇️ VOS OS als portable Datei speichern</button></div>'+
+  '<div class="story"><h4>So wird der Stick zum System</h4>'+
+  '<p>1) Datei <b>vos-os.html</b> auf den USB-Stick kopieren. 2) Stick in ein beliebiges Gerät stecken. 3) Datei im Browser öffnen — fertig. Kein Internet nötig, alle Werkzeuge sind eingebaut.</p>'+
+  '<h4>Echtes bootfähiges Medium (Linux)</h4>'+
+  '<p>Für ein echtes, hardware-nahes Boot-System: Ventoy oder Rufus (Windows) bzw. <code>dd</code> (Linux/macOS) auf den Stick — Befehle liefert die <b>System-Kommandozentrale 💻</b>.</p></div>'+
+  '<div class="note">Läuft auf neuen wie uralten Geräten — überall, wo ein Browser ist.</div>';
+};
+INIT.usb = function(){
+  document.getElementById("usbDl").onclick=function(){
+    var html="<!DOCTYPE html>\n"+document.documentElement.outerHTML;
+    downloadBlob("vos-os.html", new Blob([html],{type:"text/html;charset=utf-8"}));
+  };
+};
+
+/* ---- MEDIA-PLAYER ---- */
+RENDER.media = function(){ return ''+
+  '<label class="lb">Lokale Datei öffnen (Audio · Video · Bild)</label>'+
+  '<input type="file" id="mdFile" accept="audio/*,video/*,image/*">'+
+  '<div id="mdStage" style="margin-top:8px;text-align:center;background:#000;min-height:160px;display:flex;align-items:center;justify-content:center;border:2px inset #808080"></div>'+
+  '<hr><label class="lb">Tonpad (Web-Audio)</label>'+
+  '<div class="row" id="mdPad"></div>'+
+  '<div class="note">Alles lokal — keine Uploads. Deine Medien bleiben auf deinem Gerät.</div>';
+};
+INIT.media = function(){
+  var $=function(id){return document.getElementById(id);};
+  $("mdFile").onchange=function(){ var f=this.files[0]; if(!f)return; var url=URL.createObjectURL(f), st=$("mdStage");
+    if(f.type.indexOf("audio")===0) st.innerHTML='<audio controls autoplay src="'+url+'" style="width:90%"></audio>';
+    else if(f.type.indexOf("video")===0) st.innerHTML='<video controls autoplay src="'+url+'" style="max-width:100%;max-height:220px"></video>';
+    else st.innerHTML='<img src="'+url+'" style="max-width:100%;max-height:220px">'; };
+  var ac=null; var notes=[["C",262],["D",294],["E",330],["F",349],["G",392],["A",440],["H",494]];
+  $("mdPad").innerHTML=notes.map(function(n){return '<button class="btn" data-f="'+n[1]+'">'+n[0]+'</button>';}).join("");
+  $("mdPad").querySelectorAll("button").forEach(function(b){ b.onclick=function(){ if(!ac)ac=new (window.AudioContext||window.webkitAudioContext)();
+    var o=ac.createOscillator(),g=ac.createGain(); o.frequency.value=+b.dataset.f; o.type="triangle"; g.gain.value=0.2; o.connect(g); g.connect(ac.destination);
+    o.start(); g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+0.7); o.stop(ac.currentTime+0.7); }; });
+};
+
+/* ---- MEDIA-STUDIO ---- */
+RENDER.studio = function(){ return ''+
+  '<video id="stVid" autoplay muted playsinline style="width:100%;max-height:240px;background:#000;border:2px inset #808080"></video>'+
+  '<div class="row"><button class="btn pri" id="stCam">📷 Kamera+Mikro</button><button class="btn" id="stRec">⏺ Aufnahme</button><button class="btn" id="stRecStop">⏹ Stop</button><button class="btn" id="stSnap">📸 Foto</button></div>'+
+  '<label class="lb">Filter</label><select id="stFilter" class="field"><option value="none">Keiner</option><option value="grayscale(1)">Schwarz-Weiß</option><option value="sepia(1)">Sepia</option><option value="invert(1)">Invertiert</option><option value="contrast(1.6)">Kontrast+</option><option value="hue-rotate(90deg)">Farbdreh</option></select>'+
+  '<div id="stOut" style="margin-top:8px"></div>'+
+  '<div class="note">Reines Video/Foto-Studio — Aufnahme als WebM/PNG, alles lokal, ohne Upload.</div>';
+};
+INIT.studio = function(){
+  var $=function(id){return document.getElementById(id);}, stream=null,rec=null,chunks=[];
+  $("stCam").onclick=function(){ if(!navigator.mediaDevices)return alert("Kamera nicht verfügbar.");
+    navigator.mediaDevices.getUserMedia({video:true,audio:true}).then(function(s){ stream=s; $("stVid").srcObject=s; }).catch(function(){alert("Zugriff verweigert.");}); };
+  $("stFilter").onchange=function(){ $("stVid").style.filter=this.value; };
+  $("stRec").onclick=function(){ if(!stream)return alert("Erst Kamera starten."); chunks=[]; rec=new MediaRecorder(stream);
+    rec.ondataavailable=function(e){ if(e.data.size)chunks.push(e.data); };
+    rec.onstop=function(){ var blob=new Blob(chunks,{type:"video/webm"}); var url=URL.createObjectURL(blob);
+      $("stOut").innerHTML='<video controls src="'+url+'" style="max-width:100%"></video>'; var a=document.createElement("a"); a.href=url; a.download="aufnahme.webm"; a.textContent="⬇️ Video speichern"; a.className="btn"; $("stOut").appendChild(a); };
+    rec.start(); };
+  $("stRecStop").onclick=function(){ if(rec&&rec.state!=="inactive")rec.stop(); };
+  $("stSnap").onclick=function(){ var v=$("stVid"); if(!v.videoWidth)return; var c=document.createElement("canvas"); c.width=v.videoWidth; c.height=v.videoHeight;
+    var x=c.getContext("2d"); x.filter=$("stFilter").value; x.drawImage(v,0,0); c.toBlob(function(b){ downloadBlob("foto.png",b); }); };
+};
+
+/* ---- OFFICE-SUITE ---- */
+RENDER.office = function(){ return ''+
+  '<div class="row"><button class="btn" data-cmd="bold"><b>F</b></button><button class="btn" data-cmd="italic"><i>K</i></button><button class="btn" data-cmd="underline"><u>U</u></button>'+
+  '<button class="btn" data-cmd="insertUnorderedList">• Liste</button><button class="btn" data-cmd="formatBlock" data-val="H2">H2</button></div>'+
+  '<div id="ofEdit" contenteditable="true" style="min-height:180px;background:#fff;border:2px inset #808080;padding:8px;font-size:.9rem;overflow:auto"></div>'+
+  '<label class="lb">Import</label><div class="row"><input type="file" id="ofImp" accept=".txt,.md,.html,.csv,.json"></div>'+
+  '<label class="lb">Export</label><div class="row">'+
+    '<button class="btn" data-ex="txt">.txt</button><button class="btn" data-ex="md">.md</button><button class="btn" data-ex="html">.html</button><button class="btn" data-ex="json">.json</button><button class="btn" data-ex="csv">.csv</button>'+
+    '<button class="btn" id="ofPrint">🖨 PDF/Druck</button></div>'+
+  '<hr><label class="lb">Konverter CSV ⇄ JSON</label><textarea id="ofConv" class="field" rows="3" placeholder="CSV oder JSON hier einfügen"></textarea>'+
+  '<div class="row"><button class="btn" id="ofC2J">CSV→JSON</button><button class="btn" id="ofJ2C">JSON→CSV</button></div><div class="out" id="ofConvOut"></div>'+
+  '<div class="note">Alle Formate lokal im Browser — Import, Export, Umwandlung, Druck-zu-PDF.</div>';
+};
+INIT.office = function(){
+  var $=function(id){return document.getElementById(id);}, ed=$("ofEdit");
+  document.querySelectorAll('#win-office .btn[data-cmd]').forEach(function(b){ b.onclick=function(){ ed.focus(); document.execCommand(b.dataset.cmd,false,b.dataset.val||null); }; });
+  $("ofImp").onchange=function(){ var f=this.files[0]; if(!f)return; var r=new FileReader(); r.onload=function(){
+    if(f.name.match(/\.html?$/)) ed.innerHTML=r.result; else ed.textContent=r.result; }; r.readAsText(f); };
+  document.querySelectorAll('#win-office .btn[data-ex]').forEach(function(b){ b.onclick=function(){ var t=b.dataset.ex, txt=ed.innerText, name="dokument."+t, out=txt;
+    if(t==="html") out="<!DOCTYPE html><meta charset=utf-8><body>"+ed.innerHTML+"</body>";
+    else if(t==="json") out=JSON.stringify({text:txt},null,2);
+    else if(t==="csv") out=txt.split("\n").map(function(l){return '"'+l.replace(/"/g,'""')+'"';}).join("\n");
+    download(name,out); }; });
+  $("ofPrint").onclick=function(){ var w=window.open("","_blank"); w.document.write("<body>"+ed.innerHTML+"</body>"); w.document.close(); w.print(); };
+  $("ofC2J").onclick=function(){ try{ var lines=$("ofConv").value.trim().split("\n"), head=lines[0].split(","), rows=lines.slice(1).map(function(l){ var c=l.split(","),o={}; head.forEach(function(h,i){o[h.trim()]=(c[i]||"").trim();}); return o; }); $("ofConvOut").textContent=JSON.stringify(rows,null,2); }catch(e){ $("ofConvOut").textContent="Fehler: "+e.message; } };
+  $("ofJ2C").onclick=function(){ try{ var a=JSON.parse($("ofConv").value); if(!Array.isArray(a))a=[a]; var head=Object.keys(a[0]); $("ofConvOut").textContent=[head.join(",")].concat(a.map(function(o){return head.map(function(h){return o[h];}).join(",");})).join("\n"); }catch(e){ $("ofConvOut").textContent="Fehler: "+e.message; } };
+};
+
+/* ---- QR-CODE ---- */
+RENDER.qr = function(){ return ''+
+  '<label class="lb">Text / URL</label><textarea id="qrIn" class="field" rows="3" placeholder="https://tel1.nl"></textarea>'+
+  '<div class="row"><button class="btn pri" id="qrGo">Erzeugen</button><button class="btn" id="qrDl">⬇️ PNG</button></div>'+
+  '<div style="text-align:center;margin-top:8px"><canvas id="qrCv" style="border:2px inset #808080;background:#fff"></canvas></div>'+
+  '<div class="out" id="qrMsg"></div><div class="note">Voll offline erzeugt (eigener QR-Encoder). Kurze Texte funktionieren am besten.</div>';
+};
+INIT.qr = function(){
+  var $=function(id){return document.getElementById(id);};
+  function gen(){ var t=$("qrIn").value; if(!t){$("qrMsg").textContent="Bitte Text eingeben.";return;} try{ qrToCanvas(t,$("qrCv"),6); $("qrMsg").textContent="✓ QR erzeugt"; }catch(e){ $("qrMsg").textContent="Text zu lang für QR — bitte kürzen."; } }
+  $("qrGo").onclick=gen;
+  $("qrDl").onclick=function(){ $("qrCv").toBlob(function(b){ downloadBlob("qr.png",b); }); };
+  gen();
+};
+
+/* ---- APP STORE (EOS) ---- */
+RENDER.appstore = function(){ return ''+
+  '<div class="note">🛍️ VOS App Store — angetrieben von <b>EOS / shadowserver</b>. Öffne eine App oder baue deine eigene.</div>'+
+  '<div id="asGrid" class="thm-grid"></div>'+
+  '<hr><div class="row"><button class="btn pri" id="asMake">🛠️ Eigene App bauen (HTML)</button><button class="btn" id="asGo">🐹 Go-App bauen</button></div>';
+};
+INIT.appstore = function(){
+  var $=function(id){return document.getElementById(id);};
+  var cat=APPS.filter(function(a){return ["notiz","calc","tools","elab","scope","sysinfo","studio","office","qr","clock","wallet","media","browser","maker","gomaker"].indexOf(a.id)>=0;});
+  $("asGrid").innerHTML=cat.map(function(a){ return '<div class="thm" data-app="'+a.id+'"><div class="pv" style="display:flex;align-items:center;justify-content:center;font-size:1.6rem;background:#dfe">'+a.icon+'</div><div class="nm">'+a.name+'</div></div>'; }).join("");
+  $("asGrid").querySelectorAll(".thm").forEach(function(el){ el.onclick=function(){ openApp(el.dataset.app); }; });
+  $("asMake").onclick=function(){ openApp("maker"); };
+  $("asGo").onclick=function(){ openApp("gomaker"); };
+};
+
+/* ---- GO APP MAKER ---- */
+RENDER.gomaker = function(){ return ''+
+  '<label class="lb">Vorlage</label><select id="goTpl" class="field">'+
+    '<option value="hello">Hello World</option><option value="http">HTTP-Server</option><option value="cli">CLI-Werkzeug</option></select>'+
+  '<textarea id="goSrc" class="field" rows="12" style="font-family:monospace;font-size:.8rem"></textarea>'+
+  '<div class="row"><button class="btn pri" id="goDl">⬇️ .go speichern</button></div>'+
+  '<div class="story"><h4>So führst du es aus</h4><p>1) Go installieren (Befehl in der 💻 Kommandozentrale). 2) Datei speichern, z. B. <code>main.go</code>. 3) <code>go run main.go</code>.</p></div>'+
+  '<div class="note">Ehrlich: Go kann im Browser nicht kompiliert werden — VOS OS liefert fertigen, lauffähigen Quellcode.</div>';
+};
+INIT.gomaker = function(){
+  var $=function(id){return document.getElementById(id);};
+  var T={
+    hello:'package main\n\nimport "fmt"\n\nfunc main() {\n\tfmt.Println("Hallo von VOS OS!")\n}\n',
+    http:'package main\n\nimport (\n\t"fmt"\n\t"net/http"\n)\n\nfunc main() {\n\thttp.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {\n\t\tfmt.Fprintln(w, "VOS OS Go-Server läuft!")\n\t})\n\tfmt.Println("http://localhost:8080")\n\thttp.ListenAndServe(":8080", nil)\n}\n',
+    cli:'package main\n\nimport (\n\t"fmt"\n\t"os"\n)\n\nfunc main() {\n\tif len(os.Args) < 2 {\n\t\tfmt.Println("Nutzung: app <name>")\n\t\treturn\n\t}\n\tfmt.Println("Hallo,", os.Args[1])\n}\n'
+  };
+  function set(){ $("goSrc").value=T[$("goTpl").value]; }
+  $("goTpl").onchange=set;
+  $("goDl").onclick=function(){ download("main.go",$("goSrc").value); };
+  set();
+};
+
+/* ---- WALLET & BANK ---- */
+RENDER.wallet = function(){ return ''+
+  '<div class="warn">🦊 Verbindet sich nur mit deiner vorhandenen Wallet (MetaMask). VOS OS speichert keine Schlüssel und bewegt kein Geld ohne dich.</div>'+
+  '<div class="row"><button class="btn pri" id="wlConn">🦊 MetaMask verbinden</button></div>'+
+  '<div class="out" id="wlOut" style="min-height:60px"></div>'+
+  '<hr><label class="lb">Deine Bank (immer dabei)</label>'+
+  '<div class="row"><input id="wlIban" class="field" placeholder="IBAN" style="flex:1"><button class="btn" id="wlSave">💾</button></div>'+
+  '<div class="row"><a class="btn" href="https://bunq.me/RaymondDemitrioTel" target="_blank" rel="noopener">🏦 bunq öffnen</a><a class="btn" href="https://www.metamask.io" target="_blank" rel="noopener">MetaMask</a></div>'+
+  '<div class="note">Ehrlich: echte Bankgeschäfte laufen nur über die App/Website deiner Bank — hier sind Schnellzugänge & deine gespeicherte IBAN.</div>';
+};
+INIT.wallet = function(){
+  var $=function(id){return document.getElementById(id);}, KEY="vos.iban";
+  if(localStorage.getItem(KEY))$("wlIban").value=localStorage.getItem(KEY);
+  $("wlSave").onclick=function(){ localStorage.setItem(KEY,$("wlIban").value); $("wlOut").textContent="✓ IBAN gespeichert (nur lokal)."; };
+  $("wlConn").onclick=function(){ if(!window.ethereum){ $("wlOut").textContent="Keine Wallet gefunden. Installiere MetaMask."; return; }
+    window.ethereum.request({method:"eth_requestAccounts"}).then(function(acc){ var a=acc[0]; $("wlOut").textContent="Verbunden: "+a;
+      window.ethereum.request({method:"eth_getBalance",params:[a,"latest"]}).then(function(bal){ $("wlOut").textContent+="\nGuthaben: "+(parseInt(bal,16)/1e18).toFixed(5)+" ETH"; }); }).catch(function(e){ $("wlOut").textContent="Abgebrochen: "+e.message; }); };
+};
+
+/* ---- BROWSER ---- */
+RENDER.browser = function(){ return ''+
+  '<div class="row"><input id="brUrl" class="field" placeholder="https://… oder index.html" style="flex:1"><button class="btn pri" id="brGo">→</button><button class="btn" id="brTab">↗ Neuer Tab</button></div>'+
+  '<div class="row" id="brLinks"></div>'+
+  '<iframe id="brFrame" class="frame" style="width:100%;height:300px;border:2px inset #808080;background:#fff"></iframe>'+
+  '<div class="note">Lokale Seiten laufen hier. Viele externe Seiten blockieren das Einbetten (X-Frame-Options) — nutze dann „Neuer Tab".</div>';
+};
+INIT.browser = function(){
+  var $=function(id){return document.getElementById(id);};
+  var links=[["Portal","index.html"],["Manifest","manifest.html"],["Enzyklopädie","encyclopedia.html"],["Physik","physik-rechner.html"]];
+  $("brLinks").innerHTML=links.map(function(l){return '<button class="btn" data-u="'+l[1]+'">'+l[0]+'</button>';}).join("");
+  function go(u){ if(u&&!/^https?:|\.html/.test(u)&&u.indexOf(".")<0)u="https://"+u; $("brFrame").src=u; $("brUrl").value=u; }
+  $("brGo").onclick=function(){ go($("brUrl").value.trim()); };
+  $("brTab").onclick=function(){ var u=$("brUrl").value.trim(); if(u)window.open(u,"_blank","noopener"); };
+  $("brLinks").querySelectorAll("button").forEach(function(b){ b.onclick=function(){ go(b.dataset.u); }; });
+  go("index.html");
+};
+
+/* ---- ÜBER ---- */
+RENDER.about = function(){ return ''+
+  '<div style="text-align:center">'+
+  '<div style="font-size:2.4rem;font-weight:900;color:#000080">VOS OS</div>'+
+  '<div>Verstehen durch Visualisierung · v9.6</div><hr>'+
+  '<p style="font-size:.82rem">Ein digitales Schweizer Taschenmesser — Windows-95-Hommage.<br>'+
+  'Alle Werkzeuge laufen lokal im Browser.</p>'+
+  '<p style="font-size:.8rem">© Raymond Demitrio Tel · <b>TTT-SYSTEMS</b><br>'+
+  'TEL1.NL · DigitalNotar.in · GentlyOverdone.com</p>'+
+  '<p><a href="index.html">← Zurück zum Portal</a> · <a href="manifest.html">Manifest &amp; Diskussion</a></p>'+
+  '</div>';
+};
+
+/* ---------- Utils ---------- */
+function download(name, text){
+  var blob=new Blob([text],{type:"text/plain;charset=utf-8"});
+  var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(a.href);},1500);
+}
+function downloadBlob(name, blob){
+  var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(a.href);},2000);
+}
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function tabsWire(tabsId, winId){
+  document.querySelectorAll("#"+tabsId+" .tab").forEach(function(tab){
+    tab.onclick=function(){
+      document.querySelectorAll("#"+tabsId+" .tab").forEach(function(t){t.classList.remove("active");});
+      document.querySelectorAll("#"+winId+" .panel").forEach(function(p){p.classList.remove("active");});
+      tab.classList.add("active");
+      var pan=document.querySelector("#"+winId+' .panel[data-p="'+tab.dataset.tab+'"]');
+      if(pan) pan.classList.add("active");
+    };
+  });
+}
+
+/* ---------- Kugel/Kernel-Logo (SVG) ---------- */
+function sphereSVG(){
+  var gid="cg"+Math.random().toString(36).slice(2,7);
+  return '<svg class="vos-sphere" viewBox="-60 -60 120 120">'+
+    '<defs><radialGradient id="'+gid+'"><stop offset="0" stop-color="#fff"/><stop offset="0.5" stop-color="#39f6ff"/><stop offset="1" stop-color="#004a5a"/></radialGradient></defs>'+
+    '<circle class="outline halo" r="52"/>'+
+    '<g class="spin"><ellipse class="ring" rx="52" ry="18"/><ellipse class="ring" rx="52" ry="36"/>'+
+      '<ellipse class="ring" rx="18" ry="52"/><ellipse class="ring" rx="36" ry="52"/></g>'+
+    '<g class="spin2"><ellipse class="ring" rx="50" ry="28" transform="rotate(45)"/>'+
+      '<ellipse class="ring" rx="28" ry="50" transform="rotate(45)"/></g>'+
+    '<g class="core"><circle r="15" fill="url(#'+gid+')"/>'+
+      '<path d="M0 -15 L4 -4 15 0 4 4 0 15 -4 4 -15 0 -4 -4 Z" fill="#fff3c4" opacity=".85"/></g>'+
+  '</svg>';
+}
+
+/* ---------- Einstellungen / Themes ---------- */
+var THEMES = {
+  teal:    { name:"Klassik Teal", css:"#008080" },
+  clouds:  { name:"Wolken",       css:"linear-gradient(#1e90ff,#e0f6ff)" },
+  midnight:{ name:"Mitternacht",  css:"radial-gradient(circle at 50% 20%,#0b1e3a,#01060f)" },
+  matrix:  { name:"Matrix",       css:"#001a08" },
+  sunset:  { name:"Sonnenuntergang", css:"linear-gradient(#ff7e5f,#feb47b)" },
+  space:   { name:"Weltraum",     css:"radial-gradient(circle at 30% 20%,#2a0a4a,#05010f)" },
+  royal:   { name:"Königsblau",   css:"linear-gradient(#000080,#1084d0)" },
+  forest:  { name:"Wald",         css:"linear-gradient(#0b3d0b,#062006)" },
+  amber:   { name:"Bernstein",    css:"linear-gradient(#3a2a00,#0f0c00)" }
+};
+function getSettings(){
+  try{ return Object.assign({theme:"teal",sphere:true,opacity:0.8}, JSON.parse(localStorage.getItem("vos.settings"))||{}); }
+  catch(e){ return {theme:"teal",sphere:true,opacity:0.8}; }
+}
+function saveSettings(s){ localStorage.setItem("vos.settings", JSON.stringify(s)); }
+function applySettings(s){
+  s=s||getSettings();
+  var t=THEMES[s.theme]||THEMES.teal;
+  document.body.style.background=t.css;
+  var ds=document.getElementById("deskSphere");
+  if(ds){ ds.innerHTML=sphereSVG(); ds.style.opacity=s.opacity; ds.classList.toggle("show", !!s.sphere); }
+}
+
+/* ---------- QR-Code (offline, Byte-Modus, Level L, v1–v5) ---------- */
+var QR8 = (function(){
+  var EXP=new Array(256), LOG=new Array(256);
+  (function(){ var x=1; for(var i=0;i<255;i++){ EXP[i]=x; LOG[x]=i; x<<=1; if(x&0x100) x^=0x11d; } EXP[255]=EXP[0]; })();
+  function gmul(a,b){ if(a===0||b===0)return 0; return EXP[(LOG[a]+LOG[b])%255]; }
+  function genPolyDesc(ec){ var g=[1]; for(var i=0;i<ec;i++){ var ng=new Array(g.length+1);
+      for(var k=0;k<ng.length;k++)ng[k]=0;
+      for(var j=0;j<g.length;j++){ ng[j]^=g[j]; ng[j+1]^=gmul(g[j],EXP[i]); } g=ng; } return g; }
+  function rsEncode(data, ec){ var g=genPolyDesc(ec); var res=new Array(ec); for(var k=0;k<ec;k++)res[k]=0;
+    for(var i=0;i<data.length;i++){ var factor=data[i]^res[0]; res.shift(); res.push(0);
+      for(var j=0;j<ec;j++) res[j]^=gmul(g[j+1],factor); } return res; }
+  var VER={1:{data:19,ec:7,align:[]},2:{data:34,ec:10,align:[6,18]},3:{data:55,ec:15,align:[6,22]},
+           4:{data:80,ec:20,align:[6,26]},5:{data:108,ec:26,align:[6,30]}};
+  function mask(p,i,j){ switch(p){
+    case 0:return (i+j)%2===0; case 1:return i%2===0; case 2:return j%3===0; case 3:return (i+j)%3===0;
+    case 4:return (Math.floor(i/2)+Math.floor(j/3))%2===0; case 5:return (i*j)%2+(i*j)%3===0;
+    case 6:return ((i*j)%2+(i*j)%3)%2===0; default:return ((i*j)%3+(i+j)%2)%2===0; } }
+  function finder(m,size,r0,c0){ for(var r=-1;r<=7;r++)for(var c=-1;c<=7;c++){ var rr=r0+r,cc=c0+c;
+    if(rr<0||rr>=size||cc<0||cc>=size)continue;
+    var b=(0<=r&&r<=6&&(c===0||c===6))||(0<=c&&c<=6&&(r===0||r===6)); var ce=(2<=r&&r<=4&&2<=c&&c<=4);
+    m[rr][cc]=(b||ce)?1:0; } }
+  function timing(m,size){ for(var i=8;i<size-8;i++){ if(m[6][i]===null)m[6][i]=(i%2===0)?1:0; if(m[i][6]===null)m[i][6]=(i%2===0)?1:0; } }
+  function align(m,size,a){ if(!a.length)return; var X=a[1];
+    for(var r=-2;r<=2;r++)for(var c=-2;c<=2;c++){ var d=Math.max(Math.abs(r),Math.abs(c)); m[X+r][X+c]=(d===1)?0:1; } }
+  function reserve(m,size){ for(var i=0;i<9;i++){ if(m[i][8]===null)m[i][8]=0; if(m[8][i]===null)m[8][i]=0; }
+    for(var i=0;i<8;i++){ if(m[8][size-1-i]===null)m[8][size-1-i]=0; if(m[size-1-i][8]===null)m[size-1-i][8]=0; } }
+  function clone(m,size){ var n=[]; for(var r=0;r<size;r++)n.push(m[r].slice()); return n; }
+  function mapData(m,size,all,p){ var bit=7,by=0,inc=-1,row=size-1;
+    for(var col=size-1;col>0;col-=2){ if(col===6)col=5;
+      while(true){ for(var cc=0;cc<2;cc++){ var c=col-cc; if(m[row][c]===null){ var dark=false;
+        if(by<all.length) dark=((all[by]>>bit)&1)===1; if(mask(p,row,c))dark=!dark; m[row][c]=dark?1:0;
+        bit--; if(bit<0){bit=7;by++;} } } row+=inc; if(row<0||row>=size){row-=inc;inc=-inc;break;} } } }
+  function bchDigit(x){ var d=0; while(x!==0){d++;x>>>=1;} return d; }
+  function placeFormat(m,size,ec,p){ var data=(ec<<3)|p; var d=data<<10;
+    while(bchDigit(d)-bchDigit(0x537)>=0) d^=(0x537<<(bchDigit(d)-bchDigit(0x537)));
+    var bits=((data<<10)|d)^0x5412;
+    for(var i=0;i<15;i++){ var mo=((bits>>i)&1); if(i<6)m[i][8]=mo; else if(i<8)m[i+1][8]=mo; else m[size-15+i][8]=mo; }
+    for(var i=0;i<15;i++){ var mo=((bits>>i)&1); if(i<8)m[8][size-i-1]=mo; else if(i<9)m[8][15-i-1+1]=mo; else m[8][15-i-1]=mo; }
+    m[size-8][8]=1; }
+  function penalty(m,size){ var lost=0,r,c;
+    for(r=0;r<size;r++){ var run=1; for(c=1;c<size;c++){ if(m[r][c]===m[r][c-1])run++; else{ if(run>=5)lost+=3+(run-5); run=1; } } if(run>=5)lost+=3+(run-5); }
+    for(c=0;c<size;c++){ var run2=1; for(r=1;r<size;r++){ if(m[r][c]===m[r-1][c])run2++; else{ if(run2>=5)lost+=3+(run2-5); run2=1; } } if(run2>=5)lost+=3+(run2-5); }
+    for(r=0;r<size-1;r++)for(c=0;c<size-1;c++){ var s=m[r][c]+m[r+1][c]+m[r][c+1]+m[r+1][c+1]; if(s===0||s===4)lost+=3; }
+    for(r=0;r<size;r++)for(c=0;c<size-6;c++){ if(m[r][c]&&!m[r][c+1]&&m[r][c+2]&&m[r][c+3]&&m[r][c+4]&&!m[r][c+5]&&m[r][c+6])lost+=40; }
+    for(c=0;c<size;c++)for(r=0;r<size-6;r++){ if(m[r][c]&&!m[r+1][c]&&m[r+2][c]&&m[r+3][c]&&m[r+4][c]&&!m[r+5][c]&&m[r+6][c])lost+=40; }
+    var dark=0; for(r=0;r<size;r++)for(c=0;c<size;c++) if(m[r][c])dark++;
+    lost+=Math.floor(Math.abs(100*dark/(size*size)-50)/5)*10; return lost; }
+  function make(text){
+    var enc=unescape(encodeURIComponent(text)), bytes=[]; for(var i=0;i<enc.length;i++)bytes.push(enc.charCodeAt(i)&0xff);
+    var ver=0; for(var v=1;v<=5;v++){ if(4+8+bytes.length*8 <= VER[v].data*8){ ver=v; break; } }
+    if(!ver) throw new Error("Text zu lang für QR (max ~106 Zeichen).");
+    var info=VER[ver], buf=[]; function put(val,len){ for(var b=len-1;b>=0;b--)buf.push((val>>b)&1); }
+    put(4,4); put(bytes.length,8); for(var i=0;i<bytes.length;i++)put(bytes[i],8);
+    var cap=info.data*8, term=Math.min(4,cap-buf.length); for(var t=0;t<term;t++)buf.push(0);
+    while(buf.length%8!==0)buf.push(0);
+    var dcw=[]; for(var i=0;i<buf.length;i+=8){ var b=0; for(var k=0;k<8;k++)b=(b<<1)|buf[i+k]; dcw.push(b); }
+    var pads=[0xEC,0x11],pi=0; while(dcw.length<info.data){ dcw.push(pads[pi%2]); pi++; }
+    var all=dcw.concat(rsEncode(dcw,info.ec));
+    var size=17+4*ver, base=[]; for(var r=0;r<size;r++){ base.push(new Array(size)); for(var c=0;c<size;c++)base[r][c]=null; }
+    finder(base,size,0,0); finder(base,size,0,size-7); finder(base,size,size-7,0);
+    timing(base,size); align(base,size,info.align); reserve(base,size);
+    var best=null,bp=1e9; for(var p=0;p<8;p++){ var mm=clone(base,size); mapData(mm,size,all,p); placeFormat(mm,size,1,p); var pen=penalty(mm,size); if(pen<bp){bp=pen;best=mm;} }
+    return {size:size,m:best};
+  }
+  return { make:make };
+})();
+function qrToCanvas(text, canvas, scale){
+  var q=QR8.make(text), s=scale||6, size=q.size, quiet=4;
+  canvas.width=(size+quiet*2)*s; canvas.height=canvas.width;
+  var x=canvas.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,canvas.width,canvas.height);
+  x.fillStyle="#000"; for(var r=0;r<size;r++)for(var c=0;c<size;c++){ if(q.m[r][c]) x.fillRect((c+quiet)*s,(r+quiet)*s,s,s); }
+}
+
+/* ---------- Desktop-Icons & Start-Menü aufbauen ---------- */
+(function build(){
+  var d=document.getElementById("desktop");
+  APPS.forEach(function(a){
+    var ic=document.createElement("div"); ic.className="icon";
+    ic.innerHTML='<span class="em">'+a.icon+'</span><span class="lbl">'+a.name+'</span>';
+    ic.ondblclick=function(){ openApp(a.id); };
+    ic.onclick=function(e){ if(e.detail===1){} };
+    d.appendChild(ic);
+  });
+  var si=document.getElementById("startItems");
+  APPS.forEach(function(a){
+    var m=document.createElement("div"); m.className="smi";
+    m.innerHTML='<span class="em">'+a.icon+'</span> '+a.name;
+    m.onclick=function(){ openApp(a.id); toggleStart(false); };
+    si.appendChild(m);
+  });
+  var sep=document.createElement("div"); sep.className="smsep"; si.appendChild(sep);
+  var back=document.createElement("div"); back.className="smi";
+  back.innerHTML='<span class="em">🏠</span> Zurück zum Portal';
+  back.onclick=function(){ location.href="index.html"; };
+  si.appendChild(back);
+})();
+
+/* ---------- Start-Button ---------- */
+function toggleStart(force){
+  var m=document.getElementById("startmenu"), b=document.getElementById("startbtn");
+  var open = force!==undefined ? force : !m.classList.contains("open");
+  m.classList.toggle("open", open); b.classList.toggle("on", open);
+}
+document.getElementById("startbtn").onclick=function(e){ e.stopPropagation(); toggleStart(); };
+document.addEventListener("click", function(e){
+  var m=document.getElementById("startmenu");
+  if(m.classList.contains("open") && !m.contains(e.target) && e.target.id!=="startbtn") toggleStart(false);
+});
+
+/* ---------- Fenster-Buttons (Schließen/Minimieren) ---------- */
+document.addEventListener("click", function(e){
+  var t=e.target;
+  if(t.tagName==="BUTTON" && t.dataset.close){ e.stopPropagation(); closeApp(t.dataset.close); }
+  else if(t.tagName==="BUTTON" && t.dataset.min){ e.stopPropagation(); minApp(t.dataset.min); }
+});
+
+/* ---------- Uhr ---------- */
+function tick(){ var n=new Date();
+  document.getElementById("clock").textContent=n.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}); }
+setInterval(tick,1000); tick();
+
+/* ---------- Boot-Sequenz ---------- */
+(function boot(){
+  try{ applySettings(getSettings()); }catch(e){}
+  var fill=document.getElementById("bootFill"), lines=document.getElementById("bootLines");
+  var msgs=["Shadow Runtime … OK","Graph Engine … OK","Welten geladen … OK","Werkzeuge bereit … OK","Willkommen bei VOS OS"];
+  var p=0, li=0;
+  var iv=setInterval(function(){
+    p+=8+Math.random()*10; if(p>100)p=100; fill.style.width=p+"%";
+    if(li<msgs.length && p>li*20){ lines.innerHTML+="&gt; "+msgs[li]+"<br>"; li++; }
+    if(p>=100){ clearInterval(iv); setTimeout(function(){
+      var b=document.getElementById("boot"); b.style.opacity="0";
+      setTimeout(function(){ b.style.display="none"; runLogoPhase(); },600);
+    },400); }
+  },130);
+})();
+
+/* ---------- Logo-Phase: die schwebende, transparente Kugel mit rotierendem Kern (Kernel) ---------- */
+function runLogoPhase(){
+  var lp=document.getElementById("logoPhase"), orb=document.getElementById("lpOrb"), cap=document.getElementById("lpCap");
+  if(!lp||!orb){ openApp("settings"); return; }
+  orb.innerHTML=sphereSVG();
+  var caps=["Kernel initialisiert …","Energiekern rotiert …","Systemsphäre stabil …","<b>TTT-SYSTEMS · Kugel online</b>"];
+  var i=0; cap.innerHTML=caps[0]; lp.classList.add("show");
+  var ci=setInterval(function(){ i++; if(i<caps.length){ cap.innerHTML=caps[i]; } },1100);
+  setTimeout(function(){
+    clearInterval(ci); lp.style.opacity="0";
+    setTimeout(function(){ lp.classList.remove("show"); lp.style.opacity=""; openApp("settings"); },700);
+  },5000);
+}
+</script>
+</body>
+</html>

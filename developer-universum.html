@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#a020f0">
+    <title>Developer-Universum • SERVICESOFTWARE TEL1.NL</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(160, 32, 240, 0.32), transparent 26%),
+                radial-gradient(circle at 80% 0%, rgba(34, 211, 238, 0.22), transparent 32%),
+                linear-gradient(135deg, #07111d 0%, #0f1d33 55%, #07111d 100%);
+            color: #f5f7ff;
+            line-height: 1.7;
+            padding: 2rem 1rem 4rem;
+        }
+        .wrap { max-width: 1040px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 2rem; }
+        header h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing: 0.04em; }
+        header p { color: rgba(245, 247, 255, 0.82); margin-top: 0.6rem; }
+        .back-link { display: inline-block; margin-bottom: 1.5rem; color: #7dd3fc; text-decoration: none; font-weight: 600; }
+        section {
+            margin: 1.5rem 0; padding: 1.4rem 1.6rem; border-radius: 20px;
+            background: rgba(7, 17, 29, 0.7); border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.24);
+        }
+        section h2 {
+            font-size: 1.3rem; margin-bottom: 0.8rem; letter-spacing: 0.06em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14); padding-bottom: 0.5rem;
+        }
+        section h3 { margin: 1rem 0 0.4rem; font-size: 1.05rem; color: #c4b5fd; }
+        ul { margin: 0.5rem 0 0.5rem 1.4rem; }
+        li { margin-bottom: 0.3rem; }
+        .quote { font-style: italic; color: rgba(245, 247, 255, 0.9); }
+        .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+        .card { padding: 1rem; border-radius: 14px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .card strong { color: #7dd3fc; }
+        .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+        .chip { padding: 0.35rem 0.7rem; border-radius: 999px; font-size: 0.82rem;
+            background: rgba(139, 92, 246, 0.18); border: 1px solid rgba(139, 92, 246, 0.35); cursor: pointer; }
+        .chip.active { background: linear-gradient(135deg, #8b5cf6, #22d3ee); border-color: transparent; color: #fff; font-weight: 700; }
+        pre {
+            background: #050b14; border-radius: 14px; padding: 1rem; overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.12); margin-top: 0.8rem;
+            font-size: 0.82rem; color: #d1fae5; white-space: pre-wrap;
+        }
+        .level-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.6rem 0 0.4rem; }
+        .level-btn {
+            padding: 0.5rem 1rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2);
+            background: #07111d; color: #f5f7ff; cursor: pointer; font-weight: 600;
+        }
+        .level-btn.active { background: linear-gradient(135deg, #8b5cf6, #22d3ee); border-color: transparent; }
+        .tool { margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+        .tool select, .tool input {
+            padding: 0.55rem 0.7rem; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2);
+            background: #07111d; color: #f5f7ff; min-width: 180px;
+        }
+        .explain {
+            margin-top: 0.9rem; padding: 1rem; border-radius: 14px;
+            background: rgba(34, 211, 238, 0.08); border: 1px solid rgba(34, 211, 238, 0.3);
+        }
+        .explain h4 { color: #7dd3fc; margin-bottom: 0.3rem; }
+        .lang-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.6rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 0.6rem; font-size: 0.9rem; }
+        th, td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); vertical-align: top; }
+        th { color: #c4b5fd; }
+        .links { display: grid; gap: 0.5rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+        .links a {
+            display: block; padding: 0.7rem 0.9rem; border-radius: 12px; text-decoration: none;
+            background: rgba(255, 255, 255, 0.08); color: #f5f7ff; border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .trinity { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+        .trinity .card { text-align: center; }
+        .trinity .card h3 { color: #7dd3fc; }
+        .progress-outer { height: 16px; border-radius: 999px; background: rgba(255, 255, 255, 0.1); overflow: hidden; margin: 0.7rem 0 0.4rem; }
+        .progress-inner { height: 100%; width: 0; background: linear-gradient(90deg, #8b5cf6, #22d3ee); transition: width 0.35s ease; }
+        .copy-btn { margin-top: 0.5rem; padding: 0.4rem 0.85rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.2); background: #07111d; color: #f5f7ff; cursor: pointer; font-size: 0.8rem; }
+        .copy-btn.copied { background: linear-gradient(135deg, #22c55e, #22d3ee); border-color: transparent; font-weight: 700; }
+        .snip pre { margin-top: 0.5rem; }
+        .path-step { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.6rem 0.8rem; border-radius: 12px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 0.5rem; }
+        .path-step .num { flex: 0 0 auto; width: 1.9rem; height: 1.9rem; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-weight: 700; background: linear-gradient(135deg, #8b5cf6, #22d3ee); color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <a class="back-link" href="./index.html">← Zurück zum Portal</a>
+        <header>
+            <h1>⭐ Developer-Universum</h1>
+            <p>SERVICESOFTWARE · TEL1.NL — alle Programmiersprachen, von absolute-Dummy bis Experte, level-schaltbar. Von Raymond Demitrio Tel.</p>
+        </header>
+
+        <section>
+            <h2>🌍 1. Grundhaltung</h2>
+            <p class="quote">„Ich habe es nicht verkauft. Ich habe es gegeben. Es war kein Angebot.
+                Man durfte es freiwillig wegwerfen. Wenn am Ende etwas übrig bleibt, darf ich mich freuen."</p>
+            <div class="grid" style="margin-top:0.8rem;">
+                <div class="card"><strong>Nicht Besitz</strong> → sondern Beitrag</div>
+                <div class="card"><strong>Nicht Kontrolle</strong> → sondern Öffnung</div>
+                <div class="card"><strong>Nicht Druck</strong> → sondern Freiheit</div>
+                <div class="card"><strong>Nicht Zwang</strong> → sondern Einladung</div>
+            </div>
+            <p style="margin-top:0.6rem;">Open Source im Geist, nicht nur im Lizenztext.</p>
+        </section>
+
+        <section>
+            <h2>🎚️ 2. Dein Level — global umschaltbar</h2>
+            <p>Wähle dein Niveau. Alle Erklärungen auf dieser Seite passen sich sofort an. Dein Level wird gespeichert.</p>
+            <div class="tool">
+                <input id="userName" type="text" placeholder="Dein Name (optional)" autocomplete="off">
+            </div>
+            <div class="level-bar" id="globalLevelBar"></div>
+            <p id="levelHint" class="quote"></p>
+            <p id="savedInfo" class="quote"></p>
+        </section>
+
+        <section>
+            <h2>▶️ Live-Playground (mehrsprachig)</h2>
+            <p>Wähle eine Sprache und führe Code aus. <strong>JavaScript läuft echt im Browser</strong> (<code>print(...)</code> / <code>console.log(...)</code>). Andere Sprachen werden als <em>Ausgabe-Simulation</em> gezeigt: erkannte <code>print</code>-Zeilen werden dargestellt.</p>
+            <div class="tool">
+                <select id="playLang"></select>
+                <button type="button" class="level-btn" id="loadExampleBtn">Beispiel laden</button>
+            </div>
+            <textarea id="playCode" spellcheck="false" style="width:100%; min-height:150px; padding:0.8rem; border-radius:12px; border:1px solid rgba(255,255,255,0.2); background:#050b14; color:#d1fae5; font-family:'Consolas','Courier New',monospace; font-size:0.9rem;">// Beispiel: probier es aus
+print("Hallo Welt");
+for (let i = 1; i <= 3; i++) {
+  print("Zeile " + i);
+}
+print(2 + 2 * 5);</textarea>
+            <div class="tool">
+                <button type="button" class="level-btn active" id="runBtn">▶ Ausführen</button>
+                <button type="button" class="level-btn" id="clearBtn">Ausgabe leeren</button>
+            </div>
+            <pre id="playOutput" aria-live="polite">Ausgabe erscheint hier…</pre>
+        </section>
+
+        <section>
+            <h2>💻 3. Alle Sprachen — level-gerechte Erklärung</h2>
+            <p>Wähle eine Sprache. Die Erklärung erscheint in deinem gewählten Niveau — inklusive „Hallo Welt".</p>
+            <div class="lang-chips" id="langChips"></div>
+            <div class="explain" id="langExplain">
+                <h4>Wähle oben eine Sprache</h4>
+                <p>Jede Sprache wird in vier Stufen erklärt: Dummy, Anfänger, Fortgeschritten, Experte.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>🧭 4. Konzept-Übersetzer (Dummy → Experte)</h2>
+            <p>Wähle ein Grundkonzept — es wird in deinem Level erklärt.</p>
+            <div class="tool">
+                <select id="conceptSelect"></select>
+            </div>
+            <div class="explain" id="conceptExplain" hidden></div>
+        </section>
+
+        <section>
+            <h2>🧩 5. Snippet-Bibliothek</h2>
+            <p>Wiederverwendbare Code-Bausteine — fertig zum Kopieren. Jeder Baustein lässt sich mit einem Klick übernehmen.</p>
+            <div class="grid" id="snippetGrid"></div>
+        </section>
+
+        <section>
+            <h2>🎓 6. Developer-Curriculum — dein Lernpfad</h2>
+            <p>Wähle eine Sprache. Der Lernpfad passt sich deinem gewählten Level an — Schritt für Schritt vom Start bis zum Ziel.</p>
+            <div class="tool">
+                <select id="curriculumLang"></select>
+            </div>
+            <div id="curriculumPath" style="margin-top:0.8rem;"></div>
+        </section>
+
+        <section>
+            <h2>📊 7. Fortschritts-Tracker</h2>
+            <p>Markiere, was du schon kannst. Dein Fortschritt wird auf diesem Gerät gespeichert.</p>
+            <div class="progress-outer"><div class="progress-inner" id="progressInner"></div></div>
+            <p id="progressText" class="quote"></p>
+            <h3>Sprachen</h3>
+            <div class="lang-chips" id="progressLangs"></div>
+            <h3>Konzepte</h3>
+            <div class="lang-chips" id="progressConcepts"></div>
+            <div class="tool" style="margin-top:0.8rem;">
+                <button type="button" class="level-btn" id="resetProgressBtn">Fortschritt zurücksetzen</button>
+            </div>
+        </section>
+
+        <section>
+            <h2>🛠️ 8. Code-Hilfen & AI-Hilfen (jeder Art)</h2>
+            <div class="grid" id="serviceGrid"></div>
+        </section>
+
+        <section>
+            <h2>🔤 9. Developer-Domäne (A–Z)</h2>
+            <table>
+                <thead><tr><th>Bereich</th><th>Inhalt</th></tr></thead>
+                <tbody id="domainTable"></tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>🧠 10. Developer-Psychologie</h2>
+            <p class="quote">„Die meisten möchten nur etwas bekommen, wenn sie wissen, dass sie es auch kriegen.
+                Unaufgefordert bekommen sie es und wollen es nicht. Immer drei dabei, und einer ist zu viel. Drei ist eine heilige Zahl."</p>
+            <div class="grid" style="margin-top:0.8rem;">
+                <div class="card"><strong>Erwartung</strong><p>Nur gewollte Features werden akzeptiert. Unverlangtes → Ablehnung.</p></div>
+                <div class="card"><strong>Kontrolle</strong><p>Der Entwickler will wissen: was, wann, warum, wie.</p></div>
+                <div class="card"><strong>Reaktion</strong><p>Transparenz über Zweck und Nutzen schafft Vertrauen.</p></div>
+            </div>
+        </section>
+
+        <section>
+            <h2>🔺 11. Dreifaltigkeit der Software</h2>
+            <div class="trinity">
+                <div class="card"><h3>Geist</h3><p>Idee</p></div>
+                <div class="card"><h3>Sohn</h3><p>Code</p></div>
+                <div class="card"><h3>Vater</h3><p>System</p></div>
+            </div>
+            <p class="quote" style="margin-top:0.8rem;">Drei Ebenen. Eine Wahrheit. Ein Ursprung.</p>
+        </section>
+
+        <section>
+            <h2>🗄️ 12. Developer-Systemarchitektur</h2>
+            <pre id="devModel"></pre>
+        </section>
+
+        <section>
+            <h2>🔦 13. Developer-Wahrheit</h2>
+            <p class="quote">Du entwickelst nicht, um zu besitzen oder zu herrschen — du entwickelst, weil du geben kannst,
+                weil du verstehen willst, weil du Interesse hast, weil du Erkenntnis suchst, weil du Wahrheit findest. Das ist Creator-Wahrheit.</p>
+        </section>
+
+        <section>
+            <h2>🔗 14. Verbindungen & nächste Schritte</h2>
+            <div class="links">
+                <a href="./finaly-all.html">FINALY ALL · Gesamtsystem</a>
+                <a href="./developer-manifest.html">Developer-Manifest</a>
+                <a href="./final-cut.html">Final Cut · Volume Economy</a>
+                <a href="./bildungszentrum.html">Bildungszentrum</a>
+                <a href="./encyclopedia.html">Enzyklopädie</a>
+                <a href="./handbuch.html">Handbuch</a>
+                <a href="./index.html#portal">Nächste Phase → Portal</a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const levels = [
+            { id: 'dummy', label: '🍼 Absolute Dummy', hint: 'Erklärt wie für ein Kind, ohne Fachwörter.' },
+            { id: 'anfaenger', label: '🌱 Anfänger', hint: 'Erste echte Begriffe, einfach gehalten.' },
+            { id: 'fortgeschritten', label: '🚀 Fortgeschritten', hint: 'Praxis, Muster und typische Einsätze.' },
+            { id: 'experte', label: '🧠 Experte', hint: 'Präzise, technisch, für Profis.' }
+        ];
+        let currentLevel = 'dummy';
+        const STORAGE_KEY = 'devUniverse.profile';
+
+        function loadProfile() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) return JSON.parse(raw);
+            } catch (e) { /* ignore corrupt storage */ }
+            return { level: 'dummy', name: '' };
+        }
+        function saveProfile(profile) {
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(profile)); } catch (e) { /* ignore */ }
+        }
+
+        const languages = [
+            { name: 'Python', hello: 'print("Hallo Welt")', exp: {
+                dummy: 'Python ist wie einfaches Deutsch für Computer. Du schreibst kurze Sätze und der Computer macht sie.',
+                anfaenger: 'Python ist eine leicht lesbare Sprache. Gut zum Lernen, für Automatisierung und kleine Programme.',
+                fortgeschritten: 'Python: dynamisch typisiert, riesiges Ökosystem (pip), stark in Data Science, Web (Django/Flask) und Scripting.',
+                experte: 'CPython-Referenzimplementierung, GIL-beschränkte Threads, Duck-Typing, umfangreiche C-Extensions, async via asyncio.' } },
+            { name: 'JavaScript', hello: 'console.log("Hallo Welt");', exp: {
+                dummy: 'JavaScript bringt Webseiten zum Leben — Knöpfe, die reagieren, Dinge, die sich bewegen.',
+                anfaenger: 'JavaScript läuft im Browser und macht Seiten interaktiv. Auch auf Servern (Node.js) einsetzbar.',
+                fortgeschritten: 'Event-Loop, Promises/async-await, DOM-Manipulation, Module (ESM), npm-Ökosystem.',
+                experte: 'Prototypen-Vererbung, Closures, JIT (V8), Microtask/Macrotask-Queues, Tree-Shaking, WeakRef/GC-Semantik.' } },
+            { name: 'TypeScript', hello: 'const gruss: string = "Hallo Welt";\nconsole.log(gruss);', exp: {
+                dummy: 'TypeScript ist JavaScript mit einem Sicherheitsnetz, das Fehler früh zeigt.',
+                anfaenger: 'TypeScript fügt Typen zu JavaScript hinzu, damit du weniger Fehler machst.',
+                fortgeschritten: 'Statische Typen, Interfaces, Generics, wird zu JavaScript kompiliert.',
+                experte: 'Strukturelles Typsystem, Conditional/Mapped Types, Type Inference, Declaration Merging, strict-Modes.' } },
+            { name: 'HTML', hello: '<h1>Hallo Welt</h1>', exp: {
+                dummy: 'HTML ist das Gerüst einer Webseite — wie die Wände und Türen eines Hauses.',
+                anfaenger: 'HTML beschreibt die Struktur: Überschriften, Absätze, Bilder, Links.',
+                fortgeschritten: 'Semantische Tags, Formulare, Accessibility (ARIA), Meta-Struktur.',
+                experte: 'HTML5-Spezifikation, Shadow DOM, Web Components, Content-Model, Parsing-Algorithmus.' } },
+            { name: 'CSS', hello: 'h1 { color: purple; }', exp: {
+                dummy: 'CSS ist die Farbe und Kleidung der Webseite — es macht alles hübsch.',
+                anfaenger: 'CSS bestimmt Aussehen: Farben, Größen, Abstände, Anordnung.',
+                fortgeschritten: 'Flexbox, Grid, Media Queries, Transitions, Custom Properties.',
+                experte: 'Cascade/Specificity, Layout-Engines, Container Queries, Houdini, GPU-Compositing.' } },
+            { name: 'Java', hello: 'System.out.println("Hallo Welt");', exp: {
+                dummy: 'Java ist eine große, stabile Sprache, die fast überall läuft.',
+                anfaenger: 'Java ist objektorientiert und läuft auf der JVM — „einmal schreiben, überall ausführen".',
+                fortgeschritten: 'Starke Typisierung, JVM-Bytecode, riesiges Enterprise-Ökosystem (Spring).',
+                experte: 'JIT-Compiler (C2), Garbage-Collector-Tuning (G1/ZGC), JMM, Records, Virtual Threads (Loom).' } },
+            { name: 'C', hello: 'printf("Hallo Welt\\n");', exp: {
+                dummy: 'C ist eine sehr alte, sehr schnelle Sprache — nah an der Maschine.',
+                anfaenger: 'C ist die Basis vieler Systeme. Du steuerst Speicher selbst.',
+                fortgeschritten: 'Manuelle Speicherverwaltung, Pointer, Compiler/Linker, Systemprogrammierung.',
+                experte: 'Undefined Behavior, Speicher-Layout, Inline-Assembly, Optimierungen, ABI-Kompatibilität.' } },
+            { name: 'C++', hello: 'std::cout << "Hallo Welt\\n";', exp: {
+                dummy: 'C++ ist C mit vielen zusätzlichen Werkzeugen — schnell und mächtig.',
+                anfaenger: 'C++ kann objektorientiert und sehr performant sein, z. B. für Spiele.',
+                fortgeschritten: 'RAII, Templates, STL, Smart Pointers, moderne Standards (C++17/20).',
+                experte: 'Move-Semantik, Template-Metaprogrammierung, Concepts, Coroutinen, Zero-Cost-Abstractions.' } },
+            { name: 'C#', hello: 'Console.WriteLine("Hallo Welt");', exp: {
+                dummy: 'C# ist Microsofts moderne, angenehme Sprache für viele Apps.',
+                anfaenger: 'C# ist objektorientiert, läuft auf .NET, gut für Windows, Web und Spiele (Unity).',
+                fortgeschritten: 'LINQ, async/await, .NET-Ökosystem, starke IDE-Integration.',
+                experte: 'CLR/JIT, Span<T>, Source Generators, Nullable Reference Types, AOT-Kompilierung.' } },
+            { name: 'Go', hello: 'fmt.Println("Hallo Welt")', exp: {
+                dummy: 'Go ist eine einfache, schnelle Sprache für Server und Werkzeuge.',
+                anfaenger: 'Go ist übersichtlich, schnell kompiliert und gut für Netzwerkdienste.',
+                fortgeschritten: 'Goroutinen, Channels, statische Binaries, einfache Nebenläufigkeit.',
+                experte: 'CSP-Modell, Scheduler (M:N), Escape-Analyse, Garbage Collector mit niedriger Latenz.' } },
+            { name: 'Rust', hello: 'println!("Hallo Welt");', exp: {
+                dummy: 'Rust ist schnell und passt auf, dass du keine gefährlichen Fehler machst.',
+                anfaenger: 'Rust ist sicher und schnell — es verhindert viele Speicherfehler automatisch.',
+                fortgeschritten: 'Ownership, Borrowing, Lifetimes, keine GC, Cargo-Ökosystem.',
+                experte: 'Borrow-Checker, Zero-Cost-Abstractions, Traits, unsafe-Grenzen, async ohne Runtime im Kern.' } },
+            { name: 'PHP', hello: 'echo "Hallo Welt";', exp: {
+                dummy: 'PHP baut Webseiten auf dem Server — viele Websites laufen damit.',
+                anfaenger: 'PHP erzeugt dynamische Webseiten, z. B. WordPress.',
+                fortgeschritten: 'Composer, PSR-Standards, Frameworks (Laravel, Symfony).',
+                experte: 'Zend-Engine, Opcache, JIT (8.x), FFI, Fibers.' } },
+            { name: 'Ruby', hello: 'puts "Hallo Welt"', exp: {
+                dummy: 'Ruby ist eine freundliche Sprache, die sich fast wie Englisch liest.',
+                anfaenger: 'Ruby ist elegant und beliebt für Web (Ruby on Rails).',
+                fortgeschritten: 'Blocks, Metaprogrammierung, Gems, Rails-Konventionen.',
+                experte: 'MRI/YJIT, Object-Model, Method-Missing, Refinements, Ractor.' } },
+            { name: 'Swift', hello: 'print("Hallo Welt")', exp: {
+                dummy: 'Swift ist Apples Sprache für iPhone- und Mac-Apps.',
+                anfaenger: 'Swift ist modern und sicher, gemacht für Apple-Geräte.',
+                fortgeschritten: 'Optionals, Protokolle, SwiftUI, ARC-Speicherverwaltung.',
+                experte: 'Value-Semantik, Protocol-Oriented Programming, Concurrency (actors), Ownership.' } },
+            { name: 'Kotlin', hello: 'println("Hallo Welt")', exp: {
+                dummy: 'Kotlin ist eine moderne Sprache, vor allem für Android-Apps.',
+                anfaenger: 'Kotlin ist kompakter als Java und läuft auf der JVM.',
+                fortgeschritten: 'Null-Safety, Coroutinen, Extension Functions, Interop mit Java.',
+                experte: 'Kotlin/Native, Multiplatform, Inline Classes, Sealed Hierarchies, Flow.' } },
+            { name: 'SQL', hello: 'SELECT "Hallo Welt";', exp: {
+                dummy: 'SQL fragt Daten aus einer Datenbank ab — wie eine Suche in einer riesigen Tabelle.',
+                anfaenger: 'SQL liest, filtert und ändert Daten in Datenbanken.',
+                fortgeschritten: 'Joins, Indizes, Transaktionen, Aggregationen, Views.',
+                experte: 'Query-Planner, Ausführungspläne, Normalisierung, ACID, Window-Functions, CTEs.' } },
+            { name: 'Bash / Shell', hello: 'echo "Hallo Welt"', exp: {
+                dummy: 'Shell ist die Kommandozeile — du tippst Befehle, der Computer folgt.',
+                anfaenger: 'Bash automatisiert Aufgaben über Skripte auf Linux/Mac.',
+                fortgeschritten: 'Pipes, Variablen, Schleifen, Exit-Codes, Cron.',
+                experte: 'Subshells, Process Substitution, Signal-Handling, POSIX-Kompatibilität, Traps.' } },
+            { name: 'R', hello: 'print("Hallo Welt")', exp: {
+                dummy: 'R ist eine Sprache für Zahlen, Statistik und Diagramme.',
+                anfaenger: 'R wertet Daten aus und erstellt Statistiken und Grafiken.',
+                fortgeschritten: 'Data Frames, tidyverse, ggplot2, Modelle.',
+                experte: 'Vektorisierung, S3/S4/R6-Objektsysteme, Rcpp, reproduzierbare Pipelines.' } },
+            { name: 'Dart', hello: 'print("Hallo Welt");', exp: {
+                dummy: 'Dart ist die Sprache hinter Flutter-Apps für Handy und Web.',
+                anfaenger: 'Dart baut mit Flutter Apps für viele Plattformen aus einer Codebasis.',
+                fortgeschritten: 'Async, Streams, Widgets, Hot Reload.',
+                experte: 'AOT/JIT-Kompilierung, Isolates, Sound Null Safety, Tree-Shaking.' } },
+            { name: 'Assembly', hello: '; gibt "Hallo Welt" über Syscall aus', exp: {
+                dummy: 'Assembly ist die Sprache, die dem Computer am nächsten ist — winzige Einzelschritte.',
+                anfaenger: 'Assembly steuert den Prozessor fast direkt mit einfachen Befehlen.',
+                fortgeschritten: 'Register, Speicheradressen, Syscalls, Instruktionssätze.',
+                experte: 'Pipeline/Branch-Prediction, SIMD, Calling Conventions, Micro-Optimierung, Cache-Verhalten.' } },
+            { name: 'Perl', hello: 'print "Hallo Welt\\n";', exp: {
+                dummy: 'Perl ist ein alter Text-Zauberer — super im Umgang mit Wörtern und Dateien.',
+                anfaenger: 'Perl ist stark bei Textverarbeitung und Skripten.',
+                fortgeschritten: 'Reguläre Ausdrücke, CPAN, Ein-Zeiler, Referenzen.',
+                experte: 'Kontext-Sensitivität, tie/overload, XS, Moose-Objektsystem.' } },
+            { name: 'Lua', hello: 'print("Hallo Welt")', exp: {
+                dummy: 'Lua ist eine winzige, schnelle Sprache, oft in Spielen versteckt.',
+                anfaenger: 'Lua ist leicht und wird in Spiele und Programme eingebettet.',
+                fortgeschritten: 'Tables als Kernstruktur, Coroutinen, einfache Einbettung in C.',
+                experte: 'Metatables, LuaJIT, inkrementeller GC, C-API, Upvalues.' } },
+            { name: 'Haskell', hello: 'main = putStrLn "Hallo Welt"', exp: {
+                dummy: 'Haskell ist eine Sprache, die wie Mathematik denkt — sehr sauber.',
+                anfaenger: 'Haskell ist rein funktional: Funktionen ohne Nebenwirkungen.',
+                fortgeschritten: 'Lazy Evaluation, starke Typen, Typklassen, Monaden.',
+                experte: 'HM-Typinferenz, GADTs, Type Families, Kind-System, STM.' } },
+            { name: 'Scala', hello: 'println("Hallo Welt")', exp: {
+                dummy: 'Scala mischt zwei Denkweisen: Objekte und Funktionen — auf der JVM.',
+                anfaenger: 'Scala verbindet objektorientiert und funktional, läuft auf der JVM.',
+                fortgeschritten: 'Pattern Matching, Immutability, Collections, Traits.',
+                experte: 'Higher-Kinded Types, Implicits/Givens, Macros, Scala 3 (Dotty).' } },
+            { name: 'Elixir', hello: 'IO.puts("Hallo Welt")', exp: {
+                dummy: 'Elixir ist gemacht, damit viele Dinge gleichzeitig und robust laufen.',
+                anfaenger: 'Elixir ist funktional und stark in verteilten, fehlertoleranten Systemen.',
+                fortgeschritten: 'BEAM/Erlang-VM, Prozesse, OTP, Pattern Matching, Pipes.',
+                experte: 'Actor-Modell, Supervisors, Hot-Code-Reload, Distributed BEAM.' } },
+            { name: 'Objective-C', hello: 'NSLog(@"Hallo Welt");', exp: {
+                dummy: 'Objective-C war lange Apples Sprache für Apps, vor Swift.',
+                anfaenger: 'Objective-C ist C mit Nachrichten-Objekten für Apple-Software.',
+                fortgeschritten: 'Message-Passing, Kategorien, ARC, Cocoa-Frameworks.',
+                experte: 'Runtime-Introspection, Method-Swizzling, Toll-Free-Bridging, Blocks.' } },
+            { name: 'Julia', hello: 'println("Hallo Welt")', exp: {
+                dummy: 'Julia rechnet sehr schnell — gemacht für Wissenschaft und Zahlen.',
+                anfaenger: 'Julia verbindet einfache Schreibweise mit hoher Geschwindigkeit.',
+                fortgeschritten: 'Multiple Dispatch, JIT (LLVM), Broadcasting, Pakete.',
+                experte: 'Typ-Stabilität, Metaprogrammierung, @generated, GPU-Kernels.' } }
+        ];
+
+        const concepts = {
+            'Variable': {
+                dummy: 'Eine Variable ist eine Kiste mit Namen, in die du etwas legst.',
+                anfaenger: 'Eine Variable speichert einen Wert, den du später benutzt.',
+                fortgeschritten: 'Variablen haben Typ, Gültigkeitsbereich (Scope) und Lebensdauer.',
+                experte: 'Bindung, Immutability, Speicher-Layout (Stack/Heap), Escape-Analyse.' },
+            'Funktion': {
+                dummy: 'Eine Funktion ist ein kleiner Helfer, der eine Aufgabe erledigt, wenn du ihn rufst.',
+                anfaenger: 'Eine Funktion nimmt Eingaben, macht etwas und gibt oft ein Ergebnis zurück.',
+                fortgeschritten: 'Parameter, Rückgabewerte, reine vs. unreine Funktionen, Rekursion.',
+                experte: 'First-Class-Functions, Closures, Currying, Tail-Call-Optimierung.' },
+            'Schleife': {
+                dummy: 'Eine Schleife wiederholt etwas — wie „nochmal, nochmal, nochmal".',
+                anfaenger: 'Eine Schleife führt Code mehrmals aus, bis eine Bedingung endet.',
+                fortgeschritten: 'for/while, Iteratoren, Abbruch (break/continue), Komplexität.',
+                experte: 'Loop-Unrolling, Iterator-Protokolle, Lazy Evaluation, Vektorisierung.' },
+            'Bedingung': {
+                dummy: 'Eine Bedingung ist eine Wenn-dann-Entscheidung.',
+                anfaenger: 'Mit if/else entscheidet das Programm, was passiert.',
+                fortgeschritten: 'Boolesche Logik, switch, Kurzschluss-Auswertung.',
+                experte: 'Branch-Prediction, Pattern Matching, Guard-Clauses, Zustandsmaschinen.' },
+            'Objekt': {
+                dummy: 'Ein Objekt ist ein Ding mit Eigenschaften — wie ein Auto mit Farbe und Rädern.',
+                anfaenger: 'Ein Objekt bündelt Daten und Funktionen, die zusammengehören.',
+                fortgeschritten: 'Klassen, Vererbung, Kapselung, Polymorphie.',
+                experte: 'Objekt-Layout, VTables, Composition over Inheritance, SOLID-Prinzipien.' },
+            'API': {
+                dummy: 'Eine API ist eine Bestellklappe: du fragst, das System antwortet.',
+                anfaenger: 'Eine API lässt Programme miteinander sprechen.',
+                fortgeschritten: 'REST, Endpunkte, HTTP-Methoden, JSON, Auth.',
+                experte: 'Idempotenz, Versionierung, Rate-Limiting, gRPC/GraphQL, Contract-Testing.' },
+            'Datenbank': {
+                dummy: 'Eine Datenbank ist ein sehr ordentliches Regal für Informationen.',
+                anfaenger: 'Eine Datenbank speichert Daten dauerhaft und ordnet sie.',
+                fortgeschritten: 'Tabellen, Beziehungen, Indizes, Abfragen (SQL).',
+                experte: 'ACID/BASE, Sharding, Replikation, Query-Optimierung, CAP-Theorem.' },
+            'Bug / Fehler': {
+                dummy: 'Ein Bug ist ein kleiner Fehler, der das Programm stolpern lässt.',
+                anfaenger: 'Ein Bug ist ein Fehler im Code, den man sucht und behebt (Debugging).',
+                fortgeschritten: 'Logging, Breakpoints, Stack-Traces, Reproduktion.',
+                experte: 'Heisenbugs, Race-Conditions, Root-Cause-Analyse, Observability, Post-Mortems.' }
+        };
+
+        const services = [
+            { icon: '🤖', title: 'AI-Code-Hilfe', desc: 'Erklärt, generiert und repariert Code auf deinem Level — Schritt für Schritt.' },
+            { icon: '🔍', title: 'Code-Review', desc: 'Prüft Qualität, Sicherheit und Stil, gibt konkrete Verbesserungen.' },
+            { icon: '🐞', title: 'Debug-Assistent', desc: 'Findet Fehlerursachen, erklärt Stack-Traces in einfacher Sprache.' },
+            { icon: '📚', title: 'Lern-Pfade', desc: 'Level-gerechte Curricula pro Sprache: Dummy → Experte.' },
+            { icon: '🧩', title: 'Snippet-Bibliothek', desc: 'Wiederverwendbare Bausteine mit Erklärung.' },
+            { icon: '🔐', title: 'Security-Check', desc: 'OWASP-Prüfung, Secrets-Scan, sichere Muster.' },
+            { icon: '⚙️', title: 'DevOps-Hilfe', desc: 'CI/CD, Pipelines, Deployment, Monitoring.' },
+            { icon: '🌐', title: 'Übersetzer', desc: 'Konzepte und Code zwischen Sprachen übertragen.' },
+            { icon: '📝', title: 'Doku-Generator', desc: 'Erstellt verständliche Dokumentation aus Code.' }
+        ];
+
+        const domainAZ = [
+            ['A', 'Architektur (Systemdesign, Struktur, Modelle)'], ['B', 'Backend (APIs, Datenbanken, Serverlogik)'],
+            ['C', 'Cloud (Azure, AWS, GCP, Hybrid)'], ['D', 'DevOps (CI/CD, Pipelines, Monitoring)'],
+            ['E', 'Engineering (Software, Hardware, Embedded)'], ['F', 'Frameworks (React, Angular, Django, .NET)'],
+            ['G', 'Git-Kultur (Commit, Merge, Branching)'], ['H', 'Hardware-Integration'],
+            ['I', 'Infrastruktur (Netzwerke, Container, Kubernetes)'], ['J', 'Java / JVM-Ökosystem'],
+            ['K', 'KI / ML / LLM-Integration'], ['L', 'Logging / Observability'],
+            ['M', 'Microservices'], ['N', 'Netzwerk-Protokolle'], ['O', 'Open Source'],
+            ['P', 'Python / Pip / Poetry'], ['Q', 'Qualitätssicherung (Tests, Audits, Code-Review)'],
+            ['R', 'Rust / Go / C++'], ['S', 'Sicherheit (IAM, Zero Trust, Encryption)'],
+            ['T', 'Testing (Unit, Integration, E2E)'], ['U', 'UI/UX-Design'],
+            ['V', 'Versionierung / Releases'], ['W', 'Webentwicklung'],
+            ['X', 'Experimental Tech / Zukunft'], ['Y', 'Young Developer Education'],
+            ['Z', 'Zentraler Developer-Hub']
+        ];
+
+        const devModel = {
+            developer_domain: {
+                philosophy: 'Geben statt besitzen',
+                principles: ['Open Contribution', 'Voluntary Adoption', 'No Forced Distribution', 'Truth through Experience', 'Threefold Structure'],
+                trinity: { geist: 'Idee', sohn: 'Code', vater: 'System' },
+                modules: ['Architektur', 'Backend', 'Cloud', 'DevOps', 'KI/ML', 'Sicherheit', 'Testing', 'Open Source', 'UI/UX', 'Microservices', 'Netzwerke'],
+                psychology: {
+                    expectation: 'Nur gewollte Features werden akzeptiert',
+                    control: 'Transparenz über Zweck und Nutzen',
+                    reaction: 'Unverlangtes wird abgelehnt',
+                    holy_three: 'Idee, Code, System'
+                }
+            }
+        };
+
+        // Level bar
+        const globalLevelBar = document.getElementById('globalLevelBar');
+        const levelHint = document.getElementById('levelHint');
+        const savedInfo = document.getElementById('savedInfo');
+        const userName = document.getElementById('userName');
+        const profile = loadProfile();
+        currentLevel = profile.level || 'dummy';
+        userName.value = profile.name || '';
+
+        function updateSavedInfo() {
+            const lv = levels.find((l) => l.id === currentLevel);
+            const who = profile.name ? `${profile.name}, ` : '';
+            savedInfo.textContent = `💾 Gespeichert: ${who}Level „${lv.label}".`;
+        }
+
+        levels.forEach((lv) => {
+            const btn = document.createElement('button');
+            btn.className = 'level-btn' + (lv.id === currentLevel ? ' active' : '');
+            btn.textContent = lv.label;
+            btn.dataset.level = lv.id;
+            btn.addEventListener('click', () => {
+                currentLevel = lv.id;
+                document.querySelectorAll('#globalLevelBar .level-btn').forEach((b) => b.classList.remove('active'));
+                btn.classList.add('active');
+                levelHint.textContent = lv.hint;
+                profile.level = currentLevel;
+                saveProfile(profile);
+                updateSavedInfo();
+                refreshLevelDependent();
+            });
+            globalLevelBar.appendChild(btn);
+        });
+        levelHint.textContent = levels.find((l) => l.id === currentLevel).hint;
+        updateSavedInfo();
+
+        userName.addEventListener('input', () => {
+            profile.name = userName.value.trim();
+            saveProfile(profile);
+            updateSavedInfo();
+        });
+
+        // Live playground (multi-language)
+        const playCode = document.getElementById('playCode');
+        const playOutput = document.getElementById('playOutput');
+        const playLang = document.getElementById('playLang');
+        languages.forEach((lang) => {
+            const opt = document.createElement('option');
+            opt.value = lang.name;
+            opt.textContent = lang.name;
+            if (lang.name === 'JavaScript') opt.selected = true;
+            playLang.appendChild(opt);
+        });
+
+        function runJavaScript(code) {
+            const lines = [];
+            const print = (...args) => lines.push(args.map(String).join(' '));
+            const sandboxConsole = { log: print, error: print, warn: print, info: print };
+            try {
+                const fn = new Function('print', 'console', `"use strict";\n${code}`);
+                const returned = fn(print, sandboxConsole);
+                if (returned !== undefined) lines.push('→ ' + String(returned));
+                return lines.length ? lines.join('\n') : '(keine Ausgabe)';
+            } catch (error) {
+                return `❌ Fehler: ${error.message}`;
+            }
+        }
+
+        // Ausgabe-Simulation: erkennt gängige print-Zeilen und zeigt deren Text.
+        function simulateRun(code) {
+            const out = [];
+            const printRe = /\b(print|println|puts|echo|printf|NSLog|putStrLn|Println|WriteLine|cout|IO\.puts|console\.log)\b/;
+            const strRe = /(["'`])((?:\\.|(?!\1).)*)\1/;
+            code.split('\n').forEach((raw) => {
+                const line = raw.trim();
+                if (!line || line.startsWith('//') || line.startsWith('#') || line.startsWith(';')) return;
+                if (!printRe.test(line)) return;
+                const m = line.match(strRe);
+                if (m) out.push(m[2].replace(/\\n/g, '').replace(/\\t/g, '\t').replace(/\\"/g, '"'));
+            });
+            if (!out.length) return '(Simulation: keine erkennbare print-Ausgabe gefunden)';
+            return out.join('\n') + '\n\n— Ausgabe-Simulation (nur erkannte print-Zeilen).';
+        }
+
+        document.getElementById('runBtn').addEventListener('click', () => {
+            const code = playCode.value;
+            playOutput.textContent = playLang.value === 'JavaScript'
+                ? runJavaScript(code)
+                : simulateRun(code);
+        });
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            playOutput.textContent = 'Ausgabe erscheint hier…';
+        });
+        document.getElementById('loadExampleBtn').addEventListener('click', () => {
+            const lang = languages.find((l) => l.name === playLang.value);
+            if (lang) playCode.value = lang.hello;
+            playOutput.textContent = 'Ausgabe erscheint hier…';
+        });
+
+        // Language chips
+        const langChips = document.getElementById('langChips');
+        const langExplain = document.getElementById('langExplain');
+        let activeLang = null;
+        languages.forEach((lang) => {
+            const chip = document.createElement('span');
+            chip.className = 'chip';
+            chip.textContent = lang.name;
+            chip.addEventListener('click', () => {
+                activeLang = lang;
+                document.querySelectorAll('#langChips .chip').forEach((c) => c.classList.remove('active'));
+                chip.classList.add('active');
+                renderLang();
+            });
+            langChips.appendChild(chip);
+        });
+        function renderLang() {
+            if (!activeLang) return;
+            const learned = progress.langs.includes(activeLang.name);
+            langExplain.innerHTML = `
+                <h4>${activeLang.name} — ${levels.find((l) => l.id === currentLevel).label}</h4>
+                <p>${activeLang.exp[currentLevel]}</p>
+                <pre>${activeLang.hello.replace(/</g, '&lt;')}</pre>
+                <button type="button" class="copy-btn${learned ? ' copied' : ''}" id="markLangBtn">${learned ? '✓ Gelernt' : '☐ Als gelernt markieren'}</button>`;
+            const markBtn = document.getElementById('markLangBtn');
+            markBtn.addEventListener('click', () => {
+                toggleProgress('langs', activeLang.name);
+                renderLang();
+            });
+        }
+
+        // Concept translator
+        const conceptSelect = document.getElementById('conceptSelect');
+        const conceptExplain = document.getElementById('conceptExplain');
+        Object.keys(concepts).forEach((c) => {
+            const opt = document.createElement('option');
+            opt.value = c; opt.textContent = c;
+            conceptSelect.appendChild(opt);
+        });
+        function renderConcept() {
+            const key = conceptSelect.value;
+            conceptExplain.hidden = false;
+            conceptExplain.innerHTML = `
+                <h4>${key} — ${levels.find((l) => l.id === currentLevel).label}</h4>
+                <p>${concepts[key][currentLevel]}</p>`;
+        }
+        conceptSelect.addEventListener('change', renderConcept);
+        renderConcept();
+
+        function refreshLevelDependent() {
+            renderLang();
+            renderConcept();
+            renderCurriculum();
+        }
+
+        // Services
+        const serviceGrid = document.getElementById('serviceGrid');
+        services.forEach((s) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `<strong>${s.icon} ${s.title}</strong><p>${s.desc}</p>`;
+            serviceGrid.appendChild(card);
+        });
+
+        // Domain A-Z
+        const domainTable = document.getElementById('domainTable');
+        domainAZ.forEach(([letter, content]) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td><strong>${letter}</strong></td><td>${content}</td>`;
+            domainTable.appendChild(tr);
+        });
+
+        // Dev model JSON
+        document.getElementById('devModel').textContent = JSON.stringify(devModel, null, 2);
+
+        // ── Snippet-Bibliothek ──────────────────────────────
+        const snippets = [
+            { title: 'Schleife 1..10', lang: 'JavaScript', note: 'Zählt von 1 bis 10.', code: 'for (let i = 1; i <= 10; i++) {\n  console.log(i);\n}' },
+            { title: 'Funktion mit Rückgabe', lang: 'JavaScript', note: 'Addiert zwei Zahlen.', code: 'function add(a, b) {\n  return a + b;\n}\nconsole.log(add(2, 3));' },
+            { title: 'Fehlerbehandlung', lang: 'JavaScript', note: 'try/catch fängt Fehler ab.', code: 'try {\n  riskant();\n} catch (e) {\n  console.log("Fehler: " + e.message);\n}' },
+            { title: 'Liste durchgehen', lang: 'Python', note: 'Iteriert über eine Liste.', code: 'namen = ["Ann", "Ben", "Cara"]\nfor n in namen:\n    print(n)' },
+            { title: 'Bedingung', lang: 'Python', note: 'Wenn-dann-Entscheidung.', code: 'alter = 18\nif alter >= 18:\n    print("volljaehrig")\nelse:\n    print("minderjaehrig")' },
+            { title: 'Klasse / Objekt', lang: 'Python', note: 'Ein einfaches Objekt.', code: 'class Hund:\n    def __init__(self, name):\n        self.name = name\n    def bellen(self):\n        print(self.name + " sagt wuff")\n\nHund("Rex").bellen()' },
+            { title: 'SQL-Abfrage', lang: 'SQL', note: 'Filtert und sortiert Datensätze.', code: 'SELECT name, preis\nFROM produkte\nWHERE preis > 10\nORDER BY preis DESC;' },
+            { title: 'CSS: zentrieren', lang: 'CSS', note: 'Element mittig mit Flexbox.', code: '.box {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}' },
+            { title: 'HTTP-Anfrage (fetch)', lang: 'JavaScript', note: 'Holt JSON von einer API.', code: "const res = await fetch('/api/data');\nconst data = await res.json();\nconsole.log(data);" }
+        ];
+
+        const snippetGrid = document.getElementById('snippetGrid');
+        snippets.forEach((s) => {
+            const card = document.createElement('div');
+            card.className = 'card snip';
+            const esc = s.code.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+            card.innerHTML = `<strong>${s.title}</strong> <span class="chip">${s.lang}</span>
+                <p style="margin-top:0.4rem;">${s.note}</p>
+                <pre>${esc}</pre>
+                <button type="button" class="copy-btn">📋 Kopieren</button>`;
+            const btn = card.querySelector('.copy-btn');
+            btn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(s.code);
+                } catch (e) {
+                    const ta = document.createElement('textarea');
+                    ta.value = s.code; document.body.appendChild(ta); ta.select();
+                    try { document.execCommand('copy'); } catch (err) { /* ignore */ }
+                    document.body.removeChild(ta);
+                }
+                btn.textContent = '✓ Kopiert';
+                btn.classList.add('copied');
+                setTimeout(() => { btn.textContent = '📋 Kopieren'; btn.classList.remove('copied'); }, 1500);
+            });
+            snippetGrid.appendChild(card);
+        });
+
+        // ── Developer-Curriculum ────────────────────────────
+        const curriculumSteps = {
+            dummy: [
+                'Verstehen: Was ist Code überhaupt?',
+                'Dein erstes „Hallo Welt" in {LANG}',
+                'Etwas anzeigen lassen (Ausgabe)',
+                'Werte in eine Kiste legen (Variable)',
+                'Etwas wiederholen (Schleife)'
+            ],
+            anfaenger: [
+                '{LANG}-Umgebung einrichten',
+                'Variablen & einfache Datentypen',
+                'Bedingungen (wenn / dann / sonst)',
+                'Schleifen & Listen',
+                'Eigene Funktionen schreiben'
+            ],
+            fortgeschritten: [
+                'Passende Datenstrukturen wählen',
+                'Fehlerbehandlung & Debugging',
+                'Module / Bibliotheken nutzen',
+                'Ein kleines Projekt in {LANG} bauen',
+                'Erste Tests schreiben'
+            ],
+            experte: [
+                'Architektur & Entwurfsmuster',
+                'Performance & Speicher optimieren',
+                'Nebenläufigkeit / Async meistern',
+                'Sicherheit (OWASP) & Code-Review',
+                'CI/CD, Deployment, Monitoring'
+            ]
+        };
+        const curriculumLang = document.getElementById('curriculumLang');
+        const curriculumPath = document.getElementById('curriculumPath');
+        languages.forEach((lang) => {
+            const opt = document.createElement('option');
+            opt.value = lang.name; opt.textContent = lang.name;
+            curriculumLang.appendChild(opt);
+        });
+        function renderCurriculum() {
+            const langName = curriculumLang.value || languages[0].name;
+            const lv = levels.find((l) => l.id === currentLevel);
+            const steps = curriculumSteps[currentLevel] || [];
+            curriculumPath.innerHTML = `<p class="quote">Lernpfad für <strong>${langName}</strong> · Niveau „${lv.label}"</p>` +
+                steps.map((step, i) =>
+                    `<div class="path-step"><span class="num">${i + 1}</span><span>${step.replace('{LANG}', langName)}</span></div>`
+                ).join('');
+        }
+        curriculumLang.addEventListener('change', renderCurriculum);
+        renderCurriculum();
+
+        // ── Fortschritts-Tracker ────────────────────────────
+        const PROGRESS_KEY = 'devUniverse.progress';
+        function loadProgress() {
+            try {
+                const raw = localStorage.getItem(PROGRESS_KEY);
+                if (raw) {
+                    const p = JSON.parse(raw);
+                    return { langs: p.langs || [], concepts: p.concepts || [] };
+                }
+            } catch (e) { /* ignore */ }
+            return { langs: [], concepts: [] };
+        }
+        function saveProgress() {
+            try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress)); } catch (e) { /* ignore */ }
+        }
+        const progress = loadProgress();
+
+        const progressLangs = document.getElementById('progressLangs');
+        const progressConcepts = document.getElementById('progressConcepts');
+        const progressInner = document.getElementById('progressInner');
+        const progressText = document.getElementById('progressText');
+        const conceptKeys = Object.keys(concepts);
+
+        function toggleProgress(kind, name) {
+            const list = progress[kind];
+            const idx = list.indexOf(name);
+            if (idx === -1) list.push(name); else list.splice(idx, 1);
+            saveProgress();
+            renderProgress();
+        }
+        function renderProgress() {
+            progressLangs.innerHTML = '';
+            languages.forEach((lang) => {
+                const chip = document.createElement('span');
+                const on = progress.langs.includes(lang.name);
+                chip.className = 'chip' + (on ? ' active' : '');
+                chip.textContent = (on ? '✓ ' : '') + lang.name;
+                chip.addEventListener('click', () => { toggleProgress('langs', lang.name); renderLang(); });
+                progressLangs.appendChild(chip);
+            });
+            progressConcepts.innerHTML = '';
+            conceptKeys.forEach((key) => {
+                const chip = document.createElement('span');
+                const on = progress.concepts.includes(key);
+                chip.className = 'chip' + (on ? ' active' : '');
+                chip.textContent = (on ? '✓ ' : '') + key;
+                chip.addEventListener('click', () => toggleProgress('concepts', key));
+                progressConcepts.appendChild(chip);
+            });
+            const total = languages.length + conceptKeys.length;
+            const done = progress.langs.length + progress.concepts.length;
+            const pct = total ? Math.round((done / total) * 100) : 0;
+            progressInner.style.width = pct + '%';
+            progressText.textContent = `${done} / ${total} erledigt (${pct}%) — ${progress.langs.length} Sprachen, ${progress.concepts.length} Konzepte.`;
+        }
+        document.getElementById('resetProgressBtn').addEventListener('click', () => {
+            progress.langs = [];
+            progress.concepts = [];
+            saveProgress();
+            renderProgress();
+            renderLang();
+        });
+        renderProgress();
+    </script>
+</body>
+</html>

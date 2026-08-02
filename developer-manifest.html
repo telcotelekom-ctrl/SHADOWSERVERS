@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#a020f0">
+    <title>Developer-Manifest • SERVICESOFTWARE TEL1.NL</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(160, 32, 240, 0.32), transparent 26%),
+                radial-gradient(circle at 80% 0%, rgba(34, 211, 238, 0.22), transparent 32%),
+                linear-gradient(135deg, #07111d 0%, #0f1d33 55%, #07111d 100%);
+            color: #f5f7ff; line-height: 1.8; padding: 2rem 1rem 4rem;
+        }
+        .wrap { max-width: 900px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 2.5rem; }
+        header h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing: 0.04em; }
+        header p { color: rgba(245, 247, 255, 0.82); margin-top: 0.6rem; }
+        .back-link { display: inline-block; margin-bottom: 1.5rem; color: #7dd3fc; text-decoration: none; font-weight: 600; }
+        section {
+            margin: 1.5rem 0; padding: 1.4rem 1.6rem; border-radius: 20px;
+            background: rgba(7, 17, 29, 0.7); border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.24);
+        }
+        section h2 {
+            font-size: 1.3rem; margin-bottom: 0.8rem; letter-spacing: 0.06em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.14); padding-bottom: 0.5rem;
+        }
+        ol, ul { margin: 0.5rem 0 0.5rem 1.4rem; }
+        li { margin-bottom: 0.5rem; }
+        .article { counter-increment: art; }
+        .article h3 { color: #c4b5fd; margin-bottom: 0.3rem; }
+        .article h3::before { content: 'Artikel ' counter(art) ' · '; color: #7dd3fc; }
+        body { counter-reset: art; }
+        .quote { font-style: italic; color: rgba(245, 247, 255, 0.9); }
+        .sign { margin-top: 1.5rem; text-align: center; }
+        .sign strong { color: #7dd3fc; font-size: 1.1rem; }
+        .links { display: grid; gap: 0.5rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+        .links a {
+            display: block; padding: 0.7rem 0.9rem; border-radius: 12px; text-decoration: none;
+            background: rgba(255, 255, 255, 0.08); color: #f5f7ff; border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        pre {
+            background: #050b14; border-radius: 14px; padding: 1rem; overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.12); margin-top: 0.8rem;
+            font-size: 0.82rem; color: #d1fae5;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <a class="back-link" href="./developer-universum.html">← Zurück zum Developer-Universum</a>
+        <header>
+            <h1>⭐ Developer-Manifest</h1>
+            <p>Geben statt besitzen · Open Source im Geist · SERVICESOFTWARE TEL1.NL</p>
+        </header>
+
+        <section>
+            <h2>Präambel</h2>
+            <p class="quote">„Ich habe es nicht verkauft. Ich habe es gegeben. Es war kein Angebot.
+                Man durfte es freiwillig wegwerfen. Wenn am Ende etwas übrig bleibt, darf ich mich freuen."</p>
+            <p>Dieses Manifest hält fest, wie in diesem System entwickelt wird: nicht aus Besitz,
+                sondern aus Beitrag. Nicht aus Kontrolle, sondern aus Öffnung.</p>
+        </section>
+
+        <section>
+            <h2>Die Artikel</h2>
+            <div class="article">
+                <h3>Beitrag vor Besitz</h3>
+                <p>Wir entwickeln, um zu geben. Wert entsteht durch Beitrag, nicht durch Eigentum.</p>
+            </div>
+            <div class="article">
+                <h3>Freiwillige Annahme</h3>
+                <p>Niemand wird gezwungen. Jede Erweiterung darf abgelehnt werden. Unverlangtes bleibt Einladung.</p>
+            </div>
+            <div class="article">
+                <h3>Transparenz</h3>
+                <p>Was, wann, warum und wie — ist immer nachvollziehbar. Kontrolle entsteht durch Klarheit.</p>
+            </div>
+            <div class="article">
+                <h3>Wahrheit durch Erfahrung</h3>
+                <p>Wahrheit ist persönlich, nicht absolut. Sie entsteht durch Interesse, Anwendung und Reflexion.</p>
+            </div>
+            <div class="article">
+                <h3>Dreifaltigkeit</h3>
+                <p>Jede Software hat drei Ebenen: Idee (Geist), Code (Sohn), System (Vater). Drei Ebenen, eine Wahrheit.</p>
+            </div>
+            <div class="article">
+                <h3>Zugänglichkeit für alle</h3>
+                <p>Erklärungen von absolute-Dummy bis Experte. Jedes Niveau ist willkommen und wird bedient.</p>
+            </div>
+            <div class="article">
+                <h3>Sicherheit als Pflicht</h3>
+                <p>Sichere Muster, keine offenen Schwachstellen (OWASP), Schutz von Daten und Menschen.</p>
+            </div>
+            <div class="article">
+                <h3>Frieden als Ziel</h3>
+                <p>Zeit = Wert, Wert = Verantwortung, Verantwortung = Frieden. Entwicklung dient dem Frieden.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Der Code-Standard (Kurz)</h2>
+            <ol>
+                <li>Lesbarkeit vor Cleverness.</li>
+                <li>Erst verstehen, dann ändern.</li>
+                <li>Nur bauen, was gebraucht wird (kein Over-Engineering).</li>
+                <li>Sicherheit an jeder Systemgrenze prüfen.</li>
+                <li>Tests und klare Fehlermeldungen statt stiller Fehler.</li>
+                <li>Dokumentation nur, wo der Code es nicht selbst zeigt.</li>
+                <li>Geben: teile Wissen, öffne den Weg für andere.</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Manifest als Daten</h2>
+            <pre id="manifestModel"></pre>
+        </section>
+
+        <section>
+            <h2>Verbindungen</h2>
+            <div class="links">
+                <a href="./developer-universum.html">Developer-Universum</a>
+                <a href="./finaly-all.html">FINALY ALL · Gesamtsystem</a>
+                <a href="./final-cut.html">Final Cut · Volume Economy</a>
+                <a href="./index.html#portal">Portal</a>
+            </div>
+            <div class="sign">
+                <p class="quote">Im Geist des Gebens.</p>
+                <strong>Raymond Demitrio Tel</strong>
+                <p>SERVICESOFTWARE · TEL1.NL</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const manifest = {
+            manifest: 'Developer-Manifest',
+            philosophy: 'Geben statt besitzen',
+            author: 'Raymond Demitrio Tel',
+            brand: 'SERVICESOFTWARE TEL1.NL',
+            articles: [
+                'Beitrag vor Besitz',
+                'Freiwillige Annahme',
+                'Transparenz',
+                'Wahrheit durch Erfahrung',
+                'Dreifaltigkeit (Idee/Code/System)',
+                'Zugänglichkeit für alle',
+                'Sicherheit als Pflicht',
+                'Frieden als Ziel'
+            ],
+            code_standard: [
+                'Lesbarkeit vor Cleverness',
+                'Erst verstehen, dann ändern',
+                'Kein Over-Engineering',
+                'Sicherheit an jeder Grenze',
+                'Tests statt stiller Fehler',
+                'Doku nur wo nötig',
+                'Wissen teilen'
+            ],
+            trinity: { geist: 'Idee', sohn: 'Code', vater: 'System' }
+        };
+        document.getElementById('manifestModel').textContent = JSON.stringify(manifest, null, 2);
+    </script>
+</body>
+</html>

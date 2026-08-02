@@ -63,6 +63,25 @@
         <button id="btn-save-app">💾 Bewaar als app</button>
         <button id="btn-clear">♻️ Wis user-space</button>
       </div>
+      <form id="production-settings" class="card" style="margin-top:14px; display:grid; gap:10px;">
+        <div class="row">
+          <label>Background
+            <select name="background">
+              <option value="cinematic-dark">Cinematic Dark</option>
+              <option value="studio-white">Studio White</option>
+              <option value="aurora-blue">Aurora Blue</option>
+            </select>
+          </label>
+          <label><input type="checkbox" name="transparentLogo" /> Transparent logo</label>
+          <label>Film style
+            <select name="filmStyle">
+              <option value="premium">Premium</option>
+              <option value="documentary">Documentary</option>
+            </select>
+          </label>
+        </div>
+        <div id="settings-summary" class="pill">— ready —</div>
+      </form>
       <div id="canvas-container" class="card" style="margin-top:14px"></div>
       <div id="app-preview">— nog geen actie —</div>
     </div>

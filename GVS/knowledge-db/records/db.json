@@ -1,0 +1,638 @@
+{
+  "projects": [
+    {
+      "id": "GVS-0001",
+      "name": "Global Vector Systems",
+      "status": "Concept",
+      "architecture": "Visual Runtime",
+      "core_tech": ["SVG", "HTML", "JavaScript", "AI", "Knowledge Graph"],
+      "goal": "Visueel kennis- en ontwikkelplatform",
+      "created_at": "2026-08-01T00:00:00Z",
+      "updated_at": "2026-08-01T00:00:00Z"
+    }
+  ],
+  "modules": [
+    { "id": "MOD-0001", "project_id": "GVS-0001", "name": "HOME", "description": "Startlaag en orientatie", "status": "active", "tags": ["portal"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0002", "project_id": "GVS-0001", "name": "AI", "description": "AI-director en assistentie", "status": "active", "tags": ["ai", "runtime"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0003", "project_id": "GVS-0001", "name": "SVG Runtime", "description": "Semantische SVG-interactie", "status": "active", "tags": ["svg", "ui"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0004", "project_id": "GVS-0001", "name": "Knowledge", "description": "Kennislaag en relaties", "status": "active", "tags": ["knowledge"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0005", "project_id": "GVS-0001", "name": "Media", "description": "Audio/video/beeld modules", "status": "active", "tags": ["media"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0006", "project_id": "GVS-0001", "name": "Research", "description": "Onderzoek en bronkoppeling", "status": "active", "tags": ["research"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0007", "project_id": "GVS-0001", "name": "Education", "description": "Leerlaag en routes", "status": "planned", "tags": ["education"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0008", "project_id": "GVS-0001", "name": "Community", "description": "Samenwerking en netwerk", "status": "planned", "tags": ["community"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0009", "project_id": "GVS-0001", "name": "Science", "description": "Wetenschappelijke kennisnodes", "status": "planned", "tags": ["science"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0010", "project_id": "GVS-0001", "name": "Animation", "description": "Tijd en motion-engine", "status": "active", "tags": ["animation"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0011", "project_id": "GVS-0001", "name": "Marketplace", "description": "Publicatie en uitwisseling", "status": "planned", "tags": ["market"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0012", "project_id": "GVS-0001", "name": "Portal", "description": "Toegang en identity-layer", "status": "active", "tags": ["portal", "identity"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0013", "project_id": "GVS-0001", "name": "Settings", "description": "Configuratie en profiel", "status": "planned", "tags": ["settings"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0014", "project_id": "GVS-0001", "name": "H2O SUN Bubble Universe", "description": "Manifest, visual runtime concept en lokale productiepipeline", "status": "active", "tags": ["manifest", "runtime", "visual-factory"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0015", "project_id": "GVS-0001", "name": "Branding", "description": "Titel, merkslogan en kernboodschap voor het GVS-systeem", "status": "active", "tags": ["branding", "identity", "manifest"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0016", "project_id": "GVS-0001", "name": "TELADIA Final Core", "description": "Definitieve signatuur, filmkern en all-a-signe wereld", "status": "active", "tags": ["teladia", "film", "signature", "world"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0017", "project_id": "GVS-0001", "name": "TELADIA Value & Payment Hint", "description": "Symbolische Wertlogik, Play Zone und vorangestellter Zahlungs-Hinweis", "status": "active", "tags": ["teladia", "value", "payment", "play-zone"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0018", "project_id": "GVS-0001", "name": "ALL ALSO Hub", "description": "Zentraler Sammelpunkt fuer alle aktuellen GVS- und TELADIA-Konzepte", "status": "active", "tags": ["hub", "index", "all-also"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0019", "project_id": "GVS-0001", "name": "NY-XSTOX Signed Standby", "description": "MetaMask read-only standby and mock coin participation layer", "status": "active", "tags": ["wallet", "metamask", "xstox", "mock"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0020", "project_id": "GVS-0001", "name": "GVS Start Screen", "description": "One-screen top entry that joins TELADIA, H2O SUN, Branding, Knowledge DB, Play Zone, and standby access", "status": "active", "tags": ["start", "landing", "portal", "gvs"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0021", "project_id": "GVS-0001", "name": "T.&.T. Trust Board", "description": "Playable browser-side board game with XSTOX mock coins and trust-network regions", "status": "active", "tags": ["game", "play-zone", "tnt", "xstox"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0022", "project_id": "GVS-0001", "name": "Ernstfall Korrektur Center", "description": "Directly readable operational diagnostics and correction helper with automatic troubleshooting hints", "status": "active", "tags": ["ops", "diagnostics", "support", "correction"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0023", "project_id": "GVS-0001", "name": "UHAIOS Architecture", "description": "Universal Human AI Operating System architecture specification spanning story, analysis, graph, safety, and global collaboration", "status": "active", "tags": ["uhaios", "architecture", "human-ai", "governance"], "version": "0.1", "updated_at": "2026-08-01" },
+    { "id": "MOD-0024", "project_id": "GVS-0001", "name": "Brand Signe Picture Layer", "description": "Picture branding runtime with BRANDSIGNE and international call-center identity markings", "status": "active", "tags": ["branding", "images", "signe", "identity"], "version": "0.1", "updated_at": "2026-08-01" }
+  ],
+  "research": [
+    {
+      "id": "RES-0001",
+      "topic": "Multimedia en techniek",
+      "summary": "Orientatie op multimedia-, visualisatie- en technologieconcepten",
+      "source_type": "search",
+      "source_url": "https://www.bing.com/search?q=Alles+auf+dem+Gebiet+Mulitmedia+und+techniek",
+      "status": "referentie",
+      "tags": ["multimedia", "research", "gvs"],
+      "created_at": "2026-08-01T00:00:00Z"
+    }
+  ],
+  "knowledge": [
+    {
+      "id": "KNW-0001",
+      "category": "runtime",
+      "subject": "SVG as semantic runtime",
+      "description": "SVG fungeert als visuele en interactieve hoofdlaag met gekoppelde kennisnodes.",
+      "relations": ["MOD-0003", "MOD-0010"],
+      "source_ref": "REF-0001",
+      "version": "0.1",
+      "tags": ["svg", "runtime", "interaction"],
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "KNW-0002",
+      "category": "identity",
+      "subject": "Identity Cell",
+      "description": "Mensgerichte toegangszone waarin profiel, contact en document-overzicht samenkomen.",
+      "relations": ["MOD-0012"],
+      "source_ref": "REF-0002",
+      "version": "0.1",
+      "tags": ["identity", "portal", "human-centered"],
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "KNW-0003",
+      "category": "manifest",
+      "subject": "H2O SUN Bubble Universe",
+      "description": "Visuele en operationele runtime-metaforiek met Director's Cut, lokale productie en automatische verificatie.",
+      "relations": ["MOD-0014", "MOD-0012", "MOD-0003"],
+      "source_ref": "REF-0003",
+      "version": "0.1",
+      "tags": ["h2o", "bubble-universe", "director-cut", "local-production"],
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "KNW-0004",
+      "category": "branding",
+      "subject": "One Idea. Infinite Possibilities.",
+      "description": "Korte kernboodschap voor een open, lerend en mensgericht platform.",
+      "relations": ["MOD-0015", "MOD-0012", "MOD-0004"],
+      "source_ref": "REF-0004",
+      "version": "0.1",
+      "tags": ["branding", "title", "identity", "knowledge"],
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "KNW-0005",
+      "category": "film",
+      "subject": "TELADIA Final Core",
+      "description": "Definitieve ALL A SIGNE kern voor film, poster, wereld en visuele identiteit.",
+      "relations": ["MOD-0016", "MOD-0015", "MOD-0012"],
+      "source_ref": "REF-0005",
+      "version": "0.1",
+      "tags": ["teladia", "all-a-signe", "film", "poster"],
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "KNW-0006",
+      "category": "value",
+      "subject": "TELADIA Value & Payment Hint",
+      "description": "Symbolische Formel-, Wertstellungs- und Zugangsschicht mit Play Zone und Zahlungs-Hinweis.",
+      "relations": ["MOD-0017", "MOD-0016", "MOD-0012"],
+      "source_ref": "REF-0006",
+      "version": "0.1",
+      "tags": ["teladia", "value", "payment", "verification"],
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "KNW-0007",
+      "category": "hub",
+      "subject": "ALL ALSO HUB",
+      "description": "Zentraler Sammelindex fuer alle GVS/TELADIA-Pfade, inklusive Play Zone und Pre-Bank-Hinweis.",
+      "relations": ["MOD-0018", "MOD-0017", "MOD-0016", "MOD-0015", "MOD-0014"],
+      "source_ref": "REF-0007",
+      "version": "0.1",
+      "tags": ["hub", "index", "all-also", "portal"],
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "KNW-0008",
+      "category": "wallet",
+      "subject": "NY-XSTOX Signed Standby",
+      "description": "Read-only MetaMask-detectie met mock coin-acties en geen live geldtransacties.",
+      "relations": ["MOD-0019", "MOD-0017", "MOD-0018"],
+      "source_ref": "REF-0008",
+      "version": "0.1",
+      "tags": ["wallet", "metamask", "xstox", "standby", "mock"],
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "KNW-0009",
+      "category": "start",
+      "subject": "GVS Start Screen",
+      "description": "Een enkele startsurface die alle huidige GVS/TELADIA-systemen in een scherm samenbrengt.",
+      "relations": ["MOD-0020", "MOD-0019", "MOD-0018", "MOD-0017", "MOD-0016", "MOD-0015", "MOD-0014"],
+      "source_ref": "REF-0009",
+      "version": "0.1",
+      "tags": ["start", "landing", "hub", "portal"],
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "KNW-0010",
+      "category": "game",
+      "subject": "T.&.T. Trust Board",
+      "description": "Origineel mock board game met lokale opslag, regio-tegels, event cards en XSTOX-symbolische economie.",
+      "relations": ["MOD-0021", "MOD-0019", "MOD-0017", "MOD-0020"],
+      "source_ref": "REF-0010",
+      "version": "0.1",
+      "tags": ["game", "board", "play-zone", "trust"],
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "KNW-0011",
+      "category": "operations",
+      "subject": "Ernstfall Korrektur Center",
+      "description": "Korrekturmodus mit automatisch generierten Fehlersuchhinweisen und direkt lesbaren TXT/JSON-Reports ohne Entpacken.",
+      "relations": ["MOD-0022", "MOD-0020", "MOD-0012", "MOD-0004"],
+      "source_ref": "REF-0011",
+      "version": "0.1",
+      "tags": ["operations", "support", "diagnostics", "reporting"],
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "KNW-0012",
+      "category": "architecture",
+      "subject": "UHAIOS Universal Human AI Operating System",
+      "description": "Mehrschichtige Architektur mit Import-Engine, Analyse, Story-Engine, Wissensgraph, Simulation, Bericht und Sicherheitsgovernance.",
+      "relations": ["MOD-0023", "MOD-0004", "MOD-0012", "MOD-0022"],
+      "source_ref": "REF-0012",
+      "version": "0.1",
+      "tags": ["uhaios", "architecture", "knowledge-graph", "security"],
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "KNW-0013",
+      "category": "branding",
+      "subject": "Brand Signe Picture Identity",
+      "description": "Bildmaterial wird mit BRANDSIGNE und internationaler Organisationskennung als visuelle Referenzschicht versehen.",
+      "relations": ["MOD-0024", "MOD-0015", "MOD-0012"],
+      "source_ref": "REF-0013",
+      "version": "0.1",
+      "tags": ["branding", "signe", "image-layer", "identity"],
+      "updated_at": "2026-08-01"
+    }
+  ],
+  "references": [
+    {
+      "id": "REF-0001",
+      "title": "Multimedia & Technology",
+      "category": "Research",
+      "type": "Web",
+      "status": "Geanalyseerd",
+      "relation": "Visual Runtime",
+      "url": "https://www.bing.com/search?q=Alles+auf+dem+Gebiet+Mulitmedia+und+techniek",
+      "created_at": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "REF-0002",
+      "title": "Bing search result delivery principles",
+      "category": "Search Engine",
+      "type": "Documentation",
+      "status": "Reference",
+      "relation": "SEARCH_HISTORY",
+      "url": "https://support.microsoft.com/de-de/bing/how-bing-delivers-search-results",
+      "created_at": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "REF-0003",
+      "title": "H2O SUN Bubble Universe Manifest",
+      "category": "Concept",
+      "type": "Internal",
+      "status": "Active",
+      "relation": "MOD-0014",
+      "url": "./GVS/H2O_SUN_BUBBLE_UNIVERSE.md",
+      "created_at": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "REF-0004",
+      "title": "Branding Manifest One Idea. Infinite Possibilities.",
+      "category": "Brand",
+      "type": "Internal",
+      "status": "Active",
+      "relation": "MOD-0015",
+      "url": "./GVS/BRANDING_MANIFEST.md",
+      "created_at": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "REF-0005",
+      "title": "TELADIA Final Core",
+      "category": "Film",
+      "type": "Internal",
+      "status": "Active",
+      "relation": "MOD-0016",
+      "url": "./GVS/TELADIA_FINAL_CORE.md",
+      "created_at": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "REF-0006",
+      "title": "TELADIA Value & Payment Hint",
+      "category": "Value System",
+      "type": "Internal",
+      "status": "Active",
+      "relation": "MOD-0017",
+      "url": "./GVS/TELADIA_VALUE_AND_PAYMENT_HINT.md",
+      "created_at": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "REF-0007",
+      "title": "ALL ALSO Hub",
+      "category": "Hub",
+      "type": "Internal",
+      "status": "Active",
+      "relation": "MOD-0018",
+      "url": "./GVS/ALL_ALSO_HUB.md",
+      "created_at": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "REF-0008",
+      "title": "NY-XSTOX Signed Standby",
+      "category": "Wallet Layer",
+      "type": "Internal",
+      "status": "Active",
+      "relation": "MOD-0019",
+      "url": "./GVS/XSTOX_METAMASK_STANDBY.md",
+      "created_at": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "REF-0009",
+      "title": "GVS Start Screen",
+      "category": "Landing",
+      "type": "Internal",
+      "status": "Active",
+      "relation": "MOD-0020",
+      "url": "./GVS/start.html",
+      "created_at": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "REF-0010",
+      "title": "T.&.T. Trust Board",
+      "category": "Game",
+      "type": "Internal",
+      "status": "Active",
+      "relation": "MOD-0021",
+      "url": "./GVS/TNT_TRUST_BOARD.md",
+      "created_at": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "REF-0011",
+      "title": "Ernstfall Korrektur Center",
+      "category": "Operations",
+      "type": "Internal",
+      "status": "Active",
+      "relation": "MOD-0022",
+      "url": "./GVS/ERNSTFALL_KORREKTUR_CENTER.md",
+      "created_at": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "REF-0012",
+      "title": "UHAIOS Architecture Spec",
+      "category": "Architecture",
+      "type": "Internal",
+      "status": "Active",
+      "relation": "MOD-0023",
+      "url": "./GVS/UHAIOS_ARCHITECTURE_SPEC.md",
+      "created_at": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "REF-0013",
+      "title": "Brand Signe Picture Gallery",
+      "category": "Branding",
+      "type": "Internal",
+      "status": "Active",
+      "relation": "MOD-0024",
+      "url": "./GVS/brand-signe-gallery.html",
+      "created_at": "2026-08-01T00:00:00Z"
+    }
+  ],
+  "search_history": [
+    {
+      "id": "WS-2026-08-01",
+      "topic": "Multimedia en techniek",
+      "engine": "Bing",
+      "query": "Alles auf dem Gebiet Multimedia und techniek",
+      "goal": "Orientatie op multimedia, visualisatie en technologie",
+      "status": "Geregistreerd",
+      "notes": "Gebruik als referentie voor module- en onderzoeksuitbreiding.",
+      "created_at": "2026-08-01T00:00:00Z"
+    }
+  ],
+  "changelog": [
+    {
+      "id": "CHG-0001",
+      "date": "2026-08-01",
+      "module": "Knowledge DB",
+      "change": "Initiële centrale database-structuur toegevoegd",
+      "version": "0.1",
+      "author": "Copilot",
+      "notes": "PROJECTS/MODULES/RESEARCH/KNOWLEDGE/REFERENCES/SEARCH_HISTORY/CHANGELOG/DOCUMENTATION ingericht."
+    },
+    {
+      "id": "CHG-0002",
+      "date": "2026-08-01",
+      "module": "H2O SUN Bubble Universe",
+      "change": "Manifest und visuelle Runtime-Seite registriert und ins Portal integriert",
+      "version": "0.1",
+      "author": "Copilot",
+      "notes": "Neue Dokumente + Modul MOD-0014 + Wissenseintrag KNW-0003 + Referenz REF-0003 angelegt."
+    },
+    {
+      "id": "CHG-0003",
+      "date": "2026-08-01",
+      "module": "Branding",
+      "change": "One Idea. Infinite Possibilities. als Titel und Branding-Manifest hinzugefuegt",
+      "version": "0.1",
+      "author": "Copilot",
+      "notes": "Neues Modul MOD-0015, Wissenseintrag KNW-0004 und Referenz REF-0004 registriert."
+    },
+    {
+      "id": "CHG-0004",
+      "date": "2026-08-01",
+      "module": "TELADIA",
+      "change": "Final Core Set als signierte Film- und Weltkern-Referenz registriert",
+      "version": "0.1",
+      "author": "Copilot",
+      "notes": "Neues Modul MOD-0016, Wissenseintrag KNW-0005, Referenz REF-0005 und Dokumente TELADIA_FINAL_CORE.md / teladia-final-core.html angelegt."
+    },
+    {
+      "id": "CHG-0005",
+      "date": "2026-08-01",
+      "module": "TELADIA Value & Payment",
+      "change": "Symbolische Wertlogik, Play Zone und Zahlungs-Hinweis hinzugefuegt",
+      "version": "0.1",
+      "author": "Copilot",
+      "notes": "Neues Modul MOD-0017, Wissenseintrag KNW-0006, Referenz REF-0006 und Dokumente TELADIA_VALUE_AND_PAYMENT_HINT.md / teladia-value-and-payment-hint.html angelegt."
+    },
+    {
+      "id": "CHG-0006",
+      "date": "2026-08-01",
+      "module": "ALL ALSO Hub",
+      "change": "Zentraler Sammelhub fuer alle bestehenden GVS/TELADIA-Konzepte hinzugefuegt",
+      "version": "0.1",
+      "author": "Copilot",
+      "notes": "Neues Modul MOD-0018, Wissenseintrag KNW-0007, Referenz REF-0007 und Dokumente ALL_ALSO_HUB.md / all-also-hub.html angelegt."
+    },
+    {
+      "id": "CHG-0007",
+      "date": "2026-08-01",
+      "module": "GVS Start Screen",
+      "change": "Eine einzelne Startseite ueber alle aktiven GVS/TELADIA-Systeme gelegt",
+      "version": "0.1",
+      "author": "Copilot",
+      "notes": "Neues Modul MOD-0020, Wissenseintrag KNW-0009 und Referenz REF-0009 fuer start.html angelegt."
+    },
+    {
+      "id": "CHG-0008",
+      "date": "2026-08-01",
+      "module": "T.&.T. Trust Board",
+      "change": "Spielbares Browser-Board mit XSTOX-Mock-Coins und Play-Zone-Logik hinzugefuegt",
+      "version": "0.1",
+      "author": "Copilot",
+      "notes": "Neues Modul MOD-0021, Wissenseintrag KNW-0010, Referenz REF-0010 und Dokumente TNT_TRUST_BOARD.md / tnt-trust-board.html angelegt."
+    },
+    {
+      "id": "CHG-0009",
+      "date": "2026-08-01",
+      "module": "Ernstfall Korrektur Center",
+      "change": "Direkt lesbares Diagnose- und Korrektursystem mit Auto-Hilfe und TXT/JSON-Reportexport hinzugefuegt",
+      "version": "0.1",
+      "author": "Copilot",
+      "notes": "Neues Modul MOD-0022, Wissenseintrag KNW-0011, Referenz REF-0011 und Dokumente ERNSTFALL_KORREKTUR_CENTER.md / ernstfall-korrektur-center.html angelegt."
+    },
+    {
+      "id": "CHG-0010",
+      "date": "2026-08-01",
+      "module": "UHAIOS Architecture",
+      "change": "Technische Spezifikation fuer das Universal Human AI Operating System hinzugefuegt",
+      "version": "0.1",
+      "author": "Copilot",
+      "notes": "Neues Modul MOD-0023, Wissenseintrag KNW-0012, Referenz REF-0012 und Dokument UHAIOS_ARCHITECTURE_SPEC.md angelegt."
+    },
+    {
+      "id": "CHG-0011",
+      "date": "2026-08-01",
+      "module": "Brand Signe Picture Layer",
+      "change": "Picture-Branding Seite mit BRANDSIGNE und International-Call-Center Kennung hinzugefuegt",
+      "version": "0.1",
+      "author": "Copilot",
+      "notes": "Neues Modul MOD-0024, Wissenseintrag KNW-0013, Referenz REF-0013 und Dokument brand-signe-gallery.html angelegt."
+    }
+  ],
+  "documentation": [
+    {
+      "id": "DOC-0001",
+      "path": "GVS/GVS_SHADOWSPHERE_OVERVIEW.md",
+      "type": "overview",
+      "scope": "gvs",
+      "description": "Architectuur-overzicht voor GVS en ShadowSphere",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0002",
+      "path": "GVS/knowledge-db/schema.json",
+      "type": "schema",
+      "scope": "db",
+      "description": "Datamodel van centrale Knowledge DB",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0003",
+      "path": "GVS/H2O_SUN_BUBBLE_UNIVERSE.md",
+      "type": "manifest",
+      "scope": "gvs",
+      "description": "H2O SUN Bubble Universe Leitbild und Produktionslogik",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0004",
+      "path": "GVS/h2o-sun-bubble-universe.html",
+      "type": "visual-runtime",
+      "scope": "gvs",
+      "description": "Interaktive Darstellung des Bubble-Universe-Konzepts",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0005",
+      "path": "GVS/BRANDING_MANIFEST.md",
+      "type": "manifest",
+      "scope": "gvs",
+      "description": "Branding-Manifest mit Titel und Kernbotschaft",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0006",
+      "path": "GVS/branding-manifest.html",
+      "type": "visual-brand",
+      "scope": "gvs",
+      "description": "Branding-Oberflaeche mit Titel und Kernsatz",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0007",
+      "path": "GVS/TELADIA_FINAL_CORE.md",
+      "type": "manifest",
+      "scope": "gvs",
+      "description": "Definitive TELADIA Final Core Zusammenfassung",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0008",
+      "path": "GVS/teladia-final-core.html",
+      "type": "visual-runtime",
+      "scope": "gvs",
+      "description": "Interaktive TELADIA Final Core Seite mit SVG-Signatur",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0009",
+      "path": "GVS/TELADIA_VALUE_AND_PAYMENT_HINT.md",
+      "type": "manifest",
+      "scope": "gvs",
+      "description": "TELADIA Wert-, Formelsystem- und Zahlungs-Hinweis",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0010",
+      "path": "GVS/teladia-value-and-payment-hint.html",
+      "type": "visual-runtime",
+      "scope": "gvs",
+      "description": "TELADIA Wert- und Zahlungs-Hinweis als interaktive Seite",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0011",
+      "path": "GVS/ALL_ALSO_HUB.md",
+      "type": "hub",
+      "scope": "gvs",
+      "description": "Kompakter Sammelindex fuer alle GVS/TELADIA-Konzepte",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0012",
+      "path": "GVS/all-also-hub.html",
+      "type": "visual-runtime",
+      "scope": "gvs",
+      "description": "Interaktive Hub-Seite fuer alle GVS/TELADIA-Konzepte",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0013",
+      "path": "GVS/XSTOX_METAMASK_STANDBY.md",
+      "type": "manifest",
+      "scope": "gvs",
+      "description": "MetaMask/XSTOX Standby-Regeln und Mock-Teilnahmebeschreibung",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0014",
+      "path": "GVS/xstox-metamask-standby.html",
+      "type": "visual-runtime",
+      "scope": "gvs",
+      "description": "Read-only MetaMask/XSTOX Standby-Seite mit Mock-Aktionen",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0015",
+      "path": "GVS/start.html",
+      "type": "landing",
+      "scope": "gvs",
+      "description": "Eine Startseite fuer TELADIA, H2O SUN, Branding, DB, Play Zone und Standby-Zugang",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0016",
+      "path": "GVS/TNT_TRUST_BOARD.md",
+      "type": "game-rules",
+      "scope": "gvs",
+      "description": "Regeln und Scope fuer das T.&.T. Trust Board",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0017",
+      "path": "GVS/tnt-trust-board.html",
+      "type": "visual-runtime",
+      "scope": "gvs",
+      "description": "Spielbare T.&.T. Trust Board Seite mit Mock-Coins und lokaler Speicherung",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0018",
+      "path": "GVS/ERNSTFALL_KORREKTUR_CENTER.md",
+      "type": "operations-doc",
+      "scope": "gvs",
+      "description": "Ernstfall-Prozessdokument fuer Korrekturarbeiten und automatische Fehlersuche",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0019",
+      "path": "GVS/ernstfall-korrektur-center.html",
+      "type": "visual-runtime",
+      "scope": "gvs",
+      "description": "Interaktive Ernstfall-Seite mit Betriebschecks, Hilfetexten und Reportexport",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0020",
+      "path": "GVS/UHAIOS_ARCHITECTURE_SPEC.md",
+      "type": "architecture-spec",
+      "scope": "gvs",
+      "description": "Technische Spezifikation des Universal Human AI Operating System",
+      "updated_at": "2026-08-01"
+    },
+    {
+      "id": "DOC-0021",
+      "path": "GVS/brand-signe-gallery.html",
+      "type": "visual-brand",
+      "scope": "gvs",
+      "description": "Galerie mit BRANDSIGNE fuer vorhandene Bilder und internationale Kennung",
+      "updated_at": "2026-08-01"
+    }
+  ],
+  "wallet_layers": [
+    {
+      "id": "WAL-0001",
+      "project_id": "GVS-0001",
+      "name": "NY-XSTOX Signed Standby",
+      "mode": "readonly-standby",
+      "status": "active",
+      "hint_url": "https://bunq.me/RaymondDemitrioTel",
+      "real_money_enabled": false,
+      "notes": "Mock actions available; no transfers, swaps, or approvals.",
+      "updated_at": "2026-08-01"
+    }
+  ],
+  "verification_objects": [
+    {
+      "id": "VER-0001",
+      "target_id": "MOD-0019",
+      "hash": "standby-unsigned-placeholder",
+      "timestamp": "2026-08-01T00:00:00Z",
+      "checksum": "demo-checksum",
+      "source_uri": "./GVS/XSTOX_METAMASK_STANDBY.md",
+      "model_id": "gvs-standby-v1",
+      "integrity_score": 1,
+      "mode": "mock"
+    }
+  ]
+}

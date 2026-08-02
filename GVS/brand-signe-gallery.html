@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Signe Gallery</title>
+  <style>
+    :root {
+      --bg: #0a0f14;
+      --panel: rgba(19, 26, 34, 0.92);
+      --line: rgba(255, 255, 255, 0.16);
+      --text: #ecf3fb;
+      --muted: #b4c6da;
+      --accent: #ffaf40;
+      --accent2: #69d0ff;
+      --ok: #7ee3b0;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 12% 14%, rgba(255, 175, 64, 0.18), transparent 28%),
+        radial-gradient(circle at 82% 8%, rgba(105, 208, 255, 0.16), transparent 30%),
+        radial-gradient(circle at 65% 92%, rgba(126, 227, 176, 0.11), transparent 34%),
+        var(--bg);
+      padding: 24px;
+    }
+    .shell { max-width: 1320px; margin: 0 auto; display: grid; gap: 16px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    h1, h2, h3, p { margin: 0 0 12px; }
+    .title { font-size: clamp(2rem, 5vw, 3.4rem); letter-spacing: -0.03em; }
+    .sub { color: var(--muted); line-height: 1.65; max-width: 95ch; }
+    .badge-row { display: flex; gap: 9px; flex-wrap: wrap; }
+    .badge {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 11px;
+      font-size: 0.88rem;
+      background: rgba(255,255,255,0.04);
+    }
+    .brandline {
+      border-left: 4px solid var(--accent);
+      background: rgba(255, 175, 64, 0.12);
+      padding: 12px 14px;
+      border-radius: 12px;
+      color: var(--text);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      overflow-wrap: anywhere;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+    .image-wrap {
+      position: relative;
+      min-height: 220px;
+      background: #111922;
+    }
+    .image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: contrast(1.03) saturate(1.08);
+    }
+    .watermark {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(7, 12, 18, 0.76);
+      border: 1px solid rgba(255,255,255,0.2);
+      font-size: 0.8rem;
+      line-height: 1.45;
+      color: #f3f7fd;
+      max-width: calc(100% - 20px);
+      backdrop-filter: blur(6px);
+    }
+    .body { padding: 14px; }
+    .meta { color: var(--muted); line-height: 1.6; }
+    .ok { color: var(--ok); font-weight: 700; }
+    .links { display: flex; flex-wrap: wrap; gap: 10px; }
+    a { color: var(--accent2); }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="panel">
+      <h1 class="title">Picture Branding and BRANDSIGNE</h1>
+      <p class="sub">Diese Galerie weist den vorhandenen Bildern eine einheitliche Markenidentitaet zu. Jedes Bild wird mit der gleichen Signatur und Organisationskennung gerendert, damit internationale Wiedererkennung und Referenzierbarkeit gegeben sind.</p>
+      <div class="badge-row">
+        <span class="badge">Image Branding</span>
+        <span class="badge">Identity Trace</span>
+        <span class="badge">International Call Center</span>
+        <span class="badge">Office Organisation Layer</span>
+      </div>
+      <div class="brandline" style="margin-top:12px;">BRANDSIGNE: [.signe:+31-613-803-782.-] INTERNATIONAL-CALL-CENTER EOCEUROPEAN OFFICE ORGANISATION'S I,.</div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="image-wrap">
+          <img src="./selections%20elders%20prodyctions%20movies%20cuting%20assemblieys/propo.png" alt="propo branded" />
+          <div class="watermark">.signe:+31-613-803-782.-<br/>INTERNATIONAL-CALL-CENTER<br/>EOCEUROPEAN OFFICE ORGANISATION'S I,.</div>
+        </div>
+        <div class="body">
+          <h3>Propo</h3>
+          <p class="meta">Brand status: <span class="ok">Active</span>. Bild ist der Brand-Linie mit CONTACT-SIGNE und Organisationssignatur zugewiesen.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="image-wrap">
+          <img src="./selections%20elders%20prodyctions%20movies%20cuting%20assemblieys/vader.png" alt="vader branded" />
+          <div class="watermark">.signe:+31-613-803-782.-<br/>INTERNATIONAL-CALL-CENTER<br/>EOCEUROPEAN OFFICE ORGANISATION'S I,.</div>
+        </div>
+        <div class="body">
+          <h3>Vader</h3>
+          <p class="meta">Brand status: <span class="ok">Active</span>. Bild ist auf International-Call-Center und Office-Organisation referenziert.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="image-wrap">
+          <img src="./selections%20elders%20prodyctions%20movies%20cuting%20assemblieys/world.png" alt="world branded" />
+          <div class="watermark">.signe:+31-613-803-782.-<br/>INTERNATIONAL-CALL-CENTER<br/>EOCEUROPEAN OFFICE ORGANISATION'S I,.</div>
+        </div>
+        <div class="body">
+          <h3>World</h3>
+          <p class="meta">Brand status: <span class="ok">Active</span>. Bild dient als globales Referenzmotiv fuer internationale Zusammenarbeit.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Navigation</h2>
+      <div class="links">
+        <a href="./UHAIOS_ARCHITECTURE_SPEC.md">UHAIOS Spezifikation</a>
+        <a href="./start.html">GVS Start</a>
+        <a href="./all-also-hub.html">ALL ALSO Hub</a>
+        <a href="./knowledge-db/index.html">Knowledge DB</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

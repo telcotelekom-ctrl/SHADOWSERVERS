@@ -37,7 +37,7 @@ class VisualRuntime {
       ghost: false
     };
     // Live control values from the Director Panel.
-    this.userCtl = { intensity: 0.7, laser: 0.45, glow: 0.6, spin: 0.3, ghost: true, audio: false };
+    this.userCtl = { intensity: 0.7, laser: 0.45, glow: 0.6, spin: 0.3, ghost: true, audio: false, transparentLogo: true, filmMode: true };
 
     this.director = new Director(this);
     this.ui = new UI(this);
@@ -77,6 +77,9 @@ class VisualRuntime {
     this.laser.intensity = clamp(this.laser.intensity * (0.4 + 1.3 * u.intensity));
     this.camera.spin = this.camera.spin * (0.2 + 1.6 * u.spin);
     if (!u.ghost) this.state.ghost = false;
+    if (!u.transparentLogo) this.portal.opacity = 0.2;
+    else this.portal.opacity = 1;
+    if (!u.filmMode) this.portal.active = Math.max(0.05, this.portal.active * 0.7);
   }
 
   _ghostTick(dt) {

@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investor Portal - Startup Systems | Z-Canvas Kapitalformeln</title>
+    <meta name="theme-color" content="#a020f0">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <title>Energy Center International ECI • Premium Digital Platform</title>
     <style>
         * {
             margin: 0;
@@ -24,6 +26,197 @@
             --error-color: #ff6b6b;
             --panel-bg: rgba(255, 255, 255, 0.08);
             --panel-border: rgba(255, 255, 255, 0.16);
+            --brand-purple: #a020f0;
+        }
+
+        .leo-signature {
+            position: fixed;
+            right: 1rem;
+            bottom: 1rem;
+            width: min(190px, 34vw);
+            height: 48px;
+            z-index: 9999;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .leo-variant {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: scale(0.94);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+            font-size: 0.74rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+        }
+
+        .leo-variant.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .leo-variant.v1 {
+            background: radial-gradient(circle at 30% 0%, rgba(255, 255, 255, 0.36), rgba(160, 32, 240, 0.42), rgba(7, 17, 29, 0.96));
+            color: #fdf7ff;
+            box-shadow: 0 0 18px rgba(160, 32, 240, 0.42);
+        }
+
+        .leo-variant.v2 {
+            background: linear-gradient(135deg, rgba(7, 17, 29, 0.98), rgba(67, 18, 126, 0.92));
+            color: #f0e6ff;
+        }
+
+        .leo-variant.v3 {
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.35), rgba(77, 0, 140, 0.86), rgba(5, 2, 15, 1));
+            color: #fff;
+        }
+
+        .slogan-popup {
+            position: fixed;
+            left: 50%;
+            top: 12%;
+            transform: translateX(-50%);
+            min-width: min(320px, 72vw);
+            max-width: 440px;
+            padding: 1rem 1.2rem;
+            border-radius: 18px;
+            background: radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.28), rgba(40, 0, 80, 0.9), rgba(5, 2, 15, 0.98));
+            box-shadow: 0 0 24px rgba(160, 32, 240, 0.42), 0 0 4px rgba(255, 255, 255, 0.48);
+            color: #fdfbff;
+            text-align: center;
+            line-height: 1.45;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.55s ease;
+            z-index: 9998;
+        }
+
+        .slogan-popup.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .slogan-title {
+            font-size: 0.84rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.35rem;
+        }
+
+        .slogan-body {
+            font-size: 0.92rem;
+            opacity: 0.95;
+        }
+
+        .slogan-close {
+            margin-top: 0.7rem;
+            font-size: 0.74rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+
+        .uvr-runtime-shell {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            border-radius: 20px;
+            background: rgba(7, 17, 29, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.24);
+        }
+
+        .uvr-runtime-shell h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.04rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .uvr-runtime-shell p {
+            margin-bottom: 0.8rem;
+            color: rgba(245, 247, 255, 0.82);
+        }
+
+        .uvr-scene {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .uvr-scene-title {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #7dd3fc;
+        }
+
+        .uvr-scene-object-grid {
+            display: grid;
+            gap: 0.75rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        }
+
+        .uvr-object-card {
+            padding: 0.9rem;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            justify-content: center;
+        }
+
+        .uvr-image-card img {
+            width: 100%;
+            max-height: 120px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .uvr-menu-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .uvr-menu-button {
+            border: none;
+            border-radius: 999px;
+            padding: 0.45rem 0.75rem;
+            background: linear-gradient(135deg, #8b5cf6, #22d3ee);
+            color: white;
+            cursor: pointer;
+        }
+
+        .uvr-scene-status {
+            font-size: 0.88rem;
+            color: rgba(245, 247, 255, 0.78);
+        }
+
+        .uvr-runtime-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .uvr-runtime-actions .uvr-menu-button {
+            font-size: 0.82rem;
         }
 
         body {
@@ -196,6 +389,377 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
             color: var(--text-light);
             font-size: 0.92em;
+        }
+
+        .eci-shell {
+            margin: 0 0 24px;
+            padding: 24px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(7, 17, 29, 0.96));
+            border: 1px solid rgba(16, 185, 129, 0.28);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+            backdrop-filter: blur(18px);
+        }
+
+        .eci-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.9fr;
+            gap: 18px;
+        }
+
+        .eci-main-card,
+        .eci-panel {
+            border-radius: 24px;
+            padding: 22px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        .eci-badge {
+            display: inline-flex;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(16, 185, 129, 0.16);
+            color: var(--investor-color);
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .eci-main-card h2 {
+            font-size: clamp(1.4rem, 2.1vw, 2.1rem);
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        .eci-main-card p {
+            color: rgba(245, 247, 255, 0.9);
+            margin-bottom: 12px;
+        }
+
+        .eci-slogan-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0 14px;
+        }
+
+        .eci-slogan-row span {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+        }
+
+        .eci-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .eci-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .eci-stat {
+            padding: 12px;
+            border-radius: 16px;
+            background: rgba(7, 17, 29, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .eci-stat strong {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--investor-color);
+        }
+
+        .eci-stat span {
+            font-size: 0.84rem;
+            color: rgba(245, 247, 255, 0.8);
+        }
+
+        .eci-panel-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .eci-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(16, 185, 129, 0.14);
+            color: var(--success-color);
+            font-weight: 700;
+            font-size: 0.82rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .eci-pill::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success-color);
+            box-shadow: 0 0 8px rgba(63, 219, 147, 0.6);
+        }
+
+        .eci-social-card {
+            margin-top: 12px;
+            padding: 14px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(7,17,29,0.8));
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .eci-social-card h3 {
+            margin-bottom: 10px;
+            color: var(--investor-color);
+            font-size: 1rem;
+        }
+
+        .eci-social-frame {
+            width: 100%;
+            min-height: 320px;
+            border: 0;
+            border-radius: 16px;
+            background: #07111d;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+        }
+
+        .eci-form {
+            margin-top: 14px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .eci-form input,
+        .eci-form textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(7, 17, 29, 0.65);
+            color: var(--text-light);
+        }
+
+        .eci-form textarea {
+            min-height: 86px;
+            resize: vertical;
+        }
+
+        .eci-message {
+            min-height: 20px;
+            color: var(--investor-color);
+            font-size: 0.9rem;
+        }
+
+        .member-cockpit-shell {
+            margin: 0 0 24px;
+            padding: 24px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, rgba(79, 140, 255, 0.18), rgba(7, 17, 29, 0.96));
+            border: 1px solid rgba(79, 140, 255, 0.24);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+        }
+
+        .member-cockpit-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .member-cockpit-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(79, 140, 255, 0.18);
+            color: var(--investor-color);
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            font-size: 0.78rem;
+        }
+
+        .member-cockpit-header h3 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+            color: var(--text-light);
+        }
+
+        .member-cockpit-header p {
+            color: rgba(245, 247, 255, 0.84);
+            max-width: 70ch;
+        }
+
+        .member-cockpit-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .member-cockpit-body {
+            display: grid;
+            grid-template-columns: minmax(280px, 0.8fr) 1.6fr;
+            gap: 16px;
+        }
+
+        .member-auth-card,
+        .member-main-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 18px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        .member-auth-card h4,
+        .member-panel h4 {
+            color: var(--investor-color);
+            margin-bottom: 8px;
+        }
+
+        .member-form {
+            display: grid;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .member-form input,
+        .member-form select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(7, 17, 29, 0.6);
+            color: var(--text-light);
+        }
+
+        .member-message {
+            min-height: 20px;
+            color: var(--investor-color);
+            font-size: 0.92rem;
+            margin-top: 10px;
+        }
+
+        .member-switch-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .member-view-btn {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-light);
+            padding: 8px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .member-view-btn.active {
+            color: var(--dark-bg);
+            background: linear-gradient(135deg, var(--accent-color), var(--investor-color));
+            border-color: transparent;
+        }
+
+        .member-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .member-summary-chip {
+            padding: 12px;
+            border-radius: 16px;
+            background: rgba(7, 17, 29, 0.56);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .member-summary-chip strong {
+            display: block;
+            font-size: 1rem;
+            color: var(--investor-color);
+            margin-bottom: 4px;
+        }
+
+        .member-summary-chip span {
+            font-size: 0.84rem;
+            color: rgba(245, 247, 255, 0.8);
+        }
+
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 12px;
+        }
+
+        .member-panel {
+            padding: 14px;
+            border-radius: 18px;
+            background: rgba(7, 17, 29, 0.56);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .member-list-item {
+            display: grid;
+            gap: 6px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .member-list-item:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .member-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 8px;
+            border-radius: 999px;
+            background: rgba(79, 140, 255, 0.16);
+            color: var(--investor-color);
+            font-size: 0.78rem;
+            font-weight: 700;
+            width: fit-content;
+        }
+
+        .member-pay-btn {
+            border: 0;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            border-radius: 999px;
+            padding: 7px 10px;
+            cursor: pointer;
+            font-weight: 700;
+            width: fit-content;
+        }
+
+        .is-hidden {
+            display: none !important;
         }
 
         .manual-grid {
@@ -951,6 +1515,20 @@
                 <a class="nav-link" href="./shadowos-manifest.html">SHADOWOS Ω∞</a>
                 <a class="nav-link" href="./total-build.html">🜁 Total Build</a>
                 <a class="nav-link" href="./DEVELOPER_REPORT.md">📘 Developer Report</a>
+                <a class="nav-link" href="./GVS/GVS_SHADOWSPHERE_OVERVIEW.md">🧠 GVS ShadowSphere Overview</a>
+                <a class="nav-link" href="./GVS/SEARCH_LOG.md">🔎 GVS Search Log</a>
+                <a class="nav-link" href="./GVS/knowledge-db/index.html">🗂️ GVS Knowledge DB</a>
+                <a class="nav-link" href="./GVS/start.html">🚀 GVS Start</a>
+                <a class="nav-link" href="./GVS/h2o-sun-bubble-universe.html">💧 H2O SUN Universe</a>
+                <a class="nav-link" href="./GVS/BRANDING_MANIFEST.md">🏷️ Branding Manifest</a>
+                <a class="nav-link" href="./GVS/TELADIA_FINAL_CORE.md">🎬 TELADIA Final Core</a>
+                <a class="nav-link" href="./GVS/TELADIA_VALUE_AND_PAYMENT_HINT.md">💳 TELADIA Value & Payment</a>
+                <a class="nav-link" href="./GVS/ALL_ALSO_HUB.md">🧭 ALL ALSO Hub</a>
+                <a class="nav-link" href="./GVS/XSTOX_METAMASK_STANDBY.md">🦊 NY-XSTOX Standby</a>
+                <a class="nav-link" href="./GVS/tnt-trust-board.html">🎲 T.&.T. Trust Board</a>
+                <a class="nav-link" href="./GVS/ernstfall-korrektur-center.html">🛟 GVS Ernstfall Center</a>
+                <a class="nav-link" href="./GVS/UHAIOS_ARCHITECTURE_SPEC.md">🧬 UHAIOS Spec</a>
+                <a class="nav-link" href="./GVS/brand-signe-gallery.html">🖼️ Brand Signe Gallery</a>
                 <a class="nav-link" href="./vos.html">🖥️ VOS (live)</a>
                 <a class="nav-link" href="./usup.html">🌌 USUP (boot)</a>
                 <a class="nav-link" href="./universe-live.html">🌂 Living Universe</a>
@@ -970,6 +1548,65 @@
             </div>
         </nav>
 
+        <section class="eci-shell" aria-label="Energy Center International premium portal">
+            <div class="eci-grid">
+                <div class="eci-main-card">
+                    <div class="eci-badge">Energy Center International • ECI • Trusted Digital Platform</div>
+                    <h2>Bank-grade trust, human-first service, and always-on access for energy, finance, and future growth.</h2>
+                    <p>Every connection is secured, every request is handled with care, and every experience is designed to feel premium, personal, and lasting.</p>
+                    <div class="eci-slogan-row">
+                        <span id="eci-slogan-rotator">Secure • Fast • Personal</span>
+                        <span>Always Connected</span>
+                        <span>For the Next Generation</span>
+                    </div>
+                    <div class="eci-actions">
+                        <a class="btn btn-primary" href="#portal" data-eci-boost="true">Open secure workspace</a>
+                        <a class="btn btn-secondary" href="#contact" data-eci-boost="true">Request advisory</a>
+                    </div>
+                    <div class="eci-stats">
+                        <div class="eci-stat">
+                            <strong id="eci-bond-count">0</strong>
+                            <span>Trusted bonds</span>
+                        </div>
+                        <div class="eci-stat">
+                            <strong id="eci-status-text">Verified</strong>
+                            <span>Service status</span>
+                        </div>
+                        <div class="eci-stat">
+                            <strong id="eci-clock">--:--</strong>
+                            <span>Live clock</span>
+                        </div>
+                        <div class="eci-stat">
+                            <strong id="eci-value-count">0</strong>
+                            <span><a href="./final-cut.html" style="color: inherit; text-decoration: none;">In-N-Out value ↗</a></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="eci-panel">
+                    <div class="eci-panel-top">
+                        <strong>Live Trust Pulse</strong>
+                        <span id="eci-timestamp" style="color: rgba(245,247,255,0.8); font-size: 0.9rem;">--</span>
+                    </div>
+                    <div>
+                        <span class="eci-pill">● Verified</span>
+                        <span class="eci-pill">● Secure</span>
+                        <span class="eci-pill">● Always available</span>
+                    </div>
+                    <div class="eci-social-card">
+                        <h3>Official update feed</h3>
+                        <iframe class="eci-social-frame" src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FMyOpenAi%2Fposts%2Fpfbid02sfzwCsWsrp4pLqyMBSBkCwsEWYZHjWd1tsX48EKrLBHp5bFsbJmLARSiqNgXgiTDl&show_text=true&width=500" title="ECI social update" loading="lazy"></iframe>
+                    </div>
+                    <form class="eci-form" id="eciRequestForm">
+                        <input id="eciName" type="text" placeholder="Your name" required>
+                        <input id="eciEmail" type="email" placeholder="Your email" required>
+                        <textarea id="eciFocus" placeholder="What do you want to build or secure today?"></textarea>
+                        <button class="btn btn-secondary" type="submit">Submit secure request</button>
+                        <div id="eciRequestMessage" class="eci-message">Your trust request is processed with care.</div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
         <section class="hero-shell">
             <img src="./assets/logo.svg" alt="www.DIGITALNOTAR.in – ©TM Raymond Demitrio Tel" class="brand-logo" width="160" height="160" />
             <div class="hero-badge">Root Presence • sichtbar • klar • dauerhaft</div>
@@ -986,6 +1623,20 @@
                 <a class="btn btn-secondary" href="./manifest.html">✳️ Manifest lesen</a>
                 <a class="btn btn-secondary" href="./shadowos-manifest.html">🌌 SHADOWOS Ω∞ Manifest</a>
                 <a class="btn btn-secondary" href="./total-build.html">🜁 Unified Total Build</a>
+                <a class="btn btn-secondary" href="./GVS/GVS_SHADOWSPHERE_OVERVIEW.md">🧠 GVS ShadowSphere Overview</a>
+                <a class="btn btn-secondary" href="./GVS/SEARCH_LOG.md">🔎 GVS Search Log</a>
+                <a class="btn btn-secondary" href="./GVS/knowledge-db/index.html">🗂️ GVS Knowledge DB</a>
+                <a class="btn btn-secondary" href="./GVS/start.html">🚀 GVS Start</a>
+                <a class="btn btn-secondary" href="./GVS/h2o-sun-bubble-universe.html">💧 H2O SUN Universe</a>
+                <a class="btn btn-secondary" href="./GVS/BRANDING_MANIFEST.md">🏷️ Branding Manifest</a>
+                <a class="btn btn-secondary" href="./GVS/TELADIA_FINAL_CORE.md">🎬 TELADIA Final Core</a>
+                <a class="btn btn-secondary" href="./GVS/TELADIA_VALUE_AND_PAYMENT_HINT.md">💳 TELADIA Value & Payment</a>
+                <a class="btn btn-secondary" href="./GVS/ALL_ALSO_HUB.md">🧭 ALL ALSO Hub</a>
+                <a class="btn btn-secondary" href="./GVS/XSTOX_METAMASK_STANDBY.md">🦊 NY-XSTOX Standby</a>
+                <a class="btn btn-secondary" href="./GVS/tnt-trust-board.html">🎲 T.&amp;.T. Trust Board</a>
+                <a class="btn btn-secondary" href="./GVS/ernstfall-korrektur-center.html">🛟 GVS Ernstfall Center</a>
+                <a class="btn btn-secondary" href="./GVS/UHAIOS_ARCHITECTURE_SPEC.md">🧬 UHAIOS Spec</a>
+                <a class="btn btn-secondary" href="./GVS/brand-signe-gallery.html">🖼️ Brand Signe Gallery</a>
                 <a class="btn btn-secondary" href="./vos.html">🖥️ VOS öffnen (live)</a>
                 <a class="btn btn-secondary" href="./usup.html">🌌 USUP live booten</a>
                 <a class="btn btn-secondary" href="./universe-live.html">🌂 Living Universe (Animation)</a>
@@ -1016,7 +1667,134 @@
             </div>
         </section>
 
+        <section class="member-cockpit-shell" id="memberCockpit" aria-label="VKOS member cockpit">
+            <div class="member-cockpit-header">
+                <div>
+                    <div class="member-cockpit-badge">VKOS • Member Cockpit</div>
+                    <h3>Secure entry, live workspace, and trust-driven service flow.</h3>
+                    <p>Each member gets a clear operating layer for identity, current projects, invoices, and executive oversight.</p>
+                </div>
+                <div class="member-cockpit-actions">
+                    <button class="btn btn-secondary" id="memberRefreshBtn" type="button">Refresh</button>
+                    <button class="btn btn-primary" id="memberExecutiveToggleBtn" type="button">Executive mode</button>
+                </div>
+            </div>
+            <div class="member-cockpit-body">
+                <div class="member-auth-card" id="memberAuthCard">
+                    <h4>Secure entry</h4>
+                    <p>Sign in to unlock the member workspace and its project flow.</p>
+                    <form id="memberLoginForm" class="member-form">
+                        <input id="memberName" type="text" placeholder="Your name" required>
+                        <input id="memberEmail" type="email" placeholder="Your email" required>
+                        <select id="memberRole">
+                            <option value="Member">Member</option>
+                            <option value="Investor">Investor</option>
+                            <option value="Founder">Founder</option>
+                            <option value="Executive">Executive</option>
+                        </select>
+                        <button class="btn btn-primary" type="submit">Open workspace</button>
+                    </form>
+                    <div id="memberLoginMessage" class="member-message">A secure member session starts here.</div>
+                </div>
+                <div class="member-main-card">
+                    <div class="member-switch-row">
+                        <button class="member-view-btn active" data-view="dashboard" type="button">Dashboard</button>
+                        <button class="member-view-btn" data-view="projects" type="button">Projects</button>
+                        <button class="member-view-btn" data-view="invoices" type="button">Invoices</button>
+                    </div>
+                    <div id="memberLockedState" class="member-message">You need to sign in to access the private workspace.</div>
+                    <div id="memberDashboardView" class="is-hidden">
+                        <div class="member-summary-grid">
+                            <div class="member-summary-chip">
+                                <strong id="memberWelcome">Welcome</strong>
+                                <span>Member status</span>
+                            </div>
+                            <div class="member-summary-chip">
+                                <strong id="memberExecutiveBadge">Standard</strong>
+                                <span>Mode</span>
+                            </div>
+                            <div class="member-summary-chip">
+                                <strong id="memberActiveViewLabel">Dashboard</strong>
+                                <span>Workspace</span>
+                            </div>
+                        </div>
+                        <div class="member-grid">
+                            <div class="member-panel" id="memberProjectsPanel">
+                                <h4>Active projects</h4>
+                                <div id="memberProjectsList"></div>
+                            </div>
+                            <div class="member-panel" id="memberInvoicesPanel">
+                                <h4>Invoices & trust requests</h4>
+                                <div id="memberInvoicesList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="manual-grid">
+            <article class="manual-card featured">
+                <h3>� Universal Visual Runtime (UVR)</h3>
+                <p>Ein Objekt- und Regelmodell, das dieselbe Klartext-Struktur über Browser, Geräte und zukünftige Oberflächen hinweg rendert.</p>
+                <div class="uvr-runtime-shell">
+                    <h3>UVR Runtime</h3>
+                    <p id="uvrRuntimeSummary">Loading UVR manifest…</p>
+                    <div id="uvrRuntimeHost"></div>
+                    <div class="uvr-runtime-actions">
+                        <button type="button" class="uvr-menu-button" id="uvrExportBtn">Export .vos</button>
+                        <label class="uvr-menu-button" for="uvrImportInput">Import .vos</label>
+                        <input id="uvrImportInput" type="file" accept=".vos,.json,application/json" hidden>
+                    </div>
+                </div>
+            </article>
+            <article class="manual-card featured">
+                <h3>🔎 Universale Suche · gesamte Struktur</h3>
+                <p>Eine Suche über alle Seiten, Module und den GVS-Bereich — mit Vorhersage, Tippfehler-Toleranz, Bezugsworten und Vergleich. Client-seitig über eine Web-Worker-Pipeline: kein Server-Flaschenhals, massentauglich bei tausenden gleichzeitigen Suchern.</p>
+                <a class="manual-link" href="./suche.html">Suche öffnen</a>
+            </article>
+            <article class="manual-card featured">
+                <h3>◆ VOS Knowledge Network • eine Datei</h3>
+                <p>Skalierbare Wissens- &amp; Serviceplattform in einer einzigen Datei: semantische 4-Stufen-Suche (exakt → semantisch → verwandt → KI), Vorhersage, Wissensnetz, 7 Design-Stile, Developer-Cockpit und ein erweiterbarer Developer-Speicher. Das Manifest-Bild ist als Base64 eingebettet — keine Ordner, keine Abhängigkeiten.</p>
+                <a class="manual-link" href="./vos-knowledge-network.html">VOS Knowledge Network öffnen</a>
+            </article>
+            <article class="manual-card featured">
+                <h3>⭐ Final Cut • In-N-Out Volume Economy</h3>
+                <p>Die vollständige Wereldvisie, kosmische Prinzipien, das JSON-Systemmodell und die Waardefunctie als eigene, verlinkte Plattformseite.</p>
+                <a class="manual-link" href="./final-cut.html">Final Cut öffnen</a>
+            </article>
+            <article class="manual-card featured">
+                <h3>⭐ FINALY ALL • Universales Gesamtsystem</h3>
+                <p>Bildung, Inventur, Organisation, Sprachen, Altersgruppen, Erkenntnis und Wahrheit in einem finalen System — mit Curriculum-Generator, Inventur-Checkliste und JSON-Datenmodell.</p>
+                <a class="manual-link" href="./finaly-all.html">FINALY ALL öffnen</a>
+            </article>
+            <article class="manual-card featured">
+                <h3>⭐ Developer-Universum • SERVICESOFTWARE TEL1.NL</h3>
+                <p>Alle Programmiersprachen, level-schaltbar von absolute-Dummy bis Experte, mit Konzept-Übersetzer, Code- und AI-Hilfen, Developer-A–Z, Psychologie und JSON-Architektur.</p>
+                <a class="manual-link" href="./developer-universum.html">Developer-Universum öffnen</a>
+            </article>
+            <article class="manual-card featured">
+                <h3>🪟 VOS OS • Das digitale Schweizer Taschenmesser</h3>
+                <p>Eine Windows-95-Hommage als komplettes Werkzeug-Betriebssystem im Browser: Notizbuch, Werkzeugkasten (Base64, Hash, JSON, Regex, Farbe, Passwort, Zeit), Rechner &amp; Monteur-Tools, App Maker mit Live-Sandbox, ehrliche System-Kommandozentrale (USB-Format, SFC/DISM, Go), Service-Store mit Trust TM² und eine automatische bunq-Kasse. Alles lokal, ohne Installation.</p>
+                <a class="manual-link" href="./vos-os.html">VOS OS starten</a>
+            </article>
+            <article class="manual-card featured">
+                <h3>📓 VOS Development Journal • Projekt-Tagebuch &amp; Architekturmanifest</h3>
+                <p>Das Entwicklungstagebuch des Visual Operating System als Premium-Cockpit-Seite: „Vom Programm zum lebendigen System". Trennt klar technische Ziele von Vision und Forschung — mit Statusmarkierungen (Umgesetzt · Konzept · Forschung), Architektur-Diagrammen, Roadmap und ehrlicher technischer Einordnung.</p>
+                <a class="manual-link" href="./vos-journal.html">Development Journal öffnen</a>
+            </article>
+            <article class="manual-card featured">
+                <h3>�🧩 Extension Discovery Engine</h3>
+                <p>Die Runtime schlägt automatisch sinnvolle Erweiterungen für neue Module vor, etwa SVG-Editoren, Videoprojekte oder Wissensgraphen.</p>
+                <label for="extensionModuleSelect" style="display:block; margin-top: 10px; font-weight:700;">Modul auswählen</label>
+                <select id="extensionModuleSelect" style="width:100%; margin-top:8px; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.2); background:#07111d; color:#f5f7ff;">
+                    <option value="svg-editor">SVG-Editor</option>
+                    <option value="video-editor">Video-Editor</option>
+                    <option value="knowledge-graph">Knowledge-Graph</option>
+                </select>
+                <button id="extensionDiscoveryRun" type="button" class="btn btn-secondary" style="margin-top:10px;">Analyse starten</button>
+                <div id="extensionDiscoveryOutput" style="margin-top:12px; display:grid; gap:6px; font-size:0.95em; color: rgba(245,247,255,0.92);"></div>
+            </article>
             <article class="manual-card featured">
                 <h3>📘 Gesamt-Handbuch</h3>
                 <p>Die komplette Nutzung, Struktur, Runtime und Wartung sind direkt erreichbar.</p>
@@ -1536,6 +2314,50 @@
                     </ul>
                 </div>
             </div>
+
+            <div class="contact-grid" style="margin-top: 16px;">
+                <div class="contact-card">
+                    <h3>Identity Cell (Telefonzelle)</h3>
+                    <p>Diese Zone verknuepft Nutzeridentitaet, Initiatorprofil und Runtime-Dokumentation als persoenliche Orientierungseinheit.</p>
+                    <ul class="profile-list">
+                        <li><strong>Identitaet:</strong> Mensch im Mittelpunkt vor Systemlogik</li>
+                        <li><strong>Runtime:</strong> ShadowOS Ω∞ als browser-native Grundlage</li>
+                        <li><strong>Zugang:</strong> Kontakt, Dokumente und Architektur an einem Ort</li>
+                    </ul>
+                </div>
+                <div class="contact-card">
+                    <h3>Dokumente zur Uebersicht</h3>
+                    <ul class="profile-list">
+                        <li><a href="./MASTER_DOKUMENT.md">Master-Dokumentation (Root)</a></li>
+                        <li><a href="./PROJECT_ARCHITECTURE_ROOT.md">Projektarchitektur (Root)</a></li>
+                        <li><a href="./ROOT_CODE_REPORT.md">Root-Code-Report</a></li>
+                        <li><a href="./GVS/GVS_SHADOWSPHERE_OVERVIEW.md">GVS + ShadowSphere Overview</a></li>
+                        <li><a href="./GVS/SEARCH_LOG.md">GVS Search Log</a></li>
+                        <li><a href="./GVS/knowledge-db/index.html">GVS Knowledge DB Dashboard</a></li>
+                        <li><a href="./GVS/start.html">GVS Start Screen</a></li>
+                        <li><a href="./GVS/H2O_SUN_BUBBLE_UNIVERSE.md">H2O SUN Bubble Universe Manifest</a></li>
+                        <li><a href="./GVS/h2o-sun-bubble-universe.html">H2O SUN Bubble Universe Runtime</a></li>
+                        <li><a href="./GVS/BRANDING_MANIFEST.md">Branding Manifest</a></li>
+                        <li><a href="./GVS/branding-manifest.html">Branding Runtime</a></li>
+                        <li><a href="./GVS/TELADIA_FINAL_CORE.md">TELADIA Final Core</a></li>
+                        <li><a href="./GVS/teladia-final-core.html">TELADIA Runtime</a></li>
+                        <li><a href="./GVS/TELADIA_VALUE_AND_PAYMENT_HINT.md">TELADIA Value & Payment Hint</a></li>
+                        <li><a href="./GVS/teladia-value-and-payment-hint.html">TELADIA Value Runtime</a></li>
+                        <li><a href="./GVS/ALL_ALSO_HUB.md">ALL ALSO Hub</a></li>
+                        <li><a href="./GVS/all-also-hub.html">ALL ALSO Runtime</a></li>
+                        <li><a href="./GVS/XSTOX_METAMASK_STANDBY.md">NY-XSTOX Standby</a></li>
+                        <li><a href="./GVS/xstox-metamask-standby.html">NY-XSTOX Standby Runtime</a></li>
+                        <li><a href="./GVS/TNT_TRUST_BOARD.md">T.&.T. Trust Board Rules</a></li>
+                        <li><a href="./GVS/tnt-trust-board.html">T.&amp;.T. Trust Board</a></li>
+                        <li><a href="./GVS/ERNSTFALL_KORREKTUR_CENTER.md">Ernstfall Korrektur Center Dokumentation</a></li>
+                        <li><a href="./GVS/ernstfall-korrektur-center.html">Ernstfall Korrektur Center Runtime</a></li>
+                        <li><a href="./GVS/UHAIOS_ARCHITECTURE_SPEC.md">UHAIOS Architektur Spezifikation</a></li>
+                        <li><a href="./GVS/brand-signe-gallery.html">Brand Signe Picture Gallery</a></li>
+                        <li><a href="./GVS/knowledge-db/records/db.json">GVS Knowledge DB Records</a></li>
+                        <li><a href="./GVS/knowledge-db/schema.json">GVS Knowledge DB Schema</a></li>
+                    </ul>
+                </div>
+            </div>
         </section>
     </div>
 
@@ -1551,10 +2373,81 @@
         </div>
     </div>
 
+    <div class="leo-signature" id="leoSignature" aria-label="Leo XIV signature widget" role="button" tabindex="0">
+        <div class="leo-variant v1 active">Leo XIV · EMORA · AMOR · ROMA</div>
+        <div class="leo-variant v2">Leo XIV · Visual Runtime · IDHuman</div>
+        <div class="leo-variant v3">Leo XIV · Portal · Eco · Human</div>
+    </div>
+
+    <div class="slogan-popup" id="sloganPopup" role="dialog" aria-live="polite">
+        <div class="slogan-title">Light out of code</div>
+        <div class="slogan-body">Wij verlichten oude hardware met nieuwe geest.<br>Visual Runtime · IDHuman · Energy-Saving Web.</div>
+        <div class="slogan-close" id="sloganClose">Close · Verder bouwen</div>
+    </div>
+
+    <script>
+        const safeAddEventListener = (target, type, listener, options) => {
+            if (target && typeof target.addEventListener === 'function') {
+                target.addEventListener(type, listener, options);
+            }
+        };
+
+        const signatureVariants = Array.from(document.querySelectorAll('.leo-variant'));
+        const signatureEl = document.getElementById('leoSignature');
+        const sloganPopup = document.getElementById('sloganPopup');
+        const sloganClose = document.getElementById('sloganClose');
+
+        if (signatureVariants.length && signatureEl) {
+            let signatureIndex = 0;
+            const rotateSignature = () => {
+                signatureVariants.forEach((variant) => variant.classList.remove('active'));
+                signatureIndex = (signatureIndex + 1) % signatureVariants.length;
+                signatureVariants[signatureIndex].classList.add('active');
+            };
+            setInterval(rotateSignature, 7000);
+            safeAddEventListener(signatureEl, 'click', () => {
+                window.open('https://facebook.com/MyOpenAI', '_blank', 'noopener,noreferrer');
+            });
+            safeAddEventListener(signatureEl, 'keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    window.open('https://facebook.com/MyOpenAI', '_blank', 'noopener,noreferrer');
+                }
+            });
+        }
+
+        if (sloganPopup && sloganClose) {
+            const openPopup = () => {
+                sloganPopup.classList.add('visible');
+                try {
+                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = 440;
+                    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + 0.2);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.4);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 1.5);
+                } catch (error) {
+                    // Audio is optional.
+                }
+            };
+            safeAddEventListener(sloganClose, 'click', () => sloganPopup.classList.remove('visible'));
+            setTimeout(openPopup, 12000);
+        }
+    </script>
+
     <script type="module">
         import { startShadowOS } from './shadow/kernel.js';
         import { buildPortalKernelContext, renderShadowKernelStatus } from './shadow/portal-bridge.mjs';
         import { createShadowSphereArchitecture } from './shadow/snap-geometry.js';
+        import { createExtensionDiscoveryEngine } from './shadow/extension-discovery.js';
+        import { createVkosMemberController } from './shadow/vkos-member-core.js';
+        import { UniversalVisualRuntime, createUvrManifest, createUvrSummary } from './shadow/uvr-runtime.js';
 
         const DEFAULT_PORTS = [3000, 3001, 3002, 3003, 3004, 3005, 8000, 8001];
         const PRIMARY_ORIGIN = 'http://127.0.0.1:3000';
@@ -1572,10 +2465,22 @@
             || LOCAL_HOSTNAMES.includes(window.location.hostname);
 
         let resolvedApiBase = null;
-        let apiBaseProbed = false;
+        let apiBaseProbePromise = null;
+        let apiBaseProbedAt = 0;
+        const API_BASE_RETRY_MS = 15000;
+        const API_BASE_REFRESH_MS = 300000;
         let portalKernelState = null;
         let portalKernelContext = buildPortalKernelContext({}, {});
         let sphereArchitecture = null;
+        let memberController = null;
+        const extensionDiscoveryEngine = createExtensionDiscoveryEngine([
+            'visual-runtime',
+            'knowledge-engine',
+            'timeline-engine',
+            'studio-engine',
+            'pwa-first',
+            'ai-engine'
+        ]);
 
         function buildPortalSummaryFromDom() {
             const applicationName = document.getElementById('appName')?.value?.trim();
@@ -1617,43 +2522,342 @@
             }
         }
 
-        async function resolveApiBase() {
-            if (apiBaseProbed) return resolvedApiBase;
-            apiBaseProbed = true;
+        function updateExtensionDiscovery() {
+            const selectEl = document.getElementById('extensionModuleSelect');
+            const outputEl = document.getElementById('extensionDiscoveryOutput');
+            if (!selectEl || !outputEl) return;
 
-            // Remote/static hosting: no local Node backend exists here. Skip probing
-            // 127.0.0.1 entirely and run in offline mode (null = use local estimators).
-            if (!IS_LOCAL_CONTEXT) {
-                resolvedApiBase = null;
+            const analysis = extensionDiscoveryEngine.analyzeModule(selectEl.value);
+            const missingCapabilitiesMarkup = analysis.missingCapabilities.length
+                ? `<div><strong>Fehlende Fähigkeiten:</strong> ${analysis.missingCapabilities.join(', ')}</div>`
+                : '<div><strong>Fehlende Fähigkeiten:</strong> keine</div>';
+            const suggestionsMarkup = analysis.suggestions.length
+                ? analysis.suggestions.map((suggestion) => `<div>• ${suggestion.label}: ${suggestion.reason}</div>`).join('')
+                : '<div>Keine Vorschläge verfügbar.</div>';
+
+            outputEl.innerHTML = `
+                <div><strong>Modul:</strong> ${analysis.moduleId}</div>
+                <div><strong>Layer:</strong> ${analysis.layer}</div>
+                <div><strong>Hosting:</strong> ${analysis.hostStrategy}</div>
+                <div><strong>Zusammenfassung:</strong> ${analysis.summary}</div>
+                ${missingCapabilitiesMarkup}
+                <div><strong>Empfohlene Erweiterungen:</strong></div>
+                ${suggestionsMarkup}
+            `;
+        }
+
+        function getStoredMemberState() {
+            try {
+                const rawState = localStorage.getItem('vkos-member-state-v1');
+                if (!rawState) return null;
+                return JSON.parse(rawState);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function persistMemberState() {
+            if (!memberController) return;
+            try {
+                const state = memberController.getState();
+                localStorage.setItem('vkos-member-state-v1', JSON.stringify(state));
+            } catch (error) {
+                // Ignore storage issues in private browsing.
+            }
+        }
+
+        function renderMemberCockpit() {
+            if (!memberController) return;
+            const state = memberController.getState();
+            const authCard = document.getElementById('memberAuthCard');
+            const dashboardView = document.getElementById('memberDashboardView');
+            const lockedState = document.getElementById('memberLockedState');
+            const loginMessage = document.getElementById('memberLoginMessage');
+            const welcomeEl = document.getElementById('memberWelcome');
+            const executiveBadgeEl = document.getElementById('memberExecutiveBadge');
+            const activeViewLabelEl = document.getElementById('memberActiveViewLabel');
+            const projectsPanel = document.getElementById('memberProjectsPanel');
+            const invoicesPanel = document.getElementById('memberInvoicesPanel');
+            const projectsListEl = document.getElementById('memberProjectsList');
+            const invoicesListEl = document.getElementById('memberInvoicesList');
+            const viewButtons = document.querySelectorAll('.member-view-btn');
+
+            if (!authCard || !dashboardView || !lockedState || !welcomeEl || !executiveBadgeEl || !activeViewLabelEl || !projectsPanel || !invoicesPanel || !projectsListEl || !invoicesListEl) {
+                return;
+            }
+
+            if (!state.user) {
+                authCard.classList.remove('is-hidden');
+                dashboardView.classList.add('is-hidden');
+                lockedState.classList.remove('is-hidden');
+                if (loginMessage) loginMessage.textContent = 'A secure member session starts here.';
+                return;
+            }
+
+            authCard.classList.add('is-hidden');
+            dashboardView.classList.remove('is-hidden');
+            lockedState.classList.add('is-hidden');
+            welcomeEl.textContent = `Welcome, ${state.user.name}`;
+            executiveBadgeEl.textContent = state.executiveMode ? 'Executive' : 'Standard';
+            activeViewLabelEl.textContent = state.activeView.charAt(0).toUpperCase() + state.activeView.slice(1);
+            viewButtons.forEach((button) => {
+                button.classList.toggle('active', button.dataset.view === state.activeView);
+            });
+
+            const showProjects = state.activeView === 'dashboard' || state.activeView === 'projects';
+            const showInvoices = state.activeView === 'dashboard' || state.activeView === 'invoices';
+            projectsPanel.classList.toggle('is-hidden', !showProjects);
+            invoicesPanel.classList.toggle('is-hidden', !showInvoices);
+
+            projectsListEl.innerHTML = state.projects.map((project) => `
+                <div class="member-list-item">
+                    <strong>${project.title}</strong>
+                    <span class="member-pill">${project.phase}</span>
+                    <span>Progress ${project.progress}%</span>
+                </div>
+            `).join('');
+
+            invoicesListEl.innerHTML = state.invoices.map((invoice) => `
+                <div class="member-list-item">
+                    <strong>${invoice.title}</strong>
+                    <span class="member-pill">${invoice.status}</span>
+                    <span>${invoice.id} • Due ${invoice.due}</span>
+                    ${invoice.status !== 'Paid' ? `<button class="member-pay-btn" type="button" data-pay-id="${invoice.id}">Mark paid</button>` : '<span class="member-pill">Paid</span>'}
+                </div>
+            `).join('');
+        }
+
+        function initMemberCockpit() {
+            memberController = createVkosMemberController(getStoredMemberState() || {});
+            const loginForm = document.getElementById('memberLoginForm');
+            const loginMessage = document.getElementById('memberLoginMessage');
+            const executiveToggleButton = document.getElementById('memberExecutiveToggleBtn');
+            const refreshButton = document.getElementById('memberRefreshBtn');
+            const dashboardView = document.getElementById('memberDashboardView');
+
+            if (loginForm) {
+                loginForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    const name = document.getElementById('memberName').value.trim();
+                    const email = document.getElementById('memberEmail').value.trim();
+                    const role = document.getElementById('memberRole').value;
+                    if (!name || !email) {
+                        if (loginMessage) loginMessage.textContent = 'Please provide your name and email to continue.';
+                        return;
+                    }
+                    memberController.authenticate({ name, email, role });
+                    persistMemberState();
+                    renderMemberCockpit();
+                    if (loginMessage) loginMessage.textContent = `Access granted. Welcome to the ${role.toLowerCase()} workspace.`;
+                });
+            }
+
+            if (executiveToggleButton) {
+                safeAddEventListener(executiveToggleButton, 'click', () => {
+                    memberController.toggleExecutiveMode();
+                    persistMemberState();
+                    renderMemberCockpit();
+                });
+            }
+
+            if (refreshButton) {
+                safeAddEventListener(refreshButton, 'click', () => {
+                    renderMemberCockpit();
+                });
+            }
+
+            document.querySelectorAll('.member-view-btn').forEach((button) => {
+                safeAddEventListener(button, 'click', () => {
+                    memberController.setActiveView(button.dataset.view || 'dashboard');
+                    persistMemberState();
+                    renderMemberCockpit();
+                });
+            });
+
+            if (dashboardView) {
+                safeAddEventListener(dashboardView, 'click', (event) => {
+                    const button = event.target.closest('[data-pay-id]');
+                    if (!button || !memberController) return;
+                    memberController.markInvoicePaid(button.dataset.payId);
+                    persistMemberState();
+                    renderMemberCockpit();
+                });
+            }
+
+            renderMemberCockpit();
+        }
+
+        function initEciExperience() {
+            const bondEl = document.getElementById('eci-bond-count');
+            const statusEl = document.getElementById('eci-status-text');
+            const clockEl = document.getElementById('eci-clock');
+            const valueEl = document.getElementById('eci-value-count');
+            const timestampEl = document.getElementById('eci-timestamp');
+            const sloganEl = document.getElementById('eci-slogan-rotator');
+            const formEl = document.getElementById('eciRequestForm');
+            const requestMessageEl = document.getElementById('eciRequestMessage');
+            const storageKey = 'eci-trust-bonds-v1';
+            const requestsKey = 'eci-trust-requests-v1';
+            const slogans = [
+                'Secure • Fast • Personal',
+                'Bank-grade trust in every step',
+                'Always available for what matters',
+                'Built to grow with your future'
+            ];
+
+            const readBondCount = () => {
+                try {
+                    const value = Number(localStorage.getItem(storageKey) || 24);
+                    return Number.isFinite(value) ? Math.max(0, value) : 24;
+                } catch (error) {
+                    return 24;
+                }
+            };
+
+            const setBondCount = (count) => {
+                try {
+                    localStorage.setItem(storageKey, String(count));
+                } catch (error) {
+                    // Ignore storage issues in private browsing.
+                }
+            };
+
+            const updateBondDisplay = () => {
+                const count = readBondCount();
+                if (bondEl) bondEl.textContent = count.toLocaleString('de-DE');
+            };
+
+            const updateClock = () => {
+                if (clockEl) {
+                    const now = new Date();
+                    clockEl.textContent = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                }
+                if (valueEl) {
+                    const start = new Date('2025-01-01T00:00:00Z').getTime();
+                    const seconds = Math.max(0, Math.floor((Date.now() - start) / 1000));
+                    valueEl.textContent = (seconds * 0.1).toLocaleString('de-DE', { maximumFractionDigits: 0 });
+                }
+                if (timestampEl) {
+                    const now = new Date();
+                    timestampEl.textContent = now.toLocaleString('de-DE', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+            };
+
+            const rotateSlogan = () => {
+                if (!sloganEl) return;
+                const next = slogans[(slogans.indexOf(sloganEl.textContent) + 1 + slogans.length) % slogans.length];
+                sloganEl.textContent = next;
+            };
+
+            updateBondDisplay();
+            updateClock();
+            setInterval(updateClock, 1000);
+            setInterval(rotateSlogan, 4200);
+
+            if (statusEl) {
+                statusEl.textContent = 'Verified';
+            }
+
+            document.querySelectorAll('[data-eci-boost]').forEach((button) => {
+                safeAddEventListener(button, 'click', () => {
+                    const nextCount = readBondCount() + 1;
+                    setBondCount(nextCount);
+                    updateBondDisplay();
+                    if (statusEl) statusEl.textContent = 'Connected';
+                });
+            });
+
+            if (formEl && requestMessageEl) {
+                safeAddEventListener(formEl, 'submit', (event) => {
+                    event.preventDefault();
+                    const name = document.getElementById('eciName').value.trim();
+                    const email = document.getElementById('eciEmail').value.trim();
+                    const focus = document.getElementById('eciFocus').value.trim();
+                    if (!name || !email) {
+                        requestMessageEl.textContent = 'Please provide your name and email so we can assist you.';
+                        return;
+                    }
+                    try {
+                        const requests = JSON.parse(localStorage.getItem(requestsKey) || '[]');
+                        requests.unshift({ name, email, focus, createdAt: new Date().toISOString() });
+                        localStorage.setItem(requestsKey, JSON.stringify(requests.slice(0, 8)));
+                    } catch (error) {
+                        // Ignore storage issues.
+                    }
+                    const nextCount = readBondCount() + 2;
+                    setBondCount(nextCount);
+                    updateBondDisplay();
+                    requestMessageEl.textContent = `Request received. We will contact ${name} within the next business window.`;
+                    formEl.reset();
+                });
+            }
+        }
+
+        async function resolveApiBase() {
+            const now = Date.now();
+            const hasFreshCache = resolvedApiBase !== null
+                ? (now - apiBaseProbedAt) < API_BASE_REFRESH_MS
+                : apiBaseProbedAt > 0 && (now - apiBaseProbedAt) < API_BASE_RETRY_MS;
+
+            if (hasFreshCache) {
                 return resolvedApiBase;
             }
 
-            const probeTargets = [PRIMARY_ORIGIN, ...LOCAL_SERVER_URLS, FALLBACK_ORIGIN];
-            for (const target of probeTargets) {
-                try {
-                    const healthResponse = await fetch(`${target}/api/health`, { method: 'GET', cache: 'no-store' });
-                    if (healthResponse.ok) {
-                        resolvedApiBase = target;
-                        return resolvedApiBase;
-                    }
-                } catch (error) {
-                    // Ignore and continue probing other origins.
-                }
-
-                try {
-                    const legacyResponse = await fetch(`${target}/server/api/health`, { method: 'GET', cache: 'no-store' });
-                    if (legacyResponse.ok) {
-                        resolvedApiBase = `${target}/server`;
-                        return resolvedApiBase;
-                    }
-                } catch (error) {
-                    // Ignore and continue probing other origins.
-                }
+            if (apiBaseProbePromise) {
+                return apiBaseProbePromise;
             }
 
-            // No backend reachable even locally: stay offline instead of hammering 127.0.0.1.
-            resolvedApiBase = null;
-            return resolvedApiBase;
+            apiBaseProbePromise = (async () => {
+                // Remote/static hosting: no local Node backend exists here. Skip probing
+                // 127.0.0.1 entirely and run in offline mode (null = use local estimators).
+                if (!IS_LOCAL_CONTEXT) {
+                    resolvedApiBase = null;
+                    apiBaseProbedAt = Date.now();
+                    return resolvedApiBase;
+                }
+
+                const probeTargets = [PRIMARY_ORIGIN, ...LOCAL_SERVER_URLS, FALLBACK_ORIGIN];
+                for (const target of probeTargets) {
+                    try {
+                        const healthResponse = await fetch(`${target}/api/health`, { method: 'GET', cache: 'no-store' });
+                        if (healthResponse.ok) {
+                            resolvedApiBase = target;
+                            apiBaseProbedAt = Date.now();
+                            return resolvedApiBase;
+                        }
+                    } catch (error) {
+                        // Ignore and continue probing other origins.
+                    }
+
+                    try {
+                        const legacyResponse = await fetch(`${target}/server/api/health`, { method: 'GET', cache: 'no-store' });
+                        if (legacyResponse.ok) {
+                            resolvedApiBase = `${target}/server`;
+                            apiBaseProbedAt = Date.now();
+                            return resolvedApiBase;
+                        }
+                    } catch (error) {
+                        // Ignore and continue probing other origins.
+                    }
+                }
+
+                // No backend reachable even locally: stay offline instead of hammering 127.0.0.1.
+                resolvedApiBase = null;
+                apiBaseProbedAt = Date.now();
+                return resolvedApiBase;
+            })();
+
+            try {
+                return await apiBaseProbePromise;
+            } finally {
+                apiBaseProbePromise = null;
+            }
         }
 
         async function getApiBase() {
@@ -1831,14 +3035,14 @@
             const links = document.getElementById('topNavLinks');
             if (!toggle || !links) return;
 
-            toggle.addEventListener('click', () => {
+            safeAddEventListener(toggle, 'click', () => {
                 const isOpen = links.classList.contains('open');
                 links.classList.toggle('open', !isOpen);
                 toggle.setAttribute('aria-expanded', String(!isOpen));
             });
 
             links.querySelectorAll('a').forEach((link) => {
-                link.addEventListener('click', () => {
+                safeAddEventListener(link, 'click', () => {
                     links.classList.remove('open');
                     toggle.setAttribute('aria-expanded', 'false');
                 });
@@ -1866,124 +3070,149 @@
         window.addEventListener('load', updateActiveNav);
         initTopNavToggle();
 
-        document.getElementById('localForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            hideError('localError');
-            showLoading('localLoading');
+        const extensionModuleSelect = document.getElementById('extensionModuleSelect');
+        const extensionDiscoveryRunButton = document.getElementById('extensionDiscoveryRun');
+        if (extensionModuleSelect) {
+            extensionModuleSelect.addEventListener('change', updateExtensionDiscovery);
+        }
+        if (extensionDiscoveryRunButton) {
+            extensionDiscoveryRunButton.addEventListener('click', updateExtensionDiscovery);
+        }
+        updateExtensionDiscovery();
 
-            const params = {
-                N: parseInt(document.getElementById('local_N').value),
-                f: parseFloat(document.getElementById('local_f').value),
-                p: parseFloat(document.getElementById('local_p').value),
-                I_avg: parseFloat(document.getElementById('local_I_avg').value),
-                m: parseFloat(document.getElementById('local_m').value),
-                u: parseFloat(document.getElementById('local_u').value),
-                K_fix: parseFloat(document.getElementById('local_K_fix').value),
-                N_employees: parseInt(document.getElementById('local_N_employees').value)
-            };
+        const localForm = document.getElementById('localForm');
+        if (localForm) {
+            localForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                hideError('localError');
+                showLoading('localLoading');
 
-            const result = await runCalculation('/api/investor/calculate/local', params, fallbackLocal);
-            hideLoading('localLoading');
-            showResults('localResults', result.result, { offline: result.offline });
-        });
+                const params = {
+                    N: parseInt(document.getElementById('local_N').value),
+                    f: parseFloat(document.getElementById('local_f').value),
+                    p: parseFloat(document.getElementById('local_p').value),
+                    I_avg: parseFloat(document.getElementById('local_I_avg').value),
+                    m: parseFloat(document.getElementById('local_m').value),
+                    u: parseFloat(document.getElementById('local_u').value),
+                    K_fix: parseFloat(document.getElementById('local_K_fix').value),
+                    N_employees: parseInt(document.getElementById('local_N_employees').value)
+                };
 
-        document.getElementById('globalForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            hideError('globalError');
-            showLoading('globalLoading');
+                const result = await runCalculation('/api/investor/calculate/local', params, fallbackLocal);
+                hideLoading('localLoading');
+                showResults('localResults', result.result, { offline: result.offline });
+            });
+        }
 
-            const params = {
-                BPP_global: parseFloat(document.getElementById('global_BPP_global').value),
-                F_free_rate: parseFloat(document.getElementById('global_F_free_rate').value),
-                alpha_0: parseFloat(document.getElementById('global_alpha_0').value),
-                N_employees: parseInt(document.getElementById('global_N_employees').value)
-            };
+        const globalForm = document.getElementById('globalForm');
+        if (globalForm) {
+            globalForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                hideError('globalError');
+                showLoading('globalLoading');
 
-            const result = await runCalculation('/api/investor/calculate/global', params, fallbackGlobal);
-            hideLoading('globalLoading');
-            showResults('globalResults', result.result, { offline: result.offline });
-        });
+                const params = {
+                    BPP_global: parseFloat(document.getElementById('global_BPP_global').value),
+                    F_free_rate: parseFloat(document.getElementById('global_F_free_rate').value),
+                    alpha_0: parseFloat(document.getElementById('global_alpha_0').value),
+                    N_employees: parseInt(document.getElementById('global_N_employees').value)
+                };
 
-        document.getElementById('productionForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            hideError('productionError');
-            showLoading('productionLoading');
+                const result = await runCalculation('/api/investor/calculate/global', params, fallbackGlobal);
+                hideLoading('globalLoading');
+                showResults('globalResults', result.result, { offline: result.offline });
+            });
+        }
 
-            const params = {
-                product_time_hours: parseFloat(document.getElementById('prod_product_time_hours').value),
-                production_cost_base: parseFloat(document.getElementById('prod_production_cost_base').value),
-                mass_capital_factor: parseFloat(document.getElementById('prod_mass_capital_factor').value),
-                productivity_rate: parseFloat(document.getElementById('prod_productivity_rate').value)
-            };
+        const productionForm = document.getElementById('productionForm');
+        if (productionForm) {
+            productionForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                hideError('productionError');
+                showLoading('productionLoading');
 
-            const time_cost_rate = parseFloat(document.getElementById('prod_time_cost_rate').value);
-            const result = await runCalculationWithQuery('/api/investor/calculate/production', params, fallbackProduction, `?time_cost_rate=${time_cost_rate}`);
-            hideLoading('productionLoading');
-            showResults('productionResults', result.result, { offline: result.offline });
-        });
+                const params = {
+                    product_time_hours: parseFloat(document.getElementById('prod_product_time_hours').value),
+                    production_cost_base: parseFloat(document.getElementById('prod_production_cost_base').value),
+                    mass_capital_factor: parseFloat(document.getElementById('prod_mass_capital_factor').value),
+                    productivity_rate: parseFloat(document.getElementById('prod_productivity_rate').value)
+                };
 
-        document.getElementById('timeIndexForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            hideError('timeIndexError');
-            showLoading('timeIndexLoading');
+                const time_cost_rate = parseFloat(document.getElementById('prod_time_cost_rate').value);
+                const result = await runCalculationWithQuery('/api/investor/calculate/production', params, fallbackProduction, `?time_cost_rate=${time_cost_rate}`);
+                hideLoading('productionLoading');
+                showResults('productionResults', result.result, { offline: result.offline });
+            });
+        }
 
-            const params = {
-                total_time_invested_hours: parseFloat(document.getElementById('time_total_time').value),
-                productive_time_hours: parseFloat(document.getElementById('time_productive_time').value),
-                time_value_rate: parseFloat(document.getElementById('time_time_value_rate').value)
-            };
+        const timeIndexForm = document.getElementById('timeIndexForm');
+        if (timeIndexForm) {
+            timeIndexForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                hideError('timeIndexError');
+                showLoading('timeIndexLoading');
 
-            const result = await runCalculation('/api/investor/calculate/time-index', params, fallbackTimeIndex);
-            hideLoading('timeIndexLoading');
-            showResults('timeIndexResults', result.result, { offline: result.offline });
-        });
+                const params = {
+                    total_time_invested_hours: parseFloat(document.getElementById('time_total_time').value),
+                    productive_time_hours: parseFloat(document.getElementById('time_productive_time').value),
+                    time_value_rate: parseFloat(document.getElementById('time_time_value_rate').value)
+                };
 
-        document.getElementById('completeForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            hideError('completeError');
-            showLoading('completeLoading');
+                const result = await runCalculation('/api/investor/calculate/time-index', params, fallbackTimeIndex);
+                hideLoading('timeIndexLoading');
+                showResults('timeIndexResults', result.result, { offline: result.offline });
+            });
+        }
 
-            const local = {
-                N: parseInt(document.getElementById('complete_local_N').value) || 10000,
-                f: parseFloat(document.getElementById('complete_local_f').value) || 5000,
-                p: parseFloat(document.getElementById('complete_local_p').value) || 0.1,
-                I_avg: parseFloat(document.getElementById('complete_local_I_avg').value) || 10000,
-                m: parseFloat(document.getElementById('complete_local_m').value) || 0.2,
-                u: parseFloat(document.getElementById('complete_local_u').value) || 0.8,
-                K_fix: parseFloat(document.getElementById('complete_local_K_fix').value) || 50000,
-                N_employees: parseInt(document.getElementById('complete_local_N_employees').value) || 10
-            };
+        const completeForm = document.getElementById('completeForm');
+        if (completeForm) {
+            completeForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                hideError('completeError');
+                showLoading('completeLoading');
 
-            const global = {
-                BPP_global: parseFloat(document.getElementById('complete_global_BPP_global').value) || 100000000000000,
-                F_free_rate: parseFloat(document.getElementById('complete_global_F_free_rate').value) || 0.05,
-                alpha_0: parseFloat(document.getElementById('complete_global_alpha_0').value) || 0.000001,
-                N_employees: local.N_employees
-            };
+                const local = {
+                    N: parseInt(document.getElementById('complete_local_N').value) || 10000,
+                    f: parseFloat(document.getElementById('complete_local_f').value) || 5000,
+                    p: parseFloat(document.getElementById('complete_local_p').value) || 0.1,
+                    I_avg: parseFloat(document.getElementById('complete_local_I_avg').value) || 10000,
+                    m: parseFloat(document.getElementById('complete_local_m').value) || 0.2,
+                    u: parseFloat(document.getElementById('complete_local_u').value) || 0.8,
+                    K_fix: parseFloat(document.getElementById('complete_local_K_fix').value) || 50000,
+                    N_employees: parseInt(document.getElementById('complete_local_N_employees').value) || 10
+                };
 
-            const production = {
-                product_time_hours: parseFloat(document.getElementById('complete_prod_product_time_hours').value) || 40,
-                production_cost_base: parseFloat(document.getElementById('complete_prod_production_cost_base').value) || 1000,
-                mass_capital_factor: parseFloat(document.getElementById('complete_prod_mass_capital_factor').value) || 1.5,
-                productivity_rate: parseFloat(document.getElementById('complete_prod_productivity_rate').value) || 0.9,
-                time_cost_rate: 50
-            };
+                const global = {
+                    BPP_global: parseFloat(document.getElementById('complete_global_BPP_global').value) || 100000000000000,
+                    F_free_rate: parseFloat(document.getElementById('complete_global_F_free_rate').value) || 0.05,
+                    alpha_0: parseFloat(document.getElementById('complete_global_alpha_0').value) || 0.000001,
+                    N_employees: local.N_employees
+                };
 
-            const body = {
-                local,
-                global,
-                production,
-                name: document.getElementById('scenarioName').value || 'Unbenanntes Szenario'
-            };
+                const production = {
+                    product_time_hours: parseFloat(document.getElementById('complete_prod_product_time_hours').value) || 40,
+                    production_cost_base: parseFloat(document.getElementById('complete_prod_production_cost_base').value) || 1000,
+                    mass_capital_factor: parseFloat(document.getElementById('complete_prod_mass_capital_factor').value) || 1.5,
+                    productivity_rate: parseFloat(document.getElementById('complete_prod_productivity_rate').value) || 0.9,
+                    time_cost_rate: 50
+                };
 
-            const result = await runCalculation('/api/investor/calculate/complete', body, fallbackComplete);
-            hideLoading('completeLoading');
-            showResults('completeResults', result.result, { offline: result.offline });
-        });
+                const body = {
+                    local,
+                    global,
+                    production,
+                    name: document.getElementById('scenarioName').value || 'Unbenanntes Szenario'
+                };
+
+                const result = await runCalculation('/api/investor/calculate/complete', body, fallbackComplete);
+                hideLoading('completeLoading');
+                showResults('completeResults', result.result, { offline: result.offline });
+            });
+        }
 
         const shadowFrame = document.getElementById('serverbFrame');
         if (shadowFrame) {
-            shadowFrame.src = './legacy/index.html';
+            shadowFrame.src = './app/index.html';
         }
 
         const applicationForm = document.getElementById('applicationForm');
@@ -2140,7 +3369,7 @@
         }
 
         document.querySelectorAll('a[href^="#"]').forEach((link) => {
-            link.addEventListener('click', (event) => {
+            safeAddEventListener(link, 'click', (event) => {
                 const targetId = link.getAttribute('href').slice(1);
                 if (!targetId) return;
                 const target = document.getElementById(targetId);
@@ -2246,14 +3475,14 @@
             const menu = document.getElementById('mobileMenu');
             if (!toggle || !menu) return;
 
-            toggle.addEventListener('click', () => {
+            safeAddEventListener(toggle, 'click', () => {
                 const isOpen = menu.classList.contains('open');
                 menu.classList.toggle('open', !isOpen);
                 toggle.setAttribute('aria-expanded', String(!isOpen));
             });
 
             menu.querySelectorAll('a').forEach((link) => {
-                link.addEventListener('click', () => {
+                safeAddEventListener(link, 'click', () => {
                     menu.classList.remove('open');
                     toggle.setAttribute('aria-expanded', 'false');
                 });
@@ -2284,6 +3513,72 @@
             }
         }
 
+        async function initUvrRuntime() {
+            const uvrHost = document.getElementById('uvrRuntimeHost');
+            const uvrSummaryEl = document.getElementById('uvrRuntimeSummary');
+            if (!uvrHost || !uvrSummaryEl) return;
+
+            let manifest = createUvrManifest();
+            try {
+                const response = await fetch('./shadow/portal.vos.json', { cache: 'no-store' });
+                if (response.ok) {
+                    manifest = await response.json();
+                }
+            } catch (error) {
+                console.warn('UVR manifest fallback used', error);
+            }
+
+            const uvrRuntime = new UniversalVisualRuntime();
+            uvrRuntime.loadFromManifest(manifest);
+            uvrRuntime.present(uvrHost, 'portalScene');
+
+            const renderSummary = (activeManifest) => {
+                const summary = createUvrSummary(activeManifest, uvrRuntime);
+                uvrSummaryEl.textContent = `Manifest ${summary.manifestId} • ${summary.objectCount} objects • ${summary.sceneCount} scene(s) • ${summary.ruleCount} rule(s) • Renderer ${summary.renderer}`;
+            };
+            renderSummary(manifest);
+
+            const exportBtn = document.getElementById('uvrExportBtn');
+            const importInput = document.getElementById('uvrImportInput');
+
+            if (exportBtn) {
+                safeAddEventListener(exportBtn, 'click', () => {
+                    const blob = new Blob([JSON.stringify(manifest, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `${manifest.manifest?.id || 'uvr-manifest'}.vos.json`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    setTimeout(() => URL.revokeObjectURL(url), 1000);
+                });
+            }
+
+            if (importInput) {
+                safeAddEventListener(importInput, 'change', async (event) => {
+                    const file = event.target.files && event.target.files[0];
+                    if (!file) return;
+                    try {
+                        const text = await file.text();
+                        manifest = JSON.parse(text);
+                        uvrRuntime.loadFromManifest(manifest);
+                        const firstScene = manifest.scenes && manifest.scenes[0] ? manifest.scenes[0].id : 'portalScene';
+                        uvrRuntime.present(uvrHost, firstScene);
+                        renderSummary(manifest);
+                    } catch (error) {
+                        uvrSummaryEl.textContent = `Import failed: ${error.message}`;
+                    } finally {
+                        importInput.value = '';
+                    }
+                });
+            }
+        }
+
+        void initUvrRuntime();
+
+        initMemberCockpit();
+        initEciExperience();
         syncPortalKernelStatus({}, buildPortalSummaryFromDom());
         sphereArchitecture = createShadowSphereArchitecture({
             geometry: { core: { id: 'portal-core', label: 'Portal Core' } }
@@ -2293,6 +3588,19 @@
             syncPortalKernelStatus(portalKernelState, buildPortalSummaryFromDom());
         }).catch((error) => {
             console.warn('ShadowOS startup failed', error);
+            const outputEl = document.getElementById('shadowStatusOutput');
+            if (outputEl) {
+                outputEl.textContent = JSON.stringify({
+                    runtime: 'shadow-os',
+                    status: 'boot-failed',
+                    error: error?.message || String(error)
+                }, null, 2);
+            }
+            const updateEl = document.getElementById('companionUpdate');
+            if (updateEl) {
+                updateEl.dataset.fallback = 'ShadowOS boot failed.';
+                updateEl.textContent = 'ShadowOS boot failed. Check the console for details.';
+            }
         });
         void updateShadowStatus();
         void initCompanionPanel();

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GVS Knowledge DB</title>
+  <style>
+    :root {
+      --bg: #071018;
+      --surface: #0f1d2a;
+      --surface-2: #132638;
+      --line: #2c4a64;
+      --text: #e8f2ff;
+      --muted: #9db7d3;
+      --accent: #70b3ff;
+      --ok: #68d391;
+      --warn: #f6ad55;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 20% 0%, #14324a 0%, var(--bg) 45%);
+      color: var(--text);
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+    }
+    .panel {
+      background: rgba(15, 29, 42, 0.9);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    h1, h2 { margin: 0 0 12px; }
+    p { margin: 0; color: var(--muted); }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .stat {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .stat strong { display: block; font-size: 1.3rem; color: var(--accent); }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    input, select, button {
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      color: var(--text);
+      padding: 10px 12px;
+      font: inherit;
+    }
+    button { cursor: pointer; }
+    button:hover { border-color: var(--accent); }
+    .table-wrap { overflow: auto; margin-top: 10px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { color: var(--muted); font-weight: 600; }
+    .status-ok { color: var(--ok); }
+    .status-warn { color: var(--warn); }
+    .hint { margin-top: 8px; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="panel">
+      <h1>GVS Knowledge DB</h1>
+      <p>Zentrale, verknuepfte Wissensdatenbank fuer Projekte, Module, Forschung, Referenzen und Changelog.</p>
+      <div class="stats" id="stats"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Datensatz-Browser</h2>
+      <div class="toolbar">
+        <select id="tableSelect"></select>
+        <input id="searchInput" type="search" placeholder="Zoek op titel, onderwerp, tag, id..." />
+        <button id="reloadBtn" type="button">Reload DB</button>
+      </div>
+      <p class="hint">Tip: De zoekactie filtert op volledige JSON-inhoud per record.</p>
+      <div class="table-wrap">
+        <table>
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    const DB_URL = './records/db.json';
+    let db = null;
+
+    const statsEl = document.getElementById('stats');
+    const tableSelect = document.getElementById('tableSelect');
+    const searchInput = document.getElementById('searchInput');
+    const reloadBtn = document.getElementById('reloadBtn');
+    const tableHead = document.getElementById('tableHead');
+    const tableBody = document.getElementById('tableBody');
+
+    function toPreview(value) {
+      if (Array.isArray(value)) return value.join(', ');
+      if (value && typeof value === 'object') return JSON.stringify(value);
+      return String(value ?? '');
+    }
+
+    function normalize(text) {
+      return String(text || '').toLowerCase();
+    }
+
+    function renderStats(data) {
+      const entries = Object.entries(data).map(([name, records]) => ({
+        name,
+        count: Array.isArray(records) ? records.length : 0
+      }));
+
+      const total = entries.reduce((sum, item) => sum + item.count, 0);
+      statsEl.innerHTML = '';
+
+      const summary = [
+        { name: 'tabellen', count: entries.length },
+        { name: 'records totaal', count: total }
+      ];
+
+      [...summary, ...entries].forEach((item) => {
+        const box = document.createElement('article');
+        box.className = 'stat';
+        box.innerHTML = `<span>${item.name}</span><strong>${item.count}</strong>`;
+        statsEl.appendChild(box);
+      });
+    }
+
+    function renderTableOptions(data) {
+      tableSelect.innerHTML = '';
+      Object.keys(data).forEach((tableName) => {
+        const option = document.createElement('option');
+        option.value = tableName;
+        option.textContent = tableName;
+        tableSelect.appendChild(option);
+      });
+    }
+
+    function renderRows() {
+      const tableName = tableSelect.value;
+      const rows = Array.isArray(db?.[tableName]) ? db[tableName] : [];
+      const query = normalize(searchInput.value);
+      const filtered = rows.filter((row) => normalize(JSON.stringify(row)).includes(query));
+
+      tableHead.innerHTML = '';
+      tableBody.innerHTML = '';
+
+      if (!filtered.length) {
+        tableHead.innerHTML = '<tr><th>Resultaat</th></tr>';
+        tableBody.innerHTML = '<tr><td class="status-warn">Geen records gevonden voor deze filter.</td></tr>';
+        return;
+      }
+
+      const columns = Object.keys(filtered[0]);
+      const headRow = document.createElement('tr');
+      columns.forEach((col) => {
+        const th = document.createElement('th');
+        th.textContent = col;
+        headRow.appendChild(th);
+      });
+      tableHead.appendChild(headRow);
+
+      filtered.forEach((row) => {
+        const tr = document.createElement('tr');
+        columns.forEach((col) => {
+          const td = document.createElement('td');
+          td.textContent = toPreview(row[col]);
+          tr.appendChild(td);
+        });
+        tableBody.appendChild(tr);
+      });
+    }
+
+    async function loadDb() {
+      try {
+        const response = await fetch(DB_URL, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        db = await response.json();
+        renderStats(db);
+        renderTableOptions(db);
+        renderRows();
+      } catch (error) {
+        tableHead.innerHTML = '<tr><th>Status</th></tr>';
+        tableBody.innerHTML = `<tr><td class="status-warn">DB niet geladen: ${error.message}</td></tr>`;
+      }
+    }
+
+    tableSelect.addEventListener('change', renderRows);
+    searchInput.addEventListener('input', renderRows);
+    reloadBtn.addEventListener('click', () => { void loadDb(); });
+
+    void loadDb();
+  </script>
+</body>
+</html>

@@ -8,12 +8,16 @@ Ein Node-Backend kann optional lokal Live-Features ergänzen.
 - ShadowOS-Kern: [shadow/](shadow), Boot über `startShadowOS()`
 - Optionales Backend: [server/server.js](server/server.js)
 - Manifest: [MANIFEST_SHADOWOS.md](MANIFEST_SHADOWOS.md) / [shadowos-manifest.html](shadowos-manifest.html)
+- GVS-Ueberblick: [GVS/GVS_SHADOWSPHERE_OVERVIEW.md](GVS/GVS_SHADOWSPHERE_OVERVIEW.md)
+- Search-Log: [GVS/SEARCH_LOG.md](GVS/SEARCH_LOG.md)
 
 ## Erkenntnis
 - Der Kern läuft ohne Node direkt im Browser (GitHub Pages-fähig).
 - Online-Fehlermeldungen zu 127.0.0.1/api entstehen nur durch die optionale Backend-Suche;
   sie betreffen nicht den ShadowOS-Kern (siehe [REFERENZBERICHT.md](REFERENZBERICHT.md)).
 - Legacy-/alte Einstiegspfade sind nur Referenz.
+- Das Portal fuehrt eine zusaetzliche Identity-Cell-Zone fuer Nutzer-/Initiatorbezug
+  und direkte Dokumenten-Transparenz.
 
 ## Betriebsstatus
 - Kern: serverloses ShadowOS, browser-nativ.

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ALL ALSO HUB</title>
+  <style>
+    :root {
+      --bg: #071019;
+      --surface: rgba(16, 28, 42, 0.9);
+      --line: rgba(255,255,255,0.1);
+      --text: #eef5ff;
+      --muted: #aebfd3;
+      --accent: #79b4ff;
+      --warn: #f6ad55;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 50% 20%, rgba(121,180,255,0.18), transparent 40%), var(--bg);
+    }
+    .shell { max-width: 1180px; margin: 0 auto; display: grid; gap: 16px; }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+    }
+    h1, h2, p { margin: 0 0 12px; }
+    p, li { color: var(--muted); line-height: 1.6; }
+    .title { font-size: clamp(2rem, 5vw, 3.6rem); letter-spacing: -0.03em; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      background: rgba(255,255,255,0.03);
+    }
+    a { color: var(--accent); }
+    .hint {
+      border-left: 4px solid var(--warn);
+      background: rgba(246,173,85,0.08);
+      padding: 12px 14px;
+      border-radius: 10px;
+    }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .pill { padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="panel">
+      <h1 class="title">ALL ALSO HUB</h1>
+      <p>All also. All other. All together. This is the central index for the current GVS/TELADIA stack.</p>
+      <div class="pill-row">
+        <span class="pill">One hub</span>
+        <span class="pill">All concepts</span>
+        <span class="pill">One orientation</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Portal Links</h2>
+        <ul>
+          <li><a href="./GVS_SHADOWSPHERE_OVERVIEW.md">GVS ShadowSphere Overview</a></li>
+          <li><a href="./knowledge-db/index.html">GVS Knowledge DB</a></li>
+          <li><a href="./ernstfall-korrektur-center.html">GVS Ernstfall Korrektur Center</a></li>
+          <li><a href="./UHAIOS_ARCHITECTURE_SPEC.md">UHAIOS Architecture Spec</a></li>
+          <li><a href="./brand-signe-gallery.html">Brand Signe Gallery</a></li>
+          <li><a href="./H2O_SUN_BUBBLE_UNIVERSE.md">H2O SUN Bubble Universe</a></li>
+          <li><a href="./BRANDING_MANIFEST.md">Branding Manifest</a></li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>TELADIA</h2>
+        <ul>
+          <li><a href="./TELADIA_FINAL_CORE.md">TELADIA Final Core</a></li>
+          <li><a href="./TELADIA_VALUE_AND_PAYMENT_HINT.md">TELADIA Value & Payment Hint</a></li>
+          <li><a href="./XSTOX_METAMASK_STANDBY.md">NY-XSTOX Standby</a></li>
+          <li><a href="./teladia-final-core.html">TELADIA Runtime</a></li>
+          <li><a href="./teladia-value-and-payment-hint.html">TELADIA Value Runtime</a></li>
+          <li><a href="./xstox-metamask-standby.html">NY-XSTOX Standby Runtime</a></li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Play Zone</h2>
+        <p>Reserved for symbolic games, generator systems, and future regional interaction modules.</p>
+        <p><a href="./tnt-trust-board.html">Open T.&amp;.T. Trust Board</a></p>
+        <p><a href="./ernstfall-korrektur-center.html">Open Ernstfall Center</a></p>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Pre-Bank Hint</h2>
+      <div class="hint">Send me money with bunq.me</div>
+      <p style="margin-top: 12px;">Access link: <a href="https://bunq.me/RaymondDemitrioTel" target="_blank" rel="noreferrer">bunq.me/RaymondDemitrioTel</a></p>
+    </section>
+  </main>
+</body>
+</html>

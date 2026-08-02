@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Signe Audit Center</title>
+  <script src="../assets/brand-signe-standard.js" defer></script>
+  <style>
+    :root {
+      --bg: #071019;
+      --panel: rgba(16, 28, 42, 0.92);
+      --line: rgba(255,255,255,0.14);
+      --text: #edf6ff;
+      --muted: #b3c5db;
+      --ok: #7de2af;
+      --warn: #f6ad55;
+      --err: #ff868f;
+      --accent: #7ab5ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      color: var(--text);
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(122,181,255,0.22), transparent 30%),
+        radial-gradient(circle at 78% 10%, rgba(125,226,175,0.12), transparent 32%),
+        var(--bg);
+    }
+    .shell { max-width: 1240px; margin: 0 auto; display: grid; gap: 14px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    h1, h2, p { margin: 0 0 11px; }
+    .sub { color: var(--muted); line-height: 1.6; }
+    .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+    button {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 9px 12px;
+      color: var(--text);
+      background: rgba(255,255,255,0.04);
+      cursor: pointer;
+      font-weight: 700;
+    }
+    button:hover { border-color: rgba(122,181,255,0.6); }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+    }
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: rgba(255,255,255,0.03);
+    }
+    .stat strong { font-size: 1.4rem; display: block; }
+    .ok { color: var(--ok); }
+    .warn { color: var(--warn); }
+    .err { color: var(--err); }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px 9px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 0.92rem;
+    }
+    .links { display: flex; flex-wrap: wrap; gap: 10px; }
+    a { color: var(--accent); }
+    .mono {
+      font-family: Consolas, monospace;
+      font-size: 0.88rem;
+      white-space: pre-wrap;
+      background: rgba(0,0,0,0.28);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="panel">
+      <h1>Brand Signe Audit Center</h1>
+      <p class="sub">Diese Seite prueft den BRANDSIGNE-Standard fuer aktuelle und zukuenftige Bilder. Der Registry-Check liefert den Dateibestand, der Runtime-Check liefert den Branding-Status im Browser.</p>
+      <div class="btns">
+        <button id="refreshAudit" type="button">Audit aktualisieren</button>
+        <button id="copySummary" type="button">Summary kopieren</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Summary</h2>
+      <div class="stats">
+        <div class="stat"><strong id="registryTotal">0</strong><span>Registry Bilder</span></div>
+        <div class="stat"><strong id="runtimeTotal">0</strong><span>Runtime IMG im DOM</span></div>
+        <div class="stat"><strong id="runtimeBranded" class="ok">0</strong><span>Gebrandet</span></div>
+        <div class="stat"><strong id="runtimeMissing" class="warn">0</strong><span>Ohne Brand</span></div>
+        <div class="stat"><strong id="runtimeMissingAlt" class="err">0</strong><span>Ohne ALT</span></div>
+      </div>
+      <p id="timestamp" class="sub">Noch kein Audit ausgefuehrt.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Datei-Registry</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Pfad</th>
+            <th>Ext</th>
+            <th>Bytes</th>
+            <th>Brand Required</th>
+          </tr>
+        </thead>
+        <tbody id="registryBody"></tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Audit JSON</h2>
+      <div id="auditJson" class="mono">{}</div>
+    </section>
+
+    <section class="panel">
+      <h2>Navigation</h2>
+      <div class="links">
+        <a href="./BRAND_SIGNE_STANDARD.md">Brand Signe Standard</a>
+        <a href="./brand-signe-gallery.html">Brand Signe Gallery</a>
+        <a href="./UHAIOS_ARCHITECTURE_SPEC.md">UHAIOS Spec</a>
+        <a href="./start.html">GVS Start</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const registryTotal = document.getElementById("registryTotal");
+    const runtimeTotal = document.getElementById("runtimeTotal");
+    const runtimeBranded = document.getElementById("runtimeBranded");
+    const runtimeMissing = document.getElementById("runtimeMissing");
+    const runtimeMissingAlt = document.getElementById("runtimeMissingAlt");
+    const timestamp = document.getElementById("timestamp");
+    const registryBody = document.getElementById("registryBody");
+    const auditJson = document.getElementById("auditJson");
+
+    let registry = [];
+    let lastSummary = "";
+
+    function renderRegistry(items) {
+      registryBody.innerHTML = items.map((item, index) => {
+        return "<tr>"
+          + "<td>" + (index + 1) + "</td>"
+          + "<td>" + escapeHtml(item.path) + "</td>"
+          + "<td>" + escapeHtml(item.ext) + "</td>"
+          + "<td>" + escapeHtml(String(item.size_bytes)) + "</td>"
+          + "<td>" + (item.brand_required ? "yes" : "no") + "</td>"
+          + "</tr>";
+      }).join("");
+      registryTotal.textContent = String(items.length);
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    async function loadRegistry() {
+      try {
+        const response = await fetch("./brand-signe-registry.json", { cache: "no-store" });
+        if (!response.ok) {
+          registry = [];
+          renderRegistry([]);
+          return;
+        }
+        const data = await response.json();
+        registry = Array.isArray(data.images) ? data.images : [];
+        renderRegistry(registry);
+      } catch {
+        registry = [];
+        renderRegistry([]);
+      }
+    }
+
+    function runRuntimeAudit() {
+      const runtime = window.BrandSigneStandard && window.BrandSigneStandard.runAudit
+        ? window.BrandSigneStandard.runAudit(document)
+        : { total: 0, branded: 0, missingBrand: 0, missingAlt: 0, timestamp: new Date().toISOString(), standard: "not-loaded" };
+
+      runtimeTotal.textContent = String(runtime.total);
+      runtimeBranded.textContent = String(runtime.branded);
+      runtimeMissing.textContent = String(runtime.missingBrand);
+      runtimeMissingAlt.textContent = String(runtime.missingAlt);
+      timestamp.textContent = "Letztes Audit: " + runtime.timestamp;
+
+      const payload = {
+        standard: runtime.standard,
+        generated_at: runtime.timestamp,
+        registry_total: registry.length,
+        runtime: runtime
+      };
+
+      auditJson.textContent = JSON.stringify(payload, null, 2);
+      lastSummary = [
+        "BRANDSIGNE-AUDIT",
+        "standard=" + payload.standard,
+        "generated_at=" + payload.generated_at,
+        "registry_total=" + payload.registry_total,
+        "runtime_total=" + runtime.total,
+        "runtime_branded=" + runtime.branded,
+        "runtime_missing=" + runtime.missingBrand,
+        "runtime_missing_alt=" + runtime.missingAlt
+      ].join("\n");
+    }
+
+    async function refreshAudit() {
+      await loadRegistry();
+      runRuntimeAudit();
+    }
+
+    async function copySummary() {
+      const data = lastSummary || "No summary yet.";
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(data);
+        return;
+      }
+      const area = document.createElement("textarea");
+      area.value = data;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand("copy");
+      document.body.removeChild(area);
+    }
+
+    document.getElementById("refreshAudit").addEventListener("click", refreshAudit);
+    document.getElementById("copySummary").addEventListener("click", copySummary);
+    refreshAudit();
+  </script>
+</body>
+</html>

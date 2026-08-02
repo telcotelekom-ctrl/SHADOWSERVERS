@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NY-XSTOX Signed Standby</title>
+  <style>
+    :root {
+      --bg: #08111b;
+      --surface: rgba(17, 28, 44, 0.9);
+      --surface-2: rgba(9, 16, 27, 0.92);
+      --line: rgba(255,255,255,0.1);
+      --text: #eef5ff;
+      --muted: #a8bdd8;
+      --accent: #7bb6ff;
+      --ok: #76d39f;
+      --warn: #f6ad55;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      color: var(--text);
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: radial-gradient(circle at 50% 18%, rgba(123,182,255,0.16), transparent 40%), var(--bg);
+    }
+    .shell { max-width: 1180px; margin: 0 auto; display: grid; gap: 16px; }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.34);
+    }
+    h1, h2, h3, p { margin: 0 0 12px; }
+    p, li { color: var(--muted); line-height: 1.6; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+    .card { background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .badge { display: inline-flex; padding: 8px 12px; border-radius: 999px; border: 1px solid rgba(123,182,255,0.35); color: var(--ok); background: rgba(123,182,255,0.1); }
+    .warn { color: var(--warn); }
+    button {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font: inherit;
+    }
+    button:hover { border-color: var(--accent); }
+    .hint { border-left: 4px solid var(--warn); background: rgba(246,173,85,0.09); border-radius: 10px; padding: 12px 14px; }
+    code, pre { font-family: Consolas, monospace; }
+    pre { margin: 0; white-space: pre-wrap; color: var(--text); }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="panel">
+      <div class="row">
+        <h1>NY-XSTOX Signed Standby</h1>
+        <span class="badge">Standby only</span>
+      </div>
+      <p>Globe-first, signed-only wallet layer with mock participation for users who do not want to connect real money.</p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Wallet State</h2>
+        <p id="walletState">MetaMask not checked yet.</p>
+        <div class="row">
+          <button id="checkWalletBtn" type="button">Check MetaMask</button>
+          <button id="mockJoinBtn" type="button">Join Mock Mode</button>
+        </div>
+      </article>
+      <article class="card">
+        <h2>XSTOX Mock Actions</h2>
+        <ul>
+          <li>No transfers</li>
+          <li>No swaps</li>
+          <li>No approvals</li>
+          <li>Mock coin allocation only</li>
+          <li>Symbolic participation only</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Standby Output</h2>
+        <pre id="standbyOutput">Awaiting action...</pre>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Formula + Status</h2>
+      <p>TELADIA³ × 12 remains the symbolic frame. NY-XSTOX marks the signed standby layer. Real activation waits for settlement and system stability.</p>
+      <div class="hint">
+        Send me money with bunq.me
+      </div>
+      <p style="margin-top: 12px;">Access link: <a href="https://bunq.me/RaymondDemitrioTel" target="_blank" rel="noreferrer">bunq.me/RaymondDemitrioTel</a></p>
+    </section>
+  </main>
+
+  <script type="module">
+    const walletState = document.getElementById('walletState');
+    const standbyOutput = document.getElementById('standbyOutput');
+    const checkWalletBtn = document.getElementById('checkWalletBtn');
+    const mockJoinBtn = document.getElementById('mockJoinBtn');
+
+    function renderStandby(payload) {
+      standbyOutput.textContent = JSON.stringify(payload, null, 2);
+    }
+
+    checkWalletBtn.addEventListener('click', async () => {
+      const hasEthereum = typeof window.ethereum !== 'undefined';
+      if (!hasEthereum) {
+        walletState.textContent = 'MetaMask not detected. Mock mode remains available.';
+        renderStandby({
+          mode: 'mock-only',
+          connected: false,
+          signed: true,
+          network: 'standby',
+          xstox: 'demo-only'
+        });
+        return;
+      }
+
+      try {
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        walletState.textContent = 'MetaMask detected in read-only standby mode.';
+        renderStandby({
+          mode: 'readonly-standby',
+          connected: true,
+          signed: true,
+          chainId,
+          actions: ['display only', 'no transfer', 'no approval', 'no swap']
+        });
+      } catch (error) {
+        walletState.textContent = 'MetaMask detected but could not be read. Staying in standby.';
+        renderStandby({
+          mode: 'readonly-standby',
+          connected: false,
+          signed: true,
+          error: error.message
+        });
+      }
+    });
+
+    mockJoinBtn.addEventListener('click', () => {
+      walletState.textContent = 'Mock mode active. No real-money link required.';
+      renderStandby({
+        mode: 'mock',
+        participant: 'demo-impressario',
+        signed: true,
+        balance: '0.01 entry symbolic',
+        xstox: 1000,
+        unit: 'none',
+        actions: ['preview', 'simulate', 'join-free-tools']
+      });
+    });
+  </script>
+</body>
+</html>

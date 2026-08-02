@@ -1,0 +1,67 @@
+{
+  "manifest": {
+    "id": "myopenai.portal",
+    "name": "MyOpenAI Portal",
+    "version": "1.0.0",
+    "permissions": ["render", "network", "storage", "input"]
+  },
+  "hardware": {
+    "targets": ["desktop", "mobile", "tv", "terminal", "vr", "legacy"],
+    "constraints": {
+      "min_ram_mb": 64,
+      "gpu_optional": true
+    }
+  },
+  "objects": [
+    {
+      "id": "logo",
+      "type": "Image",
+      "src": "assets/uvr-logo.svg",
+      "rules": ["center-top", "click-open-menu"]
+    },
+    {
+      "id": "mainMenu",
+      "type": "Menu",
+      "items": [
+        { "label": "Portal", "action": "open:portalWindow" },
+        { "label": "Jobs", "action": "open:jobsWindow" },
+        { "label": "Developers", "action": "open:devHubWindow" }
+      ]
+    },
+    {
+      "id": "portalWindow",
+      "type": "Window",
+      "scene": "portalScene"
+    },
+    {
+      "id": "heroText",
+      "type": "Text",
+      "content": "Universal Visual Runtime • one format, many surfaces"
+    }
+  ],
+  "rules": [
+    {
+      "id": "center-top",
+      "when": "Render",
+      "target": "logo",
+      "action": "position",
+      "params": { "x": "50%", "y": "5%" }
+    },
+    {
+      "id": "click-open-menu",
+      "when": "Click",
+      "target": "logo",
+      "action": "show",
+      "params": { "object": "mainMenu" }
+    }
+  ],
+  "scenes": [
+    {
+      "id": "portalScene",
+      "objects": ["logo", "mainMenu", "heroText", "portalWindow"]
+    }
+  ],
+  "assets": [
+    { "id": "logoAsset", "type": "svg", "path": "assets/uvr-logo.svg" }
+  ]
+}

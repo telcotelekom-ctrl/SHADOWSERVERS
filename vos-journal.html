@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOS Development Journal · Projekt-Tagebuch &amp; Architekturmanifest</title>
+<meta name="description" content="Das Entwicklungstagebuch und Architekturmanifest des Visual Operating System (VOS) — technische Ziele klar getrennt von Vision und Forschung.">
+<style>
+  :root{
+    --bg:#050a12; --bg2:#081321; --glass:rgba(16,26,42,.62); --glass-hi:rgba(30,46,72,.55);
+    --line:rgba(255,255,255,.12); --line-hi:rgba(120,200,255,.35);
+    --ink:#eaf2ff; --ink-dim:#9fb3cc; --accent:#39c8ff; --accent2:#7af0c8;
+    --done:#39e08a; --concept:#5ca8ff; --research:#c79bff; --limit:#ff9d6b;
+    --shadow:0 18px 60px rgba(0,0,0,.5);
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; color:var(--ink); font-family:"Segoe UI",Tahoma,system-ui,sans-serif;
+    line-height:1.65; background:
+      radial-gradient(1200px 700px at 82% -8%, rgba(57,200,255,.14), transparent 60%),
+      radial-gradient(900px 600px at 8% 12%, rgba(122,240,200,.10), transparent 55%),
+      linear-gradient(180deg,var(--bg),var(--bg2));
+    background-attachment:fixed;
+  }
+  a{ color:var(--accent); text-decoration:none; }
+  a:hover{ text-decoration:underline; }
+
+  /* ---- Cockpit top bar ---- */
+  .topbar{
+    position:sticky; top:0; z-index:40; display:flex; align-items:center; gap:16px;
+    padding:12px 22px; background:rgba(6,12,20,.78); backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .brand{ font-weight:800; letter-spacing:.5px; display:flex; align-items:center; gap:10px; }
+  .topbar .dot{ width:12px; height:12px; border-radius:50%; background:var(--accent);
+    box-shadow:0 0 14px var(--accent); animation:pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ transform:scale(1); opacity:.9 } 50%{ transform:scale(1.35); opacity:1 } }
+  .topbar .metrics{ margin-left:auto; display:flex; gap:8px; flex-wrap:wrap; }
+  .chip{ font-size:.72rem; padding:5px 10px; border-radius:999px; border:1px solid var(--line);
+    background:var(--glass); color:var(--ink-dim); }
+  .chip b{ color:var(--ink); }
+
+  .wrap{ max-width:960px; margin:0 auto; padding:40px 22px 90px; }
+
+  /* ---- Hero ---- */
+  .hero{ text-align:center; padding:46px 26px; border-radius:22px; border:1px solid var(--line);
+    background:linear-gradient(160deg,var(--glass-hi),var(--glass)); box-shadow:var(--shadow);
+    position:relative; overflow:hidden; }
+  .hero::before{ content:""; position:absolute; inset:-2px; background:
+    radial-gradient(600px 240px at 50% -30%, rgba(57,200,255,.25), transparent 70%); pointer-events:none; }
+  .hero .kicker{ text-transform:uppercase; letter-spacing:.32em; font-size:.72rem; color:var(--accent2); }
+  .hero h1{ font-size:clamp(1.9rem,4.6vw,3rem); margin:.3em 0 .2em; line-height:1.1;
+    background:linear-gradient(90deg,#eaf2ff,#8fd8ff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero .quote{ font-style:italic; color:var(--ink-dim); max-width:640px; margin:14px auto 0; }
+  .hero .day{ display:inline-block; margin-top:18px; padding:7px 16px; border-radius:999px;
+    border:1px solid var(--line-hi); background:rgba(57,200,255,.08); font-size:.85rem; }
+
+  /* ---- Status legend ---- */
+  .legend{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:26px 0 8px; }
+  .badge{ display:inline-flex; align-items:center; gap:7px; font-size:.78rem; font-weight:600;
+    padding:6px 12px; border-radius:999px; border:1px solid var(--line); background:var(--glass); }
+  .badge i{ width:9px; height:9px; border-radius:50%; display:inline-block; }
+  .b-done i{ background:var(--done); box-shadow:0 0 10px var(--done); }
+  .b-concept i{ background:var(--concept); box-shadow:0 0 10px var(--concept); }
+  .b-research i{ background:var(--research); box-shadow:0 0 10px var(--research); }
+  .b-limit i{ background:var(--limit); box-shadow:0 0 10px var(--limit); }
+
+  /* ---- Sections / cards ---- */
+  section{ margin-top:30px; }
+  .card{ border:1px solid var(--line); border-radius:18px; padding:26px 26px;
+    background:linear-gradient(160deg,var(--glass-hi),var(--glass)); box-shadow:var(--shadow);
+    position:relative; overflow:hidden; }
+  .card + .card{ margin-top:18px; }
+  h2{ font-size:1.5rem; margin:.1em 0 .5em; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  h2 .tag{ font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em;
+    padding:4px 10px; border-radius:999px; border:1px solid var(--line); }
+  .tag.done{ color:var(--done); border-color:rgba(57,224,138,.4); background:rgba(57,224,138,.08); }
+  .tag.concept{ color:var(--concept); border-color:rgba(92,168,255,.4); background:rgba(92,168,255,.08); }
+  .tag.research{ color:var(--research); border-color:rgba(199,155,255,.4); background:rgba(199,155,255,.08); }
+  .tag.limit{ color:var(--limit); border-color:rgba(255,157,107,.4); background:rgba(255,157,107,.08); }
+  h3{ font-size:1.08rem; margin:1.1em 0 .3em; color:#d7e8ff; }
+  p{ margin:.5em 0; }
+  blockquote{ margin:16px 0; padding:14px 20px; border-left:3px solid var(--accent);
+    background:rgba(57,200,255,.07); border-radius:0 12px 12px 0; font-style:italic; color:#dcecff; }
+  blockquote strong{ font-style:normal; }
+
+  ul.clean{ list-style:none; padding:0; margin:.6em 0; display:grid; gap:8px; }
+  ul.clean li{ padding:9px 14px; border:1px solid var(--line); border-radius:10px;
+    background:rgba(255,255,255,.03); }
+  ul.clean li::before{ content:"▹ "; color:var(--accent); }
+
+  pre.diagram{ background:#040a12; border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px; overflow:auto; color:#a8e6c8; font-size:.82rem; line-height:1.5;
+    font-family:"Cascadia Code",Consolas,monospace; box-shadow:inset 0 0 40px rgba(0,0,0,.5); }
+
+  /* ---- Roadmap ---- */
+  .phases{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-top:10px; }
+  .phase{ border:1px solid var(--line); border-radius:14px; padding:16px; background:rgba(255,255,255,.03); }
+  .phase h4{ margin:0 0 8px; font-size:1rem; display:flex; align-items:center; gap:8px; }
+  .phase .st{ font-size:.68rem; padding:3px 8px; border-radius:999px; margin-left:auto; }
+  .phase ul{ margin:0; padding-left:18px; color:var(--ink-dim); font-size:.9rem; }
+  .p1{ border-color:rgba(57,224,138,.35); }
+  .p1 .st{ color:var(--done); background:rgba(57,224,138,.1); }
+  .p2 .st{ color:var(--concept); background:rgba(92,168,255,.1); }
+  .p3 .st{ color:var(--research); background:rgba(199,155,255,.1); }
+  .p4 .st{ color:var(--research); background:rgba(199,155,255,.1); }
+
+  .foot{ text-align:center; margin-top:46px; color:var(--ink-dim); font-size:.85rem; }
+  .foot .links{ margin:12px 0; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .foot .links a{ padding:8px 16px; border:1px solid var(--line); border-radius:10px;
+    background:var(--glass); color:var(--ink); }
+  .foot .links a:hover{ border-color:var(--line-hi); text-decoration:none; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="brand"><span class="dot"></span> VOS Development Journal</span>
+  <div class="metrics">
+    <span class="chip">Shadow Runtime <b>online</b></span>
+    <span class="chip">Visual Runtime <b>online</b></span>
+    <span class="chip">Object Graph <b>aktiv</b></span>
+    <span class="chip">Autor <b>Raymond Demitrio Tel</b></span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="kicker">Projekt-Tagebuch &amp; Architekturmanifest</div>
+    <h1>Vom Programm zum lebendigen System</h1>
+    <blockquote class="quote">„Wir beginnen nicht mit einer Anwendung. Wir beginnen mit einer Idee."</blockquote>
+    <div class="day">📓 Day 001 — From Software to a Living System</div>
+  </div>
+
+  <!-- Status legend -->
+  <div class="legend">
+    <span class="badge b-done"><i></i> Umgesetzt (im Repository lauffähig)</span>
+    <span class="badge b-concept"><i></i> Konzept (Entwurf, geplant)</span>
+    <span class="badge b-research"><i></i> Forschung (Zukunft / offen)</span>
+    <span class="badge b-limit"><i></i> Technische Grenze (bewusst standardkonform)</span>
+  </div>
+  <p style="text-align:center;color:var(--ink-dim);font-size:.9rem;max-width:640px;margin:0 auto">
+    Dieses Dokument trennt bewusst <b>technische Ziele</b> von <b>Visionen</b>, damit Entwickler jederzeit
+    erkennen können, was bereits umgesetzt ist, was als Konzept dient und was künftige Forschung bleibt.
+  </p>
+
+  <!-- Day 001 -->
+  <section>
+    <div class="card">
+      <h2>Day 001 — From Software to a Living System</h2>
+      <p>Es sollte niemals nur eine weitere Software werden. Nicht ein weiteres CMS. Nicht ein weiteres
+      Hostingpanel. Nicht ein weiteres Betriebssystem.</p>
+      <p>Die Ausgangsfrage lautete:</p>
+      <blockquote><strong>Was wäre, wenn Information selbst zur Benutzeroberfläche würde?</strong></blockquote>
+      <p>Aus dieser Frage entstand das <b>Visual Operating System</b>.</p>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section>
+    <div class="card">
+      <h2>Die Architektur <span class="tag done">Kern umgesetzt</span></h2>
+      <p>Unsere Architektur besteht aus einem kleinen Kern. Der Kern bleibt klein — die Möglichkeiten wachsen.</p>
+      <pre class="diagram">        Hardware
+            │
+            ▼
+   Host Operating System
+            │
+            ▼
+      Shadow Runtime        ✅ umgesetzt  (shadow/*.js, WebCrypto, serverlos)
+            │
+            ▼
+        Node Core           🔵 konzept   (optionaler Vermittler, server/ lokal)
+            │
+            ▼
+     Visual Runtime         ✅ umgesetzt  (VisualRuntime/, vos.html, vos-os.html)
+            │
+            ▼
+      Object Graph          ✅ umgesetzt  (wabe-matrix – Objekte kennen einander)
+            │
+            ▼
+     User Experience</pre>
+      <p style="color:var(--ink-dim);font-size:.9rem">Legende: ✅ heute lauffähig · 🔵 als Entwurf beschrieben.
+      Der eigentliche Kern (Shadow Runtime + Object Graph) läuft serverlos im Browser; „Node Core" ist ein
+      optionaler Vermittler und kein Zwang.</p>
+    </div>
+  </section>
+
+  <!-- Node Core -->
+  <section>
+    <div class="card">
+      <h2>Node Core <span class="tag concept">Konzept · optional</span></h2>
+      <p>In unserem Konzept ist Node.js nicht einfach eine Laufzeitumgebung — es ist der Vermittler zwischen
+      allen Ebenen. Seine Aufgaben können beispielsweise sein:</p>
+      <ul class="clean">
+        <li>API-Zugriffe bündeln</li>
+        <li>Daten zwischen Diensten austauschen</li>
+        <li>Projekte verwalten</li>
+        <li>Dateien organisieren</li>
+        <li>Sitzungen verwalten</li>
+        <li>Echtzeitkommunikation bereitstellen</li>
+        <li>Build-Prozesse koordinieren</li>
+      </ul>
+      <p>Die eigentliche Darstellung übernimmt weiterhin der Browser.</p>
+      <p style="color:var(--ink-dim);font-size:.9rem"><b>Einordnung:</b> Ein optionaler Node-Server existiert
+      lokal (<code>server/server.js</code>), doch der Produktkern bleibt bewusst serverlos. Fällt der Vermittler
+      weg, degradiert die Plattform sauber — nichts hängt zwingend an Node.</p>
+    </div>
+  </section>
+
+  <!-- Cockpit -->
+  <section>
+    <div class="card">
+      <h2>Das Cockpit <span class="tag concept">Konzept</span></h2>
+      <p>Der Entwickler startet keine Anwendung. Er betritt eine Werkstatt.</p>
+      <pre class="diagram">┌──────────────────────────────────────┐
+│ VOS Developer Cockpit                │
+├──────────────────────────────────────┤
+│ CPU │ GPU │ Runtime │ AI │ Network   │
+├──────────────────────────────────────┤
+│ Projects                             │
+│ Microsites                           │
+│ Hosting                              │
+│ CAD                                  │
+│ Media                                │
+│ Marketplace                          │
+│ Community                            │
+└──────────────────────────────────────┘</pre>
+      <p>Jeder Bereich ist modular.</p>
+      <p style="color:var(--ink-dim);font-size:.9rem"><b>Heute schon spürbar:</b> Eine erste, lauffähige
+      Cockpit-Idee lebt in <a href="./vos-os.html">VOS OS</a> (Werkzeug-OS im Browser) und in
+      <a href="./vos.html">VOS Visual</a> (Object-Graph-Werkstatt).</p>
+    </div>
+  </section>
+
+  <!-- CAD -->
+  <section>
+    <div class="card">
+      <h2>CAD Studio <span class="tag research">Forschung</span></h2>
+      <p>Ein eigener Bereich könnte moderne Funktionen für Konstruktion enthalten:</p>
+      <ul class="clean">
+        <li>parametrische Skizzen</li>
+        <li>2D-Zeichnungen</li>
+        <li>3D-Baugruppen</li>
+        <li>Materialbibliotheken</li>
+        <li>Exportformate</li>
+        <li>Versionsverwaltung</li>
+      </ul>
+      <p>Das wäre kein Nachbau älterer Programme, sondern ein moderner CAD-Arbeitsbereich mit aktueller Technik.</p>
+    </div>
+  </section>
+
+  <!-- Microsite -->
+  <section>
+    <div class="card">
+      <h2>Microsite Hosting <span class="tag concept">Konzept</span></h2>
+      <p>Jeder Entwickler erhält einen eigenen Arbeitsbereich. Beispielsweise:</p>
+      <pre class="diagram">developer.example
+      ↓
+  Workspace
+      ↓
+  Microsites
+      ↓
+    Forum
+      ↓
+ Repository
+      ↓
+ Portfolio
+      ↓
+ Deployment</pre>
+      <p>Der Entwickler bleibt Eigentümer seiner Inhalte.</p>
+    </div>
+  </section>
+
+  <!-- Search -->
+  <section>
+    <div class="card">
+      <h2>Suchsystem <span class="tag done">Umgesetzt</span></h2>
+      <p>Die Suche beantwortet nicht nur Begriffe. Sie zeigt auch Zusammenhänge.</p>
+      <pre class="diagram">Suchbegriff
+      ↓
+Eigene Datenbank
+      ↓
+Verwandte Themen
+      ↓
+ Dokumentation
+      ↓
+   Snippets
+      ↓
+ Diskussionen
+      ↓
+Weiterführende Quellen</pre>
+      <p style="color:var(--ink-dim);font-size:.9rem"><b>Bereits live:</b> Eine client-seitige, massentaugliche
+      <a href="./suche.html">Universale Suche</a> mit Fuzzy-Matching, Synonymen und Vorschlägen — jeder Browser
+      ist ein Suchknoten, kein Datenbank-Flaschenhals.</p>
+    </div>
+  </section>
+
+  <!-- Philosophy -->
+  <section>
+    <div class="card">
+      <h2>Philosophie <span class="tag done">Leitprinzip</span></h2>
+      <p>Nicht möglichst viele Dateien. Nicht möglichst viele Programme. Sondern:</p>
+      <blockquote><strong>Ein Kern. Viele Beziehungen.</strong></blockquote>
+      <p>Objekte kennen einander. Module sprechen dieselbe Sprache. Der Entwickler arbeitet mit Ideen statt mit
+      Dateiwüsten.</p>
+    </div>
+  </section>
+
+  <!-- UX -->
+  <section>
+    <div class="card">
+      <h2>Benutzererlebnis <span class="tag concept">Designziel</span></h2>
+      <p>Die Oberfläche soll wirken wie ein modernes Premium-Cockpit:</p>
+      <ul class="clean">
+        <li>klare Typografie</li>
+        <li>hochwertige Glasoberflächen</li>
+        <li>flüssige Animationen</li>
+        <li>Live-Metriken</li>
+        <li>konsistente Navigation</li>
+      </ul>
+      <p>Nicht verspielt. Nicht überladen. Sondern professionell.</p>
+    </div>
+  </section>
+
+  <!-- Roadmap -->
+  <section>
+    <div class="card">
+      <h2>Roadmap</h2>
+      <div class="phases">
+        <div class="phase p1">
+          <h4>Phase 1 <span class="st">weitgehend umgesetzt</span></h4>
+          <ul>
+            <li>Shadow Runtime ✅</li>
+            <li>Visual Runtime ✅</li>
+            <li>SVG Workspace ✅</li>
+            <li>Microsites 🔵</li>
+          </ul>
+        </div>
+        <div class="phase p2">
+          <h4>Phase 2 <span class="st">in Arbeit</span></h4>
+          <ul>
+            <li>Developer Hub 🔵</li>
+            <li>Forum 🔵</li>
+            <li>Wissensdatenbank 🔵</li>
+            <li>Suchsystem ✅</li>
+          </ul>
+        </div>
+        <div class="phase p3">
+          <h4>Phase 3 <span class="st">Forschung</span></h4>
+          <ul>
+            <li>CAD Workspace 🔬</li>
+            <li>Medienstudio 🔵</li>
+            <li>Hosting 🔵</li>
+            <li>Marketplace 🔬</li>
+          </ul>
+        </div>
+        <div class="phase p4">
+          <h4>Phase 4 <span class="st">Forschung</span></h4>
+          <ul>
+            <li>Teamarbeit 🔬</li>
+            <li>Echtzeit-Zusammenarbeit 🔬</li>
+            <li>Erweiterte Visualisierung 🔬</li>
+            <li>KI-gestützte Unterstützung 🔬</li>
+          </ul>
+        </div>
+      </div>
+      <p style="color:var(--ink-dim);font-size:.9rem;margin-top:14px">✅ umgesetzt · 🔵 Konzept/in Arbeit · 🔬 Forschung</p>
+    </div>
+  </section>
+
+  <!-- Grundprinzip -->
+  <section>
+    <div class="card">
+      <h2>Grundprinzip</h2>
+      <p>Das Projekt verfolgt eine einfache Leitidee:</p>
+      <blockquote><strong>Komplexität soll im Inneren liegen. Einfachheit an der Oberfläche.</strong></blockquote>
+      <p>Der Benutzer soll nicht die Architektur lernen müssen. Die Architektur soll dem Benutzer entgegenkommen.</p>
+    </div>
+  </section>
+
+  <!-- Technical assessment -->
+  <section>
+    <div class="card">
+      <h2>Eine technische Einordnung <span class="tag limit">Ehrlich &amp; standardkonform</span></h2>
+      <p>Einige Ideen aus den Beschreibungen — ein universelles Node-basiertes Backend, eine kleine Runtime,
+      modulare Mikroseiten, ein visuelles Betriebssystem, semantische Suche und ein integriertes Entwicklerportal
+      — sind technisch gut kombinierbar.</p>
+      <p>Andere Vorstellungen — etwa beliebige Webseiten trotz ihrer Sicherheitsrichtlinien in eigene Frames
+      einzubetten oder jede Software unverändert auf jeder Plattform auszuführen — sind durch Webstandards,
+      Betriebssysteme und Sicherheitsmechanismen begrenzt.</p>
+      <p>Anstatt diese Schutzmechanismen zu umgehen, wird die Plattform so entworfen, dass sie mit
+      <b>offenen Schnittstellen, Adaptern und standardkonformen Integrationen</b> arbeitet. Das macht sie
+      robuster, sicherer und langfristig erfolgreicher.</p>
+      <blockquote>So entsteht aus der Vision eine realistisch umsetzbare Plattform, die sich schrittweise
+      weiterentwickeln kann und dennoch den Anspruch behält, <strong>Entwicklung, Hosting, Visualisierung und
+      Zusammenarbeit in einer einheitlichen Umgebung</strong> zusammenzuführen.</blockquote>
+    </div>
+  </section>
+
+  <div class="foot">
+    <div class="links">
+      <a href="./index.html">← Portal</a>
+      <a href="./vos-os.html">🪟 VOS OS</a>
+      <a href="./vos.html">🔷 VOS Visual</a>
+      <a href="./suche.html">🔍 Universale Suche</a>
+      <a href="./manifest.html">📜 Manifest</a>
+    </div>
+    <p>© Raymond Demitrio Tel · <b>TTT-SYSTEMS</b><br>
+    TEL1.NL · DigitalNotar.in · GentlyOverdone.com</p>
+  </div>
+
+</div>
+</body>
+</html>

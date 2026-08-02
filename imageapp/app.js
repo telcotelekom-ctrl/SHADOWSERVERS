@@ -10,6 +10,8 @@ const canvasContainer = $('canvas-container');
 const appPreview = $('app-preview');
 const archiveEl = $('archive');
 const statusEl = $('status');
+const settingsForm = $('production-settings');
+const settingsSummary = $('settings-summary');
 
 const stickerEngine = new StickerEngine();
 const userSpace = new UserSpace();
@@ -17,8 +19,28 @@ const bridge = createImageAppBridge();
 let engine = null;
 let currentSVG = null;
 let currentRegions = { menu: null };
+let currentSettings = {
+  background: 'cinematic-dark',
+  transparentLogo: false,
+  filmStyle: 'premium'
+};
 
 function status(msg) { statusEl.textContent = msg; }
+function readSettings() {
+  const formData = new FormData(settingsForm);
+  return {
+    background: formData.get('background') || currentSettings.background,
+    transparentLogo: formData.get('transparentLogo') === 'on',
+    filmStyle: formData.get('filmStyle') || currentSettings.filmStyle
+  };
+}
+function updateSettingsSummary() {
+  const settings = readSettings();
+  currentSettings = settings;
+  const backgroundLabel = settings.background === 'studio-white' ? 'Studio White' : settings.background === 'aurora-blue' ? 'Aurora Blue' : 'Cinematic Dark';
+  const filmLabel = settings.filmStyle === 'documentary' ? 'Documentary' : 'Premium';
+  settingsSummary.textContent = `Background: ${backgroundLabel} · Logo transparent: ${settings.transparentLogo ? 'Yes' : 'No'} · Film style: ${filmLabel}`;
+}
 function matrixLine() {
   const s = bridge.stats();
   return `matrix: ${s.wabes} waben · ${s.validated} gevalideerd · ${s.relations} relaties`;
@@ -31,6 +53,9 @@ function renderArchive() {
     JSON.stringify(userSpace.state, null, 2);
 }
 renderArchive();
+updateSettingsSummary();
+settingsForm?.addEventListener('change', updateSettingsSummary);
+settingsForm?.addEventListener('input', updateSettingsSummary);
 
 // ---------- Service worker (relative scope) ----------
 if ('serviceWorker' in navigator) {
@@ -83,6 +108,14 @@ $('image-input').addEventListener('change', async (e) => {
   if (!file) return;
   status('Analyseren…');
   currentSVG = await imageToSemanticSVG(file);
+  const settings = readSettings();
+  currentSVG.style.background = settings.background === 'studio-white' ? '#f7f5f0' : settings.background === 'aurora-blue' ? '#0d274f' : '#07101f';
+  currentSVG.style.borderRadius = '16px';
+  currentSVG.style.padding = '12px';
+  currentSVG.style.filter = settings.filmStyle === 'documentary' ? 'contrast(0.92) saturate(0.88)' : 'contrast(1.02) saturate(1.02)';
+  if (settings.transparentLogo && currentSVG.querySelector('image')) {
+    currentSVG.querySelector('image').setAttribute('opacity', '0.8');
+  }
   canvasContainer.innerHTML = '';
   canvasContainer.appendChild(currentSVG);
 

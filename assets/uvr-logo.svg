@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="UVR logo">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="240" height="240" rx="40" fill="#07111d"/>
+  <circle cx="120" cy="120" r="88" fill="none" stroke="url(#g)" stroke-width="18"/>
+  <path d="M85 83h70l-16 18H101l-16 18v38l16 18h38l16-18v-16h-16v10H101v-38h38v10h16v-16l-16-18H85z" fill="#f8fafc"/>
+</svg>

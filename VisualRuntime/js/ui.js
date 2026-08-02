@@ -41,6 +41,12 @@ export class UI {
       rt.userCtl.audio = e.target.checked;
       if (e.target.checked) rt.audio.enable(); else rt.audio.disable();
     });
+    this.$('ctl-logo').addEventListener('change', (e) => {
+      rt.userCtl.transparentLogo = e.target.checked;
+    });
+    this.$('ctl-film').addEventListener('change', (e) => {
+      rt.userCtl.filmMode = e.target.checked;
+    });
   }
 
   _buildActList() {

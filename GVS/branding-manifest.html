@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>One Idea. Infinite Possibilities.</title>
+  <style>
+    :root {
+      --bg: #0a1118;
+      --surface: rgba(15, 29, 42, 0.9);
+      --line: rgba(255,255,255,0.1);
+      --text: #eef5ff;
+      --muted: #aebfd3;
+      --accent: #76b6ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      color: var(--text);
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(118,182,255,0.16), transparent 42%),
+        radial-gradient(circle at 20% 80%, rgba(118,182,255,0.08), transparent 34%),
+        var(--bg);
+    }
+    .shell { max-width: 1080px; margin: 0 auto; display: grid; gap: 16px; }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+    }
+    h1, h2 { margin: 0 0 12px; }
+    p, li { color: var(--muted); line-height: 1.6; }
+    .title {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .pill {
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--text);
+      background: rgba(255,255,255,0.04);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(8, 15, 24, 0.8);
+      padding: 14px;
+    }
+    .accent { color: var(--accent); font-weight: 700; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="panel">
+      <h1 class="title">One Idea. Infinite Possibilities.</h1>
+      <p>Brand title for the GVS knowledge platform: a clear orientation point that still leaves room for growth, collaboration, and continuous improvement.</p>
+      <div class="pill-row">
+        <span class="pill">Innovation</span>
+        <span class="pill">Technology</span>
+        <span class="pill">Knowledge</span>
+        <span class="pill">Collaboration</span>
+        <span class="pill">Human-centered</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Short Message</h2>
+        <p>We develop, connect, and improve ideas, systems, and solutions together with people, companies, and organizations worldwide.</p>
+      </article>
+      <article class="card">
+        <h2>Company Philosophy</h2>
+        <p>Knowledge moves in a cycle: it is created, shared, improved, and returned as new possibility.</p>
+      </article>
+      <article class="card">
+        <h2>Human Principle</h2>
+        <p>Technology supports the human being. It does not replace the human being.</p>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Identity Cell Hook</h2>
+      <p>This title belongs in the portal as a visible orientation label and in the Knowledge DB as a traceable brand reference.</p>
+      <p class="accent">One idea. Infinite possibilities.</p>
+    </section>
+  </main>
+</body>
+</html>
